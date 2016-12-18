@@ -49,15 +49,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 	private ListView mUserIdListView; // 下拉弹出窗显示的ListView对象
 	private MyAapter mAdapter; // ListView的监听器
 	private PopupWindow mPop; // 下拉弹出窗
+    private View mRegisterView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+        initUserList();
 		initView();
 		setListener();
         initAnim();
-        initUserList();
+        bindEditText();
+    }
+
+    private void bindEditText() {
+        if (mUsers.size() > 0) {
+            /* 将列表中的第一个user显示在编辑框 */
+            mIdEditText.setText(mUsers.get(0).getId());
+            mPwdEditText.setText(mUsers.get(0).getPwd());
+        }
     }
 
     private void initAnim() {
@@ -68,12 +78,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
     private void initUserList() {
         /* 获取已经保存好的用户密码 */
         mUsers = Utils.getUserList(LoginActivity.this);
-
-        if (mUsers.size() > 0) {
-            /* 将列表中的第一个user显示在编辑框 */
-            mIdEditText.setText(mUsers.get(0).getId());
-            mPwdEditText.setText(mUsers.get(0).getPwd());
-        }
     }
 
     /* ListView的适配器 */
@@ -148,6 +152,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 		});
 		mLoginButton.setOnClickListener(this);
 		mLoginMoreUserView.setOnClickListener(this);
+        mRegisterView.setOnClickListener(this);
 	}
 
 	private void initView() {
@@ -158,6 +163,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 		mLoginMoreUserView = (ImageView) findViewById(R.id.login_more_user);
 		mLoginLinearLayout = (LinearLayout) findViewById(R.id.login_linearLayout);
 		mUserIdLinearLayout = (LinearLayout) findViewById(R.id.userId_LinearLayout);
+        mRegisterView = findViewById(R.id.register);
 
 		initLoginingDlg();
 
@@ -272,6 +278,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 					mPop.showAsDropDown(mUserIdLinearLayout, 2, 1); // 显示弹出窗口
 				}
 				break;
+            case R.id.register:
+                gotoRegister();
+                break;
 			default:
 				break;
 		}
@@ -308,6 +317,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 		Intent intent = new Intent();
 		intent.setClass(this, HomeActivity.class);
         startActivity(intent);
+        finish();
 	}
+
+    private void gotoRegister() {
+        Intent intent = new Intent();
+        intent.setClass(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
 
 }
