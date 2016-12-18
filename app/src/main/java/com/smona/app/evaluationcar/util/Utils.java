@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,6 +15,8 @@ import org.json.JSONTokener;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.smona.app.evaluationcar.data.User;
 
 public class Utils {
 

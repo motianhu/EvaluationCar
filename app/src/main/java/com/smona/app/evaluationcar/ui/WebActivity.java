@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.ui;
 
 /**
  * Created by Moth on 2016/12/15.

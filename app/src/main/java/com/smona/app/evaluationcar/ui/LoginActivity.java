@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.ui;
 
 
 import java.util.ArrayList;
@@ -30,6 +30,10 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.smona.app.evaluationcar.*;
+import com.smona.app.evaluationcar.data.User;
+import com.smona.app.evaluationcar.util.Utils;
 
 public class LoginActivity extends BaseActivity implements OnClickListener,
 		OnItemClickListener, OnDismissListener {

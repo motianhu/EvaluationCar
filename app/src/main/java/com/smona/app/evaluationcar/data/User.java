@@ -1,8 +1,10 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.util.Log;
+
+import com.smona.app.evaluationcar.util.AESUtils;
 
 public class User {
 	private String mId;

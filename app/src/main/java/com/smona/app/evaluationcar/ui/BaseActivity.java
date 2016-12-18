@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.ui;
 
 import android.support.v7.app.AppCompatActivity;
 

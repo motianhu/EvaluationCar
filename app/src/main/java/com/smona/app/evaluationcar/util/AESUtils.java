@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar;
+package com.smona.app.evaluationcar.util;
 
 
 import java.security.SecureRandom;
