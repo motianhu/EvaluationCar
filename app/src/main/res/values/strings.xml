@@ -1,15 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">评估系统</string>
-    <string name="app_title">东风至信远程评估系统</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_user">用户名</string>
-    <string name="prompt_password">密码</string>
-    <string name="action_sign_in">登录</string>
-    <string name="action_register">注册</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_username">用户名不存在或错误</string>
-    <string name="error_invalid_password">密码无效</string>
-    <string name="error_incorrect_password">密码错误</string>
-    <string name="error_field_required">请输入用户名</string>
+    <string name="app_name">LoginDemo</string>
+   <string name="idtxthint">用户名</string>
+    <string name="pwdtxthint">密码</string>
+    <string name="loginbtntext">登录</string>
+    <string name="forgot_pwd">忘记密码？</string>
+    <string name="loading">正在登录</string>
+
 </resources>

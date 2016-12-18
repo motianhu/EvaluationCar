@@ -1,209 +1,301 @@
 package com.smona.app.evaluationcar;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Intent;
 
-import android.support.v7.app.AppCompatActivity;
+import java.util.ArrayList;
 
-import android.os.AsyncTask;
-
-import android.os.Build;
+import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity {
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+public class LoginActivity extends Activity implements OnClickListener,
+		OnItemClickListener, OnDismissListener {
+	protected static final String TAG = "LoginActivity";
+	private LinearLayout mLoginLinearLayout; // 登录内容的容器
+	private LinearLayout mUserIdLinearLayout; // 将下拉弹出窗口在此容器下方显示
+	private Animation mTranslate; // 位移动画
+	private Dialog mLoginingDlg; // 显示正在登录的Dialog
+	private EditText mIdEditText; // 登录ID编辑框
+	private EditText mPwdEditText; // 登录密码编辑框
+	private ImageView mMoreUser; // 下拉图标
+	private Button mLoginButton; // 登录按钮
+	private ImageView mLoginMoreUserView; // 弹出下拉弹出窗的按钮
+	private String mIdString;
+	private String mPwdString;
+	private ArrayList<User> mUsers; // 用户列表
+	private ListView mUserIdListView; // 下拉弹出窗显示的ListView对象
+	private MyAapter mAdapter; // ListView的监听器
+	private PopupWindow mPop; // 下拉弹出窗
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		initView();
+		setListener();
+		mLoginLinearLayout.startAnimation(mTranslate); // Y轴水平移动
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+		/* 获取已经保存好的用户密码 */
+		mUsers = Utils.getUserList(LoginActivity.this);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+		if (mUsers.size() > 0) {
+			/* 将列表中的第一个user显示在编辑框 */
+			mIdEditText.setText(mUsers.get(0).getId());
+			mPwdEditText.setText(mUsers.get(0).getPwd());
+		}
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+		LinearLayout parent = (LinearLayout) getLayoutInflater().inflate(
+				R.layout.userifo_listview, null);
+		mUserIdListView = (ListView) parent.findViewById(android.R.id.list);
+		parent.removeView(mUserIdListView); // 必须脱离父子关系,不然会报错
+		mUserIdListView.setOnItemClickListener(this); // 设置点击事
+		mAdapter = new MyAapter(mUsers);
+		mUserIdListView.setAdapter(mAdapter);
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-    }
+	}
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+	/* ListView的适配器 */
+	class MyAapter extends ArrayAdapter<User> {
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+		public MyAapter(ArrayList<User> users) {
+			super(LoginActivity.this, 0, users);
+		}
 
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+		public View getView(final int position, View convertView,
+							ViewGroup parent) {
+			if (convertView == null) {
+				convertView = getLayoutInflater().inflate(
+						R.layout.listview_item, null);
+			}
 
-        boolean cancel = false;
-        View focusView = null;
+			TextView userIdText = (TextView) convertView
+					.findViewById(R.id.listview_userid);
+			userIdText.setText(getItem(position).getId());
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+			ImageView deleteUser = (ImageView) convertView
+					.findViewById(R.id.login_delete_user);
+			deleteUser.setOnClickListener(new OnClickListener() {
+				// 点击删除deleteUser时,在mUsers中删除选中的元素
+				@Override
+				public void onClick(View v) {
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        }
+					if (getItem(position).getId().equals(mIdString)) {
+						// 如果要删除的用户Id和Id编辑框当前值相等，则清空
+						mIdString = "";
+						mPwdString = "";
+						mIdEditText.setText(mIdString);
+						mPwdEditText.setText(mPwdString);
+					}
+					mUsers.remove(getItem(position));
+					mAdapter.notifyDataSetChanged(); // 更新ListView
+				}
+			});
+			return convertView;
+		}
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
+	}
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
+	private void setListener() {
+		mIdEditText.addTextChangedListener(new TextWatcher() {
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+			public void onTextChanged(CharSequence s, int start, int before,
+									  int count) {
+				mIdString = s.toString();
+			}
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+			public void beforeTextChanged(CharSequence s, int start, int count,
+										  int after) {
+			}
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		mPwdEditText.addTextChangedListener(new TextWatcher() {
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+			public void onTextChanged(CharSequence s, int start, int before,
+									  int count) {
+				mPwdString = s.toString();
+			}
 
-        UserLoginTask(String email, String password) {
+			public void beforeTextChanged(CharSequence s, int start, int count,
+										  int after) {
+			}
 
-        }
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		mLoginButton.setOnClickListener(this);
+		mLoginMoreUserView.setOnClickListener(this);
+	}
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+	private void initView() {
+		mIdEditText = (EditText) findViewById(R.id.login_edtId);
+		mPwdEditText = (EditText) findViewById(R.id.login_edtPwd);
+		mMoreUser = (ImageView) findViewById(R.id.login_more_user);
+		mLoginButton = (Button) findViewById(R.id.login_btnLogin);
+		mLoginMoreUserView = (ImageView) findViewById(R.id.login_more_user);
+		mLoginLinearLayout = (LinearLayout) findViewById(R.id.login_linearLayout);
+		mUserIdLinearLayout = (LinearLayout) findViewById(R.id.userId_LinearLayout);
+		mTranslate = AnimationUtils.loadAnimation(this, R.anim.my_translate); // 初始化动画对象
+		initLoginingDlg();
+	}
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            return true;
-        }
+	public void initPop() {
+		int width = mUserIdLinearLayout.getWidth() - 4;
+		int height = LayoutParams.WRAP_CONTENT;
+		mPop = new PopupWindow(mUserIdListView, width, height, true);
+		mPop.setOnDismissListener(this);// 设置弹出窗口消失时监听器
 
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
+		// 注意要加这句代码，点击弹出窗口其它区域才会让窗口消失
+		mPop.setBackgroundDrawable(new ColorDrawable(0xffffffff));
 
-            if (success) {
-                gotoHomeActivity();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
+	}
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
+	/* 初始化正在登录对话框 */
+	private void initLoginingDlg() {
 
-    private void gotoHomeActivity() {
-        Intent homeIntent = new Intent();
-        homeIntent.setClass(this, HomeActivity.class);
-        this.startActivity(homeIntent);
-    }
+		mLoginingDlg = new Dialog(this, R.style.loginingDlg);
+		mLoginingDlg.setContentView(R.layout.logining_dlg);
+
+		Window window = mLoginingDlg.getWindow();
+		WindowManager.LayoutParams params = window.getAttributes();
+		// 获取和mLoginingDlg关联的当前窗口的属性，从而设置它在屏幕中显示的位置
+
+		// 获取屏幕的高宽
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int cxScreen = dm.widthPixels;
+		int cyScreen = dm.heightPixels;
+
+		int height = (int) getResources().getDimension(
+				R.dimen.loginingdlg_height);// 高42dp
+		int lrMargin = (int) getResources().getDimension(
+				R.dimen.loginingdlg_lr_margin); // 左右边沿10dp
+		int topMargin = (int) getResources().getDimension(
+				R.dimen.loginingdlg_top_margin); // 上沿20dp
+
+		params.y = (-(cyScreen - height) / 2) + topMargin; // -199
+		/* 对话框默认位置在屏幕中心,所以x,y表示此控件到"屏幕中心"的偏移量 */
+
+		params.width = cxScreen;
+		params.height = height;
+		// width,height表示mLoginingDlg的实际大小
+
+		mLoginingDlg.setCanceledOnTouchOutside(true); // 设置点击Dialog外部任意区域关闭Dialog
+	}
+
+	/* 显示正在登录对话框 */
+	private void showLoginingDlg() {
+		if (mLoginingDlg != null)
+			mLoginingDlg.show();
+	}
+
+	/* 关闭正在登录对话框 */
+	private void closeLoginingDlg() {
+		if (mLoginingDlg != null && mLoginingDlg.isShowing())
+			mLoginingDlg.dismiss();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.login_btnLogin:
+				// 启动登录
+				showLoginingDlg(); // 显示"正在登录"对话框,因为此Demo没有登录到web服务器,所以效果可能看不出.可以结合情况使用
+				Log.i(TAG, mIdString + "  " + mPwdString);
+				if (mIdString == null || mIdString.equals("")) { // 账号为空时
+					Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT)
+							.show();
+				} else if (mPwdString == null || mPwdString.equals("")) {// 密码为空时
+					Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT)
+							.show();
+				} else {// 账号和密码都不为空时
+					boolean mIsSave = true;
+					try {
+						Log.i(TAG, "保存用户列表");
+						for (User user : mUsers) { // 判断本地文档是否有此ID用户
+							if (user.getId().equals(mIdString)) {
+								mIsSave = false;
+								break;
+							}
+						}
+						if (mIsSave) { // 将新用户加入users
+							User user = new User(mIdString, mPwdString);
+							mUsers.add(user);
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					closeLoginingDlg();// 关闭对话框
+					Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+					finish();
+				}
+				break;
+			case R.id.login_more_user: // 当点击下拉栏
+				if (mPop == null) {
+					initPop();
+				}
+				if (!mPop.isShowing() && mUsers.size() > 0) {
+					// Log.i(TAG, "切换为角向上图标");
+					mMoreUser.setImageResource(R.drawable.login_more_down); // 切换图标
+					mPop.showAsDropDown(mUserIdLinearLayout, 2, 1); // 显示弹出窗口
+				}
+				break;
+			default:
+				break;
+		}
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+							long id) {
+		mIdEditText.setText(mUsers.get(position).getId());
+		mPwdEditText.setText(mUsers.get(position).getPwd());
+		mPop.dismiss();
+	}
+
+	/* PopupWindow对象dismiss时的事件 */
+	@Override
+	public void onDismiss() {
+		// Log.i(TAG, "切换为角向下图标");
+		mMoreUser.setImageResource(R.drawable.login_more_up);
+	}
+
+	/* 退出此Activity时保存users */
+	@Override
+	public void onPause() {
+		super.onPause();
+		try {
+			Utils.saveUserList(LoginActivity.this, mUsers);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
-
