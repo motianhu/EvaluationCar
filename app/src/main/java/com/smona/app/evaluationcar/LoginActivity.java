@@ -1,4 +1,4 @@
-package com.smona.app.evalution.evaluationcar;
+package com.smona.app.evaluationcar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
