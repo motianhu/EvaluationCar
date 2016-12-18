@@ -32,5 +32,30 @@
             android:screenOrientation="portrait"
             android:label="@string/app_name">
         </activity>
+
+
+        <activity
+            android:name=".ui.evaluation.EvalutionActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".ui.setting.MineActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".ui.query.StatusActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".ui.message.MessageActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+        </activity>
      </application>
 </manifest>
