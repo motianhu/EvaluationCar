@@ -2,8 +2,7 @@ package com.smona.app.evaluationcar;
 
 
 import java.util.ArrayList;
-
-import android.app.Activity;
+import android.content.Intent;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,7 +31,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity implements OnClickListener,
+public class LoginActivity extends BaseActivity implements OnClickListener,
 		OnItemClickListener, OnDismissListener {
 	protected static final String TAG = "LoginActivity";
 	private LinearLayout mLoginLinearLayout; // 登录内容的容器
@@ -57,28 +56,27 @@ public class LoginActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.activity_login);
 		initView();
 		setListener();
-		mLoginLinearLayout.startAnimation(mTranslate); // Y轴水平移动
+        initAnim();
+        initUserList();
+    }
 
-		/* 获取已经保存好的用户密码 */
-		mUsers = Utils.getUserList(LoginActivity.this);
+    private void initAnim() {
+        mTranslate = AnimationUtils.loadAnimation(this, R.anim.my_translate); // 初始化动画对象
+        mLoginLinearLayout.startAnimation(mTranslate); // Y轴水平移动
+    }
 
-		if (mUsers.size() > 0) {
-			/* 将列表中的第一个user显示在编辑框 */
-			mIdEditText.setText(mUsers.get(0).getId());
-			mPwdEditText.setText(mUsers.get(0).getPwd());
-		}
+    private void initUserList() {
+        /* 获取已经保存好的用户密码 */
+        mUsers = Utils.getUserList(LoginActivity.this);
 
-		LinearLayout parent = (LinearLayout) getLayoutInflater().inflate(
-				R.layout.userifo_listview, null);
-		mUserIdListView = (ListView) parent.findViewById(android.R.id.list);
-		parent.removeView(mUserIdListView); // 必须脱离父子关系,不然会报错
-		mUserIdListView.setOnItemClickListener(this); // 设置点击事
-		mAdapter = new MyAapter(mUsers);
-		mUserIdListView.setAdapter(mAdapter);
+        if (mUsers.size() > 0) {
+            /* 将列表中的第一个user显示在编辑框 */
+            mIdEditText.setText(mUsers.get(0).getId());
+            mPwdEditText.setText(mUsers.get(0).getPwd());
+        }
+    }
 
-	}
-
-	/* ListView的适配器 */
+    /* ListView的适配器 */
 	class MyAapter extends ArrayAdapter<User> {
 
 		public MyAapter(ArrayList<User> users) {
@@ -160,8 +158,16 @@ public class LoginActivity extends Activity implements OnClickListener,
 		mLoginMoreUserView = (ImageView) findViewById(R.id.login_more_user);
 		mLoginLinearLayout = (LinearLayout) findViewById(R.id.login_linearLayout);
 		mUserIdLinearLayout = (LinearLayout) findViewById(R.id.userId_LinearLayout);
-		mTranslate = AnimationUtils.loadAnimation(this, R.anim.my_translate); // 初始化动画对象
+
 		initLoginingDlg();
+
+        LinearLayout parent = (LinearLayout) getLayoutInflater().inflate(
+                R.layout.userifo_listview, null);
+        mUserIdListView = (ListView) parent.findViewById(android.R.id.list);
+        parent.removeView(mUserIdListView); // 必须脱离父子关系,不然会报错
+        mUserIdListView.setOnItemClickListener(this); // 设置点击事
+        mAdapter = new MyAapter(mUsers);
+        mUserIdListView.setAdapter(mAdapter);
 	}
 
 	public void initPop() {
@@ -253,7 +259,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 					}
 					closeLoginingDlg();// 关闭对话框
 					Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-					finish();
+					gotoHome();
 				}
 				break;
 			case R.id.login_more_user: // 当点击下拉栏
@@ -296,6 +302,12 @@ public class LoginActivity extends Activity implements OnClickListener,
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void gotoHome(){
+		Intent intent = new Intent();
+		intent.setClass(this, HomeActivity.class);
+        startActivity(intent);
 	}
 
 }
