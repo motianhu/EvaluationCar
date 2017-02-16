@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.smona.app.evaluationcar.*;
 import com.smona.app.evaluationcar.data.User;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
 
 public class LoginActivity extends BaseActivity implements OnClickListener,
@@ -242,7 +243,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 			case R.id.login_btnLogin:
 				// 启动登录
 				showLoginingDlg(); // 显示"正在登录"对话框,因为此Demo没有登录到web服务器,所以效果可能看不出.可以结合情况使用
-				Log.i(TAG, mIdString + "  " + mPwdString);
+				CarLog.d(this, mIdString + "  " + mPwdString);
 				if (mIdString == null || mIdString.equals("")) { // 账号为空时
 					Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT)
 							.show();
@@ -277,7 +278,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 					initPop();
 				}
 				if (!mPop.isShowing() && mUsers.size() > 0) {
-					// Log.i(TAG, "切换为角向上图标");
+					CarLog.d(this,  "切换为角向上图标");
 					mMoreUser.setImageResource(R.drawable.login_more_down); // 切换图标
 					mPop.showAsDropDown(mUserIdLinearLayout, 2, 1); // 显示弹出窗口
 				}
@@ -302,7 +303,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 	/* PopupWindow对象dismiss时的事件 */
 	@Override
 	public void onDismiss() {
-		// Log.i(TAG, "切换为角向下图标");
+		CarLog.d(this,  "切换为角向下图标");
 		mMoreUser.setImageResource(R.drawable.login_more_up);
 	}
 

@@ -1,6 +1,6 @@
 package com.smona.app.evaluationcar.ui.home;
 
-import android.os.Bundle;s
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.smona.app.evaluationcar.ui.HomeActivity;
+import com.smona.app.evaluationcar.util.CarLog;
 
 /**
  * Created by Jay on 2015/8/31 0031.
@@ -42,7 +43,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        System.out.println("position Destory" + position);
+        CarLog.d(this, "position Destory" + position);
         super.destroyItem(container, position, object);
     }
 
