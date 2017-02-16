@@ -11,7 +11,7 @@ import com.smona.app.evaluationcar.R;
 /**
  * Created by Jay on 2015/8/28 0028.
  */
-public class MessageFragment extends Fragment {
+public class MessageFragment extends ContentFragment {
 
     public MessageFragment() {
     }

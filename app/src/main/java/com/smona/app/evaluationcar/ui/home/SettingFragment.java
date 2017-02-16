@@ -13,7 +13,7 @@ import com.smona.app.evaluationcar.R;
 /**
  * Created by Jay on 2015/8/28 0028.
  */
-public class SettingFragment extends Fragment {
+public class SettingFragment extends ContentFragment {
 
     public SettingFragment() {
     }

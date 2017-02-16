@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.R;
 /**
  * Created by Jay on 2015/8/28 0028.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends ContentFragment {
 
     public HomeFragment() {
     }

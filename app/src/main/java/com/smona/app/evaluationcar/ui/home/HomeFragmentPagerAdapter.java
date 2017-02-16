@@ -13,11 +13,11 @@ import com.smona.app.evaluationcar.ui.HomeActivity;
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int PAGER_COUNT = 5;
-    private HomeFragment mFragmentHome = null;
-    private EvaluationFragment mFragmentEvaluation = null;
-    private MessageFragment mFragmentMessage = null;
-    private ListFragment mFragmentList = null;
-    private SettingFragment mFragmentSetting = null;
+    private ContentFragment mFragmentHome = null;
+    private ContentFragment mFragmentEvaluation = null;
+    private ContentFragment mFragmentMessage = null;
+    private ContentFragment mFragmentList = null;
+    private ContentFragment mFragmentSetting = null;
 
 
     public HomeFragmentPagerAdapter(FragmentManager fm) {

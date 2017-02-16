@@ -1,8 +1,6 @@
 package com.smona.app.evaluationcar.ui.home;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.os.Bundle;s
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,7 @@ import com.smona.app.evaluationcar.R;
 /**
  * Created by Jay on 2015/8/28 0028.
  */
-public class EvaluationFragment extends Fragment {
+public class EvaluationFragment extends ContentFragment {
 
     public EvaluationFragment() {
     }
