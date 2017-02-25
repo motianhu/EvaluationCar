@@ -9,7 +9,7 @@ import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 
 /**
- * Created by Jay on 2015/8/31 0031.
+ * Created by Moth on 2015/8/31 0031.
  */
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
