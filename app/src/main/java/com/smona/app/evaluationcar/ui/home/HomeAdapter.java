@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.ui.home;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,7 +12,9 @@ import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 
 public class HomeAdapter extends AbstractAdapter {
 
+    public HomeAdapter(Context context) {
 
+    }
 
     @Override
     public int getCount() {

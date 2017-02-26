@@ -10,8 +10,14 @@ import com.smona.app.evaluationcar.ui.common.AbstractListView;
  */
 
 public class HomeListView extends AbstractListView {
+
     public HomeListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public void init() {
+        mAdapter = new HomeAdapter(getContext());
     }
 
 

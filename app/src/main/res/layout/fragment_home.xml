@@ -14,4 +14,11 @@
         android:textColor="@color/text_yellow"
         android:textSize="20sp" />
 
+    <com.smona.app.evaluationcar.ui.home.HomeListView
+        android:id="@+id/content_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" />
+
+
 </LinearLayout>
