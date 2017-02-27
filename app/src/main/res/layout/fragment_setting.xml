@@ -1,13 +1,14 @@
 <com.smona.app.evaluationcar.ui.setting.MineLayer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/setting_bg"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/mine_top_layer"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:background="@color/mine_bg">
+        android:background="@color/setting_image">
 
         <ImageView
             android:id="@+id/mine_image"
@@ -30,12 +31,217 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/setting_info"
+        android:background="@color/bg_white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="@dimen/setting_item_height"
+        android:layout_marginTop="@dimen/setting_item_gap"
+        android:paddingLeft="@dimen/setting_item_gap"
+        android:paddingRight="@dimen/setting_item_gap"
+        android:orientation="horizontal" >
+        <View
+            android:id="@+id/info_img"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:background="@drawable/tab_menu_setting"
+            android:layout_height="30dp"/>
 
-    </LinearLayout>
+        <TextView
+            android:layout_toRightOf="@+id/info_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_mine_info"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=">"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/setting_item_gap"
+            android:layout_marginRight="@dimen/setting_item_gap"
+            android:layout_width="match_parent"
+            android:background="@color/bg_gray"
+            android:layout_height="1dp"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/setting_update"
+        android:background="@color/bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:paddingLeft="@dimen/setting_item_gap"
+        android:layout_marginTop="@dimen/setting_item_gap"
+        android:paddingRight="@dimen/setting_item_gap"
+        android:orientation="horizontal" >
+        <View
+            android:id="@+id/update_img"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:background="@drawable/tab_menu_setting"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/update_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_mine_update"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=">"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/setting_phone"
+        android:background="@color/bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:paddingLeft="@dimen/setting_item_gap"
+        android:paddingRight="@dimen/setting_item_gap"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:background="@color/bg_gray"
+            android:layout_height="1dp"/>
+
+        <View
+            android:id="@+id/phone_img"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:background="@drawable/tab_menu_setting"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/phone_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_mine_phone"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=">"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:background="@color/bg_gray"
+            android:layout_height="1dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/setting_about"
+        android:background="@color/bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+
+        android:paddingLeft="@dimen/setting_item_gap"
+        android:paddingRight="@dimen/setting_item_gap"
+        android:orientation="horizontal" >
+
+
+        <View
+            android:id="@+id/about_img"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:background="@drawable/tab_menu_setting"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/about_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_mine_about"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=">"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/setting_logout"
+        android:background="@color/bg_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:layout_marginTop="@dimen/setting_item_gap"
+        android:paddingLeft="@dimen/setting_item_gap"
+        android:paddingRight="@dimen/setting_item_gap"
+        android:orientation="horizontal" >
+        <View
+            android:id="@+id/logout_img"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:background="@drawable/tab_menu_setting"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/logout_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/setting_mine_logout"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=">"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
 
 
 </com.smona.app.evaluationcar.ui.setting.MineLayer>

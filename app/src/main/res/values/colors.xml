@@ -17,6 +17,7 @@
     <color name="div_white">#E5E5E5</color>
 
 
-    <color name="mine_bg">#84c1ff</color>
+    <color name="setting_image">#84c1ff</color>
+    <color name="setting_bg">#8F8F8F</color>
 
 </resources>
