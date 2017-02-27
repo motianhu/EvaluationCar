@@ -8,4 +8,12 @@
     <dimen name="loginingdlg_lr_margin">10dp</dimen>
     <dimen name="loginingdlg_top_margin">20dp</dimen>
 
+
+
+
+    <dimen name="banner_height">140dp</dimen>
+    <dimen name="banner_indicator_margin_bottom">9dp</dimen>
+    <dimen name="banner_indicator_size">9dp</dimen>
+    <dimen name="banner_indicator_margin">6dp</dimen>
+
 </resources>

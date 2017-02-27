@@ -3,12 +3,19 @@ package com.smona.app.evaluationcar.ui;
 import android.os.Bundle;
 
 import com.smona.app.evaluationcar.*;
-import com.smona.app.evaluationcar.ui.home.HomeFragmentPagerAdapter;
+import com.smona.app.evaluationcar.data.BannerInfo;
+import com.smona.app.evaluationcar.data.HomeInfo;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.ui.common.event.HomeEvent;
+import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import android.support.v4.view.ViewPager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Moth on 2016/12/15.
@@ -42,10 +49,10 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        bindViews();
+        initViews();
     }
 
-    private void bindViews() {
+    private void initViews() {
         mFragmentAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.vp_home);
         mViewPager.setAdapter(mFragmentAdapter);

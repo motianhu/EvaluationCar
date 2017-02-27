@@ -7,4 +7,5 @@ import com.smona.app.evaluationcar.framework.IProxy;
  */
 
 public class HttpProxy implements IProxy {
+
 }

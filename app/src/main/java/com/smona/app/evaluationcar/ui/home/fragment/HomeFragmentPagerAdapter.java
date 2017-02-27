@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.home;
+package com.smona.app.evaluationcar.ui.home.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -7,16 +7,17 @@ import android.util.Log;
  */
 
 public class CarLog {
-    private static final String TAG = "Carlog";
-    public static void d(Object clazz, String msg) {
-        Log.d(TAG, clazz.getClass().getName() + "-" + msg);
+    private static final String TAG = "CarLog";
+
+    public static void d(Object clazz, Object msg) {
+        Log.d(TAG, clazz.getClass().getSimpleName() + ": " + msg);
     }
 
-    public static void i(Object clazz, String msg) {
-        Log.i(TAG, clazz.getClass().getName() + "-" + msg);
+    public static void i(Object clazz, Object msg) {
+        Log.i(TAG, clazz.getClass().getSimpleName() + ": " + msg);
     }
 
-    public static void e(Object clazz, String msg) {
-        Log.e(TAG, clazz.getClass().getName() + "-" + msg);
+    public static void e(Object clazz, Object msg) {
+        Log.e(TAG, clazz.getClass().getSimpleName() + ": " + msg);
     }
 }
