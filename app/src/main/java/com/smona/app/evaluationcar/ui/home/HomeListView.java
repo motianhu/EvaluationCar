@@ -7,7 +7,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.BannerInfo;
 import com.smona.app.evaluationcar.data.HomeInfo;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.ui.common.AbstractListView;
+import com.smona.app.evaluationcar.ui.common.BaseListView;
 import com.smona.app.evaluationcar.ui.common.event.HomeEvent;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtils;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by Moth on 2017/2/24.
  */
 
-public class HomeListView extends AbstractListView {
+public class HomeListView extends BaseListView {
     private BannerHeader mHeader;
 
     public HomeListView(Context context, AttributeSet attrs) {

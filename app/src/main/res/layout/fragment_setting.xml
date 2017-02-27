@@ -1,17 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.smona.app.evaluationcar.ui.setting.MineLayer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txt_content"
+    <RelativeLayout
+        android:id="@+id/mine_top_layer"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/mine_bg">
+
+        <ImageView
+            android:id="@+id/mine_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher"
+            android:background="@color/div_white"/>
+
+
+        <TextView
+            android:id="@+id/mine_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/mine_image"
+            android:gravity="center"
+            android:textColor="@color/text_topbar"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="呵呵"
-        android:textColor="@color/text_yellow"
-        android:textSize="20sp" />
+        android:orientation="vertical">
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</com.smona.app.evaluationcar.ui.setting.MineLayer>

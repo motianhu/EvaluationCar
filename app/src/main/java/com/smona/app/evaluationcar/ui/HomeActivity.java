@@ -7,6 +7,7 @@ import com.smona.app.evaluationcar.data.BannerInfo;
 import com.smona.app.evaluationcar.data.HomeInfo;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.event.HomeEvent;
+import com.smona.app.evaluationcar.ui.home.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -33,7 +34,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private RadioButton mRbMessage;
     private RadioButton mRbList;
     private RadioButton mRbSetting;
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
 
     private HomeFragmentPagerAdapter mFragmentAdapter;
 
@@ -54,7 +55,8 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     private void initViews() {
         mFragmentAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.vp_home);
+        mViewPager = (NoScrollViewPager) findViewById(R.id.vp_home);
+        mViewPager.setNoScroll(true);
         mViewPager.setAdapter(mFragmentAdapter);
         mViewPager.addOnPageChangeListener(this);
 
