@@ -27,4 +27,7 @@
     <string name="list_title_shenhe">审核中</string>
     <string name="list_title_weitongguo">未通过</string>
     <string name="list_title_tongguo">通过</string>
+    <string name="list_item_number">单号: </string>
+    <string name="list_item_time">创建时间: </string>
+    <string name="list_item_note">未通过原因: </string>
 </resources>

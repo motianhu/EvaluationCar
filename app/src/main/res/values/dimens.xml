@@ -9,6 +9,7 @@
     <dimen name="loginingdlg_top_margin">20dp</dimen>
 
 
+    <dimen name="round_corner_r">8dp</dimen>
 
 
     <dimen name="banner_height">140dp</dimen>

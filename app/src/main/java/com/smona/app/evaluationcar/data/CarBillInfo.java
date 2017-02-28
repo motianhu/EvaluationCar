@@ -7,20 +7,25 @@ import android.os.Parcel;
  */
 
 public class CarBillInfo extends ItemInfo {
-    private int id;
+    private String id;
     private String title;
     private String url;
     private String imgurl;
+    private String updateTime;
+    private String createTime;
+
+
+    private String note;
 
     public CarBillInfo(Parcel in) {
         super(in);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,6 +51,31 @@ public class CarBillInfo extends ItemInfo {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
 

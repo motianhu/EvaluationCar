@@ -57,10 +57,12 @@ public class StatusListView extends BaseListView {
         ArrayList<CarBillInfo> carBillList = new ArrayList<CarBillInfo>();
         for (int i = 0; i < 45; i++) {
             CarBillInfo carbill = new CarBillInfo(null);
-            carbill.setId(i);
+            carbill.setId("NS201612021100" + i);
+            carbill.setCreateTime("2016-12-01 12:11:00");
+            carbill.setUpdateTime("2016-12-21 15:11:00");
             carbill.setTitle("" + i);
             carbill.setUrl("http://www.baidu.com");
-            carbill.setImgurl("http://assetsdl.gioneemobile.net/attachs/theme/subjectImage/201701/587c2e26cf05d.jpg");
+            carbill.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");
             carBillList.add(carbill);
         }
         return carBillList;
