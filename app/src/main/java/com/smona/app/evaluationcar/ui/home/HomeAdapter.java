@@ -26,4 +26,9 @@ public class HomeAdapter extends AbstractAdapter {
     public void update(List datas) {
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

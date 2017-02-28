@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.common;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Moth on 2017/2/24.
  */
 
-public abstract class AbstractAdapter<T> extends BaseAdapter {
+public abstract class AbstractAdapter<T> extends BaseAdapter implements View.OnClickListener {
 
     protected Context mContext;
     protected List<T> mDatas;

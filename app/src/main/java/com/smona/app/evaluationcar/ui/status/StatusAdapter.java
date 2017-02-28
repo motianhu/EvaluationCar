@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.CarBillInfo;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
 import java.util.List;
@@ -42,6 +43,9 @@ public class StatusAdapter extends AbstractAdapter {
                     R.layout.status_list_item);
         }
 
+        convertView.setOnClickListener(this);
+        convertView.setTag(carbill);
+
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
         ImageLoaderProxy.loadImage(carbill.getImgurl(), carImage);
 
@@ -56,5 +60,13 @@ public class StatusAdapter extends AbstractAdapter {
 
 
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Object tag = v.getTag();
+        if(tag instanceof CarBillInfo) {
+            ActivityUtils.jumpEvaluation(mContext, (CarBillInfo)tag);
+        }
     }
 }
