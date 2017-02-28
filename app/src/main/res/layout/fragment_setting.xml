@@ -15,16 +15,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_launcher"
-            android:background="@color/div_white"/>
+            android:background="@color/div_white"
+            android:src="@drawable/ic_launcher" />
 
 
         <TextView
             android:id="@+id/mine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/mine_image"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:textColor="@color/text_topbar"
             android:textSize="18sp" />
@@ -33,213 +33,115 @@
 
     <RelativeLayout
         android:id="@+id/setting_info"
-        android:background="@color/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-        android:layout_marginTop="@dimen/setting_item_gap"
-        android:paddingLeft="@dimen/setting_item_gap"
-        android:paddingRight="@dimen/setting_item_gap"
-        android:orientation="horizontal" >
+        style="@style/setting_item_style"
+        android:layout_marginTop="@dimen/setting_item_gap">
+
         <View
             android:id="@+id/info_img"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:background="@drawable/tab_menu_setting"
-            android:layout_height="30dp"/>
+            style="@style/setting_item_logo"
+            android:background="@drawable/tab_menu_setting" />
 
         <TextView
+            style="@style/setting_item_text"
             android:layout_toRightOf="@+id/info_img"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/setting_mine_info"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
 
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+            android:text="@string/setting_mine_info" />
 
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/setting_item_gap"
-            android:layout_marginRight="@dimen/setting_item_gap"
-            android:layout_width="match_parent"
-            android:background="@color/bg_gray"
-            android:layout_height="1dp"/>
+        <ImageView style="@style/setting_item_arrow_style" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/setting_update"
-        android:background="@color/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-        android:paddingLeft="@dimen/setting_item_gap"
-        android:layout_marginTop="@dimen/setting_item_gap"
-        android:paddingRight="@dimen/setting_item_gap"
-        android:orientation="horizontal" >
+        style="@style/setting_item_style"
+        android:layout_marginTop="@dimen/setting_item_gap">
+
         <View
             android:id="@+id/update_img"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:background="@drawable/tab_menu_setting"
-            android:layout_height="30dp"/>
+            style="@style/setting_item_logo"
+            android:background="@drawable/tab_menu_setting" />
 
         <TextView
+
+            style="@style/setting_item_text"
+
             android:layout_toRightOf="@+id/update_img"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/setting_mine_update"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+            android:text="@string/setting_mine_update" />
 
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+        <ImageView style="@style/setting_item_arrow_style" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/setting_bg" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/setting_phone"
-        android:background="@color/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-        android:paddingLeft="@dimen/setting_item_gap"
-        android:paddingRight="@dimen/setting_item_gap"
-        android:orientation="horizontal" >
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:background="@color/bg_gray"
-            android:layout_height="1dp"/>
+        style="@style/setting_item_style">
 
         <View
             android:id="@+id/phone_img"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:background="@drawable/tab_menu_setting"
-            android:layout_height="30dp"/>
+            style="@style/setting_item_logo"
+            android:background="@drawable/tab_menu_setting" />
 
         <TextView
+            style="@style/setting_item_text"
             android:layout_toRightOf="@+id/phone_img"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/setting_mine_phone"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
 
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+            android:text="@string/setting_mine_phone" />
 
+        <ImageView style="@style/setting_item_arrow_style" />
 
         <View
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:background="@color/bg_gray"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/setting_bg" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/setting_about"
-        android:background="@color/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-
-        android:paddingLeft="@dimen/setting_item_gap"
-        android:paddingRight="@dimen/setting_item_gap"
-        android:orientation="horizontal" >
+        style="@style/setting_item_style">
 
 
         <View
             android:id="@+id/about_img"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:background="@drawable/tab_menu_setting"
-            android:layout_height="30dp"/>
+            style="@style/setting_item_logo"
+            android:background="@drawable/tab_menu_setting" />
 
         <TextView
+            style="@style/setting_item_text"
             android:layout_toRightOf="@+id/about_img"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/setting_mine_about"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+            android:text="@string/setting_mine_about" />
 
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+        <ImageView style="@style/setting_item_arrow_style" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/setting_logout"
-        android:background="@color/bg_white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-        android:layout_marginTop="@dimen/setting_item_gap"
-        android:paddingLeft="@dimen/setting_item_gap"
-        android:paddingRight="@dimen/setting_item_gap"
-        android:orientation="horizontal" >
+        style="@style/setting_item_style"
+        android:layout_marginTop="@dimen/setting_item_gap">
+
         <View
             android:id="@+id/logout_img"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="30dp"
-            android:background="@drawable/tab_menu_setting"
-            android:layout_height="30dp"/>
+            style="@style/setting_item_logo"
+            android:background="@drawable/tab_menu_setting" />
 
         <TextView
+            style="@style/setting_item_text"
             android:layout_toRightOf="@+id/logout_img"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/setting_mine_logout"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+            android:text="@string/setting_mine_logout" />
 
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text=">"
-            android:gravity="center"
-            android:textColor="@color/text_topbar"
-            android:textSize="18sp"/>
+        <ImageView style="@style/setting_item_arrow_style" />
 
     </RelativeLayout>
 

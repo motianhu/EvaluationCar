@@ -18,6 +18,7 @@
 
 
     <color name="setting_image">#84c1ff</color>
-    <color name="setting_bg">#8F8F8F</color>
+    <color name="setting_bg">#F6F6F6</color>
+    <color name="setting_item_bg">#FFFFFF</color>
 
 </resources>
