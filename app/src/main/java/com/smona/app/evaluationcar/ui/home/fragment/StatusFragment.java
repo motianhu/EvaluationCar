@@ -36,10 +36,10 @@ public class StatusFragment extends ContentFragment {
         viewList.add(view4);
 
         List<String> titleList = new ArrayList<String>();
-        titleList.add(getContext().getResources().getString(R.string.list_title_tijiao));
-        titleList.add(getContext().getResources().getString(R.string.list_title_shenhe));
-        titleList.add(getContext().getResources().getString(R.string.list_title_weitongguo));
-        titleList.add(getContext().getResources().getString(R.string.list_title_tongguo));
+        titleList.add(getContext().getResources().getString(R.string.uncommit));
+        titleList.add(getContext().getResources().getString(R.string.auditing));
+        titleList.add(getContext().getResources().getString(R.string.notpass));
+        titleList.add(getContext().getResources().getString(R.string.pass));
 
         StatusPagerAdapter pagerAdapter = new StatusPagerAdapter(titleList, viewList);
 

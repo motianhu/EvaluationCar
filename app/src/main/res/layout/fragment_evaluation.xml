@@ -1,17 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.smona.app.evaluationcar.ui.evaluation.EveluationLayer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txt_content"
+    <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="呵呵"
-        android:textColor="@color/text_yellow"
-        android:textSize="20sp" />
+        android:layout_height="120dp"
+        android:background="@color/setting_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="汇通端远程传输系统"
+            android:textColor="@color/bg_white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="请输入评估单号进行搜索" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="广播消息" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/top"
+        android:orientation="horizontal"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/setting_bg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/uncommit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/setting_bg"
+                android:text="@string/uncommit" />
+
+            <Button
+                android:id="@+id/auditing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/setting_bg"
+                android:text="@string/auditing" />
+
+            <Button
+                android:id="@+id/notpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/setting_bg"
+                android:text="@string/notpass" />
+
+            <Button
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/setting_bg"
+                android:text="@string/pass" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/queryVin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="@string/evalution_query_vin" />
+
+        <Button
+            android:id="@+id/preEvalution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="@string/evalution_pre" />
+
+        <Button
+            android:id="@+id/evalution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="@string/evalution_start" />
+
+    </LinearLayout>
+
+</com.smona.app.evaluationcar.ui.evaluation.EveluationLayer>

@@ -8,6 +8,14 @@
     <string name="register">注册</string>
     <string name="loading">正在登录</string>
 
+    <string name="uncommit">未提交</string>
+    <string name="auditing">审核中</string>
+    <string name="notpass">未通过</string>
+    <string name="pass">通过</string>
+
+    <string name="notice_content">"<p>Think Defferent</p><p>Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore them. Because they change things. They push the human race forward. And while some may see them as the crazy ones, we see genius. Because the people who are crazy enough to think they can change the world, are the ones who do.</p><p>- Apple Inc.</p>"</string>
+
+    <!--首页-->
     <string name="home_fragment_home">首页</string>
     <string name="home_fragment_evaluation">评估</string>
     <string name="home_fragment_message">消息</string>
@@ -23,11 +31,12 @@
     <string name="setting_mine_logout">账号退出</string>
 
     <!--列表-->
-    <string name="list_title_tijiao">未提交</string>
-    <string name="list_title_shenhe">审核中</string>
-    <string name="list_title_weitongguo">未通过</string>
-    <string name="list_title_tongguo">通过</string>
     <string name="list_item_number">单号: </string>
     <string name="list_item_time">创建时间: </string>
     <string name="list_item_note">未通过原因: </string>
+
+    <!--评估 -->
+    <string name="evalution_query_vin">查询车况号</string>
+    <string name="evalution_pre">预评估</string>
+    <string name="evalution_start">评估</string>
 </resources>
