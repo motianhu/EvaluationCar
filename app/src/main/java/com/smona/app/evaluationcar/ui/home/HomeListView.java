@@ -32,11 +32,12 @@ public class HomeListView extends BaseListView {
     public void init() {
         mHeader = (BannerHeader) ViewUtils.inflater(getContext(), R.layout.banner_header);
         this.addHeaderView(mHeader);
+
         mAdapter = new HomeAdapter(getContext());
         this.setAdapter(mAdapter);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(HomeEvent event) {
         HomeInfo info = (HomeInfo) event.getContent();
         if (info != null) {

@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.query;
+package com.smona.app.evaluationcar.ui.status;
 
 import com.smona.app.evaluationcar.ui.BaseActivity;
 

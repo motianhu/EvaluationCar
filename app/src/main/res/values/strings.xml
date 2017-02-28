@@ -15,9 +15,16 @@
     <string name="home_fragment_setting">我</string>
 
 
+    <!--我的-->
     <string name="setting_mine_info">个人资料</string>
     <string name="setting_mine_update">检查新版本</string>
     <string name="setting_mine_phone">客服电话</string>
     <string name="setting_mine_about">关于</string>
     <string name="setting_mine_logout">账号退出</string>
+
+    <!--列表-->
+    <string name="list_title_tijiao">未提交</string>
+    <string name="list_title_shenhe">审核中</string>
+    <string name="list_title_weitongguo">未通过</string>
+    <string name="list_title_tongguo">通过</string>
 </resources>

@@ -14,8 +14,6 @@ public abstract class BaseListView extends ListView {
 
     protected AbstractAdapter mAdapter;
 
-
-
     public BaseListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

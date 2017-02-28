@@ -15,7 +15,13 @@ public abstract class ContentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
+        init(view);
         return view;
     }
+
     protected abstract int getLayoutId();
+
+    protected void init(View root) {
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.home;
+package com.smona.app.evaluationcar.ui.common;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

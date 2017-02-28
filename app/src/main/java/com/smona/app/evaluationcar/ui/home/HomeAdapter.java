@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 
+import java.util.List;
+
 /**
  * Created by Moth on 2017/2/24.
  */
@@ -13,26 +15,15 @@ import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 public class HomeAdapter extends AbstractAdapter {
 
     public HomeAdapter(Context context) {
-
+        super(context);
     }
 
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return null;
+    }
+
+    @Override
+    public void update(List datas) {
+
     }
 }

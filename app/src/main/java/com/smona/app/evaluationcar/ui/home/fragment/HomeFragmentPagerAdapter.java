@@ -26,7 +26,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
         mFragmentHome = new HomeFragment();
         mFragmentEvaluation = new EvaluationFragment();
         mFragmentMessage = new MessageFragment();
-        mFragmentList = new ListFragment();
+        mFragmentList = new StatusFragment();
         mFragmentSetting = new SettingFragment();
     }
 
