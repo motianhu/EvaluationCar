@@ -1,9 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +19,13 @@ public class PreEvaluationActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preevaluation);
-        GroupListView listView = (GroupListView) findViewById(R.id.pinnedListView);
+
+        initListView(R.id.brandListView);
+        initListView(R.id.setListView);
+    }
+
+    private void initListView(int id) {
+        GroupListView listView = (GroupListView) findViewById(id);
         LinearLayout header1 = (LinearLayout) ViewUtils.inflater(this, R.layout.preevaluation_list_item);
         ((TextView) header1.findViewById(R.id.textItem)).setText("HEADER 1");
         LinearLayout header2 = (LinearLayout) ViewUtils.inflater(this, R.layout.preevaluation_list_item);

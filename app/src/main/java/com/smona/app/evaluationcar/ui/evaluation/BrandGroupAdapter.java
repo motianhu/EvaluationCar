@@ -32,7 +32,7 @@ public class BrandGroupAdapter extends GroupBaseAdapter {
 
     @Override
     public int getCountForSection(int section) {
-        return 15;
+        return section*4;
     }
 
     @Override
