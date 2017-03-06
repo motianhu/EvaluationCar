@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.BaseRelativeLayout;
 import com.smona.app.evaluationcar.ui.common.event.SettingEvent;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +36,11 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
     @Override
     public void init() {
         findViewById(R.id.search).setOnClickListener(this);
-        mNotice = (TextView)findViewById(R.id.notice);
+        findViewById(R.id.queryVin).setOnClickListener(this);
+        findViewById(R.id.preEvalution).setOnClickListener(this);
+        findViewById(R.id.evalution).setOnClickListener(this);
+
+        mNotice = (TextView) findViewById(R.id.notice);
         mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
         mUncommit = (Button) findViewById(R.id.uncommit);
         mUncommit.setOnClickListener(this);
@@ -45,6 +50,8 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         mNotPass.setOnClickListener(this);
         mPass = (Button) findViewById(R.id.pass);
         mPass.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -60,6 +67,9 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
             case R.id.notpass:
                 break;
             case R.id.pass:
+                break;
+            case R.id.preEvalution:
+                ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
         }
     }

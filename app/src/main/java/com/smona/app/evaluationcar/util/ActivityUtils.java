@@ -40,4 +40,10 @@ public class ActivityUtils {
         intent.setData(Uri.parse("tel:" + number));
         context.startActivity(intent);
     }
+
+    public static void jumpOnlyActivity(Context context, Class clazz) {
+        Intent intent = new Intent();
+        intent.setClass(context, clazz);
+        context.startActivity(intent);
+    }
 }

@@ -2,6 +2,7 @@ package com.smona.app.evaluationcar.ui;
 
 import android.os.Bundle;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.smona.app.evaluationcar.*;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;

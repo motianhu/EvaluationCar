@@ -17,12 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories{
+       flatDir {
+          dirs 'libs'
+       }
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile(name:'android-observablescrollview-1.6.0', ext:'aar')
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
     compile 'com.loopj.android:android-async-http:1.4.9'  //图片上传框架以及数据请求
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'  //图片加载框架:本地+在线
     compile 'org.greenrobot:eventbus:3.0.0'  //订阅/发布框架
