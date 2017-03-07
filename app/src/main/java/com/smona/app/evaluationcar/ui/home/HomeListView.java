@@ -7,8 +7,8 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.BannerInfo;
 import com.smona.app.evaluationcar.data.HomeInfo;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.ui.common.BaseListView;
-import com.smona.app.evaluationcar.ui.common.event.HomeEvent;
+import com.smona.app.evaluationcar.ui.common.base.BaseListView;
+import com.smona.app.evaluationcar.data.event.HomeEvent;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtils;
 

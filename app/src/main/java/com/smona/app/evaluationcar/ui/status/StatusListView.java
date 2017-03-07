@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.data.CarBillInfo;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.ui.common.BaseListView;
-import com.smona.app.evaluationcar.ui.common.event.StatusEvent;
+import com.smona.app.evaluationcar.ui.common.base.BaseListView;
+import com.smona.app.evaluationcar.data.event.StatusEvent;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;

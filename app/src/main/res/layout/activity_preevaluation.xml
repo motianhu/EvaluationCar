@@ -3,14 +3,14 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:weightSum="2">
-    <com.smona.app.evaluationcar.ui.common.GroupListView
+    <com.smona.app.evaluationcar.ui.common.group.GroupListView
         android:id="@+id/brandListView"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white" />
 
-    <com.smona.app.evaluationcar.ui.common.GroupListView
+    <com.smona.app.evaluationcar.ui.common.group.GroupListView
         android:id="@+id/setListView"
         android:layout_weight="1"
         android:layout_width="match_parent"

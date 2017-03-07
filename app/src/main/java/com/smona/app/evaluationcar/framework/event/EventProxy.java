@@ -1,7 +1,7 @@
 package com.smona.app.evaluationcar.framework.event;
 
 import com.smona.app.evaluationcar.framework.IProxy;
-import com.smona.app.evaluationcar.ui.common.event.BaseEvent;
+import com.smona.app.evaluationcar.data.event.BaseEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

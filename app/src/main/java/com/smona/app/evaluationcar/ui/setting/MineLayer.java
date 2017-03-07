@@ -1,23 +1,14 @@
 package com.smona.app.evaluationcar.ui.setting;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
-import com.smona.app.evaluationcar.ui.BaseActivity;
-import com.smona.app.evaluationcar.ui.common.BaseLinearLayout;
-import com.smona.app.evaluationcar.ui.common.event.HomeEvent;
-import com.smona.app.evaluationcar.ui.common.event.SettingEvent;
+import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
+import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 

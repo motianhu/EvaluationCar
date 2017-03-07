@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:layout_marginRight="5.0dip"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_instruction"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_car_models"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:background="@color/transparent"
+            android:button="@drawable/icon_car_default" />
+
+        <RadioButton
+            android:id="@+id/rb_certificates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:background="@color/transparent"
+            android:button="@drawable/icon_certificate_default" />
+
+        <RadioButton
+            android:id="@+id/rb_appended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:background="@color/transparent"
+            android:button="@drawable/icon_add_default" />
+
+        <RadioButton
+            android:id="@+id/rb_editor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:background="@color/transparent"
+            android:button="@drawable/icon_information_default" />
+    </RadioGroup>
+</LinearLayout>

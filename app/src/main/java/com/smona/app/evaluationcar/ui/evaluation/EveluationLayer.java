@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.BaseRelativeLayout;
-import com.smona.app.evaluationcar.ui.common.event.SettingEvent;
+import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
+import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -70,6 +70,9 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 break;
             case R.id.preEvalution:
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
+                break;
+            case R.id.evalution:
+                ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
                 break;
         }
     }

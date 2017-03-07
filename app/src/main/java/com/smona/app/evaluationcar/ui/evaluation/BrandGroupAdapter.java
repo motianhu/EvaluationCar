@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.GroupBaseAdapter;
+import com.smona.app.evaluationcar.ui.common.group.GroupBaseAdapter;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
 /**

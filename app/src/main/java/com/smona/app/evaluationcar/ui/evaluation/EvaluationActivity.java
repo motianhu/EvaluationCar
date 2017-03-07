@@ -1,5 +1,9 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.BaseActivity;
 
 /**
@@ -7,4 +11,15 @@ import com.smona.app.evaluationcar.ui.BaseActivity;
  */
 
 public class EvaluationActivity extends BaseActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_evaluation);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -1,8 +1,8 @@
-package com.smona.app.evaluationcar.ui.common;
+package com.smona.app.evaluationcar.ui.common.base;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 
@@ -10,8 +10,8 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
  * Created by motianhu on 2/27/17.
  */
 
-public abstract class BaseLinearLayout extends LinearLayout {
-    public BaseLinearLayout(Context context, AttributeSet attrs) {
+public abstract class BaseRelativeLayout extends RelativeLayout {
+    public BaseRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

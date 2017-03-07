@@ -79,4 +79,11 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:src">@drawable/right_arrow</item>
     </style>
+
+
+    <style name="public_grey_line">
+        <item name="android:background">@color/divider</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+    </style>
 </resources>

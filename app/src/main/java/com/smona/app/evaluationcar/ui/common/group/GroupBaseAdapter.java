@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.common;
+package com.smona.app.evaluationcar.ui.common.group;
 
 import android.util.SparseArray;
 import android.view.View;

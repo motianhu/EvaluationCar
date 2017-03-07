@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.common.event;
+package com.smona.app.evaluationcar.data.event;
 
 /**
  * Created by motianhu on 2/27/17.

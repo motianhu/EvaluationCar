@@ -3,7 +3,9 @@
 
     <color name="transparent">#00000000</color>
     <!-- 透明的 -->
-    <color name="white">#ffffff</color>
+    <color name="white">#ffffffff</color>
+    <color name="white_press">#fff9f7f7</color>
+    <color name="white_trans">#65ffffff</color>
 
     <color name="bg_black">#000000</color>
     <color name="bg_white">#FFFFFF</color>
@@ -20,5 +22,14 @@
     <color name="setting_image">#84c1ff</color>
     <color name="setting_bg">#F6F6F6</color>
     <color name="setting_item_bg">#FFFFFF</color>
+
+
+    <color name="public_bg">#ffecf0f5</color>
+    <color name="black_text">#ff2c2c2c</color>
+    <color name="divider">#ffe3e3e3</color>
+
+    <color name="red">#ffed5565</color>
+    <color name="red_press">#ffea4454</color>
+    <color name="red_theme">#ffed5565</color>
 
 </resources>
