@@ -39,4 +39,5 @@
     <string name="evalution_query_vin">查询车况号</string>
     <string name="evalution_pre">预评估</string>
     <string name="evalution_start">评估</string>
+    <string name="evalution_gonggao">公告</string>
 </resources>

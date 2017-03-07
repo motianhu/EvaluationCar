@@ -40,7 +40,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         findViewById(R.id.preEvalution).setOnClickListener(this);
         findViewById(R.id.evalution).setOnClickListener(this);
 
-        mNotice = (TextView) findViewById(R.id.notice);
+        mNotice = (TextView) findViewById(R.id.evalution_gonggao);
         mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
         mUncommit = (Button) findViewById(R.id.uncommit);
         mUncommit.setOnClickListener(this);

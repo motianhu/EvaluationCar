@@ -1,7 +1,6 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.smona.app.evaluationcar.util.ViewUtils;
 //http://blog.csdn.net/u010335298/article/details/51178179
 public class PreEvaluationActivity extends BaseActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preevaluation);
 
