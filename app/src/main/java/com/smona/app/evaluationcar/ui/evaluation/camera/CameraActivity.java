@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,16 +50,16 @@ public class CameraActivity extends Activity {
     private static final String TAG = "CameraActivity";
     private static final int SETIMAGE = 1;
 
-    TextureView mTextureView;
-    ImageView mThumbnail;
-    Button mButton;
-    Handler mHandler;
-    Handler mUIHandler;
-    ImageReader mImageReader;
-    CaptureRequest.Builder mPreViewBuidler;
-    CameraCaptureSession mCameraSession;
-    CameraCharacteristics mCameraCharacteristics;
-    Ringtone ringtone;
+    private TextureView mTextureView;
+    private ImageView mThumbnail;
+    private Button mButton;
+    private  Handler mHandler;
+    private Handler mUIHandler;
+    private ImageReader mImageReader;
+    private CaptureRequest.Builder mPreViewBuidler;
+    private CameraCaptureSession mCameraSession;
+    private CameraCharacteristics mCameraCharacteristics;
+    private  Ringtone ringtone;
     //相机会话的监听器，通过他得到mCameraSession对象，这个对象可以用来发送预览和拍照请求
     private CameraCaptureSession.StateCallback mSessionStateCallBack = new CameraCaptureSession.StateCallback() {
         @Override
@@ -80,7 +81,7 @@ public class CameraActivity extends Activity {
     private CameraDevice.StateCallback cameraOpenCallBack = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice cameraDevice) {
-            Log.d(TAG, "相机已经打开");
+            CarLog.d(TAG, "相机已经打开");
             try {
                 mPreViewBuidler = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
                 SurfaceTexture texture = mTextureView.getSurfaceTexture();
@@ -95,12 +96,12 @@ public class CameraActivity extends Activity {
 
         @Override
         public void onDisconnected(CameraDevice cameraDevice) {
-            Log.d(TAG, "相机连接断开");
+            CarLog.d(TAG, "相机连接断开");
         }
 
         @Override
         public void onError(CameraDevice cameraDevice, int i) {
-            Log.d(TAG, "相机打开失败");
+            CarLog.d(TAG, "相机打开失败");
         }
     };
     private ImageReader.OnImageAvailableListener onImageAvaiableListener = new ImageReader.OnImageAvailableListener() {
@@ -118,6 +119,7 @@ public class CameraActivity extends Activity {
             thread.start();
             mHandler = new Handler(thread.getLooper());
             CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            //使用前置还是后置摄像头
             String cameraid = CameraCharacteristics.LENS_FACING_FRONT + "";
             try {
                 mCameraCharacteristics = manager.getCameraCharacteristics(cameraid);
@@ -128,6 +130,8 @@ public class CameraActivity extends Activity {
                 mImageReader.setOnImageAvailableListener(onImageAvaiableListener, mHandler);
                 manager.openCamera(cameraid, cameraOpenCallBack, mHandler);
             } catch (CameraAccessException e) {
+                e.printStackTrace();
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
         }
@@ -152,7 +156,7 @@ public class CameraActivity extends Activity {
         public void onClick(View view) {
             try {
                 shootSound();
-                Log.d(TAG, "正在拍照");
+                CarLog.d(TAG, "正在拍照");
                 CaptureRequest.Builder builder = mCameraSession.getDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
                 builder.addTarget(mImageReader.getSurface());
                 builder.set(CaptureRequest.CONTROL_AF_MODE,
@@ -196,7 +200,7 @@ public class CameraActivity extends Activity {
 
     private void findview() {
         mTextureView = (TextureView) findViewById(R.id.tv_textview);
-        mButton = (Button) findViewById(R.id.btn_takepic);
+        mButton = (Button) findViewById(R.id.takePhoto);
         mThumbnail = (ImageView) findViewById(R.id.iv_Thumbnail);
         mThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +244,7 @@ public class CameraActivity extends Activity {
                 Bitmap bm = BitmapFactory.decodeByteArray(buff, 0, buff.length, ontain);
                 Message.obtain(mUIHandler, SETIMAGE, bm).sendToTarget();
                 outputStream.write(buff);
-                Log.d(TAG, "保存图片完成");
+                CarLog.d(TAG, "保存图片完成");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
