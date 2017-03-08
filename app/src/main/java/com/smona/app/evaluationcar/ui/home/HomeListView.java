@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.BannerInfo;
 import com.smona.app.evaluationcar.data.HomeInfo;
+import com.smona.app.evaluationcar.data.NewsInfo;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.data.event.HomeEvent;
@@ -42,6 +43,7 @@ public class HomeListView extends BaseListView {
         HomeInfo info = (HomeInfo) event.getContent();
         if (info != null) {
             mHeader.update(info.getBanner());
+            mAdapter.update(info.getNews());
         } else {
 
         }
@@ -76,6 +78,17 @@ public class HomeListView extends BaseListView {
             bannerList.add(banner);
         }
         info.setBanner(bannerList);
+        ArrayList<NewsInfo> news = new ArrayList<NewsInfo>();
+        for (int i = 0; i < 5; i++) {
+            NewsInfo item = new NewsInfo(null);
+            item.setId(i);
+            item.setTitle("" + i);
+            item.setSummary("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+            item.setUrl("http://www.baidu.com");
+            item.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");
+            news.add(item);
+        }
+        info.setNews(news);
         return info;
     }
 

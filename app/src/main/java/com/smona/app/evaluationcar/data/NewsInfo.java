@@ -9,7 +9,7 @@ import android.os.Parcel;
 public class NewsInfo extends ItemInfo {
     private int id;
     private String title;
-    private String content;
+    private String summary;
     private String url;
     private String imgurl;
 
@@ -34,12 +34,12 @@ public class NewsInfo extends ItemInfo {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getUrl() {

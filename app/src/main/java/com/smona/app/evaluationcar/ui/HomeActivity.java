@@ -22,7 +22,6 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         ViewPager.OnPageChangeListener {
 
     //UI Objects
-    private TextView mTitle;
     private RadioGroup mRbGroup;
 
     private RadioButton mRbHome;
@@ -56,7 +55,6 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         mViewPager.setAdapter(mFragmentAdapter);
         mViewPager.addOnPageChangeListener(this);
 
-        mTitle = (TextView) findViewById(R.id.tv_title);
         mRbGroup = (RadioGroup) findViewById(R.id.rg_home);
         mRbGroup.setOnCheckedChangeListener(this);
 
@@ -94,7 +92,6 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     private void changeFragment(int pageHome, int titleId) {
         mViewPager.setCurrentItem(pageHome, false);
-        mTitle.setText(titleId);
     }
 
 

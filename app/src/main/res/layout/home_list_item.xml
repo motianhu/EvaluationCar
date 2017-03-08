@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="106dp"
+    android:orientation="horizontal"
+    android:padding="10dp" >
+
+    <com.smona.app.evaluationcar.ui.common.RoundConerImageView
+        android:id="@+id/image"
+        android:layout_width="101dp"
+        android:layout_height="84dp"
+        android:layout_gravity="center"
+        android:src="@drawable/delete_user" />
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+</LinearLayout>

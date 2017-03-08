@@ -5,6 +5,32 @@
     android:background="@color/bg_white"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
+        android:background="@color/setting_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="汇通端远程传输系统"
+            android:textColor="@color/bg_white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="总单量: 152344" />
+    </LinearLayout>
+
     <com.smona.app.evaluationcar.ui.home.HomeListView
         android:id="@+id/content_list"
         android:layout_width="match_parent"
