@@ -1,281 +1,282 @@
 package com.smona.app.evaluationcar.ui.evaluation.camera;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.AudioAttributes;
-import android.media.Image;
-import android.media.ImageReader;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
-import android.util.Log;
-import android.util.Size;
-import android.view.Surface;
-import android.view.TextureView;
+import android.util.DisplayMetrics;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.util.CarLog;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Collections;
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+    private Camera mCamera;
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mHolder;
+    private int mCameraId = 0;
 
-    private static final String TAG = "CameraActivity";
-    private static final int SETIMAGE = 1;
-
-    private TextureView mTextureView;
-    private ImageView mThumbnail;
-    private Button mButton;
-    private  Handler mHandler;
-    private Handler mUIHandler;
-    private ImageReader mImageReader;
-    private CaptureRequest.Builder mPreViewBuidler;
-    private CameraCaptureSession mCameraSession;
-    private CameraCharacteristics mCameraCharacteristics;
-    private  Ringtone ringtone;
-    //相机会话的监听器，通过他得到mCameraSession对象，这个对象可以用来发送预览和拍照请求
-    private CameraCaptureSession.StateCallback mSessionStateCallBack = new CameraCaptureSession.StateCallback() {
-        @Override
-        public void onConfigured(CameraCaptureSession cameraCaptureSession) {
-            try {
-                mCameraSession = cameraCaptureSession;
-                cameraCaptureSession.setRepeatingRequest(mPreViewBuidler.build(), null, mHandler);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
-
-        }
-    };
-    //打开相机时候的监听器，通过他可以得到相机实例，这个实例可以创建请求建造者
-    private CameraDevice.StateCallback cameraOpenCallBack = new CameraDevice.StateCallback() {
-        @Override
-        public void onOpened(CameraDevice cameraDevice) {
-            CarLog.d(TAG, "相机已经打开");
-            try {
-                mPreViewBuidler = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                SurfaceTexture texture = mTextureView.getSurfaceTexture();
-                texture.setDefaultBufferSize(mPreViewSize.getWidth(), mPreViewSize.getHeight());
-                Surface surface = new Surface(texture);
-                mPreViewBuidler.addTarget(surface);
-                cameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()), mSessionStateCallBack, mHandler);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onDisconnected(CameraDevice cameraDevice) {
-            CarLog.d(TAG, "相机连接断开");
-        }
-
-        @Override
-        public void onError(CameraDevice cameraDevice, int i) {
-            CarLog.d(TAG, "相机打开失败");
-        }
-    };
-    private ImageReader.OnImageAvailableListener onImageAvaiableListener = new ImageReader.OnImageAvailableListener() {
-        @Override
-        public void onImageAvailable(ImageReader imageReader) {
-            mHandler.post(new ImageSaver(imageReader.acquireNextImage()));
-        }
-    };
-    private Size mPreViewSize;
-    //预览图显示控件的监听器，可以监听这个surface的状态
-    private TextureView.SurfaceTextureListener mSurfacetextlistener = new TextureView.SurfaceTextureListener() {
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-            HandlerThread thread = new HandlerThread("Ceamera3");
-            thread.start();
-            mHandler = new Handler(thread.getLooper());
-            CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-            //使用前置还是后置摄像头
-            String cameraid = CameraCharacteristics.LENS_FACING_FRONT + "";
-            try {
-                mCameraCharacteristics = manager.getCameraCharacteristics(cameraid);
-                StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizeByArea());
-                mPreViewSize = map.getOutputSizes(SurfaceTexture.class)[0];
-                mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 5);
-                mImageReader.setOnImageAvailableListener(onImageAvaiableListener, mHandler);
-                manager.openCamera(cameraid, cameraOpenCallBack, mHandler);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-            return false;
-        }
-
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-
-        }
-    };
-    private View.OnClickListener picOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            try {
-                shootSound();
-                CarLog.d(TAG, "正在拍照");
-                CaptureRequest.Builder builder = mCameraSession.getDevice().createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                builder.addTarget(mImageReader.getSurface());
-                builder.set(CaptureRequest.CONTROL_AF_MODE,
-                        CaptureRequest.CONTROL_AF_MODE_AUTO);
-                builder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                        CameraMetadata.CONTROL_AF_TRIGGER_START);
-                builder.set(CaptureRequest.JPEG_ORIENTATION, 90);
-                mCameraSession.capture(builder.build(), null, mHandler);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
+    //屏幕宽高
+    private int screenWidth;
+    private View home_camera_cover_top_view;
+    private View home_camera_cover_bottom_view;
+    private ImageView flash_light;
+    //闪光灯模式 0:关闭 1: 开启 2: 自动
+    private int light_num = 0;
+    //延迟时间
+    private boolean isview = false;
+    private ImageView camera_close;
+    private ImageView img_camera;
+    private int picHeight;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        findview();
-        mUIHandler = new Handler(new InnerCallBack());
-        //初始化拍照的声音
-        ringtone = RingtoneManager.getRingtone(this, Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
-        AudioAttributes.Builder attr = new AudioAttributes.Builder();
-        attr.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION);
-        ringtone.setAudioAttributes(attr.build());
-        //初始化相机布局
-        mTextureView.setSurfaceTextureListener(mSurfacetextlistener);
-        //设置点击拍照的监听
-        mButton.setOnClickListener(picOnClickListener);
+        initView();
+        initData();
+    }
+
+    private void initView() {
+        mSurfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        mHolder = mSurfaceView.getHolder();
+        mHolder.addCallback(this);
+
+        img_camera = (ImageView) findViewById(R.id.img_camera);
+        img_camera.setOnClickListener(this);
+
+        //关闭相机界面按钮
+        camera_close = (ImageView) findViewById(R.id.camera_close);
+        camera_close.setOnClickListener(this);
+
+        //拍照时动画
+        home_camera_cover_top_view = findViewById(R.id.home_camera_cover_top_view);
+        home_camera_cover_bottom_view = findViewById(R.id.home_camera_cover_bottom_view);
+        home_camera_cover_top_view.setAlpha(1);
+        home_camera_cover_bottom_view.setAlpha(1);
+
+        //闪光灯
+        flash_light = (ImageView) findViewById(R.id.flash_light);
+        flash_light.setOnClickListener(this);
+    }
+
+    private void initData() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        screenWidth = dm.widthPixels;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mCameraSession != null) {
-            mCameraSession.getDevice().close();
-            mCameraSession.close();
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.img_camera:
+                if (isview) {
+                    switch (light_num) {
+                        case 0:
+                            //关闭
+                            CameraUtil.getInstance().turnLightOff(mCamera);
+                            break;
+                        case 1:
+                            CameraUtil.getInstance().turnLightOn(mCamera);
+                            break;
+                        case 2:
+                            //自动
+                            CameraUtil.getInstance().turnLightAuto(mCamera);
+                            break;
+                    }
+                    captrue();
+                    isview = false;
+                }
+                break;
+
+            //退出相机界面 释放资源
+            case R.id.camera_close:
+                finish();
+                break;
+
+            //闪光灯
+            case R.id.flash_light:
+                Camera.Parameters parameters = mCamera.getParameters();
+                switch (light_num) {
+                    case 0:
+                        //打开
+                        light_num = 1;
+                        flash_light.setImageResource(R.drawable.btn_camera_flash_on);
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
+                        mCamera.setParameters(parameters);
+                        break;
+                    case 1:
+                        //自动
+                        light_num = 2;
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+                        mCamera.setParameters(parameters);
+                        flash_light.setImageResource(R.drawable.btn_camera_flash_auto);
+                        break;
+                    case 2:
+                        //关闭
+                        light_num = 0;
+                        //关闭
+                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                        mCamera.setParameters(parameters);
+                        flash_light.setImageResource(R.drawable.btn_camera_flash_off);
+                        break;
+                }
+
+                break;
         }
     }
 
-    private void findview() {
-        mTextureView = (TextureView) findViewById(R.id.tv_textview);
-        mButton = (Button) findViewById(R.id.takePhoto);
-        mThumbnail = (ImageView) findViewById(R.id.iv_Thumbnail);
-        mThumbnail.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mCamera == null) {
+            mCamera = getCamera(mCameraId);
+            if (mHolder != null) {
+                startPreview(mCamera, mHolder);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
+    /**
+     * 获取Camera实例
+     *
+     * @return
+     */
+    private Camera getCamera(int id) {
+        Camera camera = null;
+        try {
+            camera = Camera.open(id);
+        } catch (Exception e) {
+
+        }
+        return camera;
+    }
+
+    /**
+     * 预览相机
+     */
+    private void startPreview(Camera camera, SurfaceHolder holder) {
+        try {
+            setupCamera(camera);
+            camera.setPreviewDisplay(holder);
+            //亲测的一个方法 基本覆盖所有手机 将预览矫正
+            CameraUtil.getInstance().setCameraDisplayOrientation(this, mCameraId, camera);
+            camera.startPreview();
+            isview = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void captrue() {
+        mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(CameraActivity.this, "别戳了，那个页面还没写", Toast.LENGTH_SHORT).show();
+            public void onPictureTaken(byte[] data, Camera camera) {
+                isview = false;
+                //将data 转换为位图 或者你也可以直接保存为文件使用 FileOutputStream
+                //这里我相信大部分都有其他用处把 比如加个水印 后续再讲解
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap saveBitmap = CameraUtil.getInstance().setTakePicktrueOrientation(mCameraId, bitmap);
+
+                saveBitmap = Bitmap.createScaledBitmap(saveBitmap, screenWidth, picHeight, true);
+
+                //方形 animHeight(动画高度)
+                saveBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3);
+
+                String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
+                        File.separator + System.currentTimeMillis() + ".jpeg";
+
+                BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
+
+                if (!bitmap.isRecycled()) {
+                    bitmap.recycle();
+                }
+
+                if (!saveBitmap.isRecycled()) {
+                    saveBitmap.recycle();
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra(AppConstant.KEY.IMG_PATH, img_path);
+                intent.putExtra(AppConstant.KEY.PIC_WIDTH, screenWidth);
+                intent.putExtra(AppConstant.KEY.PIC_HEIGHT, picHeight);
+                setResult(AppConstant.RESULT_CODE.RESULT_OK, intent);
+                finish();
             }
         });
     }
 
     /**
-     * 播放系统的拍照的声音
+     * 设置
      */
-    public void shootSound() {
-        ringtone.stop();
-        ringtone.play();
-    }
+    private void setupCamera(Camera camera) {
+        Camera.Parameters parameters = camera.getParameters();
 
-    private class ImageSaver implements Runnable {
-        Image reader;
-
-        public ImageSaver(Image reader) {
-            this.reader = reader;
+        if (parameters.getSupportedFocusModes().contains(
+                Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         }
 
-        @Override
-        public void run() {
-            Log.d(TAG, "正在保存图片");
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsoluteFile();
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            File file = new File(dir, System.currentTimeMillis() + ".jpg");
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream(file);
-                ByteBuffer buffer = reader.getPlanes()[0].getBuffer();
-                byte[] buff = new byte[buffer.remaining()];
-                buffer.get(buff);
-                BitmapFactory.Options ontain = new BitmapFactory.Options();
-                ontain.inSampleSize = 50;
-                Bitmap bm = BitmapFactory.decodeByteArray(buff, 0, buff.length, ontain);
-                Message.obtain(mUIHandler, SETIMAGE, bm).sendToTarget();
-                outputStream.write(buff);
-                CarLog.d(TAG, "保存图片完成");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        //这里第三个参数为最小尺寸 getPropPreviewSize方法会对从最小尺寸开始升序排列 取出所有支持尺寸的最小尺寸
+        Camera.Size previewSize = CameraUtil.getInstance().getPropSizeForHeight(parameters.getSupportedPreviewSizes(), 800);
+        parameters.setPreviewSize(previewSize.width, previewSize.height);
+
+        Camera.Size pictrueSize = CameraUtil.getInstance().getPropSizeForHeight(parameters.getSupportedPictureSizes(), 800);
+        parameters.setPictureSize(pictrueSize.width, pictrueSize.height);
+
+        camera.setParameters(parameters);
+
+        /**
+         * 设置surfaceView的尺寸 因为camera默认是横屏，所以取得支持尺寸也都是横屏的尺寸
+         * 我们在startPreview方法里面把它矫正了过来，但是这里我们设置设置surfaceView的尺寸的时候要注意 previewSize.height<previewSize.width
+         * previewSize.width才是surfaceView的高度
+         * 一般相机都是屏幕的宽度 这里设置为屏幕宽度 高度自适应 你也可以设置自己想要的大小
+         *
+         */
+        picHeight = (screenWidth * pictrueSize.width) / pictrueSize.height;
+    }
+
+    /**
+     * 释放相机资源
+     */
+    private void releaseCamera() {
+        if (mCamera != null) {
+            mCamera.setPreviewCallback(null);
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
         }
     }
 
-    private class InnerCallBack implements Handler.Callback {
-        @Override
-        public boolean handleMessage(Message message) {
-            switch (message.what) {
-                case SETIMAGE:
-                    Bitmap bm = (Bitmap) message.obj;
-                    mThumbnail.setImageBitmap(bm);
-                    break;
-            }
-            return false;
-        }
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        startPreview(mCamera, holder);
     }
 
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        mCamera.stopPreview();
+        startPreview(mCamera, holder);
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        releaseCamera();
+    }
 
 }
