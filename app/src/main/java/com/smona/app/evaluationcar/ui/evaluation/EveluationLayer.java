@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -73,7 +74,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
             case R.id.evalution:
-                ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
+                ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
                 break;
             case R.id.queryVin:
                 ActivityUtils.jumpOnlyActivity(getContext(), CameraActivity.class);
