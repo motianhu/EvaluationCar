@@ -12,9 +12,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,16 +28,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     //屏幕宽高
     private int screenWidth;
-    private View home_camera_cover_top_view;
-    private View home_camera_cover_bottom_view;
-    private ImageView flash_light;
-    //闪光灯模式 0:关闭 1: 开启 2: 自动
-    private int light_num = 0;
-    //延迟时间
-    private boolean isview = false;
-    private ImageView camera_close;
-    private ImageView img_camera;
     private int picHeight;
+
+    //闪光灯模式 0:关闭 1: 开启 2: 自动
+    private int mLightModel = 0;
+    private ImageView mFlashLight;
+
+    private boolean mIsPreview = false;
+    private ImageView mClose;
+    private ImageView mTakePhoto;
+
+    private TextView mDescription;
+    private TextView mNote;
+    private TextView mNumPhoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +56,23 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
 
-        img_camera = (ImageView) findViewById(R.id.img_camera);
-        img_camera.setOnClickListener(this);
+        mTakePhoto = (ImageView) findViewById(R.id.img_camera);
+        mTakePhoto.setOnClickListener(this);
 
         //关闭相机界面按钮
-        camera_close = (ImageView) findViewById(R.id.camera_close);
-        camera_close.setOnClickListener(this);
-
-        //拍照时动画
-        home_camera_cover_top_view = findViewById(R.id.home_camera_cover_top_view);
-        home_camera_cover_bottom_view = findViewById(R.id.home_camera_cover_bottom_view);
-        home_camera_cover_top_view.setAlpha(1);
-        home_camera_cover_bottom_view.setAlpha(1);
+        mClose = (ImageView) findViewById(R.id.camera_close);
+        mClose.setOnClickListener(this);
 
         //闪光灯
-        flash_light = (ImageView) findViewById(R.id.flash_light);
-        flash_light.setOnClickListener(this);
+        mFlashLight = (ImageView) findViewById(R.id.flash_light);
+        mFlashLight.setOnClickListener(this);
+
+        mDescription = (TextView)findViewById(R.id.description);
+        mDescription.setText("车辆左前45度");
+        mNote = (TextView)findViewById(R.id.note);
+        mNote.setText("(请打开天窗)");
+        mNumPhoto = (TextView)findViewById(R.id.numPhoto);
+        mNumPhoto.setText("1/21");
     }
 
     private void initData() {
@@ -78,8 +84,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_camera:
-                if (isview) {
-                    switch (light_num) {
+                if (mIsPreview) {
+                    switch (mLightModel) {
                         case 0:
                             //关闭
                             CameraUtil.getInstance().turnLightOff(mCamera);
@@ -93,7 +99,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                             break;
                     }
                     captrue();
-                    isview = false;
+                    mIsPreview = false;
                 }
                 break;
 
@@ -105,28 +111,28 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             //闪光灯
             case R.id.flash_light:
                 Camera.Parameters parameters = mCamera.getParameters();
-                switch (light_num) {
+                switch (mLightModel) {
                     case 0:
                         //打开
-                        light_num = 1;
-                        flash_light.setImageResource(R.drawable.btn_camera_flash_on);
+                        mLightModel = 1;
+                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_on);
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
                         mCamera.setParameters(parameters);
                         break;
                     case 1:
                         //自动
-                        light_num = 2;
+                        mLightModel = 2;
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                         mCamera.setParameters(parameters);
-                        flash_light.setImageResource(R.drawable.btn_camera_flash_auto);
+                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_auto);
                         break;
                     case 2:
                         //关闭
-                        light_num = 0;
+                        mLightModel = 0;
                         //关闭
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                         mCamera.setParameters(parameters);
-                        flash_light.setImageResource(R.drawable.btn_camera_flash_off);
+                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_off);
                         break;
                 }
 
@@ -161,7 +167,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         try {
             camera = Camera.open(id);
         } catch (Exception e) {
-
+            CarLog.d(this, "getCamera e: " + e);
         }
         return camera;
     }
@@ -173,12 +179,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         try {
             setupCamera(camera);
             camera.setPreviewDisplay(holder);
-            //亲测的一个方法 基本覆盖所有手机 将预览矫正
             CameraUtil.getInstance().setCameraDisplayOrientation(this, mCameraId, camera);
             camera.startPreview();
-            isview = true;
+            mIsPreview = true;
         } catch (IOException e) {
             e.printStackTrace();
+            CarLog.d(this, "startPreview e: " + e);
         }
     }
 
@@ -187,7 +193,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                isview = false;
+                mIsPreview = false;
                 //将data 转换为位图 或者你也可以直接保存为文件使用 FileOutputStream
                 //这里我相信大部分都有其他用处把 比如加个水印 后续再讲解
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
