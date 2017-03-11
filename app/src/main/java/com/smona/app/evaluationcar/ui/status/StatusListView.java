@@ -61,6 +61,7 @@ public class StatusListView extends BaseListView {
             carbill.setCreateTime("2016-12-01 12:11:00");
             carbill.setUpdateTime("2016-12-21 15:11:00");
             carbill.setTitle("" + i);
+            carbill.setStatus(1);
             carbill.setUrl("http://www.baidu.com");
             carbill.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");
             carBillList.add(carbill);

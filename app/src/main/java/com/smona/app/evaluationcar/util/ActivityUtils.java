@@ -25,12 +25,12 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpEvaluation(Context context, CarBillInfo carBillInfo) {
+    public static void jumpEvaluation(Context context, CarBillInfo carBillInfo, Class clazz) {
         Intent intent = new Intent();
         if (carBillInfo instanceof Parcelable) {
             intent.putExtra("", carBillInfo);
         }
-        intent.setClass(context, EvaluationActivity.class);
+        intent.setClass(context, clazz);
         context.startActivity(intent);
     }
 

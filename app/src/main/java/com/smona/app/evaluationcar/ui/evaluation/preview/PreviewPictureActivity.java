@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 
 /**
  * Created by Moth on 2017/3/9.

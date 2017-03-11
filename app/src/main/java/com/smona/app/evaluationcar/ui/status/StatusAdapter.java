@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.CarBillInfo;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
+import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
@@ -66,7 +67,12 @@ public class StatusAdapter extends AbstractAdapter {
     public void onClick(View v) {
         Object tag = v.getTag();
         if(tag instanceof CarBillInfo) {
-            ActivityUtils.jumpEvaluation(mContext, (CarBillInfo)tag);
+            CarBillInfo info = (CarBillInfo)tag;
+            if(info.getStatus() == 1) {
+                ActivityUtils.jumpEvaluation(mContext, (CarBillInfo) tag, EvaluationActivity.class);
+            }else {
+                ActivityUtils.jumpEvaluation(mContext, (CarBillInfo) tag, StatusActivity.class);
+            }
         }
     }
 }

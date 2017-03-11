@@ -11,6 +11,7 @@ public class CarBillInfo extends ItemInfo {
     private String title;
     private String url;
     private String imgurl;
+    private int status;
     private String updateTime;
     private String createTime;
 
@@ -78,5 +79,11 @@ public class CarBillInfo extends ItemInfo {
         this.note = note;
     }
 
+    public int getStatus() {
+        return status;
+    }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

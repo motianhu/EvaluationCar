@@ -4,7 +4,7 @@ package com.smona.app.evaluationcar.framework.provider;
  * Created by motianhu on 3/8/17.
  */
 
-public class CarImage extends BaseCarColumns {
+public class CarImageTable extends BaseCarColumns {
     public static final String TABLE_NAME = "carimage";
 
     private static final String IMAGEID = "imageId";
@@ -14,15 +14,15 @@ public class CarImage extends BaseCarColumns {
     private static final String IMAGEURL = "imageUrl";  //服务器地址,有值则代表已上传成功
     private static final String IMAGEURI = "iamgeUri"; //本机地址
 
-    private static volatile CarImage mInstance = null;
+    private static volatile CarImageTable mInstance = null;
 
-    private CarImage() {
+    private CarImageTable() {
         super();
     }
 
-    public synchronized static CarImage getInstance() {
+    public synchronized static CarImageTable getInstance() {
         if (mInstance == null) {
-            mInstance = new CarImage();
+            mInstance = new CarImageTable();
         }
         return mInstance;
     }
@@ -34,10 +34,13 @@ public class CarImage extends BaseCarColumns {
 
     @Override
     public String createTableSql() {
-        return "CREATE TABLE " + TABLE_NAME + "(" + _ID
-                + " INTEGER PRIMARY KEY, " + IMAGEID + " INTEGER , "
-                + CARBILLID + " TEXT, " + IMAGESEQNUM
-                + " INTEGER, " + IMAGECLASS + " TEXT, " + IMAGEURL + " TEXT, "
+        return "CREATE TABLE " + TABLE_NAME + "("
+                + _ID + " INTEGER PRIMARY KEY, "
+                + IMAGEID + " INTEGER , "
+                + CARBILLID + " TEXT, "
+                + IMAGESEQNUM + " INTEGER, "
+                + IMAGECLASS + " TEXT, "
+                + IMAGEURL + " TEXT, "
                 + IMAGEURI + " TEXT " + ")";
     }
 

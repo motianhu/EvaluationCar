@@ -1,6 +1,6 @@
 package com.smona.app.evaluationcar.ui.message;
 
-import com.smona.app.evaluationcar.ui.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 
 /**
  * Created by Moth on 2016/12/18.

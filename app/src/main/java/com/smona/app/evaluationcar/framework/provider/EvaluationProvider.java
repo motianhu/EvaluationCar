@@ -30,6 +30,7 @@ public class EvaluationProvider extends ContentProvider {
     private static final int CODE_BASE = 0;
     private static final int CODE_CARBILL = CODE_BASE + 1;
     private static final int CODE_CARIMAGE = CODE_BASE + 2;
+    private static final int CODE_IMAGEMETA = CODE_BASE + 3;
 
     private static final UriMatcher URI_MATCH = new UriMatcher(
             UriMatcher.NO_MATCH);
@@ -40,11 +41,13 @@ public class EvaluationProvider extends ContentProvider {
         URI_MATCH.addURI(DBConstants.AUTHORITY,
                 CarBillTable.TABLE_NAME, CODE_CARBILL);
         URI_MATCH.addURI(DBConstants.AUTHORITY,
-                CarImage.TABLE_NAME, CODE_CARIMAGE);
+                CarImageTable.TABLE_NAME, CODE_CARIMAGE);
+        URI_MATCH.addURI(DBConstants.AUTHORITY,
+                ImageMetaTable.TABLE_NAME, CODE_IMAGEMETA);
 
         TABLE_MATCH.put(CODE_CARBILL, CarBillTable.TABLE_NAME);
-        TABLE_MATCH.put(CODE_CARIMAGE, CarImage.TABLE_NAME);
-
+        TABLE_MATCH.put(CODE_CARIMAGE, CarImageTable.TABLE_NAME);
+        TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
     }
 
     @Override
@@ -157,6 +160,8 @@ public class EvaluationProvider extends ContentProvider {
         private ArrayList<String> getCreateTableSqlList() {
             ArrayList<String> sqlList = new ArrayList<String>();
             String carbills = CarBillTable.getInstance().createTableSql();
+            String carimage = CarImageTable.getInstance().createTableSql();
+            String imagemeta = ImageMetaTable.getInstance().createTableSql();
             sqlList.add(carbills);
             return sqlList;
         }

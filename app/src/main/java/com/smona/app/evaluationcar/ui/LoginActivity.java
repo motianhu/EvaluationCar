@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.User;
+import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
 

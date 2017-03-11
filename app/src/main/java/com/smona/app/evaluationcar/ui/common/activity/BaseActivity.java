@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui;
+package com.smona.app.evaluationcar.ui.common.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

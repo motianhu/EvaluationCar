@@ -37,11 +37,15 @@ public class CarBillTable extends BaseCarColumns {
 
     @Override
     public String createTableSql() {
-        return "CREATE TABLE " + TABLE_NAME + "(" + _ID
-                + " INTEGER PRIMARY KEY, " + CARBILLID + " TEXT , "
-                + CREATETIME + " TEXT, " + UPDATETIME
-                + " INTEGER, " + CPTIME + " TEXT, " + ZPTIME + " TEXT, "
-                + GPTIME + " TEXT, " + BILLSTATUS + " INTEGER, "
+        return "CREATE TABLE " + TABLE_NAME + "("
+                + _ID + " INTEGER PRIMARY KEY, "
+                + CARBILLID + " TEXT , "
+                + CREATETIME + " TEXT, "
+                + UPDATETIME + " INTEGER, "
+                + CPTIME + " TEXT, "
+                + ZPTIME + " TEXT, "
+                + GPTIME + " TEXT, "
+                + BILLSTATUS + " INTEGER, "
                 + DESCRIPTION + " TEXT, "
                 + PRICE + " TEXT " + ")";
     }
