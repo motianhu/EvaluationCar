@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
@@ -24,11 +25,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class EveluationLayer extends BaseRelativeLayout implements View.OnClickListener {
 
-    private Button mUncommit;
-    private Button mAuditing;
-    private Button mNotPass;
-    private Button mPass;
-
     private TextView mNotice;
 
     public EveluationLayer(Context context, AttributeSet attrs) {
@@ -44,16 +40,11 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
 
         mNotice = (TextView) findViewById(R.id.evalution_gonggao);
         mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
-        mUncommit = (Button) findViewById(R.id.uncommit);
-        mUncommit.setOnClickListener(this);
-        mAuditing = (Button) findViewById(R.id.auditing);
-        mAuditing.setOnClickListener(this);
-        mNotPass = (Button) findViewById(R.id.notpass);
-        mNotPass.setOnClickListener(this);
-        mPass = (Button) findViewById(R.id.pass);
-        mPass.setOnClickListener(this);
-
-
+        findViewById(R.id.uncommit).setOnClickListener(this);
+        findViewById(R.id.auditing).setOnClickListener(this);
+        findViewById(R.id.notpass).setOnClickListener(this);
+        findViewById(R.id.pass).setOnClickListener(this);
+        CarLog.d(this, "Context " + getContext());
     }
 
     @Override
@@ -61,14 +52,19 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         int id = v.getId();
         switch (id) {
             case R.id.search:
+                ActivityUtils.jumpOnlyActivity(getContext(), SearchActivity.class);
                 break;
             case R.id.uncommit:
+                ((HomeActivity)getContext()).changeList(0);
                 break;
             case R.id.auditing:
+                ((HomeActivity)getContext()).changeList(1);
                 break;
             case R.id.notpass:
+                ((HomeActivity)getContext()).changeList(2);
                 break;
             case R.id.pass:
+                ((HomeActivity)getContext()).changeList(3);
                 break;
             case R.id.preEvalution:
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);

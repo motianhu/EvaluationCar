@@ -15,19 +15,13 @@ import android.widget.RadioGroup;
  * Created by Moth on 2016/12/15.
  */
 
-public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
-        ViewPager.OnPageChangeListener {
+public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     //UI Objects
     private RadioGroup mRbGroup;
+    private RadioButton[] mRadioFunc =new RadioButton[5];
 
-    private RadioButton mRbHome;
-    private RadioButton mRbEvaluation;
-    private RadioButton mRbMessage;
-    private RadioButton mRbList;
-    private RadioButton mRbSetting;
     private NoScrollViewPager mViewPager;
-
     private HomeFragmentPagerAdapter mFragmentAdapter;
 
     //几个代表页面的常量
@@ -50,20 +44,17 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         mViewPager = (NoScrollViewPager) findViewById(R.id.vp_home);
         mViewPager.setNoScroll(true);
         mViewPager.setAdapter(mFragmentAdapter);
-        mViewPager.addOnPageChangeListener(this);
 
         mRbGroup = (RadioGroup) findViewById(R.id.rg_home);
         mRbGroup.setOnCheckedChangeListener(this);
 
-        mRbHome = (RadioButton) findViewById(R.id.rb_home);
-        mRbEvaluation = (RadioButton) findViewById(R.id.rb_evaluation);
-        mRbMessage = (RadioButton) findViewById(R.id.rb_message);
-        mRbList = (RadioButton) findViewById(R.id.rb_list);
-        mRbSetting = (RadioButton) findViewById(R.id.rb_setting);
-
+        mRadioFunc[0] = (RadioButton) findViewById(R.id.rb_home);
+        mRadioFunc[1] = (RadioButton) findViewById(R.id.rb_evaluation);
+        mRadioFunc[2] = (RadioButton) findViewById(R.id.rb_message);
+        mRadioFunc[3] = (RadioButton) findViewById(R.id.rb_list);
+        mRadioFunc[4] = (RadioButton) findViewById(R.id.rb_setting);
 
         changeFragment(PAGE_HOME, R.string.home_fragment_home);
-        mRbHome.setChecked(true);
     }
 
     @Override
@@ -87,42 +78,14 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
     }
 
+    public void changeList(int position) {
+        changeFragment(PAGE_LIST, R.string.home_fragment_list);
+        mFragmentAdapter.changeFragment(position);
+    }
+
+
     private void changeFragment(int pageHome, int titleId) {
         mViewPager.setCurrentItem(pageHome, false);
+        mRadioFunc[pageHome].setChecked(true);
     }
-
-
-    //重写ViewPager页面切换的处理方法
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        //state的状态有三个，0表示什么都没做，1正在滑动，2滑动完毕
-        if (state == 2) {
-            switch (mViewPager.getCurrentItem()) {
-                case PAGE_HOME:
-                    mRbHome.setChecked(true);
-                    break;
-                case PAGE_EVALUATION:
-                    mRbEvaluation.setChecked(true);
-                    break;
-                case PAGE_MESSAGE:
-                    mRbMessage.setChecked(true);
-                    break;
-                case PAGE_LIST:
-                    mRbList.setChecked(true);
-                    break;
-                case PAGE_SETTING:
-                    mRbSetting.setChecked(true);
-                    break;
-            }
-        }
-    }
-
 }

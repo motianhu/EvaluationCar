@@ -15,13 +15,17 @@ import java.util.List;
  * Created by Moth on 2015/8/28 0028.
  */
 public class StatusFragment extends ContentFragment {
+
+    private ViewPager mViewPager;
+
     protected int getLayoutId() {
         return R.layout.fragment_list;
     }
 
 
+
     protected void init(View root) {
-        ViewPager viewPager = (ViewPager) root.findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
         View view1 = ViewUtils.inflater(getContext(), R.layout.status_listview);
@@ -50,9 +54,13 @@ public class StatusFragment extends ContentFragment {
         tabLayout.addTab(tabLayout.newTab().setText(titleList.get(3)));
 
 
-        viewPager.setAdapter(pagerAdapter);//给ViewPager设置适配器
-        tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
+        mViewPager.setAdapter(pagerAdapter);//给ViewPager设置适配器
+        tabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
 
-        viewPager.setAdapter(pagerAdapter);
+        mViewPager.setAdapter(pagerAdapter);
+    }
+
+    public void changeFragment(int position) {
+        mViewPager.setCurrentItem(position);
     }
 }

@@ -14,26 +14,24 @@ import com.smona.app.evaluationcar.util.CarLog;
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int PAGER_COUNT = 5;
-    private ContentFragment mFragmentHome = null;
-    private ContentFragment mFragmentEvaluation = null;
-    private ContentFragment mFragmentMessage = null;
-    private ContentFragment mFragmentList = null;
-    private ContentFragment mFragmentSetting = null;
-
+    private ContentFragment[] mFragmentHome = new ContentFragment[PAGER_COUNT];
 
     public HomeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        mFragmentHome = new HomeFragment();
-        mFragmentEvaluation = new EvaluationFragment();
-        mFragmentMessage = new MessageFragment();
-        mFragmentList = new StatusFragment();
-        mFragmentSetting = new SettingFragment();
+        mFragmentHome[0] = new HomeFragment();
+        mFragmentHome[1] = new EvaluationFragment();
+        mFragmentHome[2] = new MessageFragment();
+        mFragmentHome[3] = new StatusFragment();
+        mFragmentHome[4] = new SettingFragment();
     }
 
+    public void changeFragment(int position) {
+        ((StatusFragment)mFragmentHome[3]).changeFragment(position);
+    }
 
     @Override
     public int getCount() {
-        return PAGER_COUNT;
+        return mFragmentHome.length;
     }
 
     @Override
@@ -49,25 +47,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = null;
-        switch (position) {
-            case HomeActivity.PAGE_HOME:
-                fragment = mFragmentHome;
-                break;
-            case HomeActivity.PAGE_EVALUATION:
-                fragment = mFragmentEvaluation;
-                break;
-            case HomeActivity.PAGE_MESSAGE:
-                fragment = mFragmentMessage;
-                break;
-            case HomeActivity.PAGE_LIST:
-                fragment = mFragmentList;
-                break;
-            case HomeActivity.PAGE_SETTING:
-                fragment = mFragmentSetting;
-                break;
-        }
-        return fragment;
+        return mFragmentHome[position];
     }
 
 
