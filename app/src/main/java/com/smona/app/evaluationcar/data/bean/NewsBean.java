@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.data;
+package com.smona.app.evaluationcar.data.bean;
 
 import android.os.Parcel;
 
@@ -6,14 +6,14 @@ import android.os.Parcel;
  * Created by motianhu on 2/27/17.
  */
 
-public class NewsInfo extends ItemInfo {
+public class NewsBean extends BaseBean {
     private int id;
     private String title;
     private String summary;
     private String url;
     private String imgurl;
 
-    public NewsInfo(Parcel in) {
+    public NewsBean(Parcel in) {
         super(in);
     }
 

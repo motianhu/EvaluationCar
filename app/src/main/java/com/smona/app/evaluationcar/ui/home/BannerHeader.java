@@ -2,11 +2,10 @@ package com.smona.app.evaluationcar.ui.home;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.BannerInfo;
+import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.ui.home.banner.BannerView;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
@@ -33,7 +32,7 @@ public class BannerHeader extends LinearLayout {
         mBanner = (BannerView) findViewById(R.id.banner);
     }
 
-    public void update(List<BannerInfo> bannerList) {
+    public void update(List<BannerBean> bannerList) {
         if(bannerList == null || bannerList.size() <=0) {
             ViewUtils.setViewVisible(mBanner, false);
         } else {

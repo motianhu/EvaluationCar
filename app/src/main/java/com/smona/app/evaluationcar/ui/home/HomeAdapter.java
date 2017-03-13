@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.NewsInfo;
+import com.smona.app.evaluationcar.data.bean.NewsBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.util.ViewUtils;
@@ -25,7 +25,7 @@ public class HomeAdapter extends AbstractAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        NewsInfo info = (NewsInfo) (mDatas.get(position));
+        NewsBean info = (NewsBean) (mDatas.get(position));
         if(convertView == null) {
             convertView = ViewUtils.inflater(mContext, R.layout.home_list_item);
         }

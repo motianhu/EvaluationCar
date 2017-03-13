@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.data;
+package com.smona.app.evaluationcar.data.bean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -6,20 +6,20 @@ import android.util.Log;
 
 import com.smona.app.evaluationcar.util.AESUtils;
 
-public class User {
+public class UserBean {
 	private String mId;
 	private String mPwd;
 	private static final String masterPassword = "FORYOU"; // AES加密算法的种子
 	private static final String JSON_ID = "user_id";
 	private static final String JSON_PWD = "user_pwd";
-	private static final String TAG = "User";
+	private static final String TAG = "UserBean";
 
-	public User(String id, String pwd) {
+	public UserBean(String id, String pwd) {
 		this.mId = id;
 		this.mPwd = pwd;
 	}
 
-	public User(JSONObject json) throws Exception {
+	public UserBean(JSONObject json) throws Exception {
 		if (json.has(JSON_ID)) {
 			String id = json.getString(JSON_ID);
 			String pwd = json.getString(JSON_PWD);

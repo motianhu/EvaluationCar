@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -14,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.BannerInfo;
+import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtils;
@@ -30,7 +29,7 @@ public class BannerViewPager extends BaseViewPager {
     final static float TOUCH_SLOP_DAMPING_FACTOR = 4;
 
     private boolean mScrollEnable = false;
-    private List<BannerInfo> mDataList = new ArrayList<BannerInfo>();
+    private List<BannerBean> mDataList = new ArrayList<BannerBean>();
     private int mCurrentIndex = 0;
     private int mCurrentPos = 0;
     private int mDirection = SCROLL_DIRECTION_MEDDILE;
@@ -164,9 +163,9 @@ public class BannerViewPager extends BaseViewPager {
         mPageSelecteListener = listener;
     }
 
-    public void update(List<BannerInfo> data) {
+    public void update(List<BannerBean> data) {
         if (!data.isEmpty()) {
-            mDataList = new ArrayList<BannerInfo>(data);
+            mDataList = new ArrayList<BannerBean>(data);
             mCurrentPos = 0;
             setPageListener(mPageListener);
             setOnSingleTouchListener(mPageClickListener);
@@ -195,7 +194,7 @@ public class BannerViewPager extends BaseViewPager {
             return;
         }
         if (mDataList.size() > 0) {
-            BannerInfo info = mDataList.get(pos);
+            BannerBean info = mDataList.get(pos);
             String url = info.getImgurl();
             ImageView view = (ImageView) getChildAt(index).findViewById(
                     R.id.image);
@@ -294,7 +293,7 @@ public class BannerViewPager extends BaseViewPager {
             if (mDataList.size() <= mCurrentPos) {
                 return;
             }
-            BannerInfo info = mDataList.get(mCurrentPos);
+            BannerBean info = mDataList.get(mCurrentPos);
             ActivityUtils.jumpBannerDetail(getContext(), info);
         }
 

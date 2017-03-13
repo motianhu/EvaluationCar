@@ -3,7 +3,7 @@ package com.smona.app.evaluationcar.ui.status;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.smona.app.evaluationcar.data.CarBillInfo;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.data.event.StatusEvent;
@@ -33,7 +33,7 @@ public class StatusListView extends BaseListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(StatusEvent event) {
-        List<CarBillInfo> datas = (List<CarBillInfo>) event.getContent();
+        List<CarBillBean> datas = (List<CarBillBean>) event.getContent();
         mAdapter.update(datas);
     }
 
@@ -54,9 +54,9 @@ public class StatusListView extends BaseListView {
 
 
     private Object createTest() {
-        ArrayList<CarBillInfo> carBillList = new ArrayList<CarBillInfo>();
+        ArrayList<CarBillBean> carBillList = new ArrayList<CarBillBean>();
         for (int i = 0; i < 45; i++) {
-            CarBillInfo carbill = new CarBillInfo(null);
+            CarBillBean carbill = new CarBillBean(null);
             carbill.setId("NS201612021100" + i);
             carbill.setCreateTime("2016-12-01 12:11:00");
             carbill.setUpdateTime("2016-12-21 15:11:00");

@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.data;
+package com.smona.app.evaluationcar.data.bean;
 
 import android.os.Parcel;
 
@@ -6,7 +6,7 @@ import android.os.Parcel;
  * Created by motianhu on 2/28/17.
  */
 
-public class CarBillInfo extends ItemInfo {
+public class CarBillBean extends BaseBean {
     private String id;
     private String title;
     private String url;
@@ -18,7 +18,7 @@ public class CarBillInfo extends ItemInfo {
 
     private String note;
 
-    public CarBillInfo(Parcel in) {
+    public CarBillBean(Parcel in) {
         super(in);
     }
 

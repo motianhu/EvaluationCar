@@ -8,8 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.BannerInfo;
-import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class BannerView extends FrameLayout {
     private int mAdIndicatorSize = 0;
     private int mAdIndicatorMargin = 0;
 
-    private List<BannerInfo> mDataList = new ArrayList<BannerInfo>();
+    private List<BannerBean> mDataList = new ArrayList<BannerBean>();
     private Object mLock = new Object();
 
     @Override
@@ -121,15 +120,15 @@ public class BannerView extends FrameLayout {
         mBannerViewPager.stopAutoScroll();
     }
 
-    public void update(List<BannerInfo> bannerList) {
+    public void update(List<BannerBean> bannerList) {
         updateDataList(bannerList);
         updateBanner();
     }
 
-    private void updateDataList(List<BannerInfo> bannerList) {
+    private void updateDataList(List<BannerBean> bannerList) {
         synchronized (mLock) {
             mDataList.clear();
-            for (BannerInfo info : bannerList) {
+            for (BannerBean info : bannerList) {
                 mDataList.add(info);
             }
             int size = mDataList.size();

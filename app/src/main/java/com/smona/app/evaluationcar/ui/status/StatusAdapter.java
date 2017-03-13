@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.CarBillInfo;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
@@ -38,7 +38,7 @@ public class StatusAdapter extends AbstractAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CarBillInfo carbill = (CarBillInfo) mDatas.get(position);
+        CarBillBean carbill = (CarBillBean) mDatas.get(position);
         if (convertView == null) {
             convertView = ViewUtils.inflater(mContext,
                     R.layout.status_list_item);
@@ -66,12 +66,12 @@ public class StatusAdapter extends AbstractAdapter {
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if(tag instanceof CarBillInfo) {
-            CarBillInfo info = (CarBillInfo)tag;
+        if(tag instanceof CarBillBean) {
+            CarBillBean info = (CarBillBean)tag;
             if(info.getStatus() == 1) {
-                ActivityUtils.jumpEvaluation(mContext, (CarBillInfo) tag, EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, EvaluationActivity.class);
             }else {
-                ActivityUtils.jumpEvaluation(mContext, (CarBillInfo) tag, StatusActivity.class);
+                ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, StatusActivity.class);
             }
         }
     }

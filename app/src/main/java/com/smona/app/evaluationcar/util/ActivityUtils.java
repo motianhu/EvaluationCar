@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
 
-import com.smona.app.evaluationcar.data.BannerInfo;
-import com.smona.app.evaluationcar.data.CarBillInfo;
+import com.smona.app.evaluationcar.data.bean.BannerBean;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.WebActivity;
-import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 
 /**
  * Created by motianhu on 2/27/17.
@@ -16,7 +15,7 @@ import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 
 public class ActivityUtils {
 
-    public static void jumpBannerDetail(Context context, BannerInfo banner) {
+    public static void jumpBannerDetail(Context context, BannerBean banner) {
         Intent intent = new Intent();
         if (banner instanceof Parcelable) {
             intent.putExtra("", banner);
@@ -25,7 +24,7 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpEvaluation(Context context, CarBillInfo carBillInfo, Class clazz) {
+    public static void jumpEvaluation(Context context, CarBillBean carBillInfo, Class clazz) {
         Intent intent = new Intent();
         if (carBillInfo instanceof Parcelable) {
             intent.putExtra("", carBillInfo);
