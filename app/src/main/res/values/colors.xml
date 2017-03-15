@@ -10,7 +10,7 @@
     <color name="bg_black">#000000</color>
     <color name="bg_white">#FFFFFF</color>
     <color name="bg_topbar">#FCFCFC</color>
-    <color name="bg_gray">#00F1F1F1</color>
+    <color name="bg_gray">#e9e9e9</color>
 
     <color name="text_gray">#8D7A71</color>
     <color name="text_white">#FFFFFF</color>
@@ -38,5 +38,8 @@
     <color name="Transparent">#00000000</color>
     <color name="short_video_red">#ff4747</color>
     <color name="Gray">#eeeeee</color>
+
+
+    <color name="split_bg">#e9e9e9</color>
 
 </resources>
