@@ -94,6 +94,7 @@ public class HomeListView extends BaseListView {
             NewsBean item = new NewsBean(null);
             item.setId(i);
             item.setTitle("" + i);
+            item.setTime("发布时间 2017-01-23 10:23:12");
             item.setSummary("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
             item.setUrl("http://www.baidu.com");
             item.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");

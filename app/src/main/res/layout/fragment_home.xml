@@ -5,7 +5,7 @@
     android:background="@color/bg_white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="101dp"
@@ -17,19 +17,34 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
             android:gravity="center"
             android:text="汇通端远程传输系统"
             android:textColor="@color/bg_white"
-            android:textSize="24sp" />
+            android:textSize="21sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/search"
+            android:id="@+id/billtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="41dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="总单量: 152344"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="7dp"
             android:gravity="center"
-            android:text="总单量: 152344" />
-    </LinearLayout>
+            android:text="编号DS2017，车辆通过初评" />
+    </RelativeLayout>
 
     <com.smona.app.evaluationcar.ui.home.HomeListView
         android:id="@+id/content_list"

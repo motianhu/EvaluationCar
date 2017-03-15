@@ -9,6 +9,7 @@ import android.os.Parcel;
 public class NewsBean extends BaseBean {
     private int id;
     private String title;
+    private String time;
     private String summary;
     private String url;
     private String imgurl;
@@ -56,5 +57,13 @@ public class NewsBean extends BaseBean {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

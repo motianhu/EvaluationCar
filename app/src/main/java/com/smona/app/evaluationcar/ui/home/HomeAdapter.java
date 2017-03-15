@@ -26,11 +26,15 @@ public class HomeAdapter extends AbstractAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         NewsBean info = (NewsBean) (mDatas.get(position));
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = ViewUtils.inflater(mContext, R.layout.home_list_item);
         }
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ImageLoaderProxy.loadImage(info.getImgurl(), image);
+        TextView title = (TextView) convertView.findViewById(R.id.title);
+        title.setText(info.getTitle());
+        TextView time = (TextView) convertView.findViewById(R.id.time);
+        time.setText(info.getTime());
         TextView summary = (TextView) convertView.findViewById(R.id.summary);
         summary.setText(info.getSummary());
         return convertView;

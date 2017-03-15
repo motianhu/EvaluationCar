@@ -13,9 +13,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="31dp"
         android:paddingEnd="10dp"
-        android:background="@color/setting_bg"
+        android:background="@color/home_news_more_bg"
         android:paddingStart="10dp">
 
         <TextView
@@ -24,15 +24,15 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="最新新闻"
-            android:textSize="20sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="更多"
-            android:textSize="20sp" />
+            android:text="更多..."
+            android:textSize="13sp" />
     </RelativeLayout>
 
 </com.smona.app.evaluationcar.ui.home.BannerHeader>
