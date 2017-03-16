@@ -34,8 +34,8 @@
                     android:id="@+id/chexing_car"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/evaluation_title_image_margin_left"
-                    android:text="车型图"
+                    android:layout_marginStart="@dimen/evaluation_title_image_margin_left"
+                    android:text="@string/evalution_cartype"
                     android:textColor="@color/black_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/evaluation_title_image_margin_left"
-                    android:text="证件照"
+                    android:text="@string/certificates_title"
                     android:textColor="@color/black_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/evaluation_title_image_margin_left"
-                    android:text="附加"
+                    android:text="@string/append_title"
                     android:textColor="@color/black_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -137,47 +137,6 @@
             <include
                 android:id="@+id/include_input"
                 layout="@layout/evaluation_editor_item" />
-
-            <LinearLayout
-                android:id="@+id/title_qustion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/view_space_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/view_space_vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/evaluation_title_image_size"
-                    android:layout_height="@dimen/evaluation_title_image_size"
-                    android:src="@drawable/icon_circle" />
-
-                <TextView
-                    android:id="@+id/tv_qustion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/evaluation_title_image_margin_left"
-                    android:text="车况自述"
-                    android:textColor="@color/black_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <com.smona.app.evaluationcar.ui.common.base.LimitListView
-                android:id="@+id/lst_question"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:divider="@null"
-                android:orientation="vertical"
-                android:scrollbars="none" />
-
-            <View
-                android:id="@+id/view_bottom_space"
-                android:layout_width="fill_parent"
-                android:layout_height="100dip"
-                android:background="@color/transparent" />
         </LinearLayout>
     </com.smona.app.evaluationcar.ui.common.base.BaseScrollView>
 
@@ -197,39 +156,6 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/lin_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/selector_round_btn_white"
-            android:clickable="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="6dip"
-            android:paddingLeft="12dip"
-            android:paddingRight="12dip"
-            android:paddingTop="6dip">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tab_service_default" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="客服"
-                android:textColor="@color/black_text"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <View
-            style="@style/public_grey_line"
-            android:layout_width="@dimen/border_line_width"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/lin_msg" />
 
         <Button
             android:id="@+id/btn_saveDraft"

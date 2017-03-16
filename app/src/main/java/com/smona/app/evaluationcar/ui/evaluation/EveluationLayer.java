@@ -86,10 +86,10 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
             case R.id.evalution:
-                ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
+                ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
                 break;
             case R.id.queryVin:
-                ActivityUtils.jumpOnlyActivity(getContext(), CameraActivity.class);
+                ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
                 break;
         }
     }

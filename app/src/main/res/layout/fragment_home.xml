@@ -25,7 +25,7 @@
             android:shadowDx="0"
             android:shadowDy="-3"
             android:shadowRadius="2"
-            android:text="汇通端远程传输系统"
+            android:text="@string/system_name"
             android:textColor="@color/bg_white"
             android:textSize="16sp"
             android:textStyle="bold" />

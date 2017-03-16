@@ -9,7 +9,6 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="101dp"
-        android:layout_marginTop="10dp"
         android:background="@drawable/home_header_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -24,7 +23,7 @@
             android:shadowDx="0"
             android:shadowDy="-3"
             android:shadowRadius="2"
-            android:text="汇通端远程传输系统"
+            android:text="@string/system_name"
             android:textColor="@color/bg_white"
             android:textSize="21sp"
             android:textStyle="bold" />
