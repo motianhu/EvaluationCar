@@ -5,9 +5,12 @@ import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.ImageMeta;
-import com.smona.app.evaluationcar.framework.provider.ImageMetaTable;
+import com.smona.app.evaluationcar.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,25 +21,25 @@ import java.util.List;
 
 public class CarModelAdapter extends BaseAdapter {
 
-    private List<ImageMeta> mData = new ArrayList<ImageMeta>();
+    private List<ImageMeta> mDatas = new ArrayList<ImageMeta>();
     private Context mContext;
     public CarModelAdapter(Context context) {
         mContext =context;
     }
 
     public void update(List<ImageMeta> datas) {
-        mData.addAll(datas);
+        mDatas.addAll(datas);
     }
 
 
     @Override
     public int getCount() {
-        return 0;
+        return mDatas.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mDatas.get(position);
     }
 
     @Override
@@ -46,6 +49,13 @@ public class CarModelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        if(convertView == null) {
+            convertView = ViewUtils.inflater(mContext, R.layout.evaluation_image_item);
+        }
+        TextView title = (TextView)convertView.findViewById(R.id.name);
+        title.setText("aaaa");
+        ImageView image = (ImageView)convertView.findViewById(R.id.image);
+
+        return convertView;
     }
 }
