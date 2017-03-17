@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.ui.common.base;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.GridView;
 
 /**
@@ -28,7 +29,7 @@ public class LimitGridView extends GridView {
         return super.dispatchTouchEvent(paramMotionEvent);
     }
 
-//    protected void onMeasure(int paramInt1, int paramInt2) {
-//        super.onMeasure(paramInt1, View.MeasureSpec.makeMeasureSpec(536870911, -2147483648));
-//    }
+    protected void onMeasure(int paramInt1, int paramInt2) {
+        super.onMeasure(paramInt1, View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE>>2, MeasureSpec.AT_MOST));
+    }
 }
