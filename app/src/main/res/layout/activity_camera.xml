@@ -38,13 +38,13 @@
 
         <TextView
             android:id="@+id/gallery"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerHorizontal="true"
-            android:background="#F1F2aa"
             android:gravity="center"
-            android:text="相册"
-            android:textSize="12sp" />
+            android:text="@string/gallery"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/img_camera"
@@ -55,15 +55,15 @@
             android:src="@drawable/img_homepage_camera5" />
 
         <TextView
-            android:id="@+id/iv_Thumbnail"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/cancel"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="#F1F2aa"
             android:gravity="center"
-            android:text="取消"
-            android:textSize="12sp" />
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>
@@ -72,15 +72,15 @@
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/right"
-        android:layout_toRightOf="@+id/left" />
+        android:layout_toEndOf="@+id/left"
+        android:layout_toStartOf="@+id/right" />
 
     <ImageView
         android:id="@+id/structure"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/right"
-        android:layout_toRightOf="@+id/left"
+        android:layout_toEndOf="@+id/left"
+        android:layout_toStartOf="@+id/right"
         android:src="@drawable/mask_left_45" />
 
     <LinearLayout

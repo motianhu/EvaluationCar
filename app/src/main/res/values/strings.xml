@@ -48,4 +48,8 @@
     <string name="evalution_cartype">车型图</string>
     <string name="certificates_title">证件照</string>
     <string name="append_title">附加</string>
+
+
+    <string name="cancel">取消</string>
+    <string name="gallery">相册</string>
 </resources>

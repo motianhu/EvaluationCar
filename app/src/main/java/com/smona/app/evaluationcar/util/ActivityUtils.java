@@ -15,6 +15,8 @@ import com.smona.app.evaluationcar.ui.WebActivity;
 
 public class ActivityUtils {
 
+    public static final int ACTION_GALLERY = 1;
+
     public static void jumpBannerDetail(Context context, BannerBean banner) {
         Intent intent = new Intent();
         if (banner instanceof Parcelable) {

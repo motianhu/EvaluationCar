@@ -12,14 +12,11 @@ import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.view.Surface;
 
-import com.smona.app.evaluationcar.util.CarLog;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class CameraUtil {
-    private static final String TAG = "CameraUtil";
     //升序
     private static CameraUtil myCamPara = null;
 
@@ -114,7 +111,6 @@ public class CameraUtil {
         int i = 0;
         for (Size s : list) {
             if ((s.height >= minHeight)) {
-                CarLog.d(TAG, "s.height===" + s.height);
                 break;
             }
             i++;

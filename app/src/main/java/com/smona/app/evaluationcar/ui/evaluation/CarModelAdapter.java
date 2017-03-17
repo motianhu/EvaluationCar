@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.ImageMeta;
+import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 import com.smona.app.evaluationcar.util.ViewUtils;
 
@@ -56,13 +58,17 @@ public class CarModelAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = ViewUtils.inflater(mContext, R.layout.evaluation_image_item);
         }
-//        TextView title = (TextView)convertView.findViewById(R.id.name);
-//        title.setText("aaaa");
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);
         image.setLayoutParams(localLayoutParams);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.jumpOnlyActivity(mContext, CameraActivity.class);
+            }
+        });
 
         return convertView;
     }

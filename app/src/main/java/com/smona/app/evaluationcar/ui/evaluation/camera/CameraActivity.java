@@ -2,11 +2,14 @@ package com.smona.app.evaluationcar.ui.evaluation.camera;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.io.File;
 import java.io.IOException;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+
     private Camera mCamera;
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
@@ -41,6 +46,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private TextView mDescription;
     private TextView mNote;
     private TextView mNumPhoto;
+
+    private TextView mGallery;
+    private TextView mCancel;
 
 
     @Override
@@ -67,11 +75,16 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mFlashLight = (ImageView) findViewById(R.id.flash_light);
         mFlashLight.setOnClickListener(this);
 
-        mDescription = (TextView)findViewById(R.id.description);
+        mGallery = (TextView) findViewById(R.id.gallery);
+        mGallery.setOnClickListener(this);
+        mCancel = (TextView) findViewById(R.id.cancel);
+        mCancel.setOnClickListener(this);
+
+        mDescription = (TextView) findViewById(R.id.description);
         mDescription.setText("车辆左前45度");
-        mNote = (TextView)findViewById(R.id.note);
+        mNote = (TextView) findViewById(R.id.note);
         mNote.setText("(请打开天窗)");
-        mNumPhoto = (TextView)findViewById(R.id.numPhoto);
+        mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         mNumPhoto.setText("1/21");
     }
 
@@ -137,6 +150,40 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 }
 
                 break;
+            case R.id.gallery:
+                actionGallery();
+                break;
+            case R.id.cancel:
+                finish();
+                break;
+        }
+    }
+
+    private void actionGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityUtils.ACTION_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumns = {MediaStore.Images.Media.DATA};
+            Cursor c = null;
+            try {
+                c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePathColumns[0]);
+                String imagePath = c.getString(columnIndex);
+                //todo picture
+                CarLog.d(this, "onActivityResult imagePath: " + imagePath);
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
+            }
         }
     }
 
