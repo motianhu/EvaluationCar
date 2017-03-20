@@ -8,6 +8,8 @@ import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
 import com.smona.app.evaluationcar.framework.push.PushProxy;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 
+import org.xutils.x;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -24,6 +26,7 @@ public class EvaluationApp extends Application {
         PushProxy.init(this);
         ScreenInfo.getInstance().init(this);
         DBDelegator.getInstance().init(this);
+        x.Ext.init(this);
     }
 
 
