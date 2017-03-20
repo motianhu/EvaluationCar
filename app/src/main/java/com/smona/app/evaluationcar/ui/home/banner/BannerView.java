@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.BannerBean;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class BannerView extends FrameLayout {
         LinearLayout.LayoutParams params;
         View dot;
         for (int i = 0; i < count; i++) {
-            dot = ViewUtils.inflater(getContext(), R.layout.banner_scroll_indicator);
+            dot = ViewUtil.inflater(getContext(), R.layout.banner_scroll_indicator);
             params = new LinearLayout.LayoutParams(mAdIndicatorSize, mAdIndicatorSize);
             params.leftMargin = mAdIndicatorMargin;
             params.rightMargin = mAdIndicatorMargin;

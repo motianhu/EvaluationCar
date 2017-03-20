@@ -3,7 +3,6 @@ package com.smona.app.evaluationcar.framework;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.http.HttpProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
-import com.smona.app.evaluationcar.framework.upload.UploadServiceProxy;
 
 /**
  * Created by Moth on 2016/12/18.
@@ -14,13 +13,11 @@ public class ProxyFactory {
     private IProxy mImageLoaderProxy;
     private IProxy mEventProxy;
     private IProxy mHttpProxy;
-    private IProxy mUploadServiceProxy;
 
     private ProxyFactory(){
         mImageLoaderProxy = new ImageLoaderProxy();
         mEventProxy = new EventProxy();
         mHttpProxy = new HttpProxy();
-        mUploadServiceProxy = new UploadServiceProxy();
     }
 
     public static ProxyFactory getInstance() {
@@ -42,10 +39,6 @@ public class ProxyFactory {
 
     public HttpProxy getHttpProxy() {
         return (HttpProxy)mHttpProxy;
-    }
-
-    public UploadServiceProxy getUploadServiceProxy() {
-        return (UploadServiceProxy)mUploadServiceProxy;
     }
 
 

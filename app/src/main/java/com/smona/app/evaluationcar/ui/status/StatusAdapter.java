@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class StatusAdapter extends AbstractAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         CarBillBean carbill = (CarBillBean) mDatas.get(position);
         if (convertView == null) {
-            convertView = ViewUtils.inflater(mContext,
+            convertView = ViewUtil.inflater(mContext,
                     R.layout.status_list_item);
         }
 

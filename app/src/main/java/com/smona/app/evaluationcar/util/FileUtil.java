@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.framework.upload;
+package com.smona.app.evaluationcar.util;
 
 import java.io.File;
 import java.io.IOException;

@@ -11,7 +11,7 @@ import com.smona.app.evaluationcar.data.bean.ImageMeta;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ScreenInfo;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class CarModelAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = ViewUtils.inflater(mContext, R.layout.evaluation_image_item);
+            convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
         }
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();

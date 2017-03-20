@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.group.GroupListView;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 /**
  * Created by Moth on 2017/3/6.
@@ -25,11 +25,11 @@ public class PreEvaluationActivity extends BaseActivity {
 
     private void initListView(int id) {
         GroupListView listView = (GroupListView) findViewById(id);
-        LinearLayout header1 = (LinearLayout) ViewUtils.inflater(this, R.layout.preevaluation_list_item);
+        LinearLayout header1 = (LinearLayout) ViewUtil.inflater(this, R.layout.preevaluation_list_item);
         ((TextView) header1.findViewById(R.id.textItem)).setText("HEADER 1");
-        LinearLayout header2 = (LinearLayout) ViewUtils.inflater(this, R.layout.preevaluation_list_item);
+        LinearLayout header2 = (LinearLayout) ViewUtil.inflater(this, R.layout.preevaluation_list_item);
         ((TextView) header2.findViewById(R.id.textItem)).setText("HEADER 2");
-        LinearLayout footer = (LinearLayout) ViewUtils.inflater(this, R.layout.preevaluation_list_item);
+        LinearLayout footer = (LinearLayout) ViewUtil.inflater(this, R.layout.preevaluation_list_item);
         ((TextView) footer.findViewById(R.id.textItem)).setText("FOOTER");
         listView.addHeaderView(header1);
         listView.addHeaderView(header2);

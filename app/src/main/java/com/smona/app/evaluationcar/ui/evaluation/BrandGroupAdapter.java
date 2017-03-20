@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.group.GroupBaseAdapter;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 /**
  * Created by Moth on 2017/3/6.
@@ -39,7 +39,7 @@ public class BrandGroupAdapter extends GroupBaseAdapter {
     public View getItemView(int section, int position, View convertView, ViewGroup parent) {
         LinearLayout layout = null;
         if (convertView == null) {
-            layout = (LinearLayout)ViewUtils.inflater(parent.getContext(), R.layout.preevaluation_list_item);
+            layout = (LinearLayout) ViewUtil.inflater(parent.getContext(), R.layout.preevaluation_list_item);
         } else {
             layout = (LinearLayout) convertView;
         }
@@ -51,7 +51,7 @@ public class BrandGroupAdapter extends GroupBaseAdapter {
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
         LinearLayout layout = null;
         if (convertView == null) {
-            layout = (LinearLayout) ViewUtils.inflater(parent.getContext(), R.layout.preevaluation_header_item);
+            layout = (LinearLayout) ViewUtil.inflater(parent.getContext(), R.layout.preevaluation_header_item);
         } else {
             layout = (LinearLayout) convertView;
         }

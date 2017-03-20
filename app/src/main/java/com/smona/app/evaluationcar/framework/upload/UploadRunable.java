@@ -2,11 +2,15 @@ package com.smona.app.evaluationcar.framework.upload;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.text.TextUtils;
 
+import com.smona.app.evaluationcar.data.bean.CategoryInfo;
+import com.smona.app.evaluationcar.data.bean.UploadBean;
+import com.smona.app.evaluationcar.data.event.ProcessEvent;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.util.BitmapUtil;
 import com.smona.app.evaluationcar.util.CarLog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -18,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
@@ -25,7 +30,6 @@ import java.util.zip.GZIPInputStream;
 public class UploadRunable implements Runnable {
 
     private static final int UPLOAD_IMG_MAX_W = 720;
-    private static final String TAG = "Api.UploadRunable";
     private static final String IMAGE = "img";
     private static final int COMPRESS_QUALITY = 90;
     private static final String FILEPATH = "img.jpg";
@@ -39,16 +43,30 @@ public class UploadRunable implements Runnable {
 
     @Override
     public void run() {
-        CarLog.d(TAG, "start upload : " + mUploadTask.getFilePath());
+        UploadBean bean =  mUploadTask.mUploadBean;
+        List<CategoryInfo> imageInfos = bean.getImageInfos();
+        CarLog.d(this, "start upload : " + imageInfos);
+
         Map<String, String> params = new HashMap<String, String>();
         try {
-            String resutlJson = uploadFile(UPLOAD_IMG_URL, params, mUploadTask.getFilePath());
-            CarLog.d(TAG, " upload resultjson : " + resutlJson);
+            for(CategoryInfo imageInfo: imageInfos) {
+                //upload image
+                String resutlJson = uploadFile(UPLOAD_IMG_URL, params, imageInfo.getLocalUrl());
+                CarLog.d(this, " upload resultjson : " + resutlJson);
+                if(!TextUtils.isEmpty(resutlJson)) {
+                   continue;
+                }
+                //update db
+                DBDelegator.getInstance().updateUploadStatus(bean.getCarBillId(), "");
+                DBDelegator.getInstance().updateImageRemoteUrl(bean.getCarBillId(), "");
+                //post update ui
+                EventProxy.post(new ProcessEvent());
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            CarLog.d(TAG, " upload Exception : " + e.toString() + e.getMessage());
+            CarLog.d(this, " upload Exception : " + e.toString() + e.getMessage());
         } finally {
-            CarLog.d(TAG, " upload ErrorCode : " + mUploadTask.getErrorCode());
+            CarLog.d(this, " upload ResultCode : " + mUploadTask.getErrorCode());
             UploadTaskExecutor.onExecuteComplete(mUploadTask);
         }
     }
@@ -64,7 +82,7 @@ public class UploadRunable implements Runnable {
         FileInputStream fis = null;
         try {
             String url = uploadUrl;
-            CarLog.d(TAG, " uploading url : " + url);
+            CarLog.d(this, " uploading url : " + url);
             connect = (HttpURLConnection) new URL(url).openConnection();
             connect.setDoInput(true);
             connect.setDoOutput(true);
@@ -88,9 +106,9 @@ public class UploadRunable implements Runnable {
             dos.writeBytes(lineEnd);
 
             int[] imgWh = new int[2];
-            BitmapManager.getImgWH(filePath, imgWh);
+            BitmapUtil.getImgWH(filePath, imgWh);
             if (imgWh[0] <= UPLOAD_IMG_MAX_W) {
-                CarLog.d(TAG, "read img file");
+                CarLog.d(this, "read img file");
                 fis = new FileInputStream(filePath);
                 byte[] buffer = new byte[8192];
                 int count;
@@ -98,13 +116,13 @@ public class UploadRunable implements Runnable {
                     dos.write(buffer, 0, count);
                 }
             } else {
-                Bitmap bitmap = BitmapManager.getDesBitmap(filePath, UPLOAD_IMG_MAX_W, -1);
-                bitmap = BitmapManager.extractThumbnailIfNeed(bitmap, UPLOAD_IMG_MAX_W, -1);
+                Bitmap bitmap = BitmapUtil.getDesBitmap(filePath, UPLOAD_IMG_MAX_W, -1);
+                bitmap = BitmapUtil.extractThumbnailIfNeed(bitmap, UPLOAD_IMG_MAX_W, -1);
                 long size = dos.size();
                 bitmap.compress(CompressFormat.JPEG, COMPRESS_QUALITY, dos);
                 long zoomSize = dos.size() - size;
                 long fileSize = new File(filePath).length();
-                CarLog.d(TAG, "zoom size:" + zoomSize + " fileSize:" + fileSize + "  filePath:"
+                CarLog.d(this, "zoom size:" + zoomSize + " fileSize:" + fileSize + "  filePath:"
                         + filePath);
             }
             dos.writeBytes(lineEnd);
@@ -123,17 +141,18 @@ public class UploadRunable implements Runnable {
                     dos.close();
                 }
             } catch (IOException e) {
+                e.printStackTrace();
             }
             try {
                 if (fis != null) {
                     fis.close();
                 }
             } catch (IOException e) {
+                e.printStackTrace();
             }
             if (connect != null) {
                 connect.disconnect();
             }
-
         }
         return result;
     }

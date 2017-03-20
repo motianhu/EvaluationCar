@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.util.ViewUtils;
-
-import org.w3c.dom.Text;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 /**
  * Created by motianhu on 3/11/17.
@@ -32,7 +30,7 @@ public abstract class HeaderActivity extends BaseActivity {
         findViewById(R.id.left).setOnClickListener(headerListener);
         TextView title = (TextView)findViewById(R.id.center);
         title.setText(getHeaderTitle());
-        ViewUtils.setViewVisible(findViewById(R.id.right), showDelete());
+        ViewUtil.setViewVisible(findViewById(R.id.right), showDelete());
         findViewById(R.id.right).setOnClickListener(headerListener);
     }
 

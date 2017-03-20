@@ -3,8 +3,8 @@ package com.smona.app.evaluationcar.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharePerferrenceUtils {
-    private static final String TAG = "SharePerferrenceUtils";
+public class SPUtil {
+    private static final String TAG = "SPUtil";
     /**
      * 保存在手机里面的文件名
      */

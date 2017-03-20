@@ -16,7 +16,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 @SuppressLint("NewApi")
 public class BannerViewPager extends BaseViewPager {
@@ -49,7 +49,7 @@ public class BannerViewPager extends BaseViewPager {
 
     public void init(Context context) {
         for (int i = 0; i < CHILD_COUNT; i++) {
-            View view = ViewUtils.inflater(context, R.layout.banner_item);
+            View view = ViewUtil.inflater(context, R.layout.banner_item);
             ImageView imageView = (ImageView) view.findViewById(R.id.image);
             imageView.setScaleType(ScaleType.FIT_XY);
             addView(view);

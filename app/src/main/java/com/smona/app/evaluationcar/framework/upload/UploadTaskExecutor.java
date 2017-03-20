@@ -12,6 +12,7 @@ public final class UploadTaskExecutor {
         public void handleMessage(android.os.Message msg) {
             UploadTask task = (UploadTask) msg.obj;
             task.onUploadComplete();
+
             UploadTask waitTask = sTasks.poll();
             if (null != waitTask) {
                 ThreadPoolUtil.post(new UploadRunable(waitTask));
@@ -29,7 +30,6 @@ public final class UploadTaskExecutor {
             ThreadPoolUtil.post(new UploadRunable(task));
             sRunCount++;
         }
-
     }
 
     protected static void onExecuteComplete(UploadTask task) {

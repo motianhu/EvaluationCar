@@ -7,17 +7,15 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.data.bean.NewsBean;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.request.Deletor;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +31,7 @@ public class HomeListView extends BaseListView {
 
     @Override
     public void init() {
-        mHeader = (BannerHeader) ViewUtils.inflater(getContext(), R.layout.banner_header);
+        mHeader = (BannerHeader) ViewUtil.inflater(getContext(), R.layout.banner_header);
         this.addHeaderView(mHeader);
 
         mAdapter = new HomeAdapter(getContext());

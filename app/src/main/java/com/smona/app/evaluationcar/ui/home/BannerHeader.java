@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.BannerBean;
 import com.smona.app.evaluationcar.ui.home.banner.BannerView;
-import com.smona.app.evaluationcar.util.ViewUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
 
@@ -34,9 +34,9 @@ public class BannerHeader extends LinearLayout {
 
     public void update(List<BannerBean> bannerList) {
         if(bannerList == null || bannerList.size() <=0) {
-            ViewUtils.setViewVisible(mBanner, false);
+            ViewUtil.setViewVisible(mBanner, false);
         } else {
-            ViewUtils.setViewVisible(mBanner, true);
+            ViewUtil.setViewVisible(mBanner, true);
             mBanner.update(bannerList);
         }
     }

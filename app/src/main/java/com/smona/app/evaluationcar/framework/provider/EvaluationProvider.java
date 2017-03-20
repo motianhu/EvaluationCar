@@ -30,6 +30,7 @@ public class EvaluationProvider extends ContentProvider {
     private static final int CODE_CARBILL = CODE_BASE + 1;
     private static final int CODE_CARIMAGE = CODE_BASE + 2;
     private static final int CODE_IMAGEMETA = CODE_BASE + 3;
+    private static final int CODE_UPLOADTASK = CODE_BASE + 4;
 
     private static final UriMatcher URI_MATCH = new UriMatcher(
             UriMatcher.NO_MATCH);
@@ -43,10 +44,13 @@ public class EvaluationProvider extends ContentProvider {
                 CarImageTable.TABLE_NAME, CODE_CARIMAGE);
         URI_MATCH.addURI(DBConstants.AUTHORITY,
                 ImageMetaTable.TABLE_NAME, CODE_IMAGEMETA);
+        URI_MATCH.addURI(DBConstants.AUTHORITY,
+                UploadTaskTable.TABLE_NAME, CODE_UPLOADTASK);
 
         TABLE_MATCH.put(CODE_CARBILL, CarBillTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_CARIMAGE, CarImageTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
+        TABLE_MATCH.put(CODE_UPLOADTASK, UploadTaskTable.TABLE_NAME);
     }
 
     @Override
@@ -161,7 +165,12 @@ public class EvaluationProvider extends ContentProvider {
             String carbills = CarBillTable.getInstance().createTableSql();
             String carimage = CarImageTable.getInstance().createTableSql();
             String imagemeta = ImageMetaTable.getInstance().createTableSql();
+            String uploadtask = UploadTaskTable.getInstance().createTableSql();
+
             sqlList.add(carbills);
+            sqlList.add(carimage);
+            sqlList.add(imagemeta);
+            sqlList.add(uploadtask);
             return sqlList;
         }
     }
