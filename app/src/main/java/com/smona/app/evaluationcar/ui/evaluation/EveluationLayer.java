@@ -8,28 +8,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.BaseBean;
 import com.smona.app.evaluationcar.data.bean.BillTotalBean;
-import com.smona.app.evaluationcar.data.bean.NewsBean;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
-import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
-import com.smona.app.evaluationcar.framework.upload1.UploadUtils;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
-import com.smona.app.evaluationcar.data.event.SettingEvent;
-import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Created by motianhu on 2/28/17.
@@ -91,8 +80,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
             case R.id.evalution:
-                //ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
-                uploadImage();
+                ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
                 break;
             case R.id.queryVin:
                 ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
@@ -117,29 +105,5 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         if (bean != null) {
             mNotice.setText(bean.getMessage());
         }
-    }
-
-    private void uploadImage() {
-        RequestParams params = new RequestParams("http://119.23.128.214:8080/carWeb/external/app/uploadImage.html");
-        params.addParameter("createUser","cy");
-        params.addBodyParameter("image", new File("/sdcard/Screenshots/Screenshot_2017-03-19-22-01-48.png"));
-        UploadUtils.uploadMethod(params, new Callback.CommonCallback<String>(){
-            public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess result="+result);
-            }
-
-            public void onError(Throwable ex, boolean isOnCallback){
-                CarLog.d(this, "onError isOnCallback="+isOnCallback + "; Throwable=" +ex);
-            }
-
-            public void onCancelled(CancelledException cex){
-
-            }
-
-            public void onFinished()
-            {
-                CarLog.d(this, "onFinished");
-            }
-        });
     }
 }

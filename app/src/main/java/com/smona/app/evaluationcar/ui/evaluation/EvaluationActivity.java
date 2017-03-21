@@ -2,13 +2,19 @@ package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.ImageMeta;
+import com.smona.app.evaluationcar.framework.http.HttpProxy;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
+import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.IntentConstants;
+
+import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +43,44 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     private View mInputGroup;
 
 
+    //data
+    private String mCarBillId;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluation);
         initViews();
+        initDatas();
+    }
+
+    private void initDatas() {
+        mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
+        if(TextUtils.isEmpty(mCarBillId)) {
+            HttpProxy.getCarBillId(new Callback.CommonCallback<String>(){
+                @Override
+                public void onSuccess(String result) {
+                    CarLog.d(this, "onSuccess result: " + result);
+                    mCarBillId = result;
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+                    CarLog.d(this, "onFinished");
+                }
+            });
+        }
     }
 
     private void initViews() {
