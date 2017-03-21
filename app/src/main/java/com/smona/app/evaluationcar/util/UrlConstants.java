@@ -15,16 +15,15 @@ public class UrlConstants {
     private static final String PORT = "8080";
     private static final String PROJECT = "carWeb";
 
+    private static Map<Integer, String> INTEFACES = new HashMap<>();
 
     public static final int CREATE_CARBILLID = 1;
     public static final int UPLOAD_IMAGE = 2;
-
-
-    private static Map<Integer, String> INTEFACES = new HashMap<>();
-
+    public static final int QUERY_IMAGEMETA = 3;
     static {
         INTEFACES.put(CREATE_CARBILLID, "external/carBill/getCarBillIdNextVal.html");
         INTEFACES.put(UPLOAD_IMAGE, "external/app/uploadImage.html");
+        INTEFACES.put(QUERY_IMAGEMETA, "");
     }
 
 

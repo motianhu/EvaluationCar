@@ -63,8 +63,8 @@ public class HomeListView extends BaseListView {
 
 
     private void post() {
-        Deletor.requestBanner();
-        Deletor.requestNews();
+        Deletor.getInstance().requestBanner();
+        Deletor.getInstance().requestNews();
     }
 
 }

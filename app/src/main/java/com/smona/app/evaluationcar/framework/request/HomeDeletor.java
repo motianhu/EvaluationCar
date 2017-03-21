@@ -1,12 +1,17 @@
 package com.smona.app.evaluationcar.framework.request;
 
-import com.smona.app.evaluationcar.data.item.BannerItem;
-import com.smona.app.evaluationcar.data.item.BillTotalItem;
-import com.smona.app.evaluationcar.data.item.NewsItem;
+import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
+import com.smona.app.evaluationcar.data.item.BannerItem;
+import com.smona.app.evaluationcar.data.item.BillTotalItem;
+import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.util.CarLog;
+
+import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 
@@ -14,20 +19,55 @@ import java.util.ArrayList;
  * Created by Moth on 2017/3/15.
  */
 
-public class HomeDeletor {
-    public static void requestBanner() {
+public class HomeDeletor extends BaseDelegator {
+    private volatile static HomeDeletor sInstance;
+
+    private HomeDeletor() {
+    }
+
+    public static HomeDeletor getInstance() {
+        if (sInstance == null) {
+            sInstance = new HomeDeletor();
+        }
+        return sInstance;
+    }
+
+    public void requestBanner() {
         BannerEvent event = createBannerTest();
         EventProxy.post(event);
     }
 
-    public static void requestNews() {
+    public void requestNews() {
         NewsEvent news = createNewsTest();
         EventProxy.post(news);
     }
 
-    public static void requestTotallBill() {
+    public void requestTotallBill() {
         BillTotalEvent bean = createBillTotalTest();
         EventProxy.post(bean);
+    }
+
+    public void requestImageMeta() {
+        HttpProxy.getInstance().requestImageMeta(new Callback.CommonCallback<ImageMetaBean>() {
+            public void onSuccess(ImageMetaBean result) {
+                CarLog.d(this, "onSuccess result: " + result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+                CarLog.d(this, "onFinished");
+            }
+        });
     }
 
 

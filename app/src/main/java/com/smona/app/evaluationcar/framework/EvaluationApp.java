@@ -2,7 +2,7 @@ package com.smona.app.evaluationcar.framework;
 
 import android.app.Application;
 
-import com.smona.app.evaluationcar.framework.http.HttpProxy;
+import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
@@ -24,7 +24,7 @@ public class EvaluationApp extends Application {
         PushProxy.init(this);
         ScreenInfo.getInstance().init(this);
         DBDelegator.getInstance().init(this);
-        HttpProxy.init(this);
+        HttpProxy.getInstance().init(this);
     }
 
 

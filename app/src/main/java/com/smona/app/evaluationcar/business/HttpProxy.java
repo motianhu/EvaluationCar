@@ -1,8 +1,9 @@
-package com.smona.app.evaluationcar.framework.http;
+package com.smona.app.evaluationcar.business;
 
 import android.app.Application;
 
 import com.smona.app.evaluationcar.framework.IProxy;
+import com.smona.app.evaluationcar.framework.request.HomeDeletor;
 import com.smona.app.evaluationcar.framework.upload1.UploadUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
@@ -18,11 +19,23 @@ import java.io.File;
 
 public class HttpProxy implements IProxy {
 
-    public static void init(Application app) {
+    private volatile static HttpProxy sInstance;
+
+    private HttpProxy() {
+    }
+
+    public static HttpProxy getInstance() {
+        if (sInstance == null) {
+            sInstance = new HttpProxy();
+        }
+        return sInstance;
+    }
+
+    public void init(Application app) {
         x.Ext.init(app);
     }
 
-    public static void getCarBillId(Callback.CommonCallback callback) {
+    public void getCarBillId(Callback.CommonCallback callback) {
         RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
         x.http().get(params, callback);
     }
@@ -37,9 +50,15 @@ public class HttpProxy implements IProxy {
         UploadUtils.uploadMethod(params, callback);
     }
 
-    private static RequestParams createParams(int type) {
+    private RequestParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
         RequestParams params = new RequestParams(url);
         return params;
+    }
+
+
+    public void requestImageMeta(Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
+        x.http().get(params, callback);
     }
 }

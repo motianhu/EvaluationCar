@@ -5,15 +5,31 @@ package com.smona.app.evaluationcar.framework.request;
  */
 
 public class Deletor {
-    public static void  requestBanner() {
-        HomeDeletor.requestBanner();
+    private volatile static Deletor sInstance;
+
+    private Deletor() {
     }
 
-    public static void  requestNews() {
-        HomeDeletor.requestNews();
+    public static Deletor getInstance() {
+        if (sInstance == null) {
+            sInstance = new Deletor();
+        }
+        return sInstance;
     }
 
-    public static void  requestTotallBill() {
-        HomeDeletor.requestTotallBill();
+    public void requestBanner() {
+        HomeDeletor.getInstance().requestBanner();
+    }
+
+    public void requestNews() {
+        HomeDeletor.getInstance().requestNews();
+    }
+
+    public void requestTotallBill() {
+        HomeDeletor.getInstance().requestTotallBill();
+    }
+
+    public void requestImageMeta() {
+        HomeDeletor.getInstance().requestImageMeta();
     }
 }

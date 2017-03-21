@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.framework.http.HttpProxy;
+import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -58,7 +58,7 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     private void initDatas() {
         mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
         if(TextUtils.isEmpty(mCarBillId)) {
-            HttpProxy.getCarBillId(new Callback.CommonCallback<String>(){
+            HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>(){
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(this, "onSuccess result: " + result);
