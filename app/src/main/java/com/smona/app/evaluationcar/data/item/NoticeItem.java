@@ -1,17 +1,16 @@
-package com.smona.app.evaluationcar.data.bean;
+package com.smona.app.evaluationcar.data.item;
 
 import android.os.Parcel;
+
+import com.smona.app.evaluationcar.data.bean.BaseBean;
 
 /**
  * Created by Moth on 2017/3/15.
  */
 
-public class NoticeBean extends BaseBean {
+public class NoticeItem extends BaseBean {
     private String message;
 
-    public NoticeBean(Parcel in) {
-        super(in);
-    }
 
     public String getMessage() {
         return message;

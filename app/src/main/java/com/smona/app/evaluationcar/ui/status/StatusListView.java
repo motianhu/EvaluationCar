@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.event.StatusEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
-import com.smona.app.evaluationcar.data.event.StatusEvent;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -56,14 +56,12 @@ public class StatusListView extends BaseListView {
     private Object createTest() {
         ArrayList<CarBillBean> carBillList = new ArrayList<CarBillBean>();
         for (int i = 0; i < 45; i++) {
-            CarBillBean carbill = new CarBillBean(null);
-            carbill.setId("NS201612021100" + i);
-            carbill.setCreateTime("2016-12-01 12:11:00");
-            carbill.setUpdateTime("2016-12-21 15:11:00");
-            carbill.setTitle("" + i);
-            carbill.setStatus(1);
-            carbill.setUrl("http://www.baidu.com");
-            carbill.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");
+            CarBillBean carbill = new CarBillBean();
+            carbill.carBillId = "NS201612021100" + i;
+            carbill.createTime = "2016-12-01 12:11:00";
+            carbill.updateTime = "2016-12-21 15:11:00";
+            carbill.status = 1;
+            carbill.thumbUrl = "http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg";
             carBillList.add(carbill);
         }
         return carBillList;

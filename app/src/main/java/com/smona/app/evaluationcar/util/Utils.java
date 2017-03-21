@@ -3,7 +3,7 @@ package com.smona.app.evaluationcar.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.smona.app.evaluationcar.data.bean.UserBean;
+import com.smona.app.evaluationcar.data.item.UserItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,14 +25,14 @@ public class Utils {
     private static final String TAG = "Utils";
 
     /* 保存用户登录信息列表 */
-    public static void saveUserList(Context context, ArrayList<UserBean> users)
+    public static void saveUserList(Context context, ArrayList<UserItem> users)
             throws Exception {
         /* 保存 */
         Log.i(TAG, "正在保存");
         Writer writer = null;
         OutputStream out = null;
         JSONArray array = new JSONArray();
-        for (UserBean user : users) {
+        for (UserItem user : users) {
             array.put(user.toJSON());
         }
         try {
@@ -48,10 +48,10 @@ public class Utils {
     }
 
     /* 获取用户登录信息列表 */
-    public static ArrayList<UserBean> getUserList(Context context) {
+    public static ArrayList<UserItem> getUserList(Context context) {
 		/* 加载 */
         FileInputStream in = null;
-        ArrayList<UserBean> users = new ArrayList<UserBean>();
+        ArrayList<UserItem> users = new ArrayList<UserItem>();
         try {
 
             in = context.openFileInput(FILENAME);
@@ -67,7 +67,7 @@ public class Utils {
             jsonArray = (JSONArray) new JSONTokener(jsonString.toString())
                     .nextValue(); // 把字符串转换成JSONArray对象
             for (int i = 0; i < jsonArray.length(); i++) {
-                UserBean user = new UserBean(jsonArray.getJSONObject(i));
+                UserItem user = new UserItem(jsonArray.getJSONObject(i));
                 users.add(user);
             }
 

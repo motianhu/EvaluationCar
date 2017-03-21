@@ -1,19 +1,16 @@
-package com.smona.app.evaluationcar.data.bean;
+package com.smona.app.evaluationcar.data.item;
 
-import android.os.Parcel;
+import com.smona.app.evaluationcar.data.bean.BaseBean;
 
 /**
  * Created by Moth on 2017/3/15.
  */
 
-public class BillTotalBean extends BaseBean {
+public class BillTotalItem extends BaseBean {
     private int unCommitCount;
     private int passCount;
     private int notPassCount;
     private int auditingCount;
-    public BillTotalBean(Parcel in) {
-        super(in);
-    }
 
     public int getUnCommitCount() {
         return unCommitCount;

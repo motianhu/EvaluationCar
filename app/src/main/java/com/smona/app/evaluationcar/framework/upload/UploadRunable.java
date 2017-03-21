@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.text.TextUtils;
 
-import com.smona.app.evaluationcar.data.bean.CategoryInfo;
-import com.smona.app.evaluationcar.data.bean.UploadBean;
+import com.smona.app.evaluationcar.data.item.CategoryItem;
+import com.smona.app.evaluationcar.data.item.UploadItem;
 import com.smona.app.evaluationcar.data.event.ProcessEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -43,13 +43,13 @@ public class UploadRunable implements Runnable {
 
     @Override
     public void run() {
-        UploadBean bean =  mUploadTask.mUploadBean;
-        List<CategoryInfo> imageInfos = bean.getImageInfos();
+        UploadItem bean =  mUploadTask.mUploadBean;
+        List<CategoryItem> imageInfos = bean.getImageInfos();
         CarLog.d(this, "start upload : " + imageInfos);
 
         Map<String, String> params = new HashMap<String, String>();
         try {
-            for(CategoryInfo imageInfo: imageInfos) {
+            for(CategoryItem imageInfo: imageInfos) {
                 //upload image
                 String resutlJson = uploadFile(UPLOAD_IMG_URL, params, imageInfo.getLocalUrl());
                 CarLog.d(this, " upload resultjson : " + resutlJson);

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
 
-import com.smona.app.evaluationcar.data.bean.BannerBean;
+import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.WebActivity;
 
@@ -17,7 +17,7 @@ public class ActivityUtils {
 
     public static final int ACTION_GALLERY = 1;
 
-    public static void jumpBannerDetail(Context context, BannerBean banner) {
+    public static void jumpBannerDetail(Context context, BannerItem banner) {
         Intent intent = new Intent();
         if (banner instanceof Parcelable) {
             intent.putExtra("", banner);

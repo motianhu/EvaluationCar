@@ -1,10 +1,10 @@
-package com.smona.app.evaluationcar.data.bean;
+package com.smona.app.evaluationcar.data.item;
 
 /**
  * Created by motianhu on 3/20/17.
  */
 
-public class CategoryInfo {
+public class CategoryItem {
     private String imageClass;
     private String remoteUrl;
     private String localUrl;

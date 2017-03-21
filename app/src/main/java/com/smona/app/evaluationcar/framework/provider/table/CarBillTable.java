@@ -1,10 +1,10 @@
-package com.smona.app.evaluationcar.framework.provider;
+package com.smona.app.evaluationcar.framework.provider.table;
 
 /**
  * Created by motianhu on 3/8/17.
  */
 
-public class CarBillTable extends BaseCarColumns {
+public class CarBillTable extends BaseTable {
     public static final String TABLE_NAME = "carbill";
 
     public static final String CARBILLID = "carBillId";
@@ -15,6 +15,7 @@ public class CarBillTable extends BaseCarColumns {
     public static final String GPTIME = "zsTime";
     public static final String BILLSTATUS = "billStatus";
     public static final String PRICE = "price";
+    public static final String THUMBUrl = "thumbUrl";
     public static final String DESCRIPTION = "description";
 
     private static volatile CarBillTable sInstance = null;
@@ -47,7 +48,9 @@ public class CarBillTable extends BaseCarColumns {
                 + GPTIME + " TEXT, "
                 + BILLSTATUS + " INTEGER, "
                 + DESCRIPTION + " TEXT, "
-                + PRICE + " TEXT " + ")";
+                + THUMBUrl + " TEXT, "
+                + PRICE + " DOUBLE "
+                + ")";
     }
 
     @Override

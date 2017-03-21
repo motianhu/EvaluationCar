@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.BillTotalBean;
+import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.ui.HomeActivity;
@@ -90,7 +90,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BillTotalEvent event) {
-        BillTotalBean bean = (BillTotalBean) event.getContent();
+        BillTotalItem bean = (BillTotalItem) event.getContent();
         if (bean != null) {
             mUnCommitBtn.setText(bean.getUnCommitCount());
             mAuditingBtn.setText(bean.getAuditingCount());

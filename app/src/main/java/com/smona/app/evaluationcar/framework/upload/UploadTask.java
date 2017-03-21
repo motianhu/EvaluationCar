@@ -1,6 +1,6 @@
 package com.smona.app.evaluationcar.framework.upload;
 
-import com.smona.app.evaluationcar.data.bean.UploadBean;
+import com.smona.app.evaluationcar.data.item.UploadItem;
 import com.smona.app.evaluationcar.util.CarLog;
 
 public class UploadTask {
@@ -9,13 +9,13 @@ public class UploadTask {
     public final static int STATE_RUNNING = 1;
     public final static int STATE_COMPLETED = 2;
 
-    protected UploadBean mUploadBean;
+    protected UploadItem mUploadBean;
     private OnUploadCompleteListener mOnUploadCompleteListener;
 
     protected int mErrorCode = ResultCode.NONE;
     private int mState = STATE_NONE;
 
-    public UploadTask(UploadBean uploadBean) {
+    public UploadTask(UploadItem uploadBean) {
         this.mUploadBean = uploadBean;
     }
 

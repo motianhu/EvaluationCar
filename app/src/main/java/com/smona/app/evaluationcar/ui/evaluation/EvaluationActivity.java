@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.ImageMeta;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.http.HttpProxy;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
@@ -115,10 +115,10 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.rb_car_models).performClick();
     }
 
-    private List<ImageMeta> createCarModel(int count) {
-        List<ImageMeta> data = new ArrayList<ImageMeta>();
+    private List<ImageMetaBean> createCarModel(int count) {
+        List<ImageMetaBean> data = new ArrayList<ImageMetaBean>();
         for (int i = 0; i < count; i++) {
-            data.add(new ImageMeta());
+            data.add(new ImageMetaBean());
         }
         return data;
     }

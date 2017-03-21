@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.BannerBean;
-import com.smona.app.evaluationcar.data.bean.NewsBean;
+import com.smona.app.evaluationcar.data.item.BannerItem;
+import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.framework.request.Deletor;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
@@ -40,7 +40,7 @@ public class HomeListView extends BaseListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BannerEvent event) {
-        List<BannerBean> list = (List<BannerBean>) event.getContent();
+        List<BannerItem> list = (List<BannerItem>) event.getContent();
         if (list != null) {
             mHeader.update(list);
         }
@@ -48,7 +48,7 @@ public class HomeListView extends BaseListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(NewsEvent event) {
-        List<NewsBean> list = (List<NewsBean>) event.getContent();
+        List<NewsItem> list = (List<NewsItem>) event.getContent();
         if (list != null) {
             mAdapter.update(list);
         }

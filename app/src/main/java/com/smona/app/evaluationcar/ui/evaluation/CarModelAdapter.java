@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.ImageMeta;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ScreenInfo;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CarModelAdapter extends BaseAdapter {
 
-    private List<ImageMeta> mDatas = new ArrayList<ImageMeta>();
+    private List<ImageMetaBean> mDatas = new ArrayList<ImageMetaBean>();
     private Context mContext;
     private int mImageWidth;
 
@@ -33,7 +33,7 @@ public class CarModelAdapter extends BaseAdapter {
         mImageWidth = ((i - j * 3) / 2);
     }
 
-    public void update(List<ImageMeta> datas) {
+    public void update(List<ImageMetaBean> datas) {
         mDatas.addAll(datas);
     }
 

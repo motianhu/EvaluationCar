@@ -1,8 +1,8 @@
 package com.smona.app.evaluationcar.framework.request;
 
-import com.smona.app.evaluationcar.data.bean.BannerBean;
-import com.smona.app.evaluationcar.data.bean.BillTotalBean;
-import com.smona.app.evaluationcar.data.bean.NewsBean;
+import com.smona.app.evaluationcar.data.item.BannerItem;
+import com.smona.app.evaluationcar.data.item.BillTotalItem;
+import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
@@ -33,13 +33,13 @@ public class HomeDeletor {
 
     private static BannerEvent createBannerTest() {
         BannerEvent event = new BannerEvent();
-        ArrayList<BannerBean> bannerList = new ArrayList<BannerBean>();
+        ArrayList<BannerItem> bannerList = new ArrayList<BannerItem>();
         for (int i = 0; i < 5; i++) {
-            BannerBean banner = new BannerBean(null);
-            banner.setId(i);
-            banner.setTitle("" + i);
-            banner.setUrl("http://www.baidu.com");
-            banner.setImgurl("http://assetsdl.gioneemobile.net/attachs/theme/subjectImage/201701/587c2e26cf05d.jpg");
+            BannerItem banner = new BannerItem();
+            banner.bannerId = i;
+            banner.title = "" + i;
+            banner.url = "http://www.baidu.com";
+            banner.imgurl = "http://assetsdl.gioneemobile.net/attachs/theme/subjectImage/201701/587c2e26cf05d.jpg";
             bannerList.add(banner);
         }
         event.setContent(bannerList);
@@ -48,15 +48,15 @@ public class HomeDeletor {
 
     private static NewsEvent createNewsTest() {
         NewsEvent event = new NewsEvent();
-        ArrayList<NewsBean> news = new ArrayList<NewsBean>();
+        ArrayList<NewsItem> news = new ArrayList<NewsItem>();
         for (int i = 0; i < 5; i++) {
-            NewsBean item = new NewsBean(null);
-            item.setId(i);
-            item.setTitle("" + i);
-            item.setTime("发布时间 2017-01-23 10:23:12");
-            item.setSummary("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
-            item.setUrl("http://www.baidu.com");
-            item.setImgurl("http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg");
+            NewsItem item = new NewsItem();
+            item.newsId = i;
+            item.title = "" + i;
+            item.time = "发布时间 2017-01-23 10:23:12";
+            item.summary = "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
+            item.url = "http://www.baidu.com";
+            item.imgurl = "http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg";
             news.add(item);
         }
         event.setContent(news);
@@ -65,7 +65,7 @@ public class HomeDeletor {
 
     private static BillTotalEvent createBillTotalTest() {
         BillTotalEvent event = new BillTotalEvent();
-        BillTotalBean bean = new BillTotalBean(null);
+        BillTotalItem bean = new BillTotalItem();
         bean.setAuditingCount(20);
         bean.setNotPassCount(10);
         bean.setPassCount(15);

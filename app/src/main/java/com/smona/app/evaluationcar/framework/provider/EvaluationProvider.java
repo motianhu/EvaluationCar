@@ -12,6 +12,10 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 import com.smona.app.evaluationcar.framework.EvaluationApp;
+import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
+import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
+import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
+import com.smona.app.evaluationcar.framework.provider.table.UploadTaskTable;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;

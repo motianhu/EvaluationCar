@@ -1,21 +1,21 @@
-package com.smona.app.evaluationcar.framework.provider;
+package com.smona.app.evaluationcar.framework.provider.table;
 
 /**
  * Created by motianhu on 3/11/17.
  */
 
-public class ImageMetaTable extends BaseCarColumns {
+public class ImageMetaTable extends BaseTable {
     public static final String TABLE_NAME = "imagemeta";
 
-    private static final String IMAGEID = "imageId";
-    private static final String GROUPNAME = "groupName"; //分组名
-    private static final String LEAST = "least"; //拍照个数
-    private static final String MOST = "most"; //拍照个数
-    private static final String DISPLAYNAME = "displayName"; //水印名称
-    private static final String NOTE = "note"; //水印提示
-    private static final String MASKURL = "maskUrl";  //水印url
-    private static final String TODOURI = "todoUrl"; //提示url
-    private static final String TODO = "todo"; //提示内容
+    public static final String IMAGEID = "imageId";
+    public static final String GROUPNAME = "groupName"; //分组名
+    public static final String LEAST = "least"; //拍照个数
+    public static final String MOST = "most"; //拍照个数
+    public static final String DISPLAYNAME = "displayName"; //水印名称
+    public static final String NOTE = "note"; //水印提示
+    public static final String MASKURL = "maskUrl";  //水印url
+    public static final String TODOURI = "todoUrl"; //提示url
+    public static final String TODO = "todo"; //提示内容
 
     private static volatile ImageMetaTable mInstance = null;
 
@@ -42,9 +42,9 @@ public class ImageMetaTable extends BaseCarColumns {
                 + IMAGEID + " INTEGER , "
                 + GROUPNAME + " TEXT, "
                 + LEAST + " INTEGER, "
+                + MOST + " INTEGER, "
                 + DISPLAYNAME + " TEXT, "
                 + NOTE + " TEXT, "
-                + MOST + " INTEGER, "
                 + MASKURL + " TEXT, "
                 + TODOURI + " TEXT, "
                 + TODO + " TEXT " + ")";

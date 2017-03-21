@@ -48,16 +48,16 @@ public class StatusAdapter extends AbstractAdapter {
         convertView.setTag(carbill);
 
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
-        ImageLoaderProxy.loadImage(carbill.getImgurl(), carImage);
+        ImageLoaderProxy.loadImage(carbill.thumbUrl, carImage);
 
         TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
-        textNum.setText(mContext.getString(R.string.list_item_number) + " " + carbill.getId());
+        textNum.setText(mContext.getString(R.string.list_item_number) + " " + carbill.carBillId);
 
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
-        textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.getCreateTime());
+        textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 
         TextView textNote = (TextView) convertView.findViewById(R.id.carNote);
-        textNote.setText(mContext.getString(R.string.list_item_note) + " " + carbill.getNote());
+        textNote.setText(mContext.getString(R.string.list_item_note) + " " + carbill.description);
 
 
         return convertView;
@@ -68,7 +68,7 @@ public class StatusAdapter extends AbstractAdapter {
         Object tag = v.getTag();
         if(tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean)tag;
-            if(info.getStatus() == 1) {
+            if(info.status == 1) {
                 ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, EvaluationActivity.class);
             }else {
                 ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, StatusActivity.class);

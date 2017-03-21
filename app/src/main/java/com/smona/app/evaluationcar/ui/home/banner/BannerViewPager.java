@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.BannerBean;
+import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -29,7 +29,7 @@ public class BannerViewPager extends BaseViewPager {
     final static float TOUCH_SLOP_DAMPING_FACTOR = 4;
 
     private boolean mScrollEnable = false;
-    private List<BannerBean> mDataList = new ArrayList<BannerBean>();
+    private List<BannerItem> mDataList = new ArrayList<BannerItem>();
     private int mCurrentIndex = 0;
     private int mCurrentPos = 0;
     private int mDirection = SCROLL_DIRECTION_MEDDILE;
@@ -163,9 +163,9 @@ public class BannerViewPager extends BaseViewPager {
         mPageSelecteListener = listener;
     }
 
-    public void update(List<BannerBean> data) {
+    public void update(List<BannerItem> data) {
         if (!data.isEmpty()) {
-            mDataList = new ArrayList<BannerBean>(data);
+            mDataList = new ArrayList<BannerItem>(data);
             mCurrentPos = 0;
             setPageListener(mPageListener);
             setOnSingleTouchListener(mPageClickListener);
@@ -194,8 +194,8 @@ public class BannerViewPager extends BaseViewPager {
             return;
         }
         if (mDataList.size() > 0) {
-            BannerBean info = mDataList.get(pos);
-            String url = info.getImgurl();
+            BannerItem info = mDataList.get(pos);
+            String url = info.imgurl;
             ImageView view = (ImageView) getChildAt(index).findViewById(
                     R.id.image);
             ImageLoaderProxy.loadImage(url, view);
@@ -293,7 +293,7 @@ public class BannerViewPager extends BaseViewPager {
             if (mDataList.size() <= mCurrentPos) {
                 return;
             }
-            BannerBean info = mDataList.get(mCurrentPos);
+            BannerItem info = mDataList.get(mCurrentPos);
             ActivityUtils.jumpBannerDetail(getContext(), info);
         }
 

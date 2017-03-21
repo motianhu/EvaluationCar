@@ -1,18 +1,20 @@
-package com.smona.app.evaluationcar.framework.provider;
+package com.smona.app.evaluationcar.framework.provider.table;
 
 //Gionee <Moth><2015-03-14> add for CR01454311 begin
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public abstract class BaseCarColumns implements BaseColumns {
+import com.smona.app.evaluationcar.framework.provider.DBConstants;
+
+public abstract class BaseTable implements BaseColumns {
     protected static final String PARAMETER_NOTIFY = "notify";
 
     public String mTableName;
     public Uri mContentUriNotify;
     public Uri mContentUriNoNotify;
 
-    protected BaseCarColumns() {
+    protected BaseTable() {
         mTableName = getTableName();
         mContentUriNotify = Uri.parse("content://" + DBConstants.AUTHORITY + "/" + mTableName);
         mContentUriNoNotify = Uri.parse("content://" + DBConstants.AUTHORITY + "/"

@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.UserBean;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
     private ImageView mLoginMoreUserView; // 弹出下拉弹出窗的按钮
     private String mIdString;
     private String mPwdString;
-    private ArrayList<UserBean> mUsers; // 用户列表
+    private ArrayList<UserItem> mUsers; // 用户列表
     private ListView mUserIdListView; // 下拉弹出窗显示的ListView对象
     private MyAapter mAdapter; // ListView的监听器
     private PopupWindow mPop; // 下拉弹出窗
@@ -88,9 +88,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
     }
 
     /* ListView的适配器 */
-    class MyAapter extends ArrayAdapter<UserBean> {
+    class MyAapter extends ArrayAdapter<UserItem> {
 
-        public MyAapter(ArrayList<UserBean> users) {
+        public MyAapter(ArrayList<UserItem> users) {
             super(LoginActivity.this, 0, users);
         }
 
@@ -256,14 +256,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
                     boolean mIsSave = true;
                     try {
                         Log.i(TAG, "保存用户列表");
-                        for (UserBean user : mUsers) { // 判断本地文档是否有此ID用户
+                        for (UserItem user : mUsers) { // 判断本地文档是否有此ID用户
                             if (user.getId().equals(mIdString)) {
                                 mIsSave = false;
                                 break;
                             }
                         }
                         if (mIsSave) { // 将新用户加入users
-                            UserBean user = new UserBean(mIdString, mPwdString);
+                            UserItem user = new UserItem(mIdString, mPwdString);
                             mUsers.add(user);
                         }
 
