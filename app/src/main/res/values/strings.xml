@@ -45,9 +45,17 @@
     <string name="evalution_gonggao">公告</string>
 
 
-    <string name="evalution_cartype">车型图</string>
-    <string name="certificates_title">证件照</string>
-    <string name="append_title">附加</string>
+    <string name="class_registration">登记证</string>
+    <string name="class_driving_license">行驶证</string>
+    <string name="class_vehicle_nameplate">车辆铭牌</string>
+    <string name="class_car_body">车身外观</string>
+    <string name="class_car_frame">车骨架</string>
+    <string name="class_vehicle_interior">车辆内饰</string>
+    <string name="class_difference_supplement">差异补充 </string>
+    <string name="class_original_car_insurancet">原车保险</string>
+
+
+    <string name="add_picture">添加照片</string>
 
 
     <string name="cancel">取消</string>

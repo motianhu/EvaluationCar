@@ -14,6 +14,8 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,6 +52,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private TextView mGallery;
     private TextView mCancel;
 
+    //Animation
+    private View mExplainView;
+    private Animation mCollapseAnimation;
+    private Animation mExpandAnimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         setContentView(R.layout.activity_camera);
         initView();
         initData();
+        initAnimate();
     }
 
     private void initView() {
@@ -86,6 +94,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mNote.setText("(请打开天窗)");
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         mNumPhoto.setText("1/21");
+
+        mExplainView = findViewById(R.id.lin_explain_btn);
+        mExplainView.setOnClickListener(this);
     }
 
     private void initData() {
@@ -93,68 +104,107 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         screenWidth = dm.widthPixels;
     }
 
+    private void initAnimate() {
+        mExpandAnimation = AnimationUtils.loadAnimation(this, R.anim.expend_up);
+        mCollapseAnimation = AnimationUtils.loadAnimation(this, R.anim.collapse_down);
+        mCollapseAnimation.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationEnd(Animation paramAnimation) {
+            }
+
+            public void onAnimationRepeat(Animation paramAnimation) {
+            }
+
+            public void onAnimationStart(Animation paramAnimation) {
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_camera:
-                if (mIsPreview) {
-                    switch (mLightModel) {
-                        case 0:
-                            //关闭
-                            CameraUtil.getInstance().turnLightOff(mCamera);
-                            break;
-                        case 1:
-                            CameraUtil.getInstance().turnLightOn(mCamera);
-                            break;
-                        case 2:
-                            //自动
-                            CameraUtil.getInstance().turnLightAuto(mCamera);
-                            break;
-                    }
-                    captrue();
-                    mIsPreview = false;
-                }
+                onCamera();
                 break;
-
             //退出相机界面 释放资源
             case R.id.camera_close:
                 finish();
                 break;
-
             //闪光灯
             case R.id.flash_light:
-                Camera.Parameters parameters = mCamera.getParameters();
-                switch (mLightModel) {
-                    case 0:
-                        //打开
-                        mLightModel = 1;
-                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_on);
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
-                        mCamera.setParameters(parameters);
-                        break;
-                    case 1:
-                        //自动
-                        mLightModel = 2;
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-                        mCamera.setParameters(parameters);
-                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_auto);
-                        break;
-                    case 2:
-                        //关闭
-                        mLightModel = 0;
-                        //关闭
-                        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                        mCamera.setParameters(parameters);
-                        mFlashLight.setImageResource(R.drawable.btn_camera_flash_off);
-                        break;
-                }
-
+                onFlashLight();
                 break;
             case R.id.gallery:
                 actionGallery();
                 break;
             case R.id.cancel:
                 finish();
+                break;
+            case R.id.lin_explain_btn:
+                onAnimationExplain();
+                break;
+        }
+    }
+
+    private void onAnimationExplain() {
+        if (mExplainView.getVisibility() == View.VISIBLE) {
+            closeAnimal();
+            return;
+        }
+        mExplainView.setVisibility(View.VISIBLE);
+        mExplainView.startAnimation(this.mExpandAnimation);
+    }
+
+    private void closeAnimal() {
+        if (mExplainView.getVisibility() != View.VISIBLE)
+            return;
+        this.mExplainView.setVisibility(View.GONE);
+        this.mExplainView.startAnimation(this.mCollapseAnimation);
+    }
+
+    private void onCamera() {
+        if (mIsPreview) {
+            switch (mLightModel) {
+                case 0:
+                    //关闭
+                    CameraUtil.getInstance().turnLightOff(mCamera);
+                    break;
+                case 1:
+                    CameraUtil.getInstance().turnLightOn(mCamera);
+                    break;
+                case 2:
+                    //自动
+                    CameraUtil.getInstance().turnLightAuto(mCamera);
+                    break;
+            }
+            captrue();
+            mIsPreview = false;
+        }
+    }
+
+    private void onFlashLight() {
+        Camera.Parameters parameters = mCamera.getParameters();
+        switch (mLightModel) {
+            case 0:
+                //打开
+                mLightModel = 1;
+                mFlashLight.setImageResource(R.drawable.btn_camera_flash_on);
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
+                mCamera.setParameters(parameters);
+                break;
+            case 1:
+                //自动
+                mLightModel = 2;
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+                mCamera.setParameters(parameters);
+                mFlashLight.setImageResource(R.drawable.btn_camera_flash_auto);
+                break;
+            case 2:
+                //关闭
+                mLightModel = 0;
+                //关闭
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                mCamera.setParameters(parameters);
+                mFlashLight.setImageResource(R.drawable.btn_camera_flash_off);
                 break;
         }
     }

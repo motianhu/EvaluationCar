@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -58,7 +59,19 @@ public class CarModelAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
         }
+
+        View leftView = convertView.findViewById(R.id.tv_part_left);
+        View centerView = convertView.findViewById(R.id.lin_center);
+
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
+        ImageView centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
+        if(position == (mDatas.size() - 1)) {
+            centerImage.setImageResource(R.drawable.icon_add_photo);
+            ViewUtil.setViewVisible(leftView, false);
+        } else {
+            centerImage.setImageResource(R.drawable.icon_camera);
+            ViewUtil.setViewVisible(leftView, true);
+        }
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);

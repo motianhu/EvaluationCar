@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -27,25 +28,54 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 
     private BaseScrollView mScrollView;
 
-    private View mCarTitle;
-    private LimitGridView mCarModelsGridView;
-    private CarModelAdapter mCarModelsAdapter;
+    //登记证
+    private View mClassRegistrationTitle;
+    private LimitGridView mClassRegistrationGrid;
+    private CarModelAdapter mClassRegistrationAdapter;
 
+    //行驶证
+    private View mClassDrivingLicenseTitle;
+    private LimitGridView mClassDrivingLicenseGrid;
+    private CarModelAdapter mClassDrivingLicenseAdapter;
 
-    private View mCertTitle;
-    private LimitGridView mCertificatesGridView;
-    private CarModelAdapter mCertificatesAdapter;
+    //车辆铭牌
+    private View mClassVehicleNameplateTitle;
+    private LimitGridView mClassVehicleNameplateGrid;
+    private CarModelAdapter mClassVehicleNameplateAdapter;
 
-    private View mAppendTitle;
-    private LimitGridView mAppendGridView;
-    private CarModelAdapter mAppendAdapter;
+    //车身外观
+    private View mClassCarBodyTitle;
+    private LimitGridView mClassCarBodyGrid;
+    private CarModelAdapter mClassCarBodyAdapter;
+
+    //车骨架
+    private View mClassCarFrameTitle;
+    private LimitGridView mClassCarFrameGrid;
+    private CarModelAdapter mClassCarFrameAdapter;
+
+    //车辆内饰
+    private View mClassVehicleInteriorTitle;
+    private LimitGridView mClassVehicleInteriorGrid;
+    private CarModelAdapter mClassVehicleInteriorAdapter;
+
+    //差异补充
+    private View mClassDifferenceSupplementTitle;
+    private LimitGridView mClassDifferenceSupplementGrid;
+    private CarModelAdapter mClassDifferenceSupplementAdapter;
+
+    //原车保险
+    private View mClassOriginalCarInsurancetTitle;
+    private LimitGridView mClassOriginalCarInsurancetGrid;
+    private CarModelAdapter mClassOriginalCarInsurancetAdapter;
 
     private View mInputGroup;
+
+    private EditText mPrice;
+    private EditText mNote;
 
 
     //data
     private String mCarBillId;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,8 +87,8 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 
     private void initDatas() {
         mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
-        if(TextUtils.isEmpty(mCarBillId)) {
-            HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>(){
+        if (TextUtils.isEmpty(mCarBillId)) {
+            HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(this, "onSuccess result: " + result);
@@ -86,26 +116,68 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     private void initViews() {
         mScrollView = (BaseScrollView) findViewById(R.id.baseScrollView);
 
-        mCarModelsGridView = (LimitGridView) findViewById(R.id.grid_car_models);
-        mCarModelsAdapter = new CarModelAdapter(this);
-        mCarModelsAdapter.update(createCarModel(42));
-        mCarModelsGridView.setAdapter(mCarModelsAdapter);
+        //登记证
+        mClassRegistrationTitle = findViewById(R.id.class_registration_layer);
+        mClassRegistrationGrid = (LimitGridView) findViewById(R.id.class_registration);
+        mClassRegistrationAdapter = new CarModelAdapter(this);
+        mClassRegistrationAdapter.update(createCarModel(3));
+        mClassRegistrationGrid.setAdapter(mClassRegistrationAdapter);
 
-        mCertificatesGridView = (LimitGridView) findViewById(R.id.grid_certificates);
-        mCertificatesAdapter = new CarModelAdapter(this);
-        mCertificatesAdapter.update(createCarModel(14));
-        mCertificatesGridView.setAdapter(mCertificatesAdapter);
+        //行驶证
+        mClassDrivingLicenseTitle = findViewById(R.id.class_driving_license_layer);
+        mClassDrivingLicenseGrid = (LimitGridView) findViewById(R.id.class_driving_license);
+        mClassDrivingLicenseAdapter = new CarModelAdapter(this);
+        mClassDrivingLicenseAdapter.update(createCarModel(2));
+        mClassDrivingLicenseGrid.setAdapter(mClassDrivingLicenseAdapter);
 
-        mAppendGridView = (LimitGridView) findViewById(R.id.grid_appended);
-        mAppendAdapter = new CarModelAdapter(this);
-        mAppendAdapter.update(createCarModel(10));
-        mAppendGridView.setAdapter(mAppendAdapter);
+        //车辆铭牌
+        mClassVehicleNameplateTitle = findViewById(R.id.class_vehicle_nameplate_layer);
+        mClassVehicleNameplateGrid = (LimitGridView) findViewById(R.id.class_vehicle_nameplate);
+        mClassVehicleNameplateAdapter = new CarModelAdapter(this);
+        mClassVehicleNameplateAdapter.update(createCarModel(2));
+        mClassVehicleNameplateGrid.setAdapter(mClassVehicleNameplateAdapter);
+
+        //车身外观
+        mClassCarBodyTitle = findViewById(R.id.class_car_body_layer);
+        mClassCarBodyGrid = (LimitGridView) findViewById(R.id.class_car_body);
+        mClassCarBodyAdapter = new CarModelAdapter(this);
+        mClassCarBodyAdapter.update(createCarModel(5));
+        mClassCarBodyGrid.setAdapter(mClassCarBodyAdapter);
+
+        //车骨架
+        mClassCarFrameTitle = findViewById(R.id.class_car_frame_layer);
+        mClassCarFrameGrid = (LimitGridView) findViewById(R.id.class_car_frame);
+        mClassCarFrameAdapter = new CarModelAdapter(this);
+        mClassCarFrameAdapter.update(createCarModel(16));
+        mClassCarFrameGrid.setAdapter(mClassCarFrameAdapter);
+
+        //车辆内饰
+        mClassVehicleInteriorTitle = findViewById(R.id.class_vehicle_interior_layer);
+        mClassVehicleInteriorGrid = (LimitGridView) findViewById(R.id.class_vehicle_interior);
+        mClassVehicleInteriorAdapter = new CarModelAdapter(this);
+        mClassVehicleInteriorAdapter.update(createCarModel(5));
+        mClassVehicleInteriorGrid.setAdapter(mClassVehicleInteriorAdapter);
+
+        //差异补充
+        mClassDifferenceSupplementTitle = findViewById(R.id.class_difference_supplement_layer);
+        mClassDifferenceSupplementGrid = (LimitGridView) findViewById(R.id.class_difference_supplement);
+        mClassDifferenceSupplementAdapter = new CarModelAdapter(this);
+        mClassDifferenceSupplementAdapter.update(createCarModel(1));
+        mClassDifferenceSupplementGrid.setAdapter(mClassDifferenceSupplementAdapter);
+
+        //原车保险
+        mClassOriginalCarInsurancetTitle = findViewById(R.id.class_original_car_insurancet_layer);
+        mClassOriginalCarInsurancetGrid = (LimitGridView) findViewById(R.id.class_original_car_insurancet);
+        mClassOriginalCarInsurancetAdapter = new CarModelAdapter(this);
+        mClassOriginalCarInsurancetAdapter.update(createCarModel(1));
+        mClassOriginalCarInsurancetGrid.setAdapter(mClassOriginalCarInsurancetAdapter);
 
 
-        mCarTitle = findViewById(R.id.title_car);
-        mCertTitle = findViewById(R.id.title_certificates);
-        mAppendTitle = findViewById(R.id.title_append);
         mInputGroup = findViewById(R.id.include_input);
+
+        //price and remark
+        mPrice = (EditText) findViewById(R.id.et_price);
+        mNote = (EditText) findViewById(R.id.et_remark);
 
         //设置定位按钮事件及初始化定位
         findViewById(R.id.rb_car_models).setOnClickListener(this);
@@ -134,13 +206,13 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         int id = v.getId();
         switch (id) {
             case R.id.rb_car_models:
-                mScrollView.smoothScrollTo(0, mCarTitle.getTop());
+                mScrollView.smoothScrollTo(0, mClassRegistrationTitle.getTop());
                 return;
             case R.id.rb_certificates:
-                mScrollView.smoothScrollTo(0, mCertTitle.getTop());
+                mScrollView.smoothScrollTo(0, mClassCarFrameTitle.getTop());
                 return;
             case R.id.rb_appended:
-                mScrollView.smoothScrollTo(0, mAppendTitle.getTop());
+                mScrollView.smoothScrollTo(0, mClassVehicleInteriorTitle.getTop());
                 return;
             case R.id.rb_editor:
                 mScrollView.smoothScrollTo(0, mInputGroup.getTop());
