@@ -9,11 +9,11 @@ import android.widget.EditText;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
-import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.IntentConstants;
 
 import org.xutils.common.Callback;
@@ -87,6 +87,7 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         NONE, SAVE, RETURN
     }
 
+    private int mBillStatus = -1;
     private BillStatus mCurBillStatus = BillStatus.NONE;
     //data
     private String mCarBillId = null;
@@ -106,20 +107,23 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initStatus() {
-        int billStatus = getIntent().getIntExtra(IntentConstants.BILL_STATUS, -1);
+        int billStatus = getIntent().getIntExtra(IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        mBillStatus = billStatus;
         CarLog.d(this, "initStatus billStatus=" + billStatus);
-        if (billStatus == 1) {
+        if (billStatus == ConstantsUtils.BILL_STATUS_SAVE) {
             mCurBillStatus = BillStatus.SAVE;
-        } else if (billStatus == 2) {
+        } else if (billStatus == ConstantsUtils.BILL_STATUS_RETURN) {
             mCurBillStatus = BillStatus.RETURN;
+        } else if (billStatus == ConstantsUtils.BILL_STATUS_NONE) {
+            mCurBillStatus = BillStatus.NONE;
         }
     }
 
     private void initCarBill() {
-        if (mCurBillStatus == BillStatus.NONE) {
+        if (statusIsNone()) {
             return;
         }
-        if (mCurBillStatus == BillStatus.SAVE) {
+        if (statusIsSave()) {
             return;
         }
         mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
@@ -253,11 +257,55 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initImageData(List<CarImageBean> data, int count) {
-        for (int i = 0; i < count; i++) {
-            data.add(new CarImageBean());
+        if (statusIsNone()) {
+            for (int i = 0; i < count; i++) {
+                data.add(new CarImageBean());
+            }
+        } else if (statusIsSave()) {
+            for (int i = 0; i < count; i++) {
+                data.add(new CarImageBean());
+            }
+        } else {
+            for (int i = 0; i < count; i++) {
+                data.add(new CarImageBean());
+            }
+        }
+
+    }
+
+    private boolean statusIsNone() {
+        return mCurBillStatus == BillStatus.NONE;
+    }
+
+    private boolean statusIsSave() {
+        return mCurBillStatus == BillStatus.SAVE;
+    }
+
+    private boolean statusIsReturn() {
+        return mCurBillStatus == BillStatus.RETURN;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        int billStatus = state.getInt(IntentConstants.BILL_STATUS);
+        String carBillId = state.getString(IntentConstants.CARBILLID);
+        CarLog.d(this, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId=" + carBillId);
+        if (billStatus != ConstantsUtils.BILL_STATUS_NONE) {
+            mBillStatus = billStatus;
+        }
+        if (!TextUtils.isEmpty(carBillId)) {
+            mCarBillId = carBillId;
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        CarLog.d(this, "onRestoreInstanceState mBillStatus=" + mBillStatus + ", mCarBillId=" + mCarBillId);
+        outState.putInt(IntentConstants.BILL_STATUS, mBillStatus);
+        outState.putString(IntentConstants.CARBILLID, mCarBillId);
+    }
 
     @Override
     protected void onDestroy() {
