@@ -6,6 +6,7 @@ import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
+import com.smona.app.evaluationcar.framework.provider.GenerateMaxId;
 import com.smona.app.evaluationcar.framework.push.PushProxy;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 import java.lang.ref.WeakReference;
@@ -25,6 +26,7 @@ public class EvaluationApp extends Application {
         ScreenInfo.getInstance().init(this);
         DBDelegator.getInstance().init(this);
         HttpProxy.getInstance().init(this);
+        GenerateMaxId.getInstance().initMaxId();
     }
 
 

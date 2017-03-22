@@ -39,7 +39,7 @@ public class ImageMetaTable extends BaseTable {
     public String createTableSql() {
         return "CREATE TABLE " + TABLE_NAME + "(" + _ID
                 + " INTEGER PRIMARY KEY, "
-                + IMAGEID + " INTEGER , "
+                + IMAGEID + " INTEGER, "
                 + GROUPNAME + " TEXT, "
                 + LEAST + " INTEGER, "
                 + MOST + " INTEGER, "

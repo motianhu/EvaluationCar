@@ -1,14 +1,13 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ScreenInfo;
@@ -21,20 +20,20 @@ import java.util.List;
  * Created by Moth on 2017/3/16.
  */
 
-public class CarModelAdapter extends BaseAdapter {
+public class ImageModelAdapter extends BaseAdapter {
 
-    private List<ImageMetaBean> mDatas = new ArrayList<ImageMetaBean>();
+    private List<CarImageBean> mDatas = new ArrayList<CarImageBean>();
     private Context mContext;
     private int mImageWidth;
 
-    public CarModelAdapter(Context context) {
+    public ImageModelAdapter(Context context) {
         mContext = context;
         int i = ScreenInfo.getInstance().getScreenWidth();
         int j = context.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         mImageWidth = ((i - j * 3) / 2);
     }
 
-    public void update(List<ImageMetaBean> datas) {
+    public void update(List<CarImageBean> datas) {
         mDatas.addAll(datas);
     }
 

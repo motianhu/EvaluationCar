@@ -5,5 +5,7 @@ package com.smona.app.evaluationcar.util;
  */
 
 public class IntentConstants {
+    public static final String BILL_STATUS = "billStatus";
     public static final String CARBILLID = "carBillId";
+    public static final String IMAGEID = "imageId";
 }

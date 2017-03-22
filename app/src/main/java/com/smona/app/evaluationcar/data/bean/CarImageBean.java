@@ -7,12 +7,13 @@ package com.smona.app.evaluationcar.data.bean;
 public class CarImageBean {
     public int imageId;
     public String carBillId;
-    public String imageSeqNum;
-    public String appImageSeqNum;
+    public int imageSeqNum;
+    public int appImageSeqNum;
     public String imageClass;
     public String appImageClass;
     public String imageRemoteUrl;
     public String imageLocalUrl;
     public String createTime;
     public String updateTime;
+    public int imageMetaId;
 }

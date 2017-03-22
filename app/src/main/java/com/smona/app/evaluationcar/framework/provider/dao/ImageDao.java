@@ -51,8 +51,8 @@ public class ImageDao extends BaseDao<CarImageBean>  {
         item.carBillId = getString(cursor, CarImageTable.CARBILLID);
         item.imageClass = getString(cursor, CarImageTable.IMAGECLASS);
         item.appImageClass = getString(cursor, CarImageTable.APPIMAGECLASS);
-        item.imageSeqNum = getString(cursor, CarImageTable.IMAGESEQNUM);
-        item.appImageSeqNum = getString(cursor, CarImageTable.APPIMAGESEQNUM);
+        item.imageSeqNum = getInt(cursor, CarImageTable.IMAGESEQNUM);
+        item.appImageSeqNum = getInt(cursor, CarImageTable.APPIMAGESEQNUM);
         item.imageLocalUrl = getString(cursor, CarImageTable.IMAGELOCALURL);
         item.imageRemoteUrl = getString(cursor, CarImageTable.IMAGEREMOTEURL);
         item.createTime = getString(cursor, CarImageTable.CREATETIME);

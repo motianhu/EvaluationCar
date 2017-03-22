@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
@@ -31,42 +32,50 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     //登记证
     private View mClassRegistrationTitle;
     private LimitGridView mClassRegistrationGrid;
-    private CarModelAdapter mClassRegistrationAdapter;
+    private ImageModelAdapter mClassRegistrationAdapter;
+    private List<CarImageBean> mClassRegistrationList;
 
     //行驶证
     private View mClassDrivingLicenseTitle;
     private LimitGridView mClassDrivingLicenseGrid;
-    private CarModelAdapter mClassDrivingLicenseAdapter;
+    private ImageModelAdapter mClassDrivingLicenseAdapter;
+    private List<CarImageBean> mClassDrivingLicenseList;
 
     //车辆铭牌
     private View mClassVehicleNameplateTitle;
     private LimitGridView mClassVehicleNameplateGrid;
-    private CarModelAdapter mClassVehicleNameplateAdapter;
+    private ImageModelAdapter mClassVehicleNameplateAdapter;
+    private List<CarImageBean> mClassVehicleNameplateList;
 
     //车身外观
     private View mClassCarBodyTitle;
     private LimitGridView mClassCarBodyGrid;
-    private CarModelAdapter mClassCarBodyAdapter;
+    private ImageModelAdapter mClassCarBodyAdapter;
+    private List<CarImageBean> mClassCarBodyList;
 
     //车骨架
     private View mClassCarFrameTitle;
     private LimitGridView mClassCarFrameGrid;
-    private CarModelAdapter mClassCarFrameAdapter;
+    private ImageModelAdapter mClassCarFrameAdapter;
+    private List<CarImageBean> mClassCarFrameList;
 
     //车辆内饰
     private View mClassVehicleInteriorTitle;
     private LimitGridView mClassVehicleInteriorGrid;
-    private CarModelAdapter mClassVehicleInteriorAdapter;
+    private ImageModelAdapter mClassVehicleInteriorAdapter;
+    private List<CarImageBean> mClassVehicleInteriorList;
 
     //差异补充
     private View mClassDifferenceSupplementTitle;
     private LimitGridView mClassDifferenceSupplementGrid;
-    private CarModelAdapter mClassDifferenceSupplementAdapter;
+    private ImageModelAdapter mClassDifferenceSupplementAdapter;
+    private List<CarImageBean> mClassDifferenceSupplementList;
 
     //原车保险
     private View mClassOriginalCarInsurancetTitle;
     private LimitGridView mClassOriginalCarInsurancetGrid;
-    private CarModelAdapter mClassOriginalCarInsurancetAdapter;
+    private ImageModelAdapter mClassOriginalCarInsurancetAdapter;
+    private List<CarImageBean> mClassOriginalCarInsurancetList;
 
     private View mInputGroup;
 
@@ -74,44 +83,74 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     private EditText mNote;
 
 
+    private enum BillStatus {
+        NONE, SAVE, RETURN
+    }
+
+    private BillStatus mCurBillStatus = BillStatus.NONE;
     //data
-    private String mCarBillId;
+    private String mCarBillId = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluation);
-        initViews();
         initDatas();
+        initViews();
+        bindViews();
     }
 
     private void initDatas() {
-        mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
-        if (TextUtils.isEmpty(mCarBillId)) {
-            HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    CarLog.d(this, "onSuccess result: " + result);
-                    mCarBillId = result;
-                }
+        initStatus();
+        initCarBill();
+    }
 
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-                    CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-                    CarLog.d(this, "onFinished");
-                }
-            });
+    private void initStatus() {
+        int billStatus = getIntent().getIntExtra(IntentConstants.BILL_STATUS, -1);
+        CarLog.d(this, "initStatus billStatus=" + billStatus);
+        if (billStatus == 1) {
+            mCurBillStatus = BillStatus.SAVE;
+        } else if (billStatus == 2) {
+            mCurBillStatus = BillStatus.RETURN;
         }
     }
+
+    private void initCarBill() {
+        if (mCurBillStatus == BillStatus.NONE) {
+            return;
+        }
+        if (mCurBillStatus == BillStatus.SAVE) {
+            return;
+        }
+        mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
+        CarLog.d(this, "initCarBill mCarBillId=" + mCarBillId);
+        if (!TextUtils.isEmpty(mCarBillId)) {
+            return;
+        }
+        HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(this, "onSuccess result: " + result);
+                mCarBillId = result;
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+                CarLog.d(this, "onFinished");
+            }
+        });
+    }
+
 
     private void initViews() {
         mScrollView = (BaseScrollView) findViewById(R.id.baseScrollView);
@@ -119,57 +158,49 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         //登记证
         mClassRegistrationTitle = findViewById(R.id.class_registration_layer);
         mClassRegistrationGrid = (LimitGridView) findViewById(R.id.class_registration);
-        mClassRegistrationAdapter = new CarModelAdapter(this);
-        mClassRegistrationAdapter.update(createCarModel(3));
+        mClassRegistrationAdapter = new ImageModelAdapter(this);
         mClassRegistrationGrid.setAdapter(mClassRegistrationAdapter);
 
         //行驶证
         mClassDrivingLicenseTitle = findViewById(R.id.class_driving_license_layer);
         mClassDrivingLicenseGrid = (LimitGridView) findViewById(R.id.class_driving_license);
-        mClassDrivingLicenseAdapter = new CarModelAdapter(this);
-        mClassDrivingLicenseAdapter.update(createCarModel(2));
+        mClassDrivingLicenseAdapter = new ImageModelAdapter(this);
         mClassDrivingLicenseGrid.setAdapter(mClassDrivingLicenseAdapter);
 
         //车辆铭牌
         mClassVehicleNameplateTitle = findViewById(R.id.class_vehicle_nameplate_layer);
         mClassVehicleNameplateGrid = (LimitGridView) findViewById(R.id.class_vehicle_nameplate);
-        mClassVehicleNameplateAdapter = new CarModelAdapter(this);
-        mClassVehicleNameplateAdapter.update(createCarModel(2));
+        mClassVehicleNameplateAdapter = new ImageModelAdapter(this);
         mClassVehicleNameplateGrid.setAdapter(mClassVehicleNameplateAdapter);
 
         //车身外观
         mClassCarBodyTitle = findViewById(R.id.class_car_body_layer);
         mClassCarBodyGrid = (LimitGridView) findViewById(R.id.class_car_body);
-        mClassCarBodyAdapter = new CarModelAdapter(this);
-        mClassCarBodyAdapter.update(createCarModel(5));
+        mClassCarBodyAdapter = new ImageModelAdapter(this);
         mClassCarBodyGrid.setAdapter(mClassCarBodyAdapter);
 
         //车骨架
         mClassCarFrameTitle = findViewById(R.id.class_car_frame_layer);
         mClassCarFrameGrid = (LimitGridView) findViewById(R.id.class_car_frame);
-        mClassCarFrameAdapter = new CarModelAdapter(this);
-        mClassCarFrameAdapter.update(createCarModel(16));
+        mClassCarFrameAdapter = new ImageModelAdapter(this);
         mClassCarFrameGrid.setAdapter(mClassCarFrameAdapter);
 
         //车辆内饰
         mClassVehicleInteriorTitle = findViewById(R.id.class_vehicle_interior_layer);
         mClassVehicleInteriorGrid = (LimitGridView) findViewById(R.id.class_vehicle_interior);
-        mClassVehicleInteriorAdapter = new CarModelAdapter(this);
-        mClassVehicleInteriorAdapter.update(createCarModel(5));
+        mClassVehicleInteriorAdapter = new ImageModelAdapter(this);
         mClassVehicleInteriorGrid.setAdapter(mClassVehicleInteriorAdapter);
 
         //差异补充
         mClassDifferenceSupplementTitle = findViewById(R.id.class_difference_supplement_layer);
         mClassDifferenceSupplementGrid = (LimitGridView) findViewById(R.id.class_difference_supplement);
-        mClassDifferenceSupplementAdapter = new CarModelAdapter(this);
-        mClassDifferenceSupplementAdapter.update(createCarModel(1));
+        mClassDifferenceSupplementAdapter = new ImageModelAdapter(this);
         mClassDifferenceSupplementGrid.setAdapter(mClassDifferenceSupplementAdapter);
 
         //原车保险
         mClassOriginalCarInsurancetTitle = findViewById(R.id.class_original_car_insurancet_layer);
         mClassOriginalCarInsurancetGrid = (LimitGridView) findViewById(R.id.class_original_car_insurancet);
-        mClassOriginalCarInsurancetAdapter = new CarModelAdapter(this);
-        mClassOriginalCarInsurancetAdapter.update(createCarModel(1));
+        mClassOriginalCarInsurancetAdapter = new ImageModelAdapter(this);
         mClassOriginalCarInsurancetGrid.setAdapter(mClassOriginalCarInsurancetAdapter);
 
 
@@ -187,12 +218,44 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.rb_car_models).performClick();
     }
 
-    private List<ImageMetaBean> createCarModel(int count) {
-        List<ImageMetaBean> data = new ArrayList<ImageMetaBean>();
+    private void bindViews() {
+        mClassRegistrationList = new ArrayList<CarImageBean>();
+        initImageData(mClassRegistrationList, 3);
+        mClassRegistrationAdapter.update(mClassRegistrationList);
+
+        mClassDrivingLicenseList = new ArrayList<CarImageBean>();
+        initImageData(mClassDrivingLicenseList, 2);
+        mClassDrivingLicenseAdapter.update(mClassDrivingLicenseList);
+
+        mClassVehicleNameplateList = new ArrayList<CarImageBean>();
+        initImageData(mClassVehicleNameplateList, 2);
+        mClassVehicleNameplateAdapter.update(mClassVehicleNameplateList);
+
+        mClassCarBodyList = new ArrayList<CarImageBean>();
+        initImageData(mClassCarBodyList, 5);
+        mClassCarBodyAdapter.update(mClassCarBodyList);
+
+        mClassCarFrameList = new ArrayList<CarImageBean>();
+        initImageData(mClassCarFrameList, 16);
+        mClassCarFrameAdapter.update(mClassCarFrameList);
+
+        mClassVehicleInteriorList = new ArrayList<CarImageBean>();
+        initImageData(mClassVehicleInteriorList, 5);
+        mClassVehicleInteriorAdapter.update(mClassVehicleInteriorList);
+
+        mClassDifferenceSupplementList = new ArrayList<CarImageBean>();
+        initImageData(mClassDifferenceSupplementList, 1);
+        mClassDifferenceSupplementAdapter.update(mClassDifferenceSupplementList);
+
+        mClassOriginalCarInsurancetList = new ArrayList<CarImageBean>();
+        initImageData(mClassOriginalCarInsurancetList, 1);
+        mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
+    }
+
+    private void initImageData(List<CarImageBean> data, int count) {
         for (int i = 0; i < count; i++) {
-            data.add(new ImageMetaBean());
+            data.add(new CarImageBean());
         }
-        return data;
     }
 
 
