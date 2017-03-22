@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
@@ -120,9 +121,9 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initCarBill() {
-        if (statusIsNone()) {
-            return;
-        }
+//        if (statusIsNone()) {
+//            return;
+//        }
         if (statusIsSave()) {
             return;
         }
@@ -136,6 +137,32 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
             public void onSuccess(String result) {
                 CarLog.d(this, "onSuccess result: " + result);
                 mCarBillId = result;
+                CarImageBean bean = new CarImageBean();
+                bean.carBillId = result;
+                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot_2017-03-04-19-21-31.png";
+                bean.imageClass="车骨架";
+                bean.imageSeqNum=1;
+                HttpProxy.getInstance().uploadImage("cy", bean, new CommonCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        CarLog.d(this, "onSuccess Object: " + result);
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        CarLog.d(this, "onError ex: " + ex);
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
             }
 
             @Override
@@ -220,6 +247,10 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.rb_appended).setOnClickListener(this);
         findViewById(R.id.rb_editor).setOnClickListener(this);
         findViewById(R.id.rb_car_models).performClick();
+
+        //保存及提交
+        findViewById(R.id.btn_save).setOnClickListener(this);
+        findViewById(R.id.btn_submit).setOnClickListener(this);
     }
 
     private void bindViews() {
@@ -299,6 +330,38 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+    private void onSave(){
+
+    }
+
+    private void onSubmit(){
+        CarBillBean bean = new CarBillBean();
+        bean.carBillId = mCarBillId;
+        bean.price = 10000.0;
+        bean.description = "测试单";
+        HttpProxy.getInstance().submitCarBill("cy", bean, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(this, "onSuccess result: " + result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+                CarLog.d(this, "onFinished");
+            }
+        });
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -328,6 +391,12 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
             case R.id.rb_editor:
                 mScrollView.smoothScrollTo(0, mInputGroup.getTop());
                 return;
+            case R.id.btn_save:
+                onSave();
+                break;
+            case R.id.btn_submit:
+                onSubmit();
+                break;
         }
     }
 }

@@ -349,8 +349,8 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_saveDraft"
-            android:layout_width="0dip"
+            android:id="@+id/btn_save"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="@drawable/selector_round_btn_white"
@@ -360,7 +360,7 @@
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_width="0dip"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="@drawable/selector_btn_red"

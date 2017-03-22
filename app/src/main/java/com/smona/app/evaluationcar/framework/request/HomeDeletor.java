@@ -48,8 +48,8 @@ public class HomeDeletor extends BaseDelegator {
     }
 
     public void requestImageMeta() {
-        HttpProxy.getInstance().requestImageMeta(new Callback.CommonCallback<ImageMetaBean>() {
-            public void onSuccess(ImageMetaBean result) {
+        HttpProxy.getInstance().requestImageMeta(new Callback.CommonCallback<String>() {
+            public void onSuccess(String result) {
                 CarLog.d(this, "onSuccess result: " + result);
             }
 

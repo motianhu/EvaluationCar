@@ -37,7 +37,7 @@ public class UploadTaskTable extends BaseTable {
                 + CARBILLID + " TEXT, "
                 + IMAGECOUNT + " INTEGER, "
                 + IMAGEUPLOADCOUNT + " INTEGER, "
-                + UPLOADSTATUS + " INTEGER, "
+                + UPLOADSTATUS + " INTEGER "
                 + ")";
     }
 

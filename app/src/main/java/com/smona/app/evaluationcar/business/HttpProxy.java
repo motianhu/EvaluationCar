@@ -2,6 +2,8 @@ package com.smona.app.evaluationcar.business;
 
 import android.app.Application;
 
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.framework.request.HomeDeletor;
 import com.smona.app.evaluationcar.framework.upload1.UploadUtils;
@@ -35,30 +37,39 @@ public class HttpProxy implements IProxy {
         x.Ext.init(app);
     }
 
-    public void getCarBillId(Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
-        x.http().get(params, callback);
-    }
-
-    public interface ResponseCallback<T> extends Callback.CommonCallback{}
-
-
-    private void uploadImage(String filePath,Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.UPLOAD_IMAGE);
-        params.addParameter("createUser","cy");
-        params.addBodyParameter("image", new File(filePath));
-        UploadUtils.uploadMethod(params, callback);
-    }
-
     private RequestParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
         RequestParams params = new RequestParams(url);
         return params;
     }
 
+    public void getCarBillId(Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
+        x.http().get(params, callback);
+    }
+
+    public void uploadImage(String createUser, CarImageBean bean, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.UPLOAD_IMAGE);
+        params.addParameter("createUser",createUser);
+        params.addParameter("clientName","Android");
+        params.addParameter("carBillId",bean.carBillId);
+        params.addParameter("imageSeqNum", bean.imageSeqNum);
+        params.addParameter("imageClass", bean.imageClass);
+        params.addBodyParameter("image", new File(bean.imageLocalUrl));
+        UploadUtils.uploadMethod(params, callback);
+    }
 
     public void requestImageMeta(Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
+        RequestParams params = createParams(UrlConstants.QUERY_IMAGEMETA);
+        x.http().get(params, callback);
+    }
+
+    public void submitCarBill(String userName, CarBillBean carBill, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.SUBMIT_CARBILL);
+        params.addParameter("userName",userName);
+        params.addParameter("carBillId",carBill.carBillId);
+        params.addParameter("preSalePrice",carBill.price);
+        params.addParameter("mark",carBill.description);
         x.http().get(params, callback);
     }
 }

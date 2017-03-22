@@ -74,7 +74,7 @@ public class DBDelegator {
 
     public int getDBMaxId() {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
-        List<CarImageBean> list = dao.getResult(null, null, " order by imageId desc ");
+        List<CarImageBean> list = dao.getResult(null, null, " imageId desc ");
         if (list != null && list.size() > 1) {
             return list.get(0).imageId;
         }
