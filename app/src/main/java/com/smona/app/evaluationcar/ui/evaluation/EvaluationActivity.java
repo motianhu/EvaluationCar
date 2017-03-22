@@ -136,9 +136,10 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "onSuccess result: " + result);
-                mCarBillId = result;
+                mCarBillId = result.substring(1,result.length() - 1);
+                CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
                 CarImageBean bean = new CarImageBean();
-                bean.carBillId = result;
+                bean.carBillId = mCarBillId;
                 bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot_2017-03-04-19-21-31.png";
                 bean.imageClass="车骨架";
                 bean.imageSeqNum=1;
