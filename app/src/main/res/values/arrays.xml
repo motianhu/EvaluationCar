@@ -15,9 +15,9 @@
     <string-array name="image_class">
         <item>"登记证"</item>
         <item>"行驶证"</item>
-        <item>"车辆铭牌"</item>
+        <item>"铭牌"</item>
         <item>"车身外观"</item>
-        <item>"车骨架"</item>
+        <item>"车体骨架"</item>
         <item>"车辆内饰"</item>
         <item>"差异补充"</item>
         <item>"原车保险"</item>

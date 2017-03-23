@@ -45,7 +45,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private ImageModelAdapter mClassDrivingLicenseAdapter;
     private List<CarImageBean> mClassDrivingLicenseList;
 
-    //车辆铭牌
+    //铭牌
     private View mClassVehicleNameplateTitle;
     private LimitGridView mClassVehicleNameplateGrid;
     private ImageModelAdapter mClassVehicleNameplateAdapter;
@@ -57,7 +57,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private ImageModelAdapter mClassCarBodyAdapter;
     private List<CarImageBean> mClassCarBodyList;
 
-    //车骨架
+    //车体骨架
     private View mClassCarFrameTitle;
     private LimitGridView mClassCarFrameGrid;
     private ImageModelAdapter mClassCarFrameAdapter;
@@ -123,9 +123,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initCarBill() {
-        if (statusIsNone()) {
-            return;
-        }
+//        if (statusIsNone()) {
+//            return;
+//        }
         if (statusIsSave()) {
             return;
         }
@@ -142,8 +142,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                 CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
                 CarImageBean bean = new CarImageBean();
                 bean.carBillId = mCarBillId;
-                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot_20170315-225739.png";
-                bean.imageClass="车骨架";
+                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
+                bean.imageClass="车体骨架";
                 bean.imageSeqNum=1;
                 HttpProxy.getInstance().uploadImage("cy", bean, new HttpProxy.ResonpseCallback<String>() {
                     @Override
