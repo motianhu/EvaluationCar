@@ -9,14 +9,13 @@ public class CarBillTable extends BaseTable {
 
     public static final String CARBILLID = "carBillId";
     public static final String CREATETIME = "createTime";
-    public static final String UPDATETIME = "updateTime";
-    public static final String CPTIME = "cpTime";
-    public static final String ZPTIME = "zpTime";
-    public static final String GPTIME = "zsTime";
+    public static final String MODIFYTIME = "modifyTime";
     public static final String BILLSTATUS = "billStatus";
-    public static final String PRICE = "price";
+    public static final String PRESALEPRICE = "preSalePrice";
+    public static final String EVALUATEPRICE = "evaluatePrice";
     public static final String THUMBUrl = "thumbUrl";
-    public static final String DESCRIPTION = "description";
+    public static final String APPLYALLOPINION = "applyAllOpinion";
+    public static final String MARK = "mark";
 
     private static volatile CarBillTable sInstance = null;
 
@@ -42,14 +41,13 @@ public class CarBillTable extends BaseTable {
                 + _ID + " INTEGER PRIMARY KEY, "
                 + CARBILLID + " TEXT , "
                 + CREATETIME + " TEXT, "
-                + UPDATETIME + " INTEGER, "
-                + CPTIME + " TEXT, "
-                + ZPTIME + " TEXT, "
-                + GPTIME + " TEXT, "
+                + MODIFYTIME + " TEXT, "
                 + BILLSTATUS + " INTEGER, "
-                + DESCRIPTION + " TEXT, "
+                + APPLYALLOPINION + " TEXT, "
+                + MARK + " TEXT, "
                 + THUMBUrl + " TEXT, "
-                + PRICE + " DOUBLE "
+                + EVALUATEPRICE + " DOUBLE, "
+                + PRESALEPRICE + " DOUBLE "
                 + ")";
     }
 

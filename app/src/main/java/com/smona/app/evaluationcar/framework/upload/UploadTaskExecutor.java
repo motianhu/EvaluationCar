@@ -31,7 +31,7 @@ public final class UploadTaskExecutor {
         }
     }
 
-    public static void next() {
+    public static void nextTask() {
         sHandler.sendEmptyMessage(0);
     }
 }

@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by Moth on 2015/8/28 0028.
  */
+
 public class StatusFragment extends ContentFragment {
 
     private ViewPager mViewPager;
@@ -28,10 +30,14 @@ public class StatusFragment extends ContentFragment {
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
-        View view1 = ViewUtil.inflater(getContext(), R.layout.status_listview);
-        View view2 = ViewUtil.inflater(getContext(), R.layout.status_listview);
-        View view3 = ViewUtil.inflater(getContext(), R.layout.status_listview);
-        View view4 = ViewUtil.inflater(getContext(), R.layout.status_listview);
+        StatusListView view1 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        view1.setType(0);
+        StatusListView view2 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        view2.setType(1);
+        StatusListView view3 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        view3.setType(2);
+        StatusListView view4 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        view4.setType(3);
 
         List<View> viewList = new ArrayList<View>();
         viewList.add(view1);

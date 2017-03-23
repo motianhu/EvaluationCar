@@ -142,9 +142,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                 mCarBillId = result.substring(1,result.length() - 1);
                 CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
 
-                //uploadImage();
-                queryCarbillList();
-
+//                uploadImage();
+                queryCarbillImages();
             }
 
             @Override
@@ -197,7 +196,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         public void onSuccess(String result) {
             ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
             CarLog.d(this, "onSuccess Object: " + result + ";resp: " + resp.sucess);
-            UploadTaskExecutor.next();
+            UploadTaskExecutor.nextTask();
         }
 
         @Override
@@ -212,39 +211,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         public void onFinished() {}
     };
 
-
-    private void queryCarbillDetail() {
-        HttpProxy.getInstance().queryCarbillDetail("cy", "", new HttpProxy.ResonpseCallback<String>() {
+    private void queryCarbillImages() {
+        HttpProxy.getInstance().getCarbillImages("cy", "NS201703240001", new HttpProxy.ResonpseCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess Object: " + result);
+                CarLog.d(this, "queryCarbillImages onSuccess Object: " + result);
                 ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "onError ex: " + ex);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
-
-    private void queryCarbillList() {
-        HttpProxy.getInstance().queryCarbillList("cy", "32,31", new HttpProxy.ResonpseCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess Object: " + result);
-                ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
-
             }
 
             @Override
@@ -405,8 +377,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private void onSubmit(){
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
-        bean.price = 10000.0;
-        bean.description = "测试单";
+        bean.preSalePrice = 10000.0;
+        bean.mark = "测试单";
         HttpProxy.getInstance().submitCarBill("cy", bean, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {

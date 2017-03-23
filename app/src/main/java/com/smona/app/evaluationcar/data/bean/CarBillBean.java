@@ -9,13 +9,11 @@ import android.os.Parcel;
 public class CarBillBean extends BaseBean {
     public String carBillId;
     public int status;
-    public String cpTime;
-    public String zpTime;
-    public String gpTime;
-    public String updateTime;
+    public String modifyTime;
     public String createTime;
-    public Double price;
-    public String description;
-    public String title;
+    public String mark;
+    public String applyAllOpinion;
+    public Double preSalePrice;
+    public String evaluatePrice;
     public String thumbUrl;
 }

@@ -57,7 +57,7 @@ public class StatusAdapter extends AbstractAdapter {
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 
         TextView textNote = (TextView) convertView.findViewById(R.id.carNote);
-        textNote.setText(mContext.getString(R.string.list_item_note) + " " + carbill.description);
+        textNote.setText(mContext.getString(R.string.list_item_note) + " " + carbill.mark);
 
 
         return convertView;

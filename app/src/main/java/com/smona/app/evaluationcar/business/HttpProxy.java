@@ -43,6 +43,13 @@ public class HttpProxy implements IProxy {
         return params;
     }
 
+    public void checkUser(String userName, String password, ResonpseCallback callback) {
+        RequestParams params = createParams(UrlConstants.CHECK_USER);
+        params.addParameter("userName", userName);
+        params.addParameter("password", password);
+        x.http().get(params, callback);
+    }
+
     public void getCarBillId(ResonpseCallback callback) {
         RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
         x.http().get(params, callback);
@@ -59,15 +66,17 @@ public class HttpProxy implements IProxy {
         x.http().post(params, callback);
     }
 
-    public void queryCarbillList(String userName, String status, Callback.CommonCallback callback) {
+    public void queryCarbillList(String userName, String status,int curPage, int pageSize, Callback.CommonCallback callback) {
         RequestParams params = createParams(UrlConstants.QUERY_CARBILL_LIST);
         params.addParameter("userName", userName);
         params.addParameter("status", status);
+        params.addParameter("curPage",curPage);
+        params.addParameter("pageSize", pageSize);
         x.http().get(params, callback);
     }
 
-    public void queryCarbillDetail(String userName, String carBillId, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_DETAIL);
+    public void getCarbillImages(String userName, String carBillId, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);
@@ -77,8 +86,8 @@ public class HttpProxy implements IProxy {
         RequestParams params = createParams(UrlConstants.SUBMIT_CARBILL);
         params.addParameter("userName",userName);
         params.addParameter("carBillId",carBill.carBillId);
-        params.addParameter("preSalePrice",carBill.price);
-        params.addParameter("mark",carBill.description);
+        params.addParameter("preSalePrice",carBill.preSalePrice);
+        params.addParameter("mark",carBill.mark);
         x.http().get(params, callback);
     }
 }

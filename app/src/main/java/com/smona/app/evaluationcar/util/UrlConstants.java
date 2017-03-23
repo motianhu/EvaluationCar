@@ -23,7 +23,7 @@ public class UrlConstants {
     public static final int UPLOAD_IMAGE = 3;
     public static final int SUBMIT_CARBILL = 4;
     public static final int QUERY_CARBILL_LIST = 5;
-    public static final int QUERY_CARBILL_DETAIL = 6;
+    public static final int QUERY_CARBILL_IMAGE = 6;
 
     static {
         INTEFACES.put(CHECK_USER, "external/checkUser.html");
@@ -31,7 +31,7 @@ public class UrlConstants {
         INTEFACES.put(UPLOAD_IMAGE, "external/app/uploadAppImage.html");
         INTEFACES.put(SUBMIT_CARBILL, "external/app/finishCreateAppCarBill.html");
         INTEFACES.put(QUERY_CARBILL_LIST, "external/app/getAppBillList.html");
-        INTEFACES.put(QUERY_CARBILL_DETAIL, "external/app/getAppDetailCarBill.html");
+        INTEFACES.put(QUERY_CARBILL_IMAGE, "external/app/getAppBillImageList.html");
     }
 
 
