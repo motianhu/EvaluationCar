@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/setting_bg"
+    android:background="@color/camera_split_side"
     android:layout_height="match_parent">
 
 
@@ -16,7 +16,7 @@
         android:id="@+id/center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/bg_black"
+        android:textColor="@color/bg_white"
         android:textSize="16sp"
         android:layout_centerInParent="true" />
 

@@ -29,8 +29,8 @@ public class StatusActivity extends HeaderActivity {
     }
 
     @Override
-    protected String getHeaderTitle() {
-        return "订单结果";
+    protected int getHeaderTitle() {
+        return R.string.carbill_result;
     }
 
 

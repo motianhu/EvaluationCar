@@ -55,9 +55,14 @@
     <string name="class_original_car_insurancet">原车保险</string>
 
 
+    <string name="create_carbill">创建评估单据</string>
     <string name="add_picture">添加照片</string>
 
 
     <string name="cancel">取消</string>
     <string name="gallery">相册</string>
+
+
+
+    <string name="carbill_result">订单结果</string>
 </resources>

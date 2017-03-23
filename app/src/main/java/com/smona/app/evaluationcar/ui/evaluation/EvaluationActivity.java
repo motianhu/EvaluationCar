@@ -13,6 +13,7 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -28,7 +29,7 @@ import java.util.List;
  * Created by Moth on 2016/12/18.
  */
 
-public class EvaluationActivity extends BaseActivity implements View.OnClickListener {
+public class EvaluationActivity extends HeaderActivity implements View.OnClickListener {
 
     private BaseScrollView mScrollView;
 
@@ -98,7 +99,6 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_evaluation);
         initDatas();
         initViews();
         bindViews();
@@ -322,20 +322,6 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         return mCurBillStatus == BillStatus.RETURN;
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        int billStatus = state.getInt(IntentConstants.BILL_STATUS);
-        String carBillId = state.getString(IntentConstants.CARBILLID);
-        CarLog.d(this, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId=" + carBillId);
-        if (billStatus != ConstantsUtils.BILL_STATUS_NONE) {
-            mBillStatus = billStatus;
-        }
-        if (!TextUtils.isEmpty(carBillId)) {
-            mCarBillId = carBillId;
-        }
-    }
-
     private void onSave(){
 
     }
@@ -366,6 +352,37 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
                 CarLog.d(this, "onFinished");
             }
         });
+    }
+
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_evaluation;
+    }
+
+    @Override
+    protected boolean showDelete() {
+        return false;
+    }
+
+    @Override
+    protected int getHeaderTitle() {
+        return R.string.create_carbill;
+    }
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        int billStatus = state.getInt(IntentConstants.BILL_STATUS);
+        String carBillId = state.getString(IntentConstants.CARBILLID);
+        CarLog.d(this, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId=" + carBillId);
+        if (billStatus != ConstantsUtils.BILL_STATUS_NONE) {
+            mBillStatus = billStatus;
+        }
+        if (!TextUtils.isEmpty(carBillId)) {
+            mCarBillId = carBillId;
+        }
     }
 
     @Override

@@ -4,9 +4,16 @@
     android:layout_height="fill_parent"
     android:background="@color/public_bg">
 
+    <include
+        android:id="@+id/header"
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <com.smona.app.evaluationcar.ui.common.base.BaseScrollView
         android:id="@+id/baseScrollView"
         android:layout_width="fill_parent"
+        android:layout_below="@+id/header"
         android:layout_height="fill_parent"
         android:scrollbarStyle="outsideOverlay">
 

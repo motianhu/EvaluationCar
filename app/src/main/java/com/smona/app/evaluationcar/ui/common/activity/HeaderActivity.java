@@ -23,7 +23,7 @@ public abstract class HeaderActivity extends BaseActivity {
 
     protected abstract int getLayoutId();
     protected abstract boolean showDelete();
-    protected abstract String getHeaderTitle();
+    protected abstract int getHeaderTitle();
 
     private void initHeader() {
         HeaderListener headerListener = new HeaderListener();
