@@ -5,5 +5,5 @@ package com.smona.app.evaluationcar.framework.upload;
  */
 
 public interface OnUploadCompleteListener {
-    void onUploadComplete(UploadTask uploadTask);
+    void onUploadComplete(UploadImageTask uploadTask);
 }

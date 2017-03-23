@@ -12,7 +12,8 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
-import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.framework.upload.UploadImageTask;
+import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -140,34 +141,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                 CarLog.d(this, "onSuccess result: " + result);
                 mCarBillId = result.substring(1,result.length() - 1);
                 CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
-                CarImageBean bean = new CarImageBean();
-                bean.carBillId = mCarBillId;
-                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
-                bean.imageClass="车体骨架";
-                bean.imageSeqNum=1;
-                HttpProxy.getInstance().uploadImage("cy", bean, new HttpProxy.ResonpseCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        CarLog.d(this, "onSuccess Object: " + result);
-                        ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
-                        CarLog.d(this, "onSuccess Object: " + resp);
-                    }
 
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        CarLog.d(this, "onError ex: " + ex);
-                    }
+                //uploadImage();
+                queryCarbillList();
 
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-
-                    }
-
-                    @Override
-                    public void onFinished() {
-
-                    }
-                });
             }
 
             @Override
@@ -187,6 +164,105 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         });
     }
 
+    private void uploadImage() {
+        uploadImage(ImageModelDelegator.IMAGE_Registration);
+        uploadImage(ImageModelDelegator.IMAGE_CarBody);
+        uploadImage(ImageModelDelegator.IMAGE_CarFrame);
+        //uploadImage(ImageModelDelegator.IMAGE_DifferenceSupplement);
+        uploadImage(ImageModelDelegator.IMAGE_DrivingLicense);
+        //uploadImage(ImageModelDelegator.IMAGE_OriginalCarInsurancet);
+        uploadImage(ImageModelDelegator.IMAGE_VehicleInterior);
+        uploadImage(ImageModelDelegator.IMAGE_VehicleNameplate);
+    }
+
+
+    private void uploadImage(int type) {
+        List<CarImageBean> carImageBeenList = ImageModelDelegator.getInstance().getDefaultModel(type);
+        for(int i=0;i<1;i++) {
+            CarImageBean carImageBean= carImageBeenList.get(i);
+            carImageBean.carBillId = mCarBillId;
+            carImageBean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
+            carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClass(type);
+            carImageBean.imageSeqNum = i;
+            UploadImageTask task = new UploadImageTask();
+            task.callback = mUploadImageCallback;
+            task.userName = "cy";
+            task.carImageBean = carImageBean;
+            UploadTaskExecutor.pushTask(task);
+        }
+    }
+
+    private HttpProxy.ResonpseCallback<String> mUploadImageCallback = new HttpProxy.ResonpseCallback<String>() {
+        @Override
+        public void onSuccess(String result) {
+            ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
+            CarLog.d(this, "onSuccess Object: " + result + ";resp: " + resp.sucess);
+            UploadTaskExecutor.next();
+        }
+
+        @Override
+        public void onError(Throwable ex, boolean isOnCallback) {
+            CarLog.d(this, "onError ex: " + ex);
+        }
+
+        @Override
+        public void onCancelled(Callback.CancelledException cex) {}
+
+        @Override
+        public void onFinished() {}
+    };
+
+
+    private void queryCarbillDetail() {
+        HttpProxy.getInstance().queryCarbillDetail("cy", "", new HttpProxy.ResonpseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(this, "onSuccess Object: " + result);
+                ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "onError ex: " + ex);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void queryCarbillList() {
+        HttpProxy.getInstance().queryCarbillList("cy", "32,31", new HttpProxy.ResonpseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(this, "onSuccess Object: " + result);
+                ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "onError ex: " + ex);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
 
     private void initViews() {
         mScrollView = (BaseScrollView) findViewById(R.id.baseScrollView);

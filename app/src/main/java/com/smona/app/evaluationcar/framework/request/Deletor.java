@@ -28,8 +28,4 @@ public class Deletor {
     public void requestTotallBill() {
         HomeDeletor.getInstance().requestTotallBill();
     }
-
-    public void requestImageMeta() {
-        HomeDeletor.getInstance().requestImageMeta();
-    }
 }

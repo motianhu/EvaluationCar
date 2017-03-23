@@ -1,21 +1,20 @@
 package com.smona.app.evaluationcar.framework.upload;
 
 import android.os.Handler;
+
+import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.util.CarLog;
 import java.util.LinkedList;
 
 public final class UploadTaskExecutor {
-    private static LinkedList<UploadTask> sTasks = new LinkedList<UploadTask>();
-    private static int sRunCount;
+    private static LinkedList<UploadImageTask> sTasks = new LinkedList<UploadImageTask>();
+    private static int sRunCount = 0;
 
     private static Handler sHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            UploadTask task = (UploadTask) msg.obj;
-            task.onUploadComplete();
-
-            UploadTask waitTask = sTasks.poll();
+            UploadImageTask waitTask = sTasks.poll();
             if (null != waitTask) {
-                ThreadPoolUtil.post(new UploadRunable(waitTask));
+                HttpProxy.getInstance().uploadImage(waitTask.userName, waitTask.carImageBean, waitTask.callback);
             } else {
                 sRunCount--;
             }
@@ -23,16 +22,16 @@ public final class UploadTaskExecutor {
         }
     };
 
-    protected static void pushTask(UploadTask task) {
-        if (sRunCount >= 3) {
+    public static void pushTask(UploadImageTask task) {
+        if (sRunCount >= 1) {
             sTasks.offer(task);
         } else {
-            ThreadPoolUtil.post(new UploadRunable(task));
+            HttpProxy.getInstance().uploadImage(task.userName, task.carImageBean, task.callback);
             sRunCount++;
         }
     }
 
-    protected static void onExecuteComplete(UploadTask task) {
-        sHandler.obtainMessage(0, task).sendToTarget();
+    public static void next() {
+        sHandler.sendEmptyMessage(0);
     }
 }

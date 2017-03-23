@@ -47,30 +47,6 @@ public class HomeDeletor extends BaseDelegator {
         EventProxy.post(bean);
     }
 
-    public void requestImageMeta() {
-        HttpProxy.getInstance().requestImageMeta(new HttpProxy.ResonpseCallback<String>() {
-            public void onSuccess(String result) {
-                CarLog.d(this, "requestImageMeta onSuccess result: " + result);
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "requestImageMeta Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-                CarLog.d(this, "requestImageMeta onFinished");
-            }
-        });
-    }
-
-
     private static BannerEvent createBannerTest() {
         BannerEvent event = new BannerEvent();
         ArrayList<BannerItem> bannerList = new ArrayList<BannerItem>();

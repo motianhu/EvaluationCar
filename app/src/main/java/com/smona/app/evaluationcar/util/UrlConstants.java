@@ -22,14 +22,16 @@ public class UrlConstants {
     public static final int CREATE_CARBILLID = 2;
     public static final int UPLOAD_IMAGE = 3;
     public static final int SUBMIT_CARBILL = 4;
-    public static final int QUERY_IMAGEMETA = 5;
+    public static final int QUERY_CARBILL_LIST = 5;
+    public static final int QUERY_CARBILL_DETAIL = 6;
 
     static {
         INTEFACES.put(CHECK_USER, "external/checkUser.html");
         INTEFACES.put(CREATE_CARBILLID, "external/carBill/getCarBillIdNextVal.html");
         INTEFACES.put(UPLOAD_IMAGE, "external/app/uploadAppImage.html");
         INTEFACES.put(SUBMIT_CARBILL, "external/app/finishCreateAppCarBill.html");
-        INTEFACES.put(QUERY_IMAGEMETA, "");
+        INTEFACES.put(QUERY_CARBILL_LIST, "external/app/getAppBillList.html");
+        INTEFACES.put(QUERY_CARBILL_DETAIL, "external/app/getAppDetailCarBill.html");
     }
 
 

@@ -5,7 +5,6 @@ import android.app.Application;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
-import com.smona.app.evaluationcar.framework.upload1.UploadUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import org.xutils.common.Callback;
@@ -57,11 +56,20 @@ public class HttpProxy implements IProxy {
         params.addParameter("imageSeqNum", bean.imageSeqNum);
         params.addParameter("imageClass", bean.imageClass);
         params.addBodyParameter("image", new File(bean.imageLocalUrl));
-        UploadUtils.uploadMethod(params, callback);
+        x.http().post(params, callback);
     }
 
-    public void requestImageMeta(Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_IMAGEMETA);
+    public void queryCarbillList(String userName, String status, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_LIST);
+        params.addParameter("userName", userName);
+        params.addParameter("status", status);
+        x.http().get(params, callback);
+    }
+
+    public void queryCarbillDetail(String userName, String carBillId, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_DETAIL);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);
     }
 
