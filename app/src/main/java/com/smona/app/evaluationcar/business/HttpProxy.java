@@ -5,7 +5,6 @@ import android.app.Application;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
-import com.smona.app.evaluationcar.framework.request.HomeDeletor;
 import com.smona.app.evaluationcar.framework.upload1.UploadUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
@@ -37,13 +36,15 @@ public class HttpProxy implements IProxy {
         x.Ext.init(app);
     }
 
+    public interface ResonpseCallback<T> extends Callback.CommonCallback<T>{}
+
     private RequestParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
         RequestParams params = new RequestParams(url);
         return params;
     }
 
-    public void getCarBillId(Callback.CommonCallback callback) {
+    public void getCarBillId(ResonpseCallback callback) {
         RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
         x.http().get(params, callback);
     }

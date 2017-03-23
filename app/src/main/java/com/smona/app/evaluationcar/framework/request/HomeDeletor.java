@@ -48,14 +48,14 @@ public class HomeDeletor extends BaseDelegator {
     }
 
     public void requestImageMeta() {
-        HttpProxy.getInstance().requestImageMeta(new Callback.CommonCallback<String>() {
+        HttpProxy.getInstance().requestImageMeta(new HttpProxy.ResonpseCallback<String>() {
             public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess result: " + result);
+                CarLog.d(this, "requestImageMeta onSuccess result: " + result);
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+                CarLog.d(this, "requestImageMeta Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
             }
 
             @Override
@@ -65,7 +65,7 @@ public class HomeDeletor extends BaseDelegator {
 
             @Override
             public void onFinished() {
-                CarLog.d(this, "onFinished");
+                CarLog.d(this, "requestImageMeta onFinished");
             }
         });
     }

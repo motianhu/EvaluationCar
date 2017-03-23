@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
@@ -55,6 +56,7 @@ public class ImageModelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        CarImageBean bean = mDatas.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
         }
@@ -64,13 +66,21 @@ public class ImageModelAdapter extends BaseAdapter {
 
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ImageView centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
+
+        TextView partLeft = (TextView) convertView.findViewById(R.id.tv_part_left);
+        TextView partCenter = (TextView) convertView.findViewById(R.id.tv_part_center);
+
+        partCenter.setText(bean.displayName);
         if(position == (mDatas.size() - 1)) {
             centerImage.setImageResource(R.drawable.icon_add_photo);
             ViewUtil.setViewVisible(leftView, false);
+            ViewUtil.setViewVisible(partLeft, false);
         } else {
             centerImage.setImageResource(R.drawable.icon_camera);
             ViewUtil.setViewVisible(leftView, true);
+            ViewUtil.setViewVisible(partLeft, false);
         }
+
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);

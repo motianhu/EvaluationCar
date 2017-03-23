@@ -50,9 +50,7 @@ public class ImageDao extends BaseDao<CarImageBean>  {
         item.imageId = getInt(cursor, CarImageTable.IMAGEID);
         item.carBillId = getString(cursor, CarImageTable.CARBILLID);
         item.imageClass = getString(cursor, CarImageTable.IMAGECLASS);
-        item.appImageClass = getString(cursor, CarImageTable.APPIMAGECLASS);
         item.imageSeqNum = getInt(cursor, CarImageTable.IMAGESEQNUM);
-        item.appImageSeqNum = getInt(cursor, CarImageTable.APPIMAGESEQNUM);
         item.imageLocalUrl = getString(cursor, CarImageTable.IMAGELOCALURL);
         item.imageRemoteUrl = getString(cursor, CarImageTable.IMAGEREMOTEURL);
         item.createTime = getString(cursor, CarImageTable.CREATETIME);
@@ -66,9 +64,7 @@ public class ImageDao extends BaseDao<CarImageBean>  {
         values.put(CarImageTable.IMAGEID, item.imageId);
         values.put(CarImageTable.CARBILLID, item.carBillId);
         values.put(CarImageTable.IMAGECLASS, item.imageClass);
-        values.put(CarImageTable.APPIMAGECLASS, item.appImageClass);
         values.put(CarImageTable.IMAGESEQNUM, item.imageSeqNum);
-        values.put(CarImageTable.APPIMAGESEQNUM, item.appImageSeqNum);
         values.put(CarImageTable.IMAGELOCALURL, item.imageLocalUrl);
         values.put(CarImageTable.IMAGEREMOTEURL, item.imageRemoteUrl);
         values.put(CarImageTable.CREATETIME, item.createTime);

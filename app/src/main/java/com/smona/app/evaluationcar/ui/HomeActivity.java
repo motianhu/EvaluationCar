@@ -70,7 +70,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private void requestImageMetas() {
         List<ImageMetaBean> list = DBDelegator.getInstance().queryImageMeta();
         if (list == null || list.size() < 1) {
-            Deletor.getInstance().requestImageMeta();
+            //Deletor.getInstance().requestImageMeta();
         }
     }
 

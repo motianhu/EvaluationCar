@@ -10,6 +10,8 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.model.ResNormal;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -121,9 +123,9 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initCarBill() {
-//        if (statusIsNone()) {
-//            return;
-//        }
+        if (statusIsNone()) {
+            return;
+        }
         if (statusIsSave()) {
             return;
         }
@@ -132,7 +134,7 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(mCarBillId)) {
             return;
         }
-        HttpProxy.getInstance().getCarBillId(new Callback.CommonCallback<String>() {
+        HttpProxy.getInstance().getCarBillId(new HttpProxy.ResonpseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "onSuccess result: " + result);
@@ -140,13 +142,15 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
                 CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
                 CarImageBean bean = new CarImageBean();
                 bean.carBillId = mCarBillId;
-                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot_2017-03-04-19-21-31.png";
+                bean.imageLocalUrl = "/sdcard/Screenshots/Screenshot_20170315-225739.png";
                 bean.imageClass="车骨架";
                 bean.imageSeqNum=1;
-                HttpProxy.getInstance().uploadImage("cy", bean, new CommonCallback<String>() {
+                HttpProxy.getInstance().uploadImage("cy", bean, new HttpProxy.ResonpseCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
                         CarLog.d(this, "onSuccess Object: " + result);
+                        ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
+                        CarLog.d(this, "onSuccess Object: " + resp);
                     }
 
                     @Override
@@ -256,51 +260,52 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
 
     private void bindViews() {
         mClassRegistrationList = new ArrayList<CarImageBean>();
-        initImageData(mClassRegistrationList, 3);
+        initImageData(mClassRegistrationList, ImageModelDelegator.IMAGE_Registration);
         mClassRegistrationAdapter.update(mClassRegistrationList);
 
         mClassDrivingLicenseList = new ArrayList<CarImageBean>();
-        initImageData(mClassDrivingLicenseList, 2);
+        initImageData(mClassDrivingLicenseList, ImageModelDelegator.IMAGE_DrivingLicense);
         mClassDrivingLicenseAdapter.update(mClassDrivingLicenseList);
 
         mClassVehicleNameplateList = new ArrayList<CarImageBean>();
-        initImageData(mClassVehicleNameplateList, 2);
+        initImageData(mClassVehicleNameplateList, ImageModelDelegator.IMAGE_VehicleNameplate);
         mClassVehicleNameplateAdapter.update(mClassVehicleNameplateList);
 
         mClassCarBodyList = new ArrayList<CarImageBean>();
-        initImageData(mClassCarBodyList, 5);
+        initImageData(mClassCarBodyList, ImageModelDelegator.IMAGE_CarBody);
         mClassCarBodyAdapter.update(mClassCarBodyList);
 
         mClassCarFrameList = new ArrayList<CarImageBean>();
-        initImageData(mClassCarFrameList, 16);
+        initImageData(mClassCarFrameList, ImageModelDelegator.IMAGE_CarFrame);
         mClassCarFrameAdapter.update(mClassCarFrameList);
 
         mClassVehicleInteriorList = new ArrayList<CarImageBean>();
-        initImageData(mClassVehicleInteriorList, 5);
+        initImageData(mClassVehicleInteriorList, ImageModelDelegator.IMAGE_VehicleInterior);
         mClassVehicleInteriorAdapter.update(mClassVehicleInteriorList);
 
         mClassDifferenceSupplementList = new ArrayList<CarImageBean>();
-        initImageData(mClassDifferenceSupplementList, 1);
+        initImageData(mClassDifferenceSupplementList, ImageModelDelegator.IMAGE_DifferenceSupplement);
         mClassDifferenceSupplementAdapter.update(mClassDifferenceSupplementList);
 
         mClassOriginalCarInsurancetList = new ArrayList<CarImageBean>();
-        initImageData(mClassOriginalCarInsurancetList, 1);
+        initImageData(mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
         mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
     }
 
-    private void initImageData(List<CarImageBean> data, int count) {
+    private void initImageData(List<CarImageBean> data, int type) {
         if (statusIsNone()) {
-            for (int i = 0; i < count; i++) {
-                data.add(new CarImageBean());
-            }
+            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = getResources().getString(R.string.add_picture);
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClass(type);
+            bean.imageSeqNum = data.size();
+            tempData.add(bean);
+
+            data.addAll(tempData);
         } else if (statusIsSave()) {
-            for (int i = 0; i < count; i++) {
-                data.add(new CarImageBean());
-            }
+
         } else {
-            for (int i = 0; i < count; i++) {
-                data.add(new CarImageBean());
-            }
+
         }
 
     }

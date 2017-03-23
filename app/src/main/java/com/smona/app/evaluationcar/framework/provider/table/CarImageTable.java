@@ -13,8 +13,6 @@ public class CarImageTable extends BaseTable {
     public static final String IMAGECLASS = "imageClass"; //图片分类/wechat
     public static final String IMAGEREMOTEURL = "imageRemoteUrl";  //服务器地址,有值则代表已上传成功
     public static final String IMAGELOCALURL = "iamgeLocalUrl"; //本机地址
-    public static final String APPIMAGESEQNUM = "appImageSeqNum"; //
-    public static final String APPIMAGECLASS = "appImageClass"; //图片分类
     public static final String CREATETIME = "createTime"; //
     public static final String UPDATETIEM = "updateTime"; //图片分类
 
@@ -43,9 +41,7 @@ public class CarImageTable extends BaseTable {
                 + IMAGEID + " INTEGER , "
                 + CARBILLID + " TEXT, "
                 + IMAGESEQNUM + " INTEGER, "
-                + APPIMAGESEQNUM + " INTEGER, "
                 + IMAGECLASS + " TEXT, "
-                + APPIMAGECLASS + " TEXT, "
                 + IMAGEREMOTEURL + " TEXT, "
                 + IMAGELOCALURL + " TEXT,"
                 + CREATETIME + " TEXT,"
