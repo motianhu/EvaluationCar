@@ -14,5 +14,4 @@ public class CarImageBean {
     public String imageLocalUrl;
     public String createTime;
     public String updateTime;
-    public int imageMetaId;
 }

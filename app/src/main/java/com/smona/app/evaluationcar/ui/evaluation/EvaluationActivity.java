@@ -12,6 +12,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.upload.UploadImageTask;
 import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
@@ -341,19 +342,25 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initImageData(List<CarImageBean> data, int type) {
+        String imageClass = ImageModelDelegator.getInstance().getImageClass(type);
         if (statusIsNone()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
             CarImageBean bean = new CarImageBean();
             bean.displayName = getResources().getString(R.string.add_picture);
-            bean.imageClass = ImageModelDelegator.getInstance().getImageClass(type);
+            bean.imageClass = imageClass;
             bean.imageSeqNum = data.size();
             tempData.add(bean);
-
             data.addAll(tempData);
         } else if (statusIsSave()) {
 
         } else {
-
+            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = getResources().getString(R.string.add_picture);
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = data.size();
+            tempData.add(bean);
+            data.addAll(tempData);
         }
 
     }
