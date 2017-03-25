@@ -26,6 +26,9 @@ public class UrlConstants {
     public static final int QUERY_CARBILL_IMAGE = 6;
     public static final int QUERY_CARBILL_COUNT = 7;
     public static final int QUERY_OPERATION_DESC = 8;
+    public static final int QUERY_NEWS_LATEST = 9;
+    public static final int QUERY_NEWS_MORE = 10;
+    public static final int QUERY_NEWS_DETAIL = 11;
 
     static {
         INTEFACES.put(CHECK_USER, "external/checkUser.html");
@@ -36,6 +39,9 @@ public class UrlConstants {
         INTEFACES.put(QUERY_CARBILL_IMAGE, "external/app/getAppBillImageList.html");
         INTEFACES.put(QUERY_CARBILL_COUNT, "external/app/getApplyCountInfo.html");
         INTEFACES.put(QUERY_OPERATION_DESC, "external/source/operation-desc.json");
+        INTEFACES.put(QUERY_NEWS_LATEST, "external/news/latestList.html");
+        INTEFACES.put(QUERY_NEWS_MORE, "external/news/moreList.html");
+        INTEFACES.put(QUERY_NEWS_DETAIL, "external/news/newsDetail.html");
     }
 
 

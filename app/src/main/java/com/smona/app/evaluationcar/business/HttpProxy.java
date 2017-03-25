@@ -102,5 +102,24 @@ public class HttpProxy implements IProxy {
         x.http().get(params, callback);
     }
 
+    public void queryLatestNews(String classType, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
+        params.addParameter("classType",classType);
+        x.http().get(params, callback);
+    }
+
+    public void queryMoreNews(String classType, int curPage, int pageSize, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
+        params.addParameter("classType",classType);
+        params.addParameter("curPage",curPage);
+        params.addParameter("pageSize", pageSize);
+        x.http().get(params, callback);
+    }
+
+    public void queryNewsDetail(int newsId, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
+        params.addParameter("newsId",newsId);
+        x.http().get(params, callback);
+    }
 
 }
