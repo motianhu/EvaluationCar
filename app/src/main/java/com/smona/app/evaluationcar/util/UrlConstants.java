@@ -24,6 +24,8 @@ public class UrlConstants {
     public static final int SUBMIT_CARBILL = 4;
     public static final int QUERY_CARBILL_LIST = 5;
     public static final int QUERY_CARBILL_IMAGE = 6;
+    public static final int QUERY_CARBILL_COUNT = 7;
+    public static final int QUERY_OPERATION_DESC = 8;
 
     static {
         INTEFACES.put(CHECK_USER, "external/checkUser.html");
@@ -32,6 +34,8 @@ public class UrlConstants {
         INTEFACES.put(SUBMIT_CARBILL, "external/app/finishCreateAppCarBill.html");
         INTEFACES.put(QUERY_CARBILL_LIST, "external/app/getAppBillList.html");
         INTEFACES.put(QUERY_CARBILL_IMAGE, "external/app/getAppBillImageList.html");
+        INTEFACES.put(QUERY_CARBILL_COUNT, "external/app/getApplyCountInfo.html");
+        INTEFACES.put(QUERY_OPERATION_DESC, "external/source/operation-desc.json");
     }
 
 

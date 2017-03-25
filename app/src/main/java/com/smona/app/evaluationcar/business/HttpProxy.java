@@ -90,4 +90,17 @@ public class HttpProxy implements IProxy {
         params.addParameter("mark",carBill.mark);
         x.http().get(params, callback);
     }
+
+    public void queryOperationDesc(Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_OPERATION_DESC);
+        x.http().get(params, callback);
+    }
+
+    public void queryCarbillCount(String userName, Callback.CommonCallback callback) {
+        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
+        params.addParameter("userName",userName);
+        x.http().get(params, callback);
+    }
+
+
 }
