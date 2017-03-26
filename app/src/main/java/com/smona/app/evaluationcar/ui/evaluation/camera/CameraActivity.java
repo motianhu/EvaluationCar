@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,8 +21,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +47,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private boolean mIsPreview = false;
     private ImageView mClose;
     private ImageView mTakePhoto;
+
+    private ImageView mThumbnail;
 
     private TextView mDescription;
     private TextView mNote;
@@ -72,6 +77,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
 
+        mThumbnail  =(ImageView)findViewById(R.id.thumbnail);
+        ViewUtil.setViewVisible(mThumbnail, false);
+
         mTakePhoto = (ImageView) findViewById(R.id.img_camera);
         mTakePhoto.setOnClickListener(this);
 
@@ -97,6 +105,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         mExplainView = findViewById(R.id.lin_explain_btn);
         mExplainView.setOnClickListener(this);
+
+        changeViewStatus(false);
     }
 
     private void initData() {
@@ -117,6 +127,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             public void onAnimationStart(Animation paramAnimation) {
             }
         });
+    }
+
+    private void changeViewStatus(boolean isPreview) {
+        ViewUtil.setViewVisible(mThumbnail, true);
+        mGallery.setText(isPreview?R.string.take_again:R.string.gallery);
+        mCancel.setText(isPreview?R.string.take_next:R.string.cancel);
+        ViewUtil.setViewVisible(mFlashLight, !isPreview);
+        ViewUtil.setViewVisible(mTakePhoto, !isPreview);
     }
 
     @Override
@@ -229,6 +247,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 String imagePath = c.getString(columnIndex);
                 //todo picture
                 CarLog.d(this, "onActivityResult imagePath: " + imagePath);
+
             } finally {
                 if (c != null) {
                     c.close();
@@ -299,8 +318,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 saveBitmap = Bitmap.createScaledBitmap(saveBitmap, screenWidth, picHeight, true);
 
                 //方形 animHeight(动画高度)
-                saveBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3);
-
+                Matrix matrix = new Matrix();
+                matrix.setRotate(270f);
+                saveBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
                 String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
 
@@ -310,18 +330,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     bitmap.recycle();
                 }
 
-                if (!saveBitmap.isRecycled()) {
-                    saveBitmap.recycle();
-                }
-
-                Intent intent = new Intent();
-                intent.putExtra(AppConstant.KEY.IMG_PATH, img_path);
-                intent.putExtra(AppConstant.KEY.PIC_WIDTH, screenWidth);
-                intent.putExtra(AppConstant.KEY.PIC_HEIGHT, picHeight);
-                setResult(AppConstant.RESULT_CODE.RESULT_OK, intent);
-                finish();
+                setPreview(saveBitmap);
             }
         });
+    }
+
+
+    private void setPreview(Bitmap bitmap) {
+        mThumbnail.setImageBitmap(bitmap);
+        changeViewStatus(true);
     }
 
     /**

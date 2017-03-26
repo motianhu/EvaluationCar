@@ -61,6 +61,9 @@
 
     <string name="cancel">取消</string>
     <string name="gallery">相册</string>
+    <string name="take_again">重拍</string>
+    <string name="take_next">拍下一张</string>
+    <string name="complete">完成</string>
 
 
 

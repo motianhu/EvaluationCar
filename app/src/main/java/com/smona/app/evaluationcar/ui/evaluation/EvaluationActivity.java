@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -125,9 +126,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initCarBill() {
-//        if (statusIsNone()) {
-//            return;
-//        }
+        if (statusIsNone()) {
+            return;
+        }
         if (statusIsSave()) {
             return;
         }
@@ -136,32 +137,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(mCarBillId)) {
             return;
         }
-        HttpProxy.getInstance().getCarBillId(new HttpProxy.ResonpseCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess result: " + result);
-                mCarBillId = result.substring(1,result.length() - 1);
-                CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
-
-//                uploadImage();
-                queryCarbillImages();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-                CarLog.d(this, "onFinished");
-            }
-        });
     }
 
     private void uploadImage() {
@@ -386,6 +361,32 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         bean.carBillId = mCarBillId;
         bean.preSalePrice = 10000.0;
         bean.mark = "测试单";
+        HttpProxy.getInstance().getCarBillId(new HttpProxy.ResonpseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(this, "onSuccess result: " + result);
+                mCarBillId = result.substring(1,result.length() - 1);
+                CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
+
+//                uploadImage();
+                queryCarbillImages();
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+                CarLog.d(this, "onFinished");
+            }
+        });
         HttpProxy.getInstance().submitCarBill("cy", bean, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -409,6 +410,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 
     @Override
     protected int getLayoutId() {
