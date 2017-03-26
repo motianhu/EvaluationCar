@@ -62,6 +62,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private Animation mCollapseAnimation;
     private Animation mExpandAnimation;
 
+    private Bitmap mBitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +132,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void changeViewStatus(boolean isPreview) {
-        ViewUtil.setViewVisible(mThumbnail, true);
+        ViewUtil.setViewVisible(mThumbnail, isPreview);
         mGallery.setText(isPreview?R.string.take_again:R.string.gallery);
         mCancel.setText(isPreview?R.string.take_next:R.string.cancel);
         ViewUtil.setViewVisible(mFlashLight, !isPreview);
@@ -228,9 +230,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void actionGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
+        String text = mGallery.getText().toString();
+        if (getResources().getString(R.string.gallery).equals(text)) {
+            Intent intent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
+        } else {
+            changeViewStatus(false);
+        }
     }
 
     @Override
@@ -248,6 +255,23 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 //todo picture
                 CarLog.d(this, "onActivityResult imagePath: " + imagePath);
 
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.outHeight = picHeight;
+                options.outWidth = screenWidth;
+                Bitmap saveBitmap = BitmapFactory.decodeFile(imagePath, options);
+
+                Matrix matrix = new Matrix();
+                matrix.setRotate(270f);
+
+                recycle(mBitmap);
+                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
+
+                String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
+                        File.separator + System.currentTimeMillis() + ".jpeg";
+                BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
+                recycle(saveBitmap);
+
+                setPreview();
             } finally {
                 if (c != null) {
                     c.close();
@@ -316,28 +340,32 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 Bitmap saveBitmap = CameraUtil.getInstance().setTakePicktrueOrientation(mCameraId, bitmap);
 
                 saveBitmap = Bitmap.createScaledBitmap(saveBitmap, screenWidth, picHeight, true);
-
-                //方形 animHeight(动画高度)
+                
                 Matrix matrix = new Matrix();
                 matrix.setRotate(270f);
-                saveBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
+
+                recycle(bitmap);
+                recycle(mBitmap);
+                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
+
                 String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
-
                 BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
+                recycle(saveBitmap);
 
-                if (!bitmap.isRecycled()) {
-                    bitmap.recycle();
-                }
-
-                setPreview(saveBitmap);
+                setPreview();
             }
         });
     }
 
+    private void recycle(Bitmap b) {
+        if (b != null && !b.isRecycled()) {
+            b.recycle();
+        }
+    }
 
-    private void setPreview(Bitmap bitmap) {
-        mThumbnail.setImageBitmap(bitmap);
+    private void setPreview() {
+        mThumbnail.setImageBitmap(mBitmap);
         changeViewStatus(true);
     }
 
