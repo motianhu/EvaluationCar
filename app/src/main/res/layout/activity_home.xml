@@ -19,7 +19,7 @@
         <RadioButton
             android:id="@+id/rb_evaluation"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_message"
+            android:drawableTop="@drawable/tab_menu_evaluation"
             android:text="@string/home_fragment_evaluation" />
 
         <RadioButton
@@ -31,13 +31,13 @@
         <RadioButton
             android:id="@+id/rb_list"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_better"
+            android:drawableTop="@drawable/tab_menu_list"
             android:text="@string/home_fragment_list" />
 
         <RadioButton
             android:id="@+id/rb_setting"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_setting"
+            android:drawableTop="@drawable/tab_menu_mine"
             android:text="@string/home_fragment_setting" />
 
     </RadioGroup>
@@ -45,7 +45,7 @@
     <View
         android:id="@+id/div_tab_bar"
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="1px"
         android:layout_above="@id/rg_home"
         android:background="@color/div_white" />
 
