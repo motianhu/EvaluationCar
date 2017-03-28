@@ -48,7 +48,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private int mLightModel = 0;
     private ImageView mFlashLight;
 
-    private boolean mIsPreview = false;
+    private boolean mPreViewRunning = false;
+
+
     private ImageView mClose;
     private ImageView mTakePhoto;
 
@@ -146,11 +148,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void showTakePhotoPicture(boolean isShow) {
-        mIsPreview = !isShow;
+        mPreViewRunning = !isShow;
 
 
         mThumbnail.setImageBitmap(isShow ? mBitmap : null);
-
 
         mGallery.setText(isShow ? R.string.take_again : R.string.gallery);
         mCancel.setText(isShow ? R.string.take_next : R.string.cancel);
@@ -210,13 +211,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (getResources().getString(R.string.cancel).equals(text)) {
             finish();
         } else {
+            if(mPreViewRunning) {
+                mCamera.stopPreview();
+            } else {
+                mCamera.startPreview();
+            }
             showTakePhotoPicture(false);
         }
     }
 
 
     private void onCamera() {
-        if (mIsPreview) {
+        if (mPreViewRunning) {
             switch (mLightModel) {
                 case 0:
                     //关闭
@@ -231,7 +237,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     break;
             }
             captrue();
-            mIsPreview = false;
+            mPreViewRunning = false;
         }
     }
 
@@ -270,6 +276,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
         } else {
+            if(mPreViewRunning) {
+                mCamera.stopPreview();
+            } else {
+                mCamera.startPreview();
+            }
             showTakePhotoPicture(false);
         }
     }
@@ -353,7 +364,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             camera.setPreviewDisplay(holder);
             CameraUtil.getInstance().setCameraDisplayOrientation(this, mCameraId, camera);
             camera.startPreview();
-            mIsPreview = true;
+            mPreViewRunning = true;
         } catch (IOException e) {
             e.printStackTrace();
             CarLog.d(TAG, "startPreview e: " + e);
@@ -365,7 +376,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                mIsPreview = false;
+                mPreViewRunning = false;
                 //将data 转换为位图 或者你也可以直接保存为文件使用 FileOutputStream
                 //这里我相信大部分都有其他用处把 比如加个水印 后续再讲解
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
