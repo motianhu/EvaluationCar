@@ -79,6 +79,12 @@ public class DBDelegator {
         return list;
     }
 
+
+    public boolean insertCarImageBill(CarImageBean bean) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        return dao.insertItem(bean);
+    }
+
     public int getDBMaxId() {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         List<CarImageBean> list = dao.getResult(null, null, " imageId desc ");

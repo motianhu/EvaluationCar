@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -65,10 +66,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private TextView mCancel;
 
     //Animation
+    private View mBtnView;
     private View mExplainView;
     private Animation mCollapseAnimation;
     private Animation mExpandAnimation;
 
+    private String mBitmapPath;
     private Bitmap mBitmap;
 
     private CarImageBean mCurrentBean;
@@ -115,10 +118,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         mNumPhoto.setText((mCurrentBean.imageSeqNum + 1) + "/" + mCarImageList.size());
 
-        mExplainView = findViewById(R.id.lin_explain_btn);
+        mBtnView = findViewById(R.id.lin_explain_btn);
+        mBtnView.setOnClickListener(this);
+        mExplainView = findViewById(R.id.rel_explain);
         mExplainView.setOnClickListener(this);
+        ViewUtil.setViewVisible(mExplainView, false);
 
         showTakePhotoPicture(false);
+    }
+
+    private void refreshNext() {
+        mDescription.setText(mCurrentBean.displayName);
+        mNumPhoto.setText((mCurrentBean.imageSeqNum + 1) + "/" + mCarImageList.size());
     }
 
     private void initData() {
@@ -152,6 +163,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
 
         mThumbnail.setImageBitmap(isShow ? mBitmap : null);
+        if (!isShow) {
+            recycle(mBitmap);
+        }
 
         mGallery.setText(isShow ? R.string.take_again : R.string.gallery);
         mCancel.setText(isShow ? R.string.take_next : R.string.cancel);
@@ -159,7 +173,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         ViewUtil.setViewVisible(mThumbnail, isShow);
         ViewUtil.setViewVisible(mFlashLight, !isShow);
         ViewUtil.setViewVisible(mTakePhoto, !isShow);
-        ViewUtil.setViewVisible(mExplainView, !isShow);
+        ViewUtil.setViewVisible(mBtnView, !isShow);
         ViewUtil.setViewVisible(mNumPhoto, !isShow);
         ViewUtil.setViewVisible(mDesLayer, !isShow);
     }
@@ -187,6 +201,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             case R.id.lin_explain_btn:
                 onAnimationExplain();
                 break;
+            case R.id.rel_explain:
+                closeAnimal();
+                break;
         }
     }
 
@@ -211,14 +228,28 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (getResources().getString(R.string.cancel).equals(text)) {
             finish();
         } else {
-            if(mPreViewRunning) {
+            if (mPreViewRunning) {
                 mCamera.stopPreview();
             } else {
                 mCamera.startPreview();
             }
             showTakePhotoPicture(false);
+
+            mCurrentBean.imageLocalUrl = mBitmapPath;
+            if (mCurrentBean.imageId == -1) {
+                mCurrentBean.imageId = DBDelegator.getInstance().getDBMaxId();
+            }
+            DBDelegator.getInstance().insertCarImageBill(mCurrentBean);
+
+
+            if ((mCurrentBean.imageSeqNum + 1) < mCarImageList.size()) {
+                mCurrentBean = mCarImageList.get(mCurrentBean.imageSeqNum + 1);
+            }
+            refreshNext();
         }
     }
+
+
 
 
     private void onCamera() {
@@ -276,11 +307,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
         } else {
-            if(mPreViewRunning) {
+            if (mPreViewRunning) {
                 mCamera.stopPreview();
             } else {
                 mCamera.startPreview();
             }
+            mBitmapPath = null;
             showTakePhotoPicture(false);
         }
     }
@@ -379,22 +411,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 mPreViewRunning = false;
                 //将data 转换为位图 或者你也可以直接保存为文件使用 FileOutputStream
                 //这里我相信大部分都有其他用处把 比如加个水印 后续再讲解
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Bitmap saveBitmap = CameraUtil.getInstance().setTakePicktrueOrientation(mCameraId, bitmap);
-
-                saveBitmap = Bitmap.createScaledBitmap(saveBitmap, mScreenWidth, mPicHeight, true);
-
-                Matrix matrix = new Matrix();
-                matrix.setRotate(270f);
-
-                recycle(bitmap);
                 recycle(mBitmap);
-                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, mScreenWidth, mScreenWidth * 4 / 3, matrix, true);
 
-                String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
+
+                mBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                mBitmapPath = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
-                BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
-                recycle(saveBitmap);
+                BitmapUtils.saveJPGE_After(CameraActivity.this, mBitmap, mBitmapPath, 100);
+                CarLog.d(TAG, "captrue img_path " + mBitmapPath);
 
                 setShowPicture();
             }
@@ -469,7 +493,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         CarLog.d(TAG, "surfaceDestroyed");
-        releaseCamera();
     }
 
 }

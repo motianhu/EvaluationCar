@@ -22,6 +22,8 @@ import android.media.MediaScannerConnection;
 import android.util.Log;
 import android.view.View;
 
+import com.smona.app.evaluationcar.util.CarLog;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -454,8 +456,10 @@ public class BitmapUtils {
             updateResources(context, file.getPath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            CarLog.d("BitmapUtils", "saveJPGE_After FileNotFoundException " + e);
         } catch (IOException e) {
             e.printStackTrace();
+            CarLog.d("BitmapUtils", "saveJPGE_After IOException " + e);
         }
     }
 

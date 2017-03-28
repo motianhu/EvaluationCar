@@ -118,12 +118,12 @@ public abstract class BaseDao<T> {
         }
     }
 
-    public void insertItem(T itemInfo) {
+    public boolean insertItem(T itemInfo) {
         if (itemInfo == null) {
-            return;
+            return false;
         }
-        mContentResolver.insert(mTable.mContentUriNoNotify,
-                modelToContentValues(itemInfo));
+        return  mContentResolver.insert(mTable.mContentUriNoNotify,
+                modelToContentValues(itemInfo)) != null;
     }
 
     public void clear() {

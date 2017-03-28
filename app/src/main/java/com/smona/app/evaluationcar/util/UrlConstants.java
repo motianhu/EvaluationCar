@@ -31,7 +31,7 @@ public class UrlConstants {
     public static final int QUERY_NEWS_DETAIL = 11;
 
     static {
-        INTEFACES.put(CHECK_USER, "external/checkUser.html");
+        INTEFACES.put(CHECK_USER, "external/app/checkUser.html");
         INTEFACES.put(CREATE_CARBILLID, "external/carBill/getCarBillIdNextVal.html");
         INTEFACES.put(UPLOAD_IMAGE, "external/app/uploadAppImage.html");
         INTEFACES.put(SUBMIT_CARBILL, "external/app/finishCreateAppCarBill.html");
