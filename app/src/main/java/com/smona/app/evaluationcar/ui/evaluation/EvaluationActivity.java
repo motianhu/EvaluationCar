@@ -33,7 +33,7 @@ import java.util.List;
  */
 
 public class EvaluationActivity extends HeaderActivity implements View.OnClickListener {
-
+    private static final String TAG = EvaluationActivity.class.getSimpleName();
     private BaseScrollView mScrollView;
 
     //登记证
@@ -133,10 +133,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
         mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
-        CarLog.d(this, "initCarBill mCarBillId=" + mCarBillId);
-        if (!TextUtils.isEmpty(mCarBillId)) {
-            return;
-        }
+        CarLog.d(TAG, "initCarBill mCarBillId=" + mCarBillId);
     }
 
     private void uploadImage() {
@@ -157,7 +154,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             CarImageBean carImageBean= carImageBeenList.get(i);
             carImageBean.carBillId = mCarBillId;
             carImageBean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
-            carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClass(type);
+            carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
             carImageBean.imageSeqNum = i;
             UploadImageTask task = new UploadImageTask();
             task.callback = mUploadImageCallback;
@@ -317,24 +314,14 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initImageData(List<CarImageBean> data, int type) {
-        String imageClass = ImageModelDelegator.getInstance().getImageClass(type);
+        String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsNone()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
-            CarImageBean bean = new CarImageBean();
-            bean.displayName = getResources().getString(R.string.add_picture);
-            bean.imageClass = imageClass;
-            bean.imageSeqNum = data.size();
-            tempData.add(bean);
             data.addAll(tempData);
         } else if (statusIsSave()) {
 
         } else {
             List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
-            CarImageBean bean = new CarImageBean();
-            bean.displayName = getResources().getString(R.string.add_picture);
-            bean.imageClass = imageClass;
-            bean.imageSeqNum = data.size();
-            tempData.add(bean);
             data.addAll(tempData);
         }
 
@@ -413,7 +400,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override

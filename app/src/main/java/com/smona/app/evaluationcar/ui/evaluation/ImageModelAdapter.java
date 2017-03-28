@@ -56,7 +56,7 @@ public class ImageModelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CarImageBean bean = mDatas.get(position);
+        final CarImageBean bean = mDatas.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
         }
@@ -88,7 +88,7 @@ public class ImageModelAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.jumpOnlyActivity(mContext, CameraActivity.class);
+                ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
             }
         });
 

@@ -21,15 +21,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.IntentConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+    private static final String TAG = CameraActivity.class.getSimpleName();
 
     private Camera mCamera;
     private SurfaceView mSurfaceView;
@@ -37,8 +41,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private int mCameraId = 0;
 
     //屏幕宽高
-    private int screenWidth;
-    private int picHeight;
+    private int mScreenWidth;
+    private int mPicHeight;
 
     //闪光灯模式 0:关闭 1: 开启 2: 自动
     private int mLightModel = 0;
@@ -50,6 +54,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private ImageView mThumbnail;
 
+    private View mDesLayer;
     private TextView mDescription;
     private TextView mNote;
     private TextView mNumPhoto;
@@ -64,14 +69,17 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private Bitmap mBitmap;
 
+    private CarImageBean mCurrentBean;
+    private List<CarImageBean> mCarImageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        initView();
         initData();
+        initView();
         initAnimate();
+        initCamera();
     }
 
     private void initView() {
@@ -79,7 +87,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
 
-        mThumbnail  =(ImageView)findViewById(R.id.thumbnail);
+        mThumbnail = (ImageView) findViewById(R.id.thumbnail);
         ViewUtil.setViewVisible(mThumbnail, false);
 
         mTakePhoto = (ImageView) findViewById(R.id.img_camera);
@@ -98,22 +106,28 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCancel = (TextView) findViewById(R.id.cancel);
         mCancel.setOnClickListener(this);
 
+        mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
-        mDescription.setText("车辆左前45度");
+        mDescription.setText(mCurrentBean.displayName);
         mNote = (TextView) findViewById(R.id.note);
-        mNote.setText("(请打开天窗)");
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
-        mNumPhoto.setText("1/21");
+        mNumPhoto.setText((mCurrentBean.imageSeqNum + 1) + "/" + mCarImageList.size());
 
         mExplainView = findViewById(R.id.lin_explain_btn);
         mExplainView.setOnClickListener(this);
 
-        changeViewStatus(false);
+        showTakePhotoPicture(false);
     }
 
     private void initData() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        screenWidth = dm.widthPixels;
+        mScreenWidth = dm.widthPixels;
+
+        mCurrentBean = (CarImageBean) getIntent().getSerializableExtra(IntentConstants.BEAN_CARIMAGEBEAN);
+        CarLog.d(TAG, "initData mCurrentBean: " + mCurrentBean);
+
+        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mCurrentBean.imageClass);
+        mCarImageList = ImageModelDelegator.getInstance().getDefaultModel(type);
     }
 
     private void initAnimate() {
@@ -131,12 +145,22 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         });
     }
 
-    private void changeViewStatus(boolean isPreview) {
-        ViewUtil.setViewVisible(mThumbnail, isPreview);
-        mGallery.setText(isPreview?R.string.take_again:R.string.gallery);
-        mCancel.setText(isPreview?R.string.take_next:R.string.cancel);
-        ViewUtil.setViewVisible(mFlashLight, !isPreview);
-        ViewUtil.setViewVisible(mTakePhoto, !isPreview);
+    private void showTakePhotoPicture(boolean isShow) {
+        mIsPreview = !isShow;
+
+
+        mThumbnail.setImageBitmap(isShow ? mBitmap : null);
+
+
+        mGallery.setText(isShow ? R.string.take_again : R.string.gallery);
+        mCancel.setText(isShow ? R.string.take_next : R.string.cancel);
+
+        ViewUtil.setViewVisible(mThumbnail, isShow);
+        ViewUtil.setViewVisible(mFlashLight, !isShow);
+        ViewUtil.setViewVisible(mTakePhoto, !isShow);
+        ViewUtil.setViewVisible(mExplainView, !isShow);
+        ViewUtil.setViewVisible(mNumPhoto, !isShow);
+        ViewUtil.setViewVisible(mDesLayer, !isShow);
     }
 
     @Override
@@ -154,10 +178,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 onFlashLight();
                 break;
             case R.id.gallery:
-                actionGallery();
+                onGallery();
                 break;
             case R.id.cancel:
-                finish();
+                onCancel();
                 break;
             case R.id.lin_explain_btn:
                 onAnimationExplain();
@@ -180,6 +204,16 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         this.mExplainView.setVisibility(View.GONE);
         this.mExplainView.startAnimation(this.mCollapseAnimation);
     }
+
+    private void onCancel() {
+        String text = mCancel.getText().toString();
+        if (getResources().getString(R.string.cancel).equals(text)) {
+            finish();
+        } else {
+            showTakePhotoPicture(false);
+        }
+    }
+
 
     private void onCamera() {
         if (mIsPreview) {
@@ -229,14 +263,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
-    private void actionGallery() {
+    private void onGallery() {
         String text = mGallery.getText().toString();
         if (getResources().getString(R.string.gallery).equals(text)) {
             Intent intent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
         } else {
-            changeViewStatus(false);
+            showTakePhotoPicture(false);
         }
     }
 
@@ -252,26 +286,26 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePathColumns[0]);
                 String imagePath = c.getString(columnIndex);
-                //todo picture
-                CarLog.d(this, "onActivityResult imagePath: " + imagePath);
+
+                CarLog.d(TAG, "onActivityResult imagePath: " + imagePath);
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.outHeight = picHeight;
-                options.outWidth = screenWidth;
+                options.outHeight = mPicHeight;
+                options.outWidth = mScreenWidth;
                 Bitmap saveBitmap = BitmapFactory.decodeFile(imagePath, options);
 
                 Matrix matrix = new Matrix();
                 matrix.setRotate(270f);
 
                 recycle(mBitmap);
-                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
+                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, mScreenWidth, mScreenWidth * 4 / 3, matrix, true);
 
                 String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
                 BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
                 recycle(saveBitmap);
 
-                setPreview();
+                setShowPicture();
             } finally {
                 if (c != null) {
                     c.close();
@@ -280,9 +314,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void initCamera() {
         if (mCamera == null) {
             mCamera = getCamera(mCameraId);
             if (mHolder != null) {
@@ -292,8 +324,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         releaseCamera();
     }
 
@@ -307,7 +339,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         try {
             camera = Camera.open(id);
         } catch (Exception e) {
-            CarLog.d(this, "getCamera e: " + e);
+            CarLog.d(TAG, "getCamera e: " + e);
         }
         return camera;
     }
@@ -324,7 +356,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             mIsPreview = true;
         } catch (IOException e) {
             e.printStackTrace();
-            CarLog.d(this, "startPreview e: " + e);
+            CarLog.d(TAG, "startPreview e: " + e);
         }
     }
 
@@ -339,21 +371,21 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 Bitmap saveBitmap = CameraUtil.getInstance().setTakePicktrueOrientation(mCameraId, bitmap);
 
-                saveBitmap = Bitmap.createScaledBitmap(saveBitmap, screenWidth, picHeight, true);
-                
+                saveBitmap = Bitmap.createScaledBitmap(saveBitmap, mScreenWidth, mPicHeight, true);
+
                 Matrix matrix = new Matrix();
                 matrix.setRotate(270f);
 
                 recycle(bitmap);
                 recycle(mBitmap);
-                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, screenWidth, screenWidth * 4 / 3,matrix, true);
+                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, mScreenWidth, mScreenWidth * 4 / 3, matrix, true);
 
                 String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
                 BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
                 recycle(saveBitmap);
 
-                setPreview();
+                setShowPicture();
             }
         });
     }
@@ -364,9 +396,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
-    private void setPreview() {
-        mThumbnail.setImageBitmap(mBitmap);
-        changeViewStatus(true);
+    private void setShowPicture() {
+        showTakePhotoPicture(true);
     }
 
     /**
@@ -396,7 +427,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
          * 一般相机都是屏幕的宽度 这里设置为屏幕宽度 高度自适应 你也可以设置自己想要的大小
          *
          */
-        picHeight = (screenWidth * pictrueSize.width) / pictrueSize.height;
+        mPicHeight = (mScreenWidth * pictrueSize.width) / pictrueSize.height;
     }
 
     /**
@@ -413,17 +444,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        CarLog.d(TAG, "surfaceCreated");
         startPreview(mCamera, holder);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        CarLog.d(TAG, "surfaceChanged");
         mCamera.stopPreview();
         startPreview(mCamera, holder);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        CarLog.d(TAG, "surfaceDestroyed");
         releaseCamera();
     }
 

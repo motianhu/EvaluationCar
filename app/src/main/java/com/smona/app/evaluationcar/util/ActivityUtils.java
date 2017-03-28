@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
 
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.WebActivity;
@@ -39,6 +40,13 @@ public class ActivityUtils {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
+        context.startActivity(intent);
+    }
+
+    public static void jumpCameraActivity(Context context, CarImageBean bean, Class clazz) {
+        Intent intent = new Intent();
+        intent.setClass(context, clazz);
+        intent.putExtra(IntentConstants.BEAN_CARIMAGEBEAN, bean);
         context.startActivity(intent);
     }
 
