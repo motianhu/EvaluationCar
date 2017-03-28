@@ -68,4 +68,6 @@
 
 
     <string name="carbill_result">订单结果</string>
+
+    <string name="bill_count">共有%1$d单</string>
 </resources>
