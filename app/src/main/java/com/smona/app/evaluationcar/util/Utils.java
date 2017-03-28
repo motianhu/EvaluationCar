@@ -25,16 +25,14 @@ public class Utils {
     private static final String TAG = "Utils";
 
     /* 保存用户登录信息列表 */
-    public static void saveUserList(Context context, ArrayList<UserItem> users)
+    public static void saveUser(Context context, UserItem user)
             throws Exception {
         /* 保存 */
         Log.i(TAG, "正在保存");
         Writer writer = null;
         OutputStream out = null;
         JSONArray array = new JSONArray();
-        for (UserItem user : users) {
-            array.put(user.toJSON());
-        }
+        array.put(user.toJSON());
         try {
             out = context.openFileOutput(FILENAME, Context.MODE_PRIVATE); // 覆盖
             writer = new OutputStreamWriter(out);
@@ -70,7 +68,6 @@ public class Utils {
                 UserItem user = new UserItem(jsonArray.getJSONObject(i));
                 users.add(user);
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

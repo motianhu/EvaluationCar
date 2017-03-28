@@ -3,31 +3,21 @@ package com.smona.app.evaluationcar.ui;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
@@ -38,24 +28,17 @@ import com.smona.app.evaluationcar.util.Utils;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends BaseActivity implements OnClickListener,
-        OnItemClickListener, OnDismissListener {
+public class LoginActivity extends BaseActivity implements OnClickListener, OnDismissListener {
     protected static final String TAG = "LoginActivity";
     private LinearLayout mLoginLinearLayout; // 登录内容的容器
-    private LinearLayout mUserIdLinearLayout; // 将下拉弹出窗口在此容器下方显示
     private Animation mTranslate; // 位移动画
     private Dialog mLoginingDlg; // 显示正在登录的Dialog
     private EditText mIdEditText; // 登录ID编辑框
     private EditText mPwdEditText; // 登录密码编辑框
-    private ImageView mMoreUser; // 下拉图标
     private Button mLoginButton; // 登录按钮
-    private ImageView mLoginMoreUserView; // 弹出下拉弹出窗的按钮
     private String mIdString;
     private String mPwdString;
-    private ArrayList<UserItem> mUsers; // 用户列表
-    private ListView mUserIdListView; // 下拉弹出窗显示的ListView对象
-    private MyAapter mAdapter; // ListView的监听器
-    private PopupWindow mPop; // 下拉弹出窗
+    private UserItem mUser; // 用户列表
     private View mRegisterView;
 
     @Override
@@ -70,10 +53,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
     }
 
     private void bindEditText() {
-        if (mUsers.size() > 0) {
+        if (mUser != null) {
             /* 将列表中的第一个user显示在编辑框 */
-            mIdEditText.setText(mUsers.get(0).getId());
-            mPwdEditText.setText(mUsers.get(0).getPwd());
+            mIdEditText.setText(mUser.getId());
+            mPwdEditText.setText(mUser.getPwd());
         }
     }
 
@@ -84,48 +67,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 
     private void initUserList() {
         /* 获取已经保存好的用户密码 */
-        mUsers = Utils.getUserList(LoginActivity.this);
-    }
-
-    /* ListView的适配器 */
-    class MyAapter extends ArrayAdapter<UserItem> {
-
-        public MyAapter(ArrayList<UserItem> users) {
-            super(LoginActivity.this, 0, users);
-        }
-
-        public View getView(final int position, View convertView,
-                            ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(
-                        R.layout.listview_item, null);
-            }
-
-            TextView userIdText = (TextView) convertView
-                    .findViewById(R.id.listview_userid);
-            userIdText.setText(getItem(position).getId());
-
-            ImageView deleteUser = (ImageView) convertView
-                    .findViewById(R.id.login_delete_user);
-            deleteUser.setOnClickListener(new OnClickListener() {
-                // 点击删除deleteUser时,在mUsers中删除选中的元素
-                @Override
-                public void onClick(View v) {
-
-                    if (getItem(position).getId().equals(mIdString)) {
-                        // 如果要删除的用户Id和Id编辑框当前值相等，则清空
-                        mIdString = "";
-                        mPwdString = "";
-                        mIdEditText.setText(mIdString);
-                        mPwdEditText.setText(mPwdString);
-                    }
-                    mUsers.remove(getItem(position));
-                    mAdapter.notifyDataSetChanged(); // 更新ListView
-                }
-            });
-            return convertView;
-        }
-
+        ArrayList<UserItem> users = Utils.getUserList(LoginActivity.this);
+        mUser = users.size() > 0 ? users.get(0) : null;
     }
 
     private void setListener() {
@@ -158,40 +101,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
             }
         });
         mLoginButton.setOnClickListener(this);
-        mLoginMoreUserView.setOnClickListener(this);
         mRegisterView.setOnClickListener(this);
     }
 
     private void initView() {
         mIdEditText = (EditText) findViewById(R.id.login_edtId);
         mPwdEditText = (EditText) findViewById(R.id.login_edtPwd);
-        mMoreUser = (ImageView) findViewById(R.id.login_more_user);
         mLoginButton = (Button) findViewById(R.id.login_btnLogin);
-        mLoginMoreUserView = (ImageView) findViewById(R.id.login_more_user);
         mLoginLinearLayout = (LinearLayout) findViewById(R.id.login_linearLayout);
-        mUserIdLinearLayout = (LinearLayout) findViewById(R.id.userId_LinearLayout);
         mRegisterView = findViewById(R.id.register);
 
         initLoginingDlg();
-
-        LinearLayout parent = (LinearLayout) getLayoutInflater().inflate(
-                R.layout.userifo_listview, null);
-        mUserIdListView = (ListView) parent.findViewById(android.R.id.list);
-        parent.removeView(mUserIdListView); // 必须脱离父子关系,不然会报错
-        mUserIdListView.setOnItemClickListener(this); // 设置点击事
-        mAdapter = new MyAapter(mUsers);
-        mUserIdListView.setAdapter(mAdapter);
-    }
-
-    public void initPop() {
-        int width = mUserIdLinearLayout.getWidth() - 4;
-        int height = LayoutParams.WRAP_CONTENT;
-        mPop = new PopupWindow(mUserIdListView, width, height, true);
-        mPop.setOnDismissListener(this);// 设置弹出窗口消失时监听器
-
-        // 注意要加这句代码，点击弹出窗口其它区域才会让窗口消失
-        mPop.setBackgroundDrawable(new ColorDrawable(0xffffffff));
-
     }
 
     /* 初始化正在登录对话框 */
@@ -253,36 +173,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
                     Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT)
                             .show();
                 } else {// 账号和密码都不为空时
-                    boolean mIsSave = true;
-                    try {
-                        Log.i(TAG, "保存用户列表");
-                        for (UserItem user : mUsers) { // 判断本地文档是否有此ID用户
-                            if (user.getId().equals(mIdString)) {
-                                mIsSave = false;
-                                break;
-                            }
-                        }
-                        if (mIsSave) { // 将新用户加入users
-                            UserItem user = new UserItem(mIdString, mPwdString);
-                            mUsers.add(user);
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    mUser = new UserItem(mIdString, mPwdString);
                     closeLoginingDlg();// 关闭对话框
                     Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                     gotoHome();
-                }
-                break;
-            case R.id.login_more_user: // 当点击下拉栏
-                if (mPop == null) {
-                    initPop();
-                }
-                if (!mPop.isShowing() && mUsers.size() > 0) {
-                    CarLog.d(this, "切换为角向上图标");
-                    mMoreUser.setImageResource(R.drawable.login_more_down); // 切换图标
-                    mPop.showAsDropDown(mUserIdLinearLayout, 2, 1); // 显示弹出窗口
                 }
                 break;
             case R.id.register:
@@ -294,19 +188,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
 
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
-        mIdEditText.setText(mUsers.get(position).getId());
-        mPwdEditText.setText(mUsers.get(position).getPwd());
-        mPop.dismiss();
-    }
-
     /* PopupWindow对象dismiss时的事件 */
     @Override
     public void onDismiss() {
         CarLog.d(this, "切换为角向下图标");
-        mMoreUser.setImageResource(R.drawable.login_more_up);
     }
 
     /* 退出此Activity时保存users */
@@ -314,7 +199,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener,
     public void onPause() {
         super.onPause();
         try {
-            Utils.saveUserList(LoginActivity.this, mUsers);
+            Utils.saveUser(LoginActivity.this, mUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
