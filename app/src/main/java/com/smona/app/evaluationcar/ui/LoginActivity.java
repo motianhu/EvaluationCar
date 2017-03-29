@@ -178,7 +178,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     mUser = new UserItem(mIdString, mPwdString);
                     closeLoginingDlg();// 关闭对话框
                     Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                    gotoHome();
+                    gotoStartup();
                 }
                 break;
             case R.id.register:
@@ -207,9 +207,9 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
         }
     }
 
-    private void gotoHome() {
+    private void gotoStartup() {
         Intent intent = new Intent();
-        intent.setClass(this, HomeActivity.class);
+        intent.setClass(this, StartupActivity.class);
         startActivity(intent);
         finish();
     }

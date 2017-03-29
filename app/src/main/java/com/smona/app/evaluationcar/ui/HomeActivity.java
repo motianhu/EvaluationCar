@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.request.Deletor;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by Moth on 2016/12/15.
  */
 
-public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class HomeActivity extends PermissionActivity implements RadioGroup.OnCheckedChangeListener {
 
     //UI Objects
     private RadioGroup mRbGroup;
