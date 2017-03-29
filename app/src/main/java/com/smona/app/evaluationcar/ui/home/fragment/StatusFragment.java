@@ -5,6 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.ui.status.AuditingStatusListView;
+import com.smona.app.evaluationcar.ui.status.LocalStatusListView;
+import com.smona.app.evaluationcar.ui.status.NotPassStatusListView;
+import com.smona.app.evaluationcar.ui.status.PassStatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -30,13 +34,13 @@ public class StatusFragment extends ContentFragment {
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
-        StatusListView view1 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        StatusListView view1 = (LocalStatusListView)ViewUtil.inflater(getContext(), R.layout.status_local_listview);
         view1.setType(0);
-        StatusListView view2 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        StatusListView view2 = (AuditingStatusListView)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
         view2.setType(1);
-        StatusListView view3 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        StatusListView view3 = (NotPassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
         view3.setType(2);
-        StatusListView view4 = (StatusListView)ViewUtil.inflater(getContext(), R.layout.status_listview);
+        StatusListView view4 = (PassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
         view4.setType(3);
 
         List<View> viewList = new ArrayList<View>();

@@ -5,17 +5,17 @@ import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.event.AuditingStatusEvent;
+import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
+import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
+import com.smona.app.evaluationcar.data.event.PassStatusEvent;
 import com.smona.app.evaluationcar.data.event.StatusEvent;
-import com.smona.app.evaluationcar.data.model.ResCarBill;
-import com.smona.app.evaluationcar.data.model.ResModel;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,9 @@ import java.util.List;
  */
 
 public class StatusListView extends BaseListView {
+    private static final String TAG = StatusListView.class.getSimpleName();
 
-    private int mType;
+    protected int mType;
 
     public StatusListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +35,7 @@ public class StatusListView extends BaseListView {
 
     @Override
     public void init() {
+        CarLog.d(TAG, "init " + this);
         mAdapter = new StatusAdapter(getContext());
         this.setAdapter(mAdapter);
     }
@@ -42,64 +44,65 @@ public class StatusListView extends BaseListView {
         mType = type;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(StatusEvent event) {
-        List<CarBillBean> datas = (List<CarBillBean>) event.getContent();
-        mAdapter.update(datas);
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CarLog.d(this, "onAttachedToWindow post");
+        CarLog.d(this, "onAttachedToWindow post " + mType);
         post();
     }
 
-
     private void post() {
         String status = "21,22,23,24";
-        switch(mType) {
+        boolean isHttp = true;
+        switch (mType) {
             case 0:
+                isHttp = false;
                 break;
             case 1:
+                AuditingStatusEvent event = new AuditingStatusEvent();
+                event.setContent(createTest(4));
+                EventProxy.post(event);
                 break;
             case 2:
+                NotPassStatusEvent event1 = new NotPassStatusEvent();
+                event1.setContent(createTest(7));
+                EventProxy.post(event1);
                 break;
             case 3:
+                PassStatusEvent event2 = new PassStatusEvent();
+                event2.setContent(createTest(3));
+                EventProxy.post(event2);
                 break;
         }
-        HttpProxy.getInstance().queryCarbillList("cy",status,1,10, new HttpProxy.ResonpseCallback<String>(){
-            @Override
-            public void onSuccess(String result) {
-                CarLog.d(this, "StatusListView: result: " + result);
-                StatusEvent event = new StatusEvent();
-                Object content = createTest();
-                event.setContent(content);
-                EventProxy.post(event);
-            }
+        if (isHttp) {
+            HttpProxy.getInstance().queryCarbillList("cy", status, 1, 10, new HttpProxy.ResonpseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                }
 
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(CancelledException cex) {
+                @Override
+                public void onCancelled(CancelledException cex) {
 
-            }
+                }
 
-            @Override
-            public void onFinished() {
+                @Override
+                public void onFinished() {
 
-            }
-        });
-
+                }
+            });
+        } else {
+            EventProxy.post(new LocalStatusEvent());
+        }
     }
 
-
-    private Object createTest() {
+    private Object createTest(int count) {
         ArrayList<CarBillBean> carBillList = new ArrayList<CarBillBean>();
-        for (int i = 0; i < 45; i++) {
+        for (int i = 0; i < count; i++) {
             CarBillBean carbill = new CarBillBean();
             carbill.carBillId = "NS201612021100" + i;
             carbill.createTime = "2016-12-01 12:11:00";

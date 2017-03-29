@@ -21,7 +21,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
 
     @Override
     public void initTable() {
-
+        mTable = CarBillTable.getInstance();
     }
 
     @Override
@@ -52,10 +52,11 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         item.createTime = getString(cursor, CarBillTable.CREATETIME);
         item.modifyTime = getString(cursor, CarBillTable.MODIFYTIME);
         item.preSalePrice = getDouble(cursor, CarBillTable.PRESALEPRICE);
+        item.evaluatePrice = getDouble(cursor, CarBillTable.EVALUATEPRICE);
         item.thumbUrl = getString(cursor, CarBillTable.THUMBUrl);
         item.mark = getString(cursor, CarBillTable.MARK);
-        item.evaluatePrice = getString(cursor, CarBillTable.EVALUATEPRICE);
         item.applyAllOpinion = getString(cursor, CarBillTable.APPLYALLOPINION);
+        item.imageId = getInt(cursor, CarBillTable.IMAGEID);
         return item;
     }
 
@@ -71,6 +72,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         values.put(CarBillTable.THUMBUrl, item.thumbUrl);
         values.put(CarBillTable.MARK, item.mark);
         values.put(CarBillTable.APPLYALLOPINION, item.applyAllOpinion);
+        values.put(CarBillTable.IMAGEID, item.imageId);
         return values;
     }
 }

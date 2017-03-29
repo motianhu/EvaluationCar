@@ -12,6 +12,7 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 
 public class StatusAdapter extends AbstractAdapter {
+    private static final String TAG = StatusListView.class.getSimpleName();
 
     private Object mLock = new Object();
 
@@ -66,11 +68,11 @@ public class StatusAdapter extends AbstractAdapter {
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if(tag instanceof CarBillBean) {
-            CarBillBean info = (CarBillBean)tag;
-            if(info.status == 1) {
+        if (tag instanceof CarBillBean) {
+            CarBillBean info = (CarBillBean) tag;
+            if (info.status == 1) {
                 ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, EvaluationActivity.class);
-            }else {
+            } else {
                 ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, StatusActivity.class);
             }
         }

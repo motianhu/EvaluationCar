@@ -16,6 +16,7 @@ public class CarBillTable extends BaseTable {
     public static final String THUMBUrl = "thumbUrl";
     public static final String APPLYALLOPINION = "applyAllOpinion";
     public static final String MARK = "mark";
+    public static final String IMAGEID = "imageId";
 
     private static volatile CarBillTable sInstance = null;
 
@@ -46,6 +47,7 @@ public class CarBillTable extends BaseTable {
                 + APPLYALLOPINION + " TEXT, "
                 + MARK + " TEXT, "
                 + THUMBUrl + " TEXT, "
+                + IMAGEID + " INTEGER, "
                 + EVALUATEPRICE + " DOUBLE, "
                 + PRESALEPRICE + " DOUBLE "
                 + ")";

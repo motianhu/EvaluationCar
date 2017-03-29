@@ -9,6 +9,7 @@ import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.bean.UploadTaskBean;
 import com.smona.app.evaluationcar.framework.provider.dao.BaseDao;
 import com.smona.app.evaluationcar.framework.provider.dao.DaoFactory;
+import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
 
 import java.util.List;
@@ -45,14 +46,22 @@ public class DBDelegator {
         //mAppContext.getContentResolver().update();
     }
 
-    public List<CarImageBean> queryImages(String carBillId) {
+    public List<CarImageBean> queryHttpImages(String carBillId) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
-        String select = CarImageTable.CARBILLID + "=?" ;
+        String select = CarImageTable.CARBILLID + "=?";
         List<CarImageBean> list = dao.getResult(select, new String[]{carBillId}, CarImageTable.IMAGESEQNUM + " asc ");
         return list;
     }
 
-    public List<CarImageBean> queryImages(String carBillId,String imageClass) {
+
+    public List<CarImageBean> queryImages(String imageClass, int imageId) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        String select = CarImageTable.IMAGEID + "=? and " + CarImageTable.IMAGECLASS + "=?";
+        List<CarImageBean> list = dao.getResult(select, new String[]{imageId + "", imageClass}, CarImageTable.IMAGESEQNUM + " asc ");
+        return list;
+    }
+
+    public List<CarImageBean> queryImages(String carBillId, String imageClass) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         String select = CarImageTable.CARBILLID + "=? and " + CarImageTable.IMAGECLASS + "=? ";
         List<CarImageBean> list = dao.getResult(select, new String[]{carBillId, imageClass}, CarImageTable.IMAGESEQNUM + " asc ");
@@ -72,6 +81,13 @@ public class DBDelegator {
         return list;
     }
 
+    public List<CarBillBean> queryLocalCarbill() {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        String select = CarImageTable.CARBILLID + " is null and " + CarImageTable.IMAGEID + ">0";
+        List<CarBillBean> list = dao.getResult(select, null, null);
+        return list;
+    }
+
     public List<UploadTaskBean> queryUploadTask(String carBillId) {
         BaseDao<UploadTaskBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
         String select = CarImageTable.CARBILLID + "=" + carBillId;
@@ -79,8 +95,13 @@ public class DBDelegator {
         return list;
     }
 
+    public boolean insertCarBill(CarBillBean bean) {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        return dao.insertItem(bean);
+    }
 
-    public boolean insertCarImageBill(CarImageBean bean) {
+
+    public boolean insertCarImage(CarImageBean bean) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         return dao.insertItem(bean);
     }

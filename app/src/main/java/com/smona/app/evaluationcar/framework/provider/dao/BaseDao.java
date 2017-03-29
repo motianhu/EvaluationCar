@@ -122,8 +122,7 @@ public abstract class BaseDao<T> {
         if (itemInfo == null) {
             return false;
         }
-        return  mContentResolver.insert(mTable.mContentUriNoNotify,
-                modelToContentValues(itemInfo)) != null;
+        return  mContentResolver.insert(mTable.mContentUriNoNotify, modelToContentValues(itemInfo)) != null;
     }
 
     public void clear() {

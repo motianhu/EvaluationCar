@@ -48,7 +48,7 @@ public class ImageLoaderManager {
         @Override
         public void onLoadingFailed(String imageUri, View view,
                                     FailReason failReason) {
-            CarLog.d(this, "onLoadingFailed onLoadingFailed imageUri: " + imageUri + ", failReason: " + failReason.getCause());
+            //CarLog.d(this, "onLoadingFailed onLoadingFailed imageUri: " + imageUri + ", failReason: " + failReason.getCause());
         }
 
         @Override
@@ -58,7 +58,7 @@ public class ImageLoaderManager {
 
         @Override
         public void onLoadingCancelled(String imageUri, View view) {
-            CarLog.d(this, "onLoadingCancelled onLoadingFailed imageUri: " + imageUri);
+            //CarLog.d(this, "onLoadingCancelled onLoadingFailed imageUri: " + imageUri);
         }
     };
 }

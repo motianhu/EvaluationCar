@@ -90,14 +90,20 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private EditText mNote;
 
 
+    private String mAddPicStr;
+
     private enum BillStatus {
         NONE, SAVE, RETURN
     }
 
     private int mBillStatus = -1;
     private BillStatus mCurBillStatus = BillStatus.NONE;
-    //data
+
+    //save data
+    private int mImageId = -1;
+    //carbill data
     private String mCarBillId = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +116,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private void initDatas() {
         initStatus();
         initCarBill();
+        initOther();
+    }
+
+    private void initOther() {
+        mAddPicStr = getString(R.string.add_picture);
     }
 
     private void initStatus() {
@@ -130,6 +141,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
         if (statusIsSave()) {
+            mImageId = getIntent().getIntExtra(IntentConstants.IMAGEID, -1);
             return;
         }
         mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
@@ -150,8 +162,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void uploadImage(int type) {
         List<CarImageBean> carImageBeenList = ImageModelDelegator.getInstance().getDefaultModel(type);
-        for(int i=0;i<1;i++) {
-            CarImageBean carImageBean= carImageBeenList.get(i);
+        for (int i = 0; i < 1; i++) {
+            CarImageBean carImageBean = carImageBeenList.get(i);
             carImageBean.carBillId = mCarBillId;
             carImageBean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
             carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
@@ -178,10 +190,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         }
 
         @Override
-        public void onCancelled(Callback.CancelledException cex) {}
+        public void onCancelled(Callback.CancelledException cex) {
+        }
 
         @Override
-        public void onFinished() {}
+        public void onFinished() {
+        }
     };
 
     private void queryCarbillImages() {
@@ -317,14 +331,29 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsNone()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = mAddPicStr;
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = tempData.size();
+            tempData.add(bean);
             data.addAll(tempData);
         } else if (statusIsSave()) {
-
+            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = mAddPicStr;
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = tempData.size();
+            tempData.add(bean);
+            data.addAll(tempData);
         } else {
             List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = mAddPicStr;
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = tempData.size();
+            tempData.add(bean);
             data.addAll(tempData);
         }
-
     }
 
     private boolean statusIsNone() {
@@ -339,11 +368,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         return mCurBillStatus == BillStatus.RETURN;
     }
 
-    private void onSave(){
+    private void onSave() {
 
     }
 
-    private void onSubmit(){
+    private void onSubmit() {
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
         bean.preSalePrice = 10000.0;
@@ -352,7 +381,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "onSuccess result: " + result);
-                mCarBillId = result.substring(1,result.length() - 1);
+                mCarBillId = result.substring(1, result.length() - 1);
                 CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
 
 //                uploadImage();
@@ -423,21 +452,32 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         super.onRestoreInstanceState(state);
         int billStatus = state.getInt(IntentConstants.BILL_STATUS);
         String carBillId = state.getString(IntentConstants.CARBILLID);
-        CarLog.d(this, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId=" + carBillId);
+        int imageId = state.getInt(IntentConstants.IMAGEID);
+
+        CarLog.d(TAG, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId="
+                + carBillId + ", imageId=" + imageId);
+
         if (billStatus != ConstantsUtils.BILL_STATUS_NONE) {
             mBillStatus = billStatus;
         }
         if (!TextUtils.isEmpty(carBillId)) {
             mCarBillId = carBillId;
         }
+        if (imageId > 0) {
+            mImageId = imageId;
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        CarLog.d(this, "onRestoreInstanceState mBillStatus=" + mBillStatus + ", mCarBillId=" + mCarBillId);
+
+        CarLog.d(TAG, "onRestoreInstanceState mBillStatus=" + mBillStatus + ", mCarBillId="
+                + mCarBillId + ", mImageId=" + mImageId);
+
         outState.putInt(IntentConstants.BILL_STATUS, mBillStatus);
         outState.putString(IntentConstants.CARBILLID, mCarBillId);
+        outState.putInt(IntentConstants.IMAGEID, mImageId);
     }
 
     @Override

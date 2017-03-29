@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +95,32 @@ public class ImageModelDelegator {
         bean.imageClass = mImageClass[type];
         bean.imageSeqNum = defaultList.size();
         defaultList.add(bean);
+        return defaultList;
+    }
+
+    public List<CarImageBean> getSaveModel(int type, int imageId) {
+        String imageClass = getImageClassForType(type);
+
+        List<CarImageBean> saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
+
+        List<CarImageBean> defaultList = new ArrayList<CarImageBean>();
+        for (int i = 0; i < mImageClassItems[type].size(); i++) {
+            //
+            for(CarImageBean saveCar: saveList) {
+                if(i == saveCar.imageSeqNum) {
+                    defaultList.add(saveCar);
+                    break;
+                }
+            }
+
+            CarImageBean bean = new CarImageBean();
+            bean.imageClass = mImageClass[type];
+            bean.displayName = mImageClassItems[type].get(i);
+            bean.imageSeqNum = i;
+            bean.imageId = imageId;
+
+            defaultList.add(bean);
+        }
         return defaultList;
     }
 

@@ -11,4 +11,5 @@ public class IntentConstants {
 
 
     public static final String BEAN_CARIMAGEBEAN = "carImageBean";
+    public static final String BEAN_CARBILLBEAN = "carBillBean";
 }
