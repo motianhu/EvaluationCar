@@ -77,16 +77,16 @@ public class ViewGroupPager extends ViewGroup {
 
     protected interface PageListener {
 
-        public void onPageSelseted(int index);
+        void onPageSelseted(int index);
 
-        public void onPageSrcollStateChange(int state);
+        void onPageSrcollStateChange(int state);
 
-        public void onPageScrollDirection(int direction);
+        void onPageScrollDirection(int direction);
 
     }
 
     public interface PageClickListener {
-        public void onPageClick();
+        void onPageClick();
     }
 
     private static final Interpolator INTERPOLATOR = new Interpolator() {

@@ -245,7 +245,7 @@ public class BitmapUtils {
             int h = newOpts.outHeight;
             Log.d("getImageFromPath", "bSize:newOpts.out.w=" + w + " h=" + h);
 
-            float aBili = (float) maxHeight / (float) maxWidth;
+            float aBili = maxHeight / maxWidth;
             float bBili = (float) h / (float) w;
             // be=1表示不缩放，be=2代表大小变成原来的1/2，注意be只能是2的次幂，即使算出的不是2的次幂，使用时也会自动转换成2的次幂
             int be = 1;

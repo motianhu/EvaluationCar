@@ -136,11 +136,7 @@ public class CameraUtil {
 
     public boolean equalRate(Size s, float rate) {
         float r = (float) (s.width) / (float) (s.height);
-        if (Math.abs(r - rate) <= 0.03) {
-            return true;
-        } else {
-            return false;
-        }
+        return Math.abs(r - rate) <= 0.03;
     }
 
     //升序

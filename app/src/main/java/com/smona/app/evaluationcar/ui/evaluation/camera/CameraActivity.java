@@ -228,28 +228,36 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (getResources().getString(R.string.cancel).equals(text)) {
             finish();
         } else {
-            if (mPreViewRunning) {
-                mCamera.stopPreview();
-            } else {
-                mCamera.startPreview();
-            }
-            showTakePhotoPicture(false);
-
-            mCurrentBean.imageLocalUrl = mBitmapPath;
-            if (mCurrentBean.imageId == -1) {
-                mCurrentBean.imageId = DBDelegator.getInstance().getDBMaxId();
-            }
-            DBDelegator.getInstance().insertCarImageBill(mCurrentBean);
-
-
-            if ((mCurrentBean.imageSeqNum + 1) < mCarImageList.size()) {
-                mCurrentBean = mCarImageList.get(mCurrentBean.imageSeqNum + 1);
-            }
-            refreshNext();
+            onTakeNextPicture();
         }
     }
 
+    private void onTakeNextPicture() {
+        if (mPreViewRunning) {
+            mCamera.stopPreview();
+        } else {
+            mCamera.startPreview();
+        }
 
+        showTakePhotoPicture(false);
+
+        mCurrentBean.imageLocalUrl = mBitmapPath;
+        int imageId = 0;
+        if (mCurrentBean.imageId == 0) {
+            mCurrentBean.imageId = DBDelegator.getInstance().getDBMaxId() + 1;
+        }
+
+        imageId = mCurrentBean.imageId;
+        CarLog.d(TAG, "onTakeNextPicture imageId=" + imageId);
+        boolean success = DBDelegator.getInstance().insertCarImageBill(mCurrentBean);
+        CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
+
+        if ((mCurrentBean.imageSeqNum + 1) < mCarImageList.size()) {
+            mCurrentBean = mCarImageList.get(mCurrentBean.imageSeqNum + 1);
+            mCurrentBean.imageId = imageId;
+        }
+        refreshNext();
+    }
 
 
     private void onCamera() {

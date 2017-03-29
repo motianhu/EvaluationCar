@@ -147,7 +147,7 @@ public class BannerViewPager extends BaseViewPager {
     }
 
     public interface OnSingleTouchListener {
-        public void onSingleTouch();
+        void onSingleTouch();
     }
 
     public void setOnSingleTouchListener(
@@ -156,7 +156,7 @@ public class BannerViewPager extends BaseViewPager {
     }
 
     public interface PageSelecteListener {
-        public void onPageSelecteListener(int pos);
+        void onPageSelecteListener(int pos);
     }
 
     public void setPageSelecteListener(PageSelecteListener listener) {

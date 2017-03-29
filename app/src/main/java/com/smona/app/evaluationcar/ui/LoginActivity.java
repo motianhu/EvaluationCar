@@ -166,6 +166,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
             case R.id.login_btnLogin:
                 // 启动登录
                 showLoginingDlg(); // 显示"正在登录"对话框,因为此Demo没有登录到web服务器,所以效果可能看不出.可以结合情况使用
+
                 CarLog.d(this, mIdString + "  " + mPwdString);
                 if (mIdString == null || mIdString.equals("")) { // 账号为空时
                     Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT)

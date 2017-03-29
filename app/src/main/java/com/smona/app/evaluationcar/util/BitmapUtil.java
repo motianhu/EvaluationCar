@@ -99,10 +99,7 @@ public class BitmapUtil {
             return true;
         }
 
-        if (desHeight > 0 && desHeight <= sourceHeight - MAX_DIFFER_PX) { // 原图太高
-            return true;
-        }
-        return false;
+        return desHeight > 0 && desHeight <= sourceHeight - MAX_DIFFER_PX;
     }
 
     private static Bitmap extractThumbnail(Bitmap source, int desWidth, int desHeight) {
