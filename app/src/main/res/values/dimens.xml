@@ -32,4 +32,20 @@
     <dimen name="evaluation_title_image_size">15dp</dimen>
     <dimen name="evaluation_title_image_margin_left">5dp</dimen>
 
+    <!--权限-->
+    <dimen name="permission_tips_title_margin_top">70dp</dimen>
+    <dimen name="permission_tips_title_text_size">20sp</dimen>
+    <dimen name="permission_tips_to_title_margin_top">16dp</dimen>
+    <dimen name="permission_tips_text_size">12sp</dimen>
+    <dimen name="permission_tips_margin_left">47dp</dimen>
+    <dimen name="permission_tips_margin_right">47dp</dimen>
+    <dimen name="permission_tips_way_margin_top">32dp</dimen>
+    <dimen name="permission_tips_deny_button_height">37dp</dimen>
+    <dimen name="permission_tips_deny_button_margin_top">20dp</dimen>
+    <dimen name="permission_tips_margin_top">5dp</dimen>
+    <dimen name="permission_tips_image_logo_width">110dp</dimen>
+    <dimen name="permission_tips_image_logo_height">102dp</dimen>
+    <dimen name="permission_tips_deny_image_margin_top">27dp</dimen>
+    <dimen name="update_dialog_button_center_margin">3dp</dimen>
+    <dimen name="update_dialog_button_textsize">16sp</dimen>
 </resources>

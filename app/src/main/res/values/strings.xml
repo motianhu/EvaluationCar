@@ -5,6 +5,7 @@
     <string name="id_txt_hint">用户名</string>
     <string name="pwd_txt_hint">密码</string>
     <string name="login_btn_text">登      录</string>
+    <string name="system_description">品质过硬的专业二手车评估平台</string>
     <string name="register">注册</string>
     <string name="loading">正在登录</string>
 
@@ -66,8 +67,13 @@
     <string name="complete">完成</string>
 
 
-
     <string name="carbill_result">订单结果</string>
 
     <string name="bill_count">共有%1$d单</string>
+
+
+    <!--权限-->
+    <string name="permission_settings">权限设置</string>
+    <string name="permission_tips_description">欢迎来到犀牛评,为确保所有功能正常使用,请开启以下权限,你可点击重置按钮来开启权限：</string>
+    <string name="permission_reset">重            置</string>
 </resources>

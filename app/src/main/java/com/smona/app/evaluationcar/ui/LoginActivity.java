@@ -23,12 +23,13 @@ import android.widget.Toast;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends BaseActivity implements OnClickListener, OnDismissListener {
+public class LoginActivity extends PermissionActivity implements OnClickListener, OnDismissListener {
     protected static final String TAG = "LoginActivity";
     private LinearLayout mLoginLinearLayout; // 登录内容的容器
     private Animation mTranslate; // 位移动画

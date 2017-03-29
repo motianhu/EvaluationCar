@@ -22,16 +22,21 @@ public abstract class HeaderActivity extends BaseActivity {
     }
 
     protected abstract int getLayoutId();
+
     protected abstract boolean showDelete();
+
     protected abstract int getHeaderTitle();
 
     private void initHeader() {
         HeaderListener headerListener = new HeaderListener();
         findViewById(R.id.left).setOnClickListener(headerListener);
-        TextView title = (TextView)findViewById(R.id.center);
+        TextView title = (TextView) findViewById(R.id.center);
         title.setText(getHeaderTitle());
         ViewUtil.setViewVisible(findViewById(R.id.right), showDelete());
         findViewById(R.id.right).setOnClickListener(headerListener);
+    }
+
+    protected void onDelete() {
     }
 
     private class HeaderListener implements View.OnClickListener {
@@ -48,8 +53,5 @@ public abstract class HeaderActivity extends BaseActivity {
                     break;
             }
         }
-    }
-
-    protected void onDelete() {
     }
 }
