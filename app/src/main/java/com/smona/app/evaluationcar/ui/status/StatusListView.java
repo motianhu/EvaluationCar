@@ -6,19 +6,14 @@ import android.util.AttributeSet;
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.AuditingStatusEvent;
-import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
 import com.smona.app.evaluationcar.data.event.PassStatusEvent;
-import com.smona.app.evaluationcar.data.event.StatusEvent;
+import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.util.CarLog;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by motianhu on 2/28/17.
@@ -35,7 +30,6 @@ public class StatusListView extends BaseListView {
 
     @Override
     public void init() {
-        CarLog.d(TAG, "init " + this);
         mAdapter = new StatusAdapter(getContext());
         this.setAdapter(mAdapter);
     }
@@ -47,7 +41,7 @@ public class StatusListView extends BaseListView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CarLog.d(this, "onAttachedToWindow post " + mType);
+        CarLog.d(TAG, "onAttachedToWindow post " + mType);
         post();
     }
 
@@ -96,7 +90,7 @@ public class StatusListView extends BaseListView {
                 }
             });
         } else {
-            EventProxy.post(new LocalStatusEvent());
+            EventProxy.post(new LocalStatusBackgroundEvent());
         }
     }
 

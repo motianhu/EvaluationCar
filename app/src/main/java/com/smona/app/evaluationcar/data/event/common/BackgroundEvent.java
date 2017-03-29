@@ -1,12 +1,11 @@
-package com.smona.app.evaluationcar.data.event;
-
-import com.smona.app.evaluationcar.data.event.common.BaseEvent;
+package com.smona.app.evaluationcar.data.event.common;
 
 /**
- * Created by Moth on 2017/2/25.
+ * Created by Moth on 2017/3/29.
  */
 
-public class StatusEvent implements BaseEvent {
+public class BackgroundEvent implements BaseEvent {
+
     private Object mContent;
     private String mMessage;
     private String mTag;
@@ -36,4 +35,5 @@ public class StatusEvent implements BaseEvent {
     public void setContent(Object content) {
         this.mContent = content;
     }
+
 }

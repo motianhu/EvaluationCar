@@ -27,7 +27,7 @@ public class PassStatusListView extends StatusListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PassStatusEvent event) {
-        CarLog.d(TAG, this + "; PassStatusEvent " + event);
+        CarLog.d(TAG, "PassStatusEvent " + event);
         List<CarBillBean> datas = (List<CarBillBean>) event.getContent();
         mAdapter.update(datas);
         mAdapter.notifyDataSetChanged();

@@ -16,13 +16,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.item.UserItem;
-import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.data.model.ResUser;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
@@ -47,19 +45,18 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         initUserList();
-        initView();
-        setListener();
-        initAnim();
-        bindEditText();
+        prepareSkip();
     }
 
-    private void bindEditText() {
+    private void prepareSkip() {
         if (mUser != null) {
-            /* 将列表中的第一个user显示在编辑框 */
-            mIdEditText.setText(mUser.getId());
-            mPwdEditText.setText(mUser.getPwd());
+            gotoStartup();
+        } else {
+            setContentView(R.layout.activity_login);
+            initView();
+            setListener();
+            initAnim();
         }
     }
 

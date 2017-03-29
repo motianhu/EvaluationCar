@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.data.event;
+package com.smona.app.evaluationcar.data.event.common;
 
 /**
  * Created by Moth on 2017/2/25.
