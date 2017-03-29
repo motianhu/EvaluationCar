@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">评估系统</string>
+    <string name="app_name">犀牛评</string>
     <string name="id_txt_hint">用户名</string>
     <string name="pwd_txt_hint">密码</string>
     <string name="login_btn_text">登      录</string>
@@ -14,7 +14,7 @@
     <string name="pass">通过</string>
     <string name="notice_detail">详情</string>
 
-    <string name="system_name">汇通端远程传输系统</string>
+    <string name="system_name">犀牛评估系统</string>
 
     <string name="notice_content">"<p>Think Defferent</p><p>Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore them. Because they change things. They push the human race forward. And while some may see them as the crazy ones, we see genius. Because the people who are crazy enough to think they can change the world, are the ones who do.</p><p>- Apple Inc.</p>"</string>
 

@@ -1,25 +1,29 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e7e7e7"
-    android:orientation="vertical">
+    android:background="@color/welcome_bg">
 
     <ImageView
         android:layout_width="132dp"
         android:layout_height="132dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
         android:src="@drawable/icon_avatar_login" />
 
     <LinearLayout
         android:id="@+id/login_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
-        android:layout_marginTop="8dp"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/triangle" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +35,13 @@
                 android:id="@+id/userId_LinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/login_user" />
 
                 <!-- android:ems="10"表示EditText内最多只显示10个字符，超出不显示 -->
                 <!-- android:singleLine="true"表示不能全部显示时，后面用“…”来表示 -->
@@ -57,26 +66,37 @@
             <!-- 横线  -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1px"
                 android:background="#CACDD1" />
 
-            <EditText
-                android:id="@+id/login_edtPwd"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@null"
-                android:hint="@string/pwd_txt_hint"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:paddingEnd="0dp"
-                android:paddingStart="15dp"
-                android:textColorHint="#999999"
-                android:textSize="18sp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/login_passeord" />
+
+                <EditText
+                    android:id="@+id/login_edtPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@null"
+                    android:hint="@string/pwd_txt_hint"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="15dp"
+                    android:textColorHint="#999999"
+                    android:textSize="18sp" />
+            </LinearLayout>
             <!-- 横线  -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1px"
                 android:background="#CACDD1" />
         </LinearLayout>
 
@@ -94,11 +114,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="start"
-                android:layout_marginBottom="45dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="3"
                 android:background="@drawable/login_button_style"
                 android:text="@string/register"
+                android:textColor="@color/bg_white"
                 android:textSize="18sp" />
 
             <Button
@@ -108,6 +128,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/login_button_style"
                 android:text="@string/login_btn_text"
+                android:textColor="@color/bg_white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -117,4 +138,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
