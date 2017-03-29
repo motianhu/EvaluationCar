@@ -180,7 +180,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         @Override
         public void onSuccess(String result) {
             ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
-            CarLog.d(this, "onSuccess Object: " + result + ";resp: " + resp.sucess);
+            CarLog.d(this, "onSuccess Object: " + result + ";resp: " + resp.success);
             UploadTaskExecutor.nextTask();
         }
 

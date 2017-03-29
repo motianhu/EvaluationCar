@@ -76,27 +76,6 @@ public class HomeActivity extends PermissionActivity implements RadioGroup.OnChe
         List<ImageMetaBean> list = DBDelegator.getInstance().queryImageMeta();
         if (list == null || list.size() < 1) {
             //Deletor.getInstance().requestImageMeta();
-            HttpProxy.getInstance().checkUser("cy", "cy.1234", new HttpProxy.ResonpseCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    CarLog.d(this, "Object result: " + result);
-                }
-
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
         }
     }
 

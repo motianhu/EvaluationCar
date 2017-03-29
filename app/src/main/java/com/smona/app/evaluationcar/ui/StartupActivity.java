@@ -19,6 +19,7 @@ public class StartupActivity extends PermissionActivity {
             Intent intent = new Intent();
             intent.setClass(StartupActivity.this, HomeActivity.class);
             StartupActivity.this.startActivity(intent);
+            finish();
         }
     };
 

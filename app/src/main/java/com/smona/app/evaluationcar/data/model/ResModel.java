@@ -5,11 +5,11 @@ package com.smona.app.evaluationcar.data.model;
  */
 
 public class ResModel<T> {
-    public boolean sucess;
+    public boolean success;
     public String message;
     public T object;
 
     public String toString() {
-        return "sucess=" + sucess + ";message=" + message + ";object=" + object;
+        return "sucess=" + success + ";message=" + message + ";object=" + object;
     }
 }

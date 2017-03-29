@@ -15,21 +15,23 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.item.UserItem;
-import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.data.model.ResNormal;
+import com.smona.app.evaluationcar.data.model.ResUser;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends PermissionActivity implements OnClickListener, OnDismissListener {
+public class LoginActivity extends PermissionActivity implements OnClickListener {
     protected static final String TAG = "LoginActivity";
     private LinearLayout mLoginLinearLayout; // 登录内容的容器
     private Animation mTranslate; // 位移动画
@@ -165,9 +167,9 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
         switch (v.getId()) {
             case R.id.login_btnLogin:
                 // 启动登录
-                showLoginingDlg(); // 显示"正在登录"对话框,因为此Demo没有登录到web服务器,所以效果可能看不出.可以结合情况使用
+                showLoginingDlg(); // 显示"正在登录"对话框
 
-                CarLog.d(this, mIdString + "  " + mPwdString);
+                CarLog.d(this, mIdString + "  " + mPwdString + ", mUser: " + mUser);
                 if (mIdString == null || mIdString.equals("")) { // 账号为空时
                     Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT)
                             .show();
@@ -175,10 +177,37 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT)
                             .show();
                 } else {// 账号和密码都不为空时
-                    mUser = new UserItem(mIdString, mPwdString);
-                    closeLoginingDlg();// 关闭对话框
-                    Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                    gotoStartup();
+                    if (mUser != null) {
+                        closeLoginingDlg();// 关闭对话框
+                        gotoStartup();
+                    } else {
+                        HttpProxy.getInstance().checkUser(mIdString, mPwdString, new HttpProxy.ResonpseCallback<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                ResUser normal = JsonParse.parseJson(result, ResUser.class);
+                                CarLog.d(this, "onSuccess normal: " + normal);
+                                runUI(normal.success);
+                            }
+
+
+                            @Override
+                            public void onError(Throwable ex, boolean isOnCallback) {
+                                CarLog.d(this, "onError ex: " + ex);
+                                runUI(false);
+                            }
+
+                            @Override
+                            public void onCancelled(CancelledException cex) {
+                                CarLog.d(this, "onCancelled result: " + cex);
+                                runUI(false);
+                            }
+
+                            @Override
+                            public void onFinished() {
+
+                            }
+                        });
+                    }
                 }
                 break;
             case R.id.register:
@@ -190,10 +219,19 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     }
 
-    /* PopupWindow对象dismiss时的事件 */
-    @Override
-    public void onDismiss() {
-        CarLog.d(this, "切换为角向下图标");
+    private void runUI(final boolean success) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                closeLoginingDlg();// 关闭对话框
+                if (success) {
+                    mUser = new UserItem(mIdString, mPwdString);
+                    gotoStartup();
+                } else {
+                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /* 退出此Activity时保存users */
@@ -201,7 +239,9 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     public void onPause() {
         super.onPause();
         try {
-            Utils.saveUser(LoginActivity.this, mUser);
+            if (mUser != null) {
+                Utils.saveUser(LoginActivity.this, mUser);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
