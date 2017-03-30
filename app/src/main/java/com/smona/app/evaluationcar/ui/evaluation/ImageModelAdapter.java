@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -22,6 +23,8 @@ import java.util.List;
  */
 
 public class ImageModelAdapter extends BaseAdapter {
+
+    private static final String TAG = ImageModelAdapter.class.getSimpleName();
 
     private List<CarImageBean> mDatas = new ArrayList<CarImageBean>();
     private Context mContext;
@@ -85,9 +88,12 @@ public class ImageModelAdapter extends BaseAdapter {
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);
         image.setLayoutParams(localLayoutParams);
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CarLog.d(TAG, "bean: " + bean);
                 ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
             }
         });

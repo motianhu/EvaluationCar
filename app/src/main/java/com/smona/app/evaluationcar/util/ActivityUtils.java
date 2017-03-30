@@ -27,11 +27,18 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpEvaluation(Context context, CarBillBean carBillInfo, Class clazz) {
+    public static void jumpEvaluation(Context context, int billStatus, String carBillId, int imageId, Class clazz) {
         Intent intent = new Intent();
-        if (carBillInfo instanceof Parcelable) {
-            intent.putExtra("", carBillInfo);
-        }
+        SPUtil.put(context, CacheContants.BILL_STATUS, billStatus);
+        SPUtil.put(context, CacheContants.CARBILLID, carBillId);
+        SPUtil.put(context, CacheContants.IMAGEID, imageId);
+        intent.setClass(context, clazz);
+        context.startActivity(intent);
+    }
+
+    public static void jumpStatus(Context context, String carBillId,Class clazz) {
+        Intent intent = new Intent();
+        SPUtil.put(context, CacheContants.CARBILLID, carBillId);
         intent.setClass(context, clazz);
         context.startActivity(intent);
     }
@@ -46,7 +53,10 @@ public class ActivityUtils {
     public static void jumpCameraActivity(Context context, CarImageBean bean, Class clazz) {
         Intent intent = new Intent();
         intent.setClass(context, clazz);
-        intent.putExtra(IntentConstants.BEAN_CARIMAGEBEAN, bean);
+        SPUtil.put(context, CacheContants.CARBILLID, bean.carBillId);
+        SPUtil.put(context, CacheContants.IMAGEID, bean.imageId);
+        SPUtil.put(context, CacheContants.IMAGECLASS, bean.imageClass);
+        SPUtil.put(context, CacheContants.IMAGESEQNUM, bean.imageSeqNum);
         context.startActivity(intent);
     }
 

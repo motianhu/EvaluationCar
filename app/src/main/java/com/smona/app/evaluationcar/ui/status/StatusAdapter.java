@@ -12,7 +12,8 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
-import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.CacheContants;
+import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -25,6 +26,11 @@ public class StatusAdapter extends AbstractAdapter {
     private static final String TAG = StatusListView.class.getSimpleName();
 
     private Object mLock = new Object();
+    private int mType = -1;
+
+    public void setType(int type) {
+        mType = type;
+    }
 
     @Override
     public void update(List datas) {
@@ -70,10 +76,13 @@ public class StatusAdapter extends AbstractAdapter {
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
-            if (info.status == 1) {
-                ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, EvaluationActivity.class);
+            //not pass
+            if (mType == CacheContants.TYPE_NOTPASS) {
+                ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
+            } else if (mType == CacheContants.TYPE_SAVE) {
+                ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
             } else {
-                ActivityUtils.jumpEvaluation(mContext, (CarBillBean) tag, StatusActivity.class);
+                ActivityUtils.jumpStatus(mContext, info.carBillId, StatusActivity.class);
             }
         }
     }

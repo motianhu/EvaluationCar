@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.ui.status.NotPassStatusListView;
 import com.smona.app.evaluationcar.ui.status.PassStatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -35,13 +36,13 @@ public class StatusFragment extends ContentFragment {
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
         StatusListView view1 = (LocalStatusListView)ViewUtil.inflater(getContext(), R.layout.status_local_listview);
-        view1.setType(StatusListView.TYPE_SAVE);
+        view1.setType(CacheContants.TYPE_SAVE);
         StatusListView view2 = (AuditingStatusListView)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
-        view2.setType(StatusListView.TYPE_AUDITING);
+        view2.setType(CacheContants.TYPE_AUDITING);
         StatusListView view3 = (NotPassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
-        view3.setType(StatusListView.TYPE_NOTPASS);
+        view3.setType(CacheContants.TYPE_NOTPASS);
         StatusListView view4 = (PassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
-        view4.setType(StatusListView.TYPE_PASS);
+        view4.setType(CacheContants.TYPE_PASS);
 
         List<View> viewList = new ArrayList<View>();
         viewList.add(view1);

@@ -22,13 +22,10 @@ import java.util.ArrayList;
 public class Utils {
 
     private static final String FILENAME = "userinfo.json"; // 用户保存文件名
-    private static final String TAG = "Utils";
 
     /* 保存用户登录信息列表 */
     public static void saveUser(Context context, UserItem user)
             throws Exception {
-        /* 保存 */
-        Log.i(TAG, "正在保存");
         Writer writer = null;
         OutputStream out = null;
         JSONArray array = new JSONArray();
@@ -36,7 +33,6 @@ public class Utils {
         try {
             out = context.openFileOutput(FILENAME, Context.MODE_PRIVATE); // 覆盖
             writer = new OutputStreamWriter(out);
-            Log.i(TAG, "json的值:" + array.toString());
             writer.write(array.toString());
         } finally {
             if (writer != null)
@@ -56,13 +52,12 @@ public class Utils {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
-            JSONArray jsonArray = new JSONArray();
             String line;
             while ((line = reader.readLine()) != null) {
                 jsonString.append(line);
             }
-            Log.i(TAG, jsonString.toString());
-            jsonArray = (JSONArray) new JSONTokener(jsonString.toString())
+
+            JSONArray jsonArray = (JSONArray) new JSONTokener(jsonString.toString())
                     .nextValue(); // 把字符串转换成JSONArray对象
             for (int i = 0; i < jsonArray.length(); i++) {
                 UserItem user = new UserItem(jsonArray.getJSONObject(i));

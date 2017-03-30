@@ -19,9 +19,11 @@ import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.IntentConstants;
+import com.smona.app.evaluationcar.util.SPUtil;
 
 import org.xutils.common.Callback;
 
@@ -96,13 +98,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         NONE, SAVE, RETURN
     }
 
-    private int mBillStatus = -1;
     private BillStatus mCurBillStatus = BillStatus.NONE;
 
     //save data
     private int mImageId = -1;
     //carbill data
     private String mCarBillId = null;
+    private CarBillBean mCarBill = null;
 
 
     @Override
@@ -115,18 +117,16 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void initDatas() {
         initStatus();
+        initCarImage();
         initCarBill();
         initOther();
     }
 
-    private void initOther() {
-        mAddPicStr = getString(R.string.add_picture);
-    }
-
     private void initStatus() {
-        int billStatus = getIntent().getIntExtra(IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
-        mBillStatus = billStatus;
-        CarLog.d(this, "initStatus billStatus=" + billStatus);
+        int billStatus = (int) SPUtil.get(this, IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+
+        CarLog.d(TAG, "initStatus billStatus=" + billStatus);
+
         if (billStatus == ConstantsUtils.BILL_STATUS_SAVE) {
             mCurBillStatus = BillStatus.SAVE;
         } else if (billStatus == ConstantsUtils.BILL_STATUS_RETURN) {
@@ -136,16 +136,22 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         }
     }
 
+    private void initCarImage() {
+        mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, -1);
+        CarLog.d(TAG, "initCarImage imageId=" + mImageId);
+    }
+
     private void initCarBill() {
-        if (statusIsNone()) {
-            return;
+        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, null);
+        CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
+
+        if (TextUtils.isEmpty(mCarBillId)) {
+            mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
         }
-        if (statusIsSave()) {
-            mImageId = getIntent().getIntExtra(IntentConstants.IMAGEID, -1);
-            return;
-        }
-        mCarBillId = getIntent().getStringExtra(IntentConstants.CARBILLID);
-        CarLog.d(TAG, "initCarBill mCarBillId=" + mCarBillId);
+    }
+
+    private void initOther() {
+        mAddPicStr = getString(R.string.add_picture);
     }
 
     private void uploadImage() {
@@ -325,6 +331,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mClassOriginalCarInsurancetList = new ArrayList<CarImageBean>();
         initImageData(mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
         mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
+
+
+        if(mCarBill != null) {
+            mPrice.setText(mCarBill.preSalePrice + "");
+            mNote.setText(mCarBill.mark);
+        }
     }
 
     private void initImageData(List<CarImageBean> data, int type) {
@@ -444,40 +456,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     @Override
     protected int getHeaderTitle() {
         return R.string.create_carbill;
-    }
-
-
-    @Override
-    public void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        int billStatus = state.getInt(IntentConstants.BILL_STATUS);
-        String carBillId = state.getString(IntentConstants.CARBILLID);
-        int imageId = state.getInt(IntentConstants.IMAGEID);
-
-        CarLog.d(TAG, "onRestoreInstanceState billStatus=" + billStatus + ", carBillId="
-                + carBillId + ", imageId=" + imageId);
-
-        if (billStatus != ConstantsUtils.BILL_STATUS_NONE) {
-            mBillStatus = billStatus;
-        }
-        if (!TextUtils.isEmpty(carBillId)) {
-            mCarBillId = carBillId;
-        }
-        if (imageId > 0) {
-            mImageId = imageId;
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        CarLog.d(TAG, "onRestoreInstanceState mBillStatus=" + mBillStatus + ", mCarBillId="
-                + mCarBillId + ", mImageId=" + mImageId);
-
-        outState.putInt(IntentConstants.BILL_STATUS, mBillStatus);
-        outState.putString(IntentConstants.CARBILLID, mCarBillId);
-        outState.putInt(IntentConstants.IMAGEID, mImageId);
     }
 
     @Override

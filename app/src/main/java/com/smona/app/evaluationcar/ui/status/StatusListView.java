@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.data.event.PassStatusEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
@@ -21,11 +22,6 @@ import java.util.ArrayList;
 
 public class StatusListView extends BaseListView {
     private static final String TAG = StatusListView.class.getSimpleName();
-    public static final int TYPE_SAVE = 0;
-    public static final int TYPE_AUDITING = 1;
-    public static final int TYPE_NOTPASS = 2;
-    public static final int TYPE_PASS = 3;
-
     protected int mType;
 
     public StatusListView(Context context, AttributeSet attrs) {
@@ -40,6 +36,7 @@ public class StatusListView extends BaseListView {
 
     public void setType(int type) {
         mType = type;
+        ((StatusAdapter) mAdapter).setType(type);
     }
 
     @Override
@@ -53,20 +50,20 @@ public class StatusListView extends BaseListView {
         String status = "21,22,23,24";
         boolean isHttp = true;
         switch (mType) {
-            case TYPE_SAVE:
+            case CacheContants.TYPE_SAVE:
                 isHttp = false;
                 break;
-            case TYPE_AUDITING:
+            case CacheContants.TYPE_AUDITING:
                 AuditingStatusEvent event = new AuditingStatusEvent();
                 event.setContent(createTest(4));
                 EventProxy.post(event);
                 break;
-            case TYPE_NOTPASS:
+            case CacheContants.TYPE_NOTPASS:
                 NotPassStatusEvent event1 = new NotPassStatusEvent();
                 event1.setContent(createTest(7));
                 EventProxy.post(event1);
                 break;
-            case TYPE_PASS:
+            case CacheContants.TYPE_PASS:
                 PassStatusEvent event2 = new PassStatusEvent();
                 event2.setContent(createTest(3));
                 EventProxy.post(event2);

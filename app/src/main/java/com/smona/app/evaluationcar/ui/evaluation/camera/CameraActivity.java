@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,8 +27,11 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.IntentConstants;
+import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
@@ -75,18 +79,77 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private String mBitmapPath;
     private Bitmap mBitmap;
 
-    private CarBillBean mCurCarBill;
+    private int mImageId;
+    private String mImageClass;
+    private int mImageSeqNum;
     private CarImageBean mCurCarImage;
     private List<CarImageBean> mCarImageList;
+
+    private String mCarBillId;
+    private CarBillBean mCarBill;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        initData();
+        initDatas();
         initView();
         initAnimate();
         initCamera();
+    }
+
+    private void initDatas() {
+        initStatus();
+        initCarImage();
+        initCarBill();
+        initOther();
+    }
+
+    private void initStatus() {
+        int billStatus = (Integer) SPUtil.get(this, IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        CarLog.d(TAG, "initStatus billStatus=" + billStatus);
+    }
+
+    private void initCarImage() {
+        mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, -1);
+        mImageClass = (String) SPUtil.get(this, CacheContants.IMAGECLASS, "");
+        mImageSeqNum = (int) SPUtil.get(this, CacheContants.IMAGESEQNUM, 0);
+
+        CarLog.d(TAG, "initCarImage imageId=" + mImageId + ", imageClass=" + mImageClass + ", imageSeqNum=" + mImageSeqNum);
+        mCurCarImage = DBDelegator.getInstance().queryImages(mImageId, mImageClass, mImageSeqNum);
+
+        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
+        mCarImageList = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+
+        CarLog.d(TAG, "initCarImage carImageList=" + mCarImageList.size());
+
+        if (mCurCarImage !=  null) {
+            CarLog.d(TAG, "initCarImage 1 carImage=" + mCurCarImage);
+            return;
+        }
+
+        for (CarImageBean bean : mCarImageList) {
+            if (bean.imageSeqNum == mImageSeqNum) {
+                mCurCarImage = bean;
+                break;
+            }
+        }
+        CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
+    }
+
+    private void initCarBill() {
+        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, null);
+        CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
+
+        if (!TextUtils.isEmpty(mCarBillId)) {
+            mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
+        }
+    }
+
+    private void initOther() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        mScreenWidth = dm.widthPixels;
     }
 
     private void initView() {
@@ -115,10 +178,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
-        mDescription.setText(mCurCarImage.displayName);
+        mDescription.setText(mCurCarImage != null? mCurCarImage.displayName : null);
         mNote = (TextView) findViewById(R.id.note);
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
-        mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + mCarImageList.size());
+        mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : -1) + "/" + mCarImageList.size());
 
         mBtnView = findViewById(R.id.lin_explain_btn);
         mBtnView.setOnClickListener(this);
@@ -130,22 +193,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void refreshNext() {
-        mDescription.setText(mCurCarImage.displayName);
-        mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + mCarImageList.size());
-    }
-
-    private void initData() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        mScreenWidth = dm.widthPixels;
-
-
-        mCurCarBill = (CarBillBean) getIntent().getSerializableExtra(IntentConstants.BEAN_CARBILLBEAN);
-
-        mCurCarImage = (CarImageBean) getIntent().getSerializableExtra(IntentConstants.BEAN_CARIMAGEBEAN);
-        CarLog.d(TAG, "initData mCurCarImage: " + mCurCarImage + ", mCurCarBill: " + mCurCarBill);
-
-        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mCurCarImage.imageClass);
-        mCarImageList = ImageModelDelegator.getInstance().getDefaultModel(type);
+        mDescription.setText(mCurCarImage != null ?mCurCarImage.displayName:"");
+        mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : 0) + "/" + mCarImageList.size());
     }
 
     private void initAnimate() {
@@ -263,13 +312,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
 
 
-        if(mCurCarBill == null) {
-            mCurCarBill = new CarBillBean();
-            mCurCarBill.imageId = imageId;
-            success = DBDelegator.getInstance().insertCarBill(mCurCarBill);
+        if (mCarBill == null) {
+            mCarBill = new CarBillBean();
+            mCarBill.imageId = imageId;
+            success = DBDelegator.getInstance().insertCarBill(mCarBill);
             CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
         }
-
 
         refreshNext();
     }

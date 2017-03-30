@@ -68,17 +68,30 @@ public class DBDelegator {
         return list;
     }
 
+    public CarImageBean queryImages( int imageId, String imageClass, int imageSeqNum) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        String select = CarImageTable.IMAGEID + "=? and " + CarImageTable.IMAGECLASS + "=? and " + CarImageTable.IMAGESEQNUM + "=?";
+        List<CarImageBean> list = dao.getResult(select, new String[]{imageId + "", imageClass, imageSeqNum + ""}, CarImageTable.IMAGESEQNUM + " asc ");
+        if(list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     public List<ImageMetaBean> queryImageMeta() {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
         List<ImageMetaBean> list = dao.getResult(null, null, null);
         return list;
     }
 
-    public List<CarBillBean> queryCarBill(String carBillId) {
+    public CarBillBean queryCarBill(String carBillId) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         String select = CarImageTable.CARBILLID + "=" + carBillId;
         List<CarBillBean> list = dao.getResult(select, null, null);
-        return list;
+        if(list.size()>0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public List<CarBillBean> queryLocalCarbill() {

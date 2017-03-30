@@ -90,11 +90,6 @@ public class ImageModelDelegator {
             bean.imageSeqNum = i;
             defaultList.add(bean);
         }
-        CarImageBean bean = new CarImageBean();
-        bean.displayName = mAddPic;
-        bean.imageClass = mImageClass[type];
-        bean.imageSeqNum = defaultList.size();
-        defaultList.add(bean);
         return defaultList;
     }
 

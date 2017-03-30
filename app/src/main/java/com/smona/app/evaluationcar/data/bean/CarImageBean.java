@@ -16,7 +16,7 @@ public class CarImageBean extends BaseBean {
     public String updateTime;
 
     public String toString() {
-        return "carBillId=" + carBillId + ", imageClass=" + imageClass + ",displayName=" +
+        return  "carBillId=" + carBillId + ", imageClass=" + imageClass + ",displayName=" +
                 displayName + ", imageSeqNum=" + imageSeqNum + ", imageLocalUrl= " + imageLocalUrl
                 + ", imageRemoteUrl=" + imageRemoteUrl;
     }
