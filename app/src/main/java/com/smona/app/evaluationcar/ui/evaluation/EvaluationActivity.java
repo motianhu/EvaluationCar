@@ -343,19 +343,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsNone()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
-            CarImageBean bean = new CarImageBean();
-            bean.displayName = mAddPicStr;
-            bean.imageClass = imageClass;
-            bean.imageSeqNum = tempData.size();
-            tempData.add(bean);
             data.addAll(tempData);
         } else if (statusIsSave()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
-            CarImageBean bean = new CarImageBean();
-            bean.displayName = mAddPicStr;
-            bean.imageClass = imageClass;
-            bean.imageSeqNum = tempData.size();
-            tempData.add(bean);
             data.addAll(tempData);
         } else {
             List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);

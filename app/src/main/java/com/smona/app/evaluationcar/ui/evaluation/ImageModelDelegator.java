@@ -83,13 +83,23 @@ public class ImageModelDelegator {
 
     public List<CarImageBean> getDefaultModel(int type) {
         List<CarImageBean> defaultList = new ArrayList<CarImageBean>();
+
+        String imageClass = null;
+
         for (int i = 0; i < mImageClassItems[type].size(); i++) {
             CarImageBean bean = new CarImageBean();
-            bean.imageClass = mImageClass[type];
+            bean.imageClass = imageClass = mImageClass[type];
             bean.displayName = mImageClassItems[type].get(i);
             bean.imageSeqNum = i;
             defaultList.add(bean);
         }
+
+        CarImageBean bean = new CarImageBean();
+        bean.displayName = mAddPic;
+        bean.imageClass = imageClass;
+        bean.imageSeqNum = defaultList.size();
+        defaultList.add(bean);
+
         return defaultList;
     }
 
@@ -97,25 +107,31 @@ public class ImageModelDelegator {
         String imageClass = getImageClassForType(type);
 
         List<CarImageBean> saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
+        List<CarImageBean> defaultList = getDefaultModel(type);
 
-        List<CarImageBean> defaultList = new ArrayList<CarImageBean>();
-        for (int i = 0; i < mImageClassItems[type].size(); i++) {
-            //
-            for(CarImageBean saveCar: saveList) {
-                if(i == saveCar.imageSeqNum) {
-                    defaultList.add(saveCar);
+        boolean isMatch = false;
+        int size = 0;
+        for (CarImageBean saveCar : saveList) {
+            isMatch = false;
+            size = defaultList.size();
+            for (int i = 0; i < size; i++)
+                if (i == saveCar.imageSeqNum) {
+                    defaultList.remove(i);
+                    defaultList.add(i, saveCar);
+                    isMatch = true;
                     break;
                 }
+            if (!isMatch) {
+                defaultList.add(saveCar);
             }
-
-            CarImageBean bean = new CarImageBean();
-            bean.imageClass = mImageClass[type];
-            bean.displayName = mImageClassItems[type].get(i);
-            bean.imageSeqNum = i;
-            bean.imageId = imageId;
-
-            defaultList.add(bean);
         }
+
+        CarImageBean bean = new CarImageBean();
+        bean.displayName = mAddPic;
+        bean.imageClass = imageClass;
+        bean.imageSeqNum = defaultList.size();
+        defaultList.add(bean);
+
         return defaultList;
     }
 
