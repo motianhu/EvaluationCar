@@ -35,13 +35,13 @@ public class StatusFragment extends ContentFragment {
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
         StatusListView view1 = (LocalStatusListView)ViewUtil.inflater(getContext(), R.layout.status_local_listview);
-        view1.setType(0);
+        view1.setType(StatusListView.TYPE_SAVE);
         StatusListView view2 = (AuditingStatusListView)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
-        view2.setType(1);
+        view2.setType(StatusListView.TYPE_AUDITING);
         StatusListView view3 = (NotPassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
-        view3.setType(2);
+        view3.setType(StatusListView.TYPE_NOTPASS);
         StatusListView view4 = (PassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
-        view4.setType(3);
+        view4.setType(StatusListView.TYPE_PASS);
 
         List<View> viewList = new ArrayList<View>();
         viewList.add(view1);

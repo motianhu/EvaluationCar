@@ -21,6 +21,10 @@ import java.util.ArrayList;
 
 public class StatusListView extends BaseListView {
     private static final String TAG = StatusListView.class.getSimpleName();
+    public static final int TYPE_SAVE = 0;
+    public static final int TYPE_AUDITING = 1;
+    public static final int TYPE_NOTPASS = 2;
+    public static final int TYPE_PASS = 3;
 
     protected int mType;
 
@@ -49,20 +53,20 @@ public class StatusListView extends BaseListView {
         String status = "21,22,23,24";
         boolean isHttp = true;
         switch (mType) {
-            case 0:
+            case TYPE_SAVE:
                 isHttp = false;
                 break;
-            case 1:
+            case TYPE_AUDITING:
                 AuditingStatusEvent event = new AuditingStatusEvent();
                 event.setContent(createTest(4));
                 EventProxy.post(event);
                 break;
-            case 2:
+            case TYPE_NOTPASS:
                 NotPassStatusEvent event1 = new NotPassStatusEvent();
                 event1.setContent(createTest(7));
                 EventProxy.post(event1);
                 break;
-            case 3:
+            case TYPE_PASS:
                 PassStatusEvent event2 = new PassStatusEvent();
                 event2.setContent(createTest(3));
                 EventProxy.post(event2);

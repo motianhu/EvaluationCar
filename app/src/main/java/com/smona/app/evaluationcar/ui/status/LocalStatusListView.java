@@ -7,6 +7,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +36,7 @@ public class LocalStatusListView extends StatusListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(LocalStatusBackgroundEvent event) {
-        List<CarBillBean> datas = (List<CarBillBean>) event.getContent();
+        List<CarBillBean> datas = DBDelegator.getInstance().queryLocalCarbill();
         CarLog.d(TAG, "LocalStatusBackgroundEvent " + datas.size());
         LocalStatusEvent local = new LocalStatusEvent();
         local.setContent(datas);
