@@ -35,8 +35,6 @@ public class HttpProxy implements IProxy {
         x.Ext.init(app);
     }
 
-    public interface ResonpseCallback<T> extends Callback.CommonCallback<T>{}
-
     private RequestParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
         RequestParams params = new RequestParams(url);
@@ -50,7 +48,7 @@ public class HttpProxy implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void getCarBillId(ResonpseCallback callback) {
+    public void createCarBillId(ResonpseCallback callback) {
         RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
         x.http().get(params, callback);
     }

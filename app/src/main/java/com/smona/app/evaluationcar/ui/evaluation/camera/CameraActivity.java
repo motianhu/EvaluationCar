@@ -301,27 +301,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (getResources().getString(R.string.cancel).equals(text)) {
             finish();
         } else if (getResources().getString(R.string.complete).equals(text)) {
-            mCurCarImage.imageLocalUrl = mBitmapPath;
-            int imageId = 0;
-            if (mImageId == 0) {
-                mImageId = mCurCarImage.imageId = DBDelegator.getInstance().getDBMaxId() + 1;
-            }
-            imageId = mCurCarImage.imageId =mImageId;
 
-            boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
-            CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId + ", mImageId: " + mImageId);
-
-            if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
-                mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
-                initDisplayName();
-            }
-
-            if (mCarBill == null) {
-                mCarBill = new CarBillBean();
-                mCarBill.imageId = imageId;
-                success = DBDelegator.getInstance().insertCarBill(mCarBill);
-                CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
-            }
+            processPicData();
 
             finish();
         } else {
@@ -337,11 +318,16 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
 
         showTakePhotoPicture(false);
+        processPicData();
+        refreshNext();
+    }
 
+    private void processPicData() {
         mCurCarImage.imageLocalUrl = mBitmapPath;
         int imageId = 0;
         if (mImageId == 0) {
             mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
+            SPUtil.put(this, CacheContants.IMAGEID, mImageId);
         }
         imageId = mCurCarImage.imageId =  mImageId;
         boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
@@ -357,10 +343,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             mCarBill = new CarBillBean();
             mCarBill.imageId = imageId;
             success = DBDelegator.getInstance().insertCarBill(mCarBill);
-            CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
+            CarLog.d(TAG, "onTakeNextPicture success " + success + ", mCarBill=" + mCarBill);
         }
-
-        refreshNext();
     }
 
 

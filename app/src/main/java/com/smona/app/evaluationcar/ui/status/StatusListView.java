@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.business.ResonpseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.AuditingStatusEvent;
 import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
@@ -70,7 +71,7 @@ public class StatusListView extends BaseListView {
                 break;
         }
         if (isHttp) {
-            HttpProxy.getInstance().queryCarbillList("cy", status, 1, 10, new HttpProxy.ResonpseCallback<String>() {
+            HttpProxy.getInstance().queryCarbillList("cy", status, 1, 10, new ResonpseCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                 }

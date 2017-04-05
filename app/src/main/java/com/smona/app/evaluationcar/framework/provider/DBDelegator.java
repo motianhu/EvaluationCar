@@ -37,16 +37,8 @@ public class DBDelegator {
         mAppContext = context;
     }
 
-    public void updateUploadStatus(String carBillId, String remoteUrl) {
-        ContentValues values = new ContentValues();
-        //mAppContext.getContentResolver().update();
-    }
 
-    public void updateImageRemoteUrl(String carBillId, String remoteUrl) {
-        ContentValues values = new ContentValues();
-        //mAppContext.getContentResolver().update();
-    }
-
+    //Car Image
     public List<CarImageBean> queryHttpImages(String carBillId) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         String select = CarImageTable.CARBILLID + "=?";
@@ -79,12 +71,19 @@ public class DBDelegator {
         return null;
     }
 
+    public boolean insertCarImage(CarImageBean bean) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        return dao.insertItem(bean);
+    }
+
+    //ImageMeta
     public List<ImageMetaBean> queryImageMeta() {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
         List<ImageMetaBean> list = dao.getResult(null, null, null);
         return list;
     }
 
+    //CarBill
     public CarBillBean queryCarBill(String carBillId) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         String select = CarImageTable.CARBILLID + "=" + carBillId;
@@ -114,11 +113,9 @@ public class DBDelegator {
         }
     }
 
-    public List<UploadTaskBean> queryUploadTask(String carBillId) {
-        BaseDao<UploadTaskBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
-        String select = CarImageTable.CARBILLID + "=" + carBillId;
-        List<UploadTaskBean> list = dao.getResult(select, null, null);
-        return list;
+    public void updateCarBill(CarBillBean carBill) {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        dao.updateItem(carBill);
     }
 
     public boolean insertCarBill(CarBillBean bean) {
@@ -127,11 +124,18 @@ public class DBDelegator {
     }
 
 
-    public boolean insertCarImage(CarImageBean bean) {
-        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
-        return dao.insertItem(bean);
+    //Upload Task
+    public List<UploadTaskBean> queryUploadTask(String carBillId) {
+        BaseDao<UploadTaskBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
+        String select = CarImageTable.CARBILLID + "=" + carBillId;
+        List<UploadTaskBean> list = dao.getResult(select, null, null);
+        return list;
     }
 
+
+
+
+    //AUTO MAX ID
     public int getDBMaxId() {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         List<CarImageBean> list = dao.getResult(null, null, " imageId desc ");

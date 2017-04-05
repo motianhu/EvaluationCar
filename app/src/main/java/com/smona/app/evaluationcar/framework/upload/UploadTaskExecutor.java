@@ -7,14 +7,14 @@ import com.smona.app.evaluationcar.util.CarLog;
 import java.util.LinkedList;
 
 public final class UploadTaskExecutor {
-    private static LinkedList<UploadImageTask> sTasks = new LinkedList<UploadImageTask>();
+    private static LinkedList<ActionTask> sTasks = new LinkedList<ActionTask>();
     private static int sRunCount = 0;
 
     private static Handler sHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            UploadImageTask waitTask = sTasks.poll();
+            ActionTask waitTask = sTasks.poll();
             if (null != waitTask) {
-                HttpProxy.getInstance().uploadImage(waitTask.userName, waitTask.carImageBean, waitTask.callback);
+                waitTask.startTask();
             } else {
                 sRunCount--;
             }
@@ -22,11 +22,11 @@ public final class UploadTaskExecutor {
         }
     };
 
-    public static void pushTask(UploadImageTask task) {
+    public static void pushTask(ActionTask task) {
         if (sRunCount >= 1) {
             sTasks.offer(task);
         } else {
-            HttpProxy.getInstance().uploadImage(task.userName, task.carImageBean, task.callback);
+            task.startTask();
             sRunCount++;
         }
     }

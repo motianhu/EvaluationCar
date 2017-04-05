@@ -10,12 +10,15 @@ import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.business.ResonpseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.framework.upload.UploadImageTask;
+import com.smona.app.evaluationcar.framework.upload.CarBillTask;
+import com.smona.app.evaluationcar.framework.upload.DataTask;
+import com.smona.app.evaluationcar.framework.upload.ImageTask;
 import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
@@ -175,15 +178,15 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             carImageBean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
             carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
             carImageBean.imageSeqNum = i;
-            UploadImageTask task = new UploadImageTask();
-            task.callback = mUploadImageCallback;
+            ImageTask task = new ImageTask();
+            //task. = mUploadImageCallback;
             task.userName = "cy";
             task.carImageBean = carImageBean;
             UploadTaskExecutor.pushTask(task);
         }
     }
 
-    private HttpProxy.ResonpseCallback<String> mUploadImageCallback = new HttpProxy.ResonpseCallback<String>() {
+    private ResonpseCallback mUploadImageCallback = new ResonpseCallback<String>() {
         @Override
         public void onSuccess(String result) {
             ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
@@ -206,7 +209,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     };
 
     private void queryCarbillImages() {
-        HttpProxy.getInstance().getCarbillImages("cy", "NS201703240001", new HttpProxy.ResonpseCallback<String>() {
+        HttpProxy.getInstance().getCarbillImages("cy", "NS201703240001", new ResonpseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "queryCarbillImages onSuccess Object: " + result);
@@ -392,57 +395,36 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void onSubmit() {
+        if (statusIsReturn()) {
+            submitReturn();
+        } else {
+            submitNone();
+        }
+    }
+
+    private void submitReturn() {
+
+    }
+
+    private void submitNone(){
+        String preScalePrice = mPrice.getText().toString();
+        if(TextUtils.isEmpty(preScalePrice)) {
+            return;
+        }
+        String mark = mNote.getText().toString();
+
+        CarBillTask carBillTask = new CarBillTask();
+        carBillTask.imageId = mImageId;
+
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
-        bean.preSalePrice = 10000.0;
-        bean.mark = "测试单";
-        HttpProxy.getInstance().getCarBillId(new HttpProxy.ResonpseCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess result: " + result);
-                mCarBillId = result.substring(1, result.length() - 1);
-                CarLog.d(this, "onSuccess mCarBillId: " + mCarBillId);
+        bean.preSalePrice = Double.valueOf(preScalePrice);
+        bean.mark = mark;
 
-//                uploadImage();
-                queryCarbillImages();
-            }
+        DataTask dataTask = new DataTask();
+        dataTask.carBill = bean;
 
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-                CarLog.d(this, "onFinished");
-            }
-        });
-        HttpProxy.getInstance().submitCarBill("cy", bean, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                CarLog.d(this, "onSuccess result: " + result);
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "Throwable result: " + ex + "; isOnCallback: " + isOnCallback);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-                CarLog.d(this, "onFinished");
-            }
-        });
+        carBillTask.startTask();
     }
 
     @Override

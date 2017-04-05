@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
+import com.smona.app.evaluationcar.business.ResonpseCallback;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUser;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -178,7 +179,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                         closeLoginingDlg();// 关闭对话框
                         gotoStartup();
                     } else {
-                        HttpProxy.getInstance().checkUser(mIdString, mPwdString, new HttpProxy.ResonpseCallback<String>() {
+                        HttpProxy.getInstance().checkUser(mIdString, mPwdString, new ResonpseCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
                                 ResUser normal = JsonParse.parseJson(result, ResUser.class);

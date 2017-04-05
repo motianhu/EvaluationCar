@@ -1,13 +1,23 @@
 package com.smona.app.evaluationcar.framework.provider.dao;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.RemoteException;
+import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.framework.provider.DBConstants;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
+import com.smona.app.evaluationcar.util.CarLog;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.nostra13.universalimageloader.core.ImageLoader.TAG;
 
 /**
  * Created by motianhu on 3/21/17.
@@ -36,12 +46,49 @@ public class CarBillDao extends BaseDao<CarBillBean> {
 
     @Override
     public void updateList(List<CarBillBean> itemInfoList) {
+        Uri uri = mTable.mContentUriNoNotify;
 
+        ArrayList<ContentProviderOperation> arrayList = new ArrayList<ContentProviderOperation>();
+        for (CarBillBean carBill : itemInfoList) {
+            ContentProviderOperation.Builder builder = ContentProviderOperation
+                    .newUpdate(uri);
+            builder.withSelection(
+                    CarBillTable.CARBILLID + "=?",
+                    new String[]{
+                            carBill.carBillId
+                    });
+            builder.withValues(modelToContentValues(carBill));
+            ContentProviderOperation contentProviderOperation = builder.build();
+            arrayList.add(contentProviderOperation);
+        }
+
+        try {
+            mContentResolver.applyBatch(DBConstants.AUTHORITY, arrayList);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void updateItem(CarBillBean itemInfo) {
-
+    public void updateItem(CarBillBean carBill) {
+        String where = null;
+        String[] whereArgs = null;
+        if (carBill.imageId > 0) {
+            where = CarBillTable.IMAGEID + "=?";
+            whereArgs = new String[]{
+                    carBill.imageId + ""
+            };
+        } else {
+            where = CarBillTable.CARBILLID + "=?";
+            whereArgs = new String[]{
+                    carBill.carBillId
+            };
+        }
+        int count = mContentResolver.update(mTable.mContentUriNoNotify,
+                modelToContentValues(carBill), where, whereArgs);
+        CarLog.d(TAG, "updateItem count=" + count);
     }
 
     @Override
