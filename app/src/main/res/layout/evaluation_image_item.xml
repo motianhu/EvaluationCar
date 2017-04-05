@@ -22,7 +22,6 @@
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
         android:paddingTop="3dip"
-        android:text="***"
         android:textColor="@color/white"
         android:textSize="15sp" />
 

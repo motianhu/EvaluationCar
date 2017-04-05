@@ -130,17 +130,28 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         if (mCurCarImage != null) {
             CarLog.d(TAG, "initCarImage 1 carImage=" + mCurCarImage);
+            initDisplayName();
             return;
         }
 
         for (CarImageBean bean : mCarImageList) {
             if (bean.imageSeqNum == mImageSeqNum) {
                 mCurCarImage = bean;
+                initDisplayName();
                 break;
             }
         }
         CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
 
+    }
+
+    private void initDisplayName() {
+        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
+        String disPlayName = ImageModelDelegator.getInstance().getDisplayName(type, mCurCarImage.imageSeqNum);
+        if (disPlayName == null) {
+            disPlayName = getResources().getString(R.string.add_picture);
+        }
+        mCurCarImage.displayName = disPlayName;
     }
 
     private void initCarBill() {
@@ -219,7 +230,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void showTakePhotoPicture(boolean isShow) {
         mPreViewRunning = !isShow;
-
 
         mThumbnail.setImageBitmap(isShow ? mBitmap : null);
         if (!isShow) {
@@ -305,6 +315,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
                 mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
                 mCurCarImage.imageId = imageId;
+                initDisplayName();
             }
 
             if (mCarBill == null) {
@@ -343,6 +354,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
             mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
             mCurCarImage.imageId = imageId;
+            initDisplayName();
         }
 
 

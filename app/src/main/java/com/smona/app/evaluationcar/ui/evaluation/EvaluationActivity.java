@@ -144,7 +144,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, null);
         CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
 
-        if (TextUtils.isEmpty(mCarBillId)) {
+        if (!TextUtils.isEmpty(mCarBillId)) {
             mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
         }
     }

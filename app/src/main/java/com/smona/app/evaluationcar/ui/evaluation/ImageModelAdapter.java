@@ -64,48 +64,64 @@ public class ImageModelAdapter extends BaseAdapter {
         final CarImageBean bean = mDatas.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CarLog.d(TAG, "bean: " + bean);
+                    ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
+                }
+            });
         }
-
-        View leftView = convertView.findViewById(R.id.tv_part_left);
-        View centerView = convertView.findViewById(R.id.lin_center);
-
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
+        boolean hasPic = processImage(bean, image);
+
         ImageView centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
+        ViewUtil.setViewVisible(centerImage, true);
 
-        TextView partLeft = (TextView) convertView.findViewById(R.id.tv_part_left);
-        TextView partCenter = (TextView) convertView.findViewById(R.id.tv_part_center);
+        TextView centerText = (TextView) convertView.findViewById(R.id.tv_part_center);
+        centerText.setText(bean.displayName);
+        ViewUtil.setViewVisible(centerText, true);
 
-        partCenter.setText(bean.displayName);
+        TextView leftText = (TextView) convertView.findViewById(R.id.tv_part_left);
+        ViewUtil.setViewVisible(leftText, false);
+
         if (position == (mDatas.size() - 1)) {
             centerImage.setImageResource(R.drawable.icon_add_photo);
-            ViewUtil.setViewVisible(leftView, false);
-            ViewUtil.setViewVisible(partLeft, false);
         } else {
-            centerImage.setImageResource(R.drawable.icon_camera);
-            ViewUtil.setViewVisible(leftView, true);
-            ViewUtil.setViewVisible(partLeft, false);
+            if(hasPic) {
+                ViewUtil.setViewVisible(centerImage, false);
+                ViewUtil.setViewVisible(centerText, false);
+                ViewUtil.setViewVisible(leftText, true);
+                leftText.setText(bean.displayName);
+            } else {
+                centerImage.setImageResource(R.drawable.icon_camera);
+            }
         }
 
+
+
+        return convertView;
+    }
+
+    private boolean processImage(CarImageBean bean, ImageView image) {
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);
         image.setLayoutParams(localLayoutParams);
 
+        String picUrl = null;
+
         if (!TextUtils.isEmpty(bean.imageRemoteUrl)) {
+            picUrl = bean.imageRemoteUrl;
             ImageLoaderProxy.loadImage(bean.imageRemoteUrl, image);
         } else if (!TextUtils.isEmpty(bean.imageLocalUrl)) {
-            ImageLoaderProxy.loadImage("file://" + bean.imageLocalUrl, image);
+            picUrl = "file://" + bean.imageLocalUrl;
+
+        }
+        if (!TextUtils.isEmpty(picUrl)) {
+            ImageLoaderProxy.loadImage(picUrl, image);
         }
 
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CarLog.d(TAG, "bean: " + bean);
-                ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
-            }
-        });
-
-        return convertView;
+        return !TextUtils.isEmpty(picUrl);
     }
 }
