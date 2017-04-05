@@ -17,6 +17,7 @@ import com.smona.app.evaluationcar.ui.WebActivity;
 public class ActivityUtils {
 
     public static final int ACTION_GALLERY = 1;
+    public static final int ACTION_CAMERA = 1;
 
     public static void jumpBannerDetail(Context context, BannerItem banner) {
         Intent intent = new Intent();

@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class StatusAdapter extends AbstractAdapter {
-    private static final String TAG = StatusListView.class.getSimpleName();
+    private static final String TAG = StatusAdapter.class.getSimpleName();
 
     private Object mLock = new Object();
     private int mType = -1;
@@ -77,7 +77,6 @@ public class StatusAdapter extends AbstractAdapter {
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
-            CarLog.d(TAG, "Type: " + mType  + " ,info: " + info);
             //not pass
             if (mType == CacheContants.TYPE_NOTPASS) {
                 ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
