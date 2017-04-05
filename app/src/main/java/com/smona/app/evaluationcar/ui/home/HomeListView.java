@@ -23,6 +23,7 @@ import java.util.List;
  */
 
 public class HomeListView extends BaseListView {
+    private static final String TAG = HomeListView.class.getSimpleName();
     private BannerHeader mHeader;
 
     public HomeListView(Context context, AttributeSet attrs) {
@@ -57,7 +58,7 @@ public class HomeListView extends BaseListView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CarLog.d(this, "onAttachedToWindow post");
+        CarLog.d(TAG, "onAttachedToWindow post");
         post();
     }
 

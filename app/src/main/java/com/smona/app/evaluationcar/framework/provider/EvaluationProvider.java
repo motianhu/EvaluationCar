@@ -26,6 +26,8 @@ import java.util.HashMap;
  */
 
 public class EvaluationProvider extends ContentProvider {
+    private final static String TAG = EvaluationProvider.class.getSimpleName();
+
     private DatabaseHelper mDataHelper;
 
     private static final String PARAMETER_NOTIFY = "notify";
@@ -59,7 +61,7 @@ public class EvaluationProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        CarLog.d(this, "onCreate");
+        CarLog.d(TAG, "onCreate");
         mDataHelper = new DatabaseHelper(getContext());
         ((EvaluationApp) (getContext().getApplicationContext()))
                 .setWallpaperProvider(this);
@@ -84,7 +86,7 @@ public class EvaluationProvider extends ContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCH.match(uri);
         String tableName = TABLE_MATCH.get(match);
-        CarLog.d(this, "getType uri: " + uri + ";tableName: " + tableName);
+        CarLog.d(TAG, "getType uri: " + uri + ";tableName: " + tableName);
         if (tableName != null) {
             return "vnd.android.cursor.dir/wallpaper";
         } else {
@@ -146,12 +148,12 @@ public class EvaluationProvider extends ContentProvider {
 
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            CarLog.d(this, "DatabaseHelper DATABASE_VERSION= " + DATABASE_VERSION);
+            CarLog.d(TAG, "DatabaseHelper DATABASE_VERSION= " + DATABASE_VERSION);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            CarLog.d(this, "DatabaseHelper onCreate");
+            CarLog.d(TAG, "DatabaseHelper onCreate");
             ArrayList<String> sqlList = getCreateTableSqlList();
             for (String sql : sqlList) {
                 db.execSQL(sql);
@@ -160,7 +162,7 @@ public class EvaluationProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            CarLog.d(this, "DatabaseHelper onUpgrade oldVersion=" + oldVersion + "; newVersion=" + newVersion);
+            CarLog.d(TAG, "DatabaseHelper onUpgrade oldVersion=" + oldVersion + "; newVersion=" + newVersion);
         }
 
 

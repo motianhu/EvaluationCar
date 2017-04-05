@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -74,7 +76,7 @@ public class ImageModelAdapter extends BaseAdapter {
         TextView partCenter = (TextView) convertView.findViewById(R.id.tv_part_center);
 
         partCenter.setText(bean.displayName);
-        if(position == (mDatas.size() - 1)) {
+        if (position == (mDatas.size() - 1)) {
             centerImage.setImageResource(R.drawable.icon_add_photo);
             ViewUtil.setViewVisible(leftView, false);
             ViewUtil.setViewVisible(partLeft, false);
@@ -88,6 +90,12 @@ public class ImageModelAdapter extends BaseAdapter {
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);
         image.setLayoutParams(localLayoutParams);
+
+        if (!TextUtils.isEmpty(bean.imageRemoteUrl)) {
+            ImageLoaderProxy.loadImage(bean.imageRemoteUrl, image);
+        } else if (!TextUtils.isEmpty(bean.imageLocalUrl)) {
+            ImageLoaderProxy.loadImage("file://" + bean.imageLocalUrl, image);
+        }
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

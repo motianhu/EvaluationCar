@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.nostra13.universalimageloader.core.ImageLoader.TAG;
 
 /**
  * Created by motianhu on 3/23/17.
@@ -94,12 +97,6 @@ public class ImageModelDelegator {
             defaultList.add(bean);
         }
 
-        CarImageBean bean = new CarImageBean();
-        bean.displayName = mAddPic;
-        bean.imageClass = imageClass;
-        bean.imageSeqNum = defaultList.size();
-        defaultList.add(bean);
-
         return defaultList;
     }
 
@@ -108,9 +105,8 @@ public class ImageModelDelegator {
 
         List<CarImageBean> saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
         List<CarImageBean> defaultList = getDefaultModel(type);
-
-        boolean isMatch = false;
-        int size = 0;
+        boolean isMatch;
+        int size;
         for (CarImageBean saveCar : saveList) {
             isMatch = false;
             size = defaultList.size();
@@ -125,13 +121,6 @@ public class ImageModelDelegator {
                 defaultList.add(saveCar);
             }
         }
-
-        CarImageBean bean = new CarImageBean();
-        bean.displayName = mAddPic;
-        bean.imageClass = imageClass;
-        bean.imageSeqNum = defaultList.size();
-        defaultList.add(bean);
-
         return defaultList;
     }
 

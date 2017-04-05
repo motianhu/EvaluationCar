@@ -13,6 +13,7 @@ import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -76,11 +77,12 @@ public class StatusAdapter extends AbstractAdapter {
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
+            CarLog.d(TAG, "Type: " + mType  + " ,info: " + info);
             //not pass
             if (mType == CacheContants.TYPE_NOTPASS) {
                 ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
             } else if (mType == CacheContants.TYPE_SAVE) {
-                ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(mContext, ConstantsUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, EvaluationActivity.class);
             } else {
                 ActivityUtils.jumpStatus(mContext, info.carBillId, StatusActivity.class);
             }

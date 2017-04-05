@@ -8,7 +8,7 @@ import com.smona.app.evaluationcar.framework.request.Deletor;
 
 public class GenerateMaxId {
     private static volatile GenerateMaxId sInstance;
-    private int mMaxId = -1;
+    private int mMaxId = 0;
 
     private GenerateMaxId() {
     }
@@ -25,7 +25,7 @@ public class GenerateMaxId {
     }
 
     public int generateNewId() {
-        if (mMaxId < 0) {
+        if (mMaxId <= 0) {
             throw new RuntimeException("Error: max id was not initialized");
         }
         mMaxId += 1;

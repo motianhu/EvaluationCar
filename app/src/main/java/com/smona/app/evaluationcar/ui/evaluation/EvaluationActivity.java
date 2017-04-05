@@ -22,7 +22,6 @@ import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ConstantsUtils;
-import com.smona.app.evaluationcar.util.IntentConstants;
 import com.smona.app.evaluationcar.util.SPUtil;
 
 import org.xutils.common.Callback;
@@ -123,7 +122,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initStatus() {
-        int billStatus = (int) SPUtil.get(this, IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
 
         CarLog.d(TAG, "initStatus billStatus=" + billStatus);
 
@@ -343,17 +342,33 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsNone()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
-            data.addAll(tempData);
-        } else if (statusIsSave()) {
-            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
-            data.addAll(tempData);
-        } else {
-            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+
             CarImageBean bean = new CarImageBean();
             bean.displayName = mAddPicStr;
             bean.imageClass = imageClass;
             bean.imageSeqNum = tempData.size();
             tempData.add(bean);
+
+            data.addAll(tempData);
+        } else if (statusIsSave()) {
+            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = mAddPicStr;
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = tempData.size();
+            tempData.add(bean);
+
+            data.addAll(tempData);
+        } else {
+            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+
+            CarImageBean bean = new CarImageBean();
+            bean.displayName = mAddPicStr;
+            bean.imageClass = imageClass;
+            bean.imageSeqNum = tempData.size();
+            tempData.add(bean);
+
             data.addAll(tempData);
         }
     }

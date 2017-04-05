@@ -16,6 +16,7 @@ import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ConstantsUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -87,7 +88,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
             case R.id.evalution:
-                ActivityUtils.jumpOnlyActivity(getContext(), EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(getContext(), ConstantsUtils.BILL_STATUS_NONE, null, 0, EvaluationActivity.class);
                 break;
             case R.id.queryVin:
                 ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);

@@ -24,7 +24,6 @@ public class AuditingStatusListView extends StatusListView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(AuditingStatusEvent event) {
-        CarLog.d(TAG, "AuditingStatusEvent " + event);
         List<CarBillBean> datas = (List<CarBillBean>) event.getContent();
         mAdapter.update(datas);
         mAdapter.notifyDataSetChanged();

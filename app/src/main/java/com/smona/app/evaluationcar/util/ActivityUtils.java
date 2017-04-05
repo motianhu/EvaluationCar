@@ -50,11 +50,10 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
+    //ImageId,CarBillId 来源于 EvaluationActivity
     public static void jumpCameraActivity(Context context, CarImageBean bean, Class clazz) {
         Intent intent = new Intent();
         intent.setClass(context, clazz);
-        SPUtil.put(context, CacheContants.CARBILLID, bean.carBillId);
-        SPUtil.put(context, CacheContants.IMAGEID, bean.imageId);
         SPUtil.put(context, CacheContants.IMAGECLASS, bean.imageClass);
         SPUtil.put(context, CacheContants.IMAGESEQNUM, bean.imageSeqNum);
         context.startActivity(intent);

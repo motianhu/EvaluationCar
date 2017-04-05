@@ -30,7 +30,6 @@ import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ConstantsUtils;
-import com.smona.app.evaluationcar.util.IntentConstants;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -101,13 +100,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void initDatas() {
         initStatus();
-        initCarImage();
         initCarBill();
+        initCarImage();
         initOther();
     }
 
     private void initStatus() {
-        int billStatus = (Integer) SPUtil.get(this, IntentConstants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        int billStatus = (Integer) SPUtil.get(this, CacheContants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
         CarLog.d(TAG, "initStatus billStatus=" + billStatus);
     }
 
@@ -124,7 +123,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         CarLog.d(TAG, "initCarImage carImageList=" + mCarImageList.size());
 
-        if (mCurCarImage !=  null) {
+        if (mImageId != -1 && mCarBill == null) {
+            mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
+            CarLog.d(TAG, "initCarImage queryLocalCarbill carBill=" + mCarBill);
+        }
+
+        if (mCurCarImage != null) {
             CarLog.d(TAG, "initCarImage 1 carImage=" + mCurCarImage);
             return;
         }
@@ -136,6 +140,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             }
         }
         CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
+
     }
 
     private void initCarBill() {
@@ -178,7 +183,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
-        mDescription.setText(mCurCarImage != null? mCurCarImage.displayName : null);
+        mDescription.setText(mCurCarImage != null ? mCurCarImage.displayName : null);
         mNote = (TextView) findViewById(R.id.note);
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : -1) + "/" + mCarImageList.size());
@@ -193,7 +198,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void refreshNext() {
-        mDescription.setText(mCurCarImage != null ?mCurCarImage.displayName:"");
+        mDescription.setText(mCurCarImage != null ? mCurCarImage.displayName : "");
         mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : 0) + "/" + mCarImageList.size());
     }
 
@@ -222,7 +227,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
 
         mGallery.setText(isShow ? R.string.take_again : R.string.gallery);
-        mCancel.setText(isShow ? R.string.take_next : R.string.cancel);
+        int resId = isShow ? R.string.take_next : R.string.cancel;
+        if (isShow && ((mCurCarImage.imageSeqNum + 1) >= mCarImageList.size())) {
+            resId = R.string.complete;
+        }
+        mCancel.setText(resId);
 
         ViewUtil.setViewVisible(mThumbnail, isShow);
         ViewUtil.setViewVisible(mFlashLight, !isShow);
@@ -280,6 +289,31 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void onCancel() {
         String text = mCancel.getText().toString();
         if (getResources().getString(R.string.cancel).equals(text)) {
+            finish();
+        } else if (getResources().getString(R.string.complete).equals(text)) {
+            mCurCarImage.imageLocalUrl = mBitmapPath;
+            int imageId = 0;
+            if (mCurCarImage.imageId == 0) {
+                mCurCarImage.imageId = DBDelegator.getInstance().getDBMaxId() + 1;
+            }
+
+            imageId = mCurCarImage.imageId;
+            CarLog.d(TAG, "onTakeNextPicture imageId=" + imageId);
+            boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
+            CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
+
+            if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
+                mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
+                mCurCarImage.imageId = imageId;
+            }
+
+            if (mCarBill == null) {
+                mCarBill = new CarBillBean();
+                mCarBill.imageId = imageId;
+                success = DBDelegator.getInstance().insertCarBill(mCarBill);
+                CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId);
+            }
+
             finish();
         } else {
             onTakeNextPicture();
