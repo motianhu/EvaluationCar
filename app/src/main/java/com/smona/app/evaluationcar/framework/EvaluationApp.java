@@ -9,6 +9,7 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
 import com.smona.app.evaluationcar.framework.provider.GenerateMaxId;
 import com.smona.app.evaluationcar.framework.push.PushProxy;
+import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 import java.lang.ref.WeakReference;
@@ -31,6 +32,8 @@ public class EvaluationApp extends Application {
         GenerateMaxId.getInstance().initMaxId();
         ImageModelDelegator.getInstance().init(this);
         CrashReportProxy.init(this);
+        DeviceStorageManager.getInstance().setContext(this);
+        DeviceStorageManager.getInstance().initPath();
     }
 
 
