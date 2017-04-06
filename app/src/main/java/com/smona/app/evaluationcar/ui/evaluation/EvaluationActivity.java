@@ -7,17 +7,21 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.business.ResonpseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
 import com.smona.app.evaluationcar.data.model.ResNormal;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.framework.upload.ActionTask;
 import com.smona.app.evaluationcar.framework.upload.CarBillTask;
-import com.smona.app.evaluationcar.framework.upload.DataTask;
+import com.smona.app.evaluationcar.framework.upload.CompleteTask;
 import com.smona.app.evaluationcar.framework.upload.ImageTask;
 import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
@@ -26,9 +30,11 @@ import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.ConstantsUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
+import com.smona.app.evaluationcar.util.StatusUtils;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.common.Callback;
 
 import java.util.ArrayList;
@@ -117,6 +123,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         initDatas();
         initViews();
         bindViews();
+        EventProxy.register(this);
     }
 
     private void initDatas() {
@@ -127,15 +134,15 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initStatus() {
-        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
 
         CarLog.d(TAG, "initStatus billStatus=" + billStatus);
 
-        if (billStatus == ConstantsUtils.BILL_STATUS_SAVE) {
+        if (billStatus == StatusUtils.BILL_STATUS_SAVE) {
             mCurBillStatus = BillStatus.SAVE;
-        } else if (billStatus == ConstantsUtils.BILL_STATUS_RETURN) {
+        } else if (billStatus == StatusUtils.BILL_STATUS_RETURN) {
             mCurBillStatus = BillStatus.RETURN;
-        } else if (billStatus == ConstantsUtils.BILL_STATUS_NONE) {
+        } else if (billStatus == StatusUtils.BILL_STATUS_NONE) {
             mCurBillStatus = BillStatus.NONE;
         }
     }
@@ -337,7 +344,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
 
 
-        if(mCarBill != null) {
+        if (mCarBill != null) {
             mPrice.setText(mCarBill.preSalePrice + "");
             mNote.setText(mCarBill.mark);
         }
@@ -406,23 +413,79 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     }
 
-    private void submitNone(){
-        String preScalePrice = mPrice.getText().toString();
-        if(TextUtils.isEmpty(preScalePrice)) {
-            return;
-        }
+    private void submitNone() {
+
+//        if (isTakePhoto()) {
+//            return;
+//        }
+//
+//        String preScalePrice = mPrice.getText().toString();
+//        if (TextUtils.isEmpty(preScalePrice)) {
+//            return;
+//        }
+
+
         String mark = mNote.getText().toString();
-
-        CarBillTask carBillTask = new CarBillTask();
-        carBillTask.imageId = mImageId;
-
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
-        bean.preSalePrice = Double.valueOf(preScalePrice);
+        //bean.preSalePrice = Double.valueOf(preScalePrice);
         bean.mark = mark;
+        bean.imageId = mImageId;
 
-        DataTask dataTask = new DataTask();
-        dataTask.carBill = bean;
+        //send background post
+        TaskBackgroundEvent event = new TaskBackgroundEvent();
+        event.setContent(bean);
+        EventProxy.post(event);
+    }
+
+    private boolean isTakePhoto() {
+        return checkPhoto(mClassRegistrationAdapter) ||
+                checkPhoto(mClassDrivingLicenseAdapter) ||
+                checkPhoto(mClassVehicleNameplateAdapter) ||
+                checkPhoto(mClassCarBodyAdapter) ||
+                checkPhoto(mClassCarFrameAdapter) ||
+                checkPhoto(mClassVehicleInteriorAdapter) ||
+                checkPhoto(mClassDifferenceSupplementAdapter) ||
+                checkPhoto(mClassOriginalCarInsurancetAdapter);
+    }
+
+    private boolean checkPhoto(ImageModelAdapter adapter) {
+        int index;
+        index = adapter.checkPhoto();
+        if (index > -1) {
+            Toast.makeText(this, "", Toast.LENGTH_SHORT);
+            return true;
+        }
+        return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void startTask(TaskBackgroundEvent event) {
+        CarLog.d(TAG, "TaskBackgroundEvent " + event);
+        CarBillBean bean = (CarBillBean) event.getContent();
+
+        CarBillTask carBillTask = new CarBillTask();
+        carBillTask.mCarBill = bean;
+        carBillTask.userName = "cy";
+
+        List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
+
+        ActionTask preTask = carBillTask;
+
+        for(CarImageBean image: images) {
+            ImageTask task = new ImageTask();
+            task.carImageBean = image;
+            task.userName = "cy";
+            preTask.mNextTask = task;
+
+            preTask = task;
+        }
+
+        CompleteTask comleteTask = new CompleteTask();
+        comleteTask.carBill = bean;
+        comleteTask.userName = "cy";
+
+        preTask.mNextTask = comleteTask;
 
         carBillTask.startTask();
     }
@@ -453,6 +516,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventProxy.unregister(this);
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.smona.app.evaluationcar.framework.upload;
 public abstract class ActionTask {
 
     public String mCarBillId;
+    public String userName;
     public ActionTask mNextTask;
 
     public abstract void startTask();

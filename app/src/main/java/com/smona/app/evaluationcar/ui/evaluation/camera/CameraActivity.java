@@ -29,7 +29,7 @@ import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.ConstantsUtils;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -106,7 +106,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void initStatus() {
-        int billStatus = (Integer) SPUtil.get(this, CacheContants.BILL_STATUS, ConstantsUtils.BILL_STATUS_NONE);
+        int billStatus = (Integer) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
         CarLog.d(TAG, "initStatus billStatus=" + billStatus);
     }
 

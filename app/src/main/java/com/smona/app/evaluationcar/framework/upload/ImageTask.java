@@ -9,13 +9,13 @@ import com.smona.app.evaluationcar.util.CarLog;
 
 public class ImageTask extends ActionTask {
     private static final String TAG = ImageTask.class.getSimpleName();
-    public String userName;
     public CarImageBean carImageBean;
 
     public void startTask() {
         if(carImageBean == null || !TextUtils.isEmpty(carImageBean.imageRemoteUrl)) {
             nextTask(mCarBillId);
         } else {
+            carImageBean.carBillId = mCarBillId;
             HttpProxy.getInstance().uploadImage(userName, carImageBean, new ResonpseCallback<String>(){
 
                 @Override

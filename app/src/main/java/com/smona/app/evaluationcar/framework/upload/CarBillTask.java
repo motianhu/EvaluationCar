@@ -14,7 +14,7 @@ import com.smona.app.evaluationcar.util.CarLog;
 
 public class CarBillTask extends ActionTask {
     private static final String TAG = CarBillTask.class.getSimpleName();
-    public int imageId;
+    public CarBillBean mCarBill;
 
     public void startTask() {
         if(TextUtils.isEmpty(mCarBillId)) {
@@ -23,11 +23,8 @@ public class CarBillTask extends ActionTask {
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result);
-                    mCarBillId = result.substring(1, result.length() - 1);
-                    CarBillBean carBillBean = new CarBillBean();
-                    carBillBean.carBillId = mCarBillId;
-                    carBillBean.imageId = imageId;
-                    DBDelegator.getInstance().updateCarBill(carBillBean);
+                    mCarBill.carBillId =  result.substring(1, result.length() - 1);
+                    DBDelegator.getInstance().updateCarBill(mCarBill);
                     nextTask(mCarBillId);
                 }
 

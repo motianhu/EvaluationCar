@@ -9,15 +9,15 @@ import com.smona.app.evaluationcar.util.CarLog;
  * Created by motianhu on 4/5/17.
  */
 
-public class DataTask extends ActionTask {
-    private static final String TAG = DataTask.class.getSimpleName();
-    public String userName;
+public class CompleteTask extends ActionTask {
+    private static final String TAG = CompleteTask.class.getSimpleName();
     public CarBillBean carBill;
 
     public void startTask() {
         if (carBill == null || carBill.preSalePrice <= 0.0) {
             return;
         } else {
+            carBill.carBillId = mCarBillId;
             HttpProxy.getInstance().submitCarBill(userName, carBill, new ResonpseCallback<String>() {
                     @Override
                     public void onSuccess(String result) {

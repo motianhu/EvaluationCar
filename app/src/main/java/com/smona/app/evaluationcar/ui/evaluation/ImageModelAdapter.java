@@ -88,7 +88,7 @@ public class ImageModelAdapter extends BaseAdapter {
         if (position == (mDatas.size() - 1)) {
             centerImage.setImageResource(R.drawable.icon_add_photo);
         } else {
-            if(hasPic) {
+            if (hasPic) {
                 ViewUtil.setViewVisible(centerImage, false);
                 ViewUtil.setViewVisible(centerText, false);
                 ViewUtil.setViewVisible(leftText, true);
@@ -97,7 +97,6 @@ public class ImageModelAdapter extends BaseAdapter {
                 centerImage.setImageResource(R.drawable.icon_camera);
             }
         }
-
 
 
         return convertView;
@@ -123,5 +122,14 @@ public class ImageModelAdapter extends BaseAdapter {
         }
 
         return !TextUtils.isEmpty(picUrl);
+    }
+
+    public int checkPhoto() {
+        for (int i = 0; i < mDatas.size(); i++) {
+            if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

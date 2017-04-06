@@ -1,6 +1,5 @@
 package com.smona.app.evaluationcar.framework.provider;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
@@ -43,6 +42,13 @@ public class DBDelegator {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         String select = CarImageTable.CARBILLID + "=?";
         List<CarImageBean> list = dao.getResult(select, new String[]{carBillId}, CarImageTable.IMAGESEQNUM + " asc ");
+        return list;
+    }
+
+    public List<CarImageBean> queryImages(int imageId) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        String select = CarImageTable.IMAGEID + "=?";
+        List<CarImageBean> list = dao.getResult(select, new String[]{imageId + ""}, CarImageTable.IMAGESEQNUM + " asc ");
         return list;
     }
 
@@ -131,8 +137,6 @@ public class DBDelegator {
         List<UploadTaskBean> list = dao.getResult(select, null, null);
         return list;
     }
-
-
 
 
     //AUTO MAX ID
