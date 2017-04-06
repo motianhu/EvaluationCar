@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.framework.upload;
 import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.util.CarLog;
 
 /**
@@ -18,7 +19,7 @@ public class CompleteTask extends ActionTask {
             return;
         } else {
             carBill.carBillId = mCarBillId;
-            HttpDelegator.getInstance().submitCarBill(userName, carBill, new ResponseCallback<String>() {
+            DataDelegator.getInstance().submitCarBill(userName, carBill, new ResponseCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
                         CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);

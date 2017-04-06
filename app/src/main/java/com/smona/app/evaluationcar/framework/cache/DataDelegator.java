@@ -5,6 +5,8 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.business.param.UserParam;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.FileUtils;
@@ -69,7 +71,7 @@ public class DataDelegator {
     }
 
     public void requestBanner(Params params, ResponseCallback callback) {
-        if (params instanceof UserParam) {
+        if (params instanceof BannerParam) {
             String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
             boolean cache = checkCacheExit(url);
             if (cache) {
@@ -83,7 +85,7 @@ public class DataDelegator {
     }
 
     public void requestNews(Params params, ResponseCallback callback) {
-        if (params instanceof UserParam) {
+        if (params instanceof BannerParam) {
             String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
             boolean cache = checkCacheExit(url);
             if (cache) {
@@ -94,6 +96,14 @@ public class DataDelegator {
         } else {
             callback.onFailed("params not BannerParam!");
         }
+    }
+
+    public void uploadImage(String userName, CarImageBean bean, ResponseCallback callback) {
+        HttpDelegator.getInstance().uploadImage(userName, bean, callback);
+    }
+
+    public void submitCarBill(String userName, CarBillBean carBill, ResponseCallback callback) {
+        HttpDelegator.getInstance().submitCarBill(userName, carBill, callback);
     }
 
 }

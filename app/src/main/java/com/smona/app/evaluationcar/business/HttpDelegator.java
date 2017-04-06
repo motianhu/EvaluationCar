@@ -9,8 +9,6 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.util.UrlConstants;
-
-import org.xutils.common.Callback;
 import org.xutils.x;
 
 import java.io.File;
@@ -61,7 +59,7 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryCarbillList(CarbillParam param, Callback.CommonCallback callback) {
+    public void queryCarbillList(CarbillParam param, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_LIST);
         params.addParameter(CarbillParam.USERNAME, param.userName);
         params.addParameter(CarbillParam.STATUS, param.status);
@@ -70,10 +68,7 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-
-
-
-    public void uploadImage(String createUser, CarImageBean bean, Callback.CommonCallback callback) {
+    public void uploadImage(String createUser, CarImageBean bean, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
         params.addParameter("createUser",createUser);
         params.addParameter("clientName","Android");
@@ -84,14 +79,7 @@ public class HttpDelegator implements IProxy {
         x.http().post(params, callback);
     }
 
-    public void getCarbillImages(String userName, String carBillId, Callback.CommonCallback callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
-        params.addParameter("userName", userName);
-        params.addParameter("carBillId", carBillId);
-        x.http().get(params, callback);
-    }
-
-    public void submitCarBill(String userName, CarBillBean carBill, Callback.CommonCallback callback) {
+    public void submitCarBill(String userName, CarBillBean carBill, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.SUBMIT_CARBILL);
         params.addParameter("userName",userName);
         params.addParameter("carBillId",carBill.carBillId);
@@ -100,18 +88,27 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryOperationDesc(Callback.CommonCallback callback) {
+
+
+    public void getCarbillImages(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
+
+    public void queryOperationDesc(ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_OPERATION_DESC);
         x.http().get(params, callback);
     }
 
-    public void queryCarbillCount(String userName, Callback.CommonCallback callback) {
+    public void queryCarbillCount(String userName, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
         params.addParameter("userName",userName);
         x.http().get(params, callback);
     }
 
-    public void queryMoreNews(String classType, int curPage, int pageSize, Callback.CommonCallback callback) {
+    public void queryMoreNews(String classType, int curPage, int pageSize, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
         params.addParameter("classType",classType);
         params.addParameter("curPage",curPage);
@@ -119,7 +116,7 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryNewsDetail(int newsId, Callback.CommonCallback callback) {
+    public void queryNewsDetail(int newsId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
         params.addParameter("newsId",newsId);
         x.http().get(params, callback);
