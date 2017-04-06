@@ -3,8 +3,9 @@ package com.smona.app.evaluationcar.ui.status;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.smona.app.evaluationcar.business.HttpProxy;
-import com.smona.app.evaluationcar.business.ResonpseCallback;
+import com.smona.app.evaluationcar.business.HttpDelegator;
+import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.AuditingStatusEvent;
 import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
@@ -71,24 +72,20 @@ public class StatusListView extends BaseListView {
                 break;
         }
         if (isHttp) {
-            HttpProxy.getInstance().queryCarbillList("cy", status, 1, 10, new ResonpseCallback<String>() {
+            CarbillParam param = new CarbillParam();
+            param.userName = "cy";
+            param.status = status;
+            param.curPage = 1;
+            param.pageSize = 10;
+            HttpDelegator.getInstance().queryCarbillList(param, new ResponseCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
+                    CarLog.d(TAG, "onSuccess: " + result);
                 }
 
                 @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
+                public void onFailed(String error) {
+                    CarLog.d(TAG, "onError ex: " + error);
                 }
             });
         } else {

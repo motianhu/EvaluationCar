@@ -19,10 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.HttpProxy;
-import com.smona.app.evaluationcar.business.ResonpseCallback;
+import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUser;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -179,30 +180,20 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                         closeLoginingDlg();// 关闭对话框
                         gotoStartup();
                     } else {
-                        HttpProxy.getInstance().checkUser(mIdString, mPwdString, new ResonpseCallback<String>() {
+                        UserParam param = new UserParam();
+                        param.userName = mIdString;
+                        param.password = mPwdString;
+                        DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
                                 ResUser normal = JsonParse.parseJson(result, ResUser.class);
-                                CarLog.d(this, "onSuccess normal: " + normal);
+                                CarLog.d(TAG, "onSuccess normal: " + normal);
                                 runUI(normal.success);
                             }
 
-
                             @Override
-                            public void onError(Throwable ex, boolean isOnCallback) {
-                                CarLog.d(this, "onError ex: " + ex);
-                                runUI(false);
-                            }
-
-                            @Override
-                            public void onCancelled(CancelledException cex) {
-                                CarLog.d(this, "onCancelled result: " + cex);
-                                runUI(false);
-                            }
-
-                            @Override
-                            public void onFinished() {
-
+                            public void onFailed(String error) {
+                                CarLog.d(TAG, "onError ex: " + error);
                             }
                         });
                     }

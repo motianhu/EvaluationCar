@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.HttpProxy;
-import com.smona.app.evaluationcar.business.ResonpseCallback;
+import com.smona.app.evaluationcar.business.HttpDelegator;
+import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
@@ -35,7 +35,6 @@ import com.smona.app.evaluationcar.util.StatusUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,7 +192,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         }
     }
 
-    private ResonpseCallback mUploadImageCallback = new ResonpseCallback<String>() {
+    private ResponseCallback mUploadImageCallback = new ResponseCallback<String>() {
         @Override
         public void onSuccess(String result) {
             ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
@@ -202,21 +201,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         }
 
         @Override
-        public void onError(Throwable ex, boolean isOnCallback) {
-            CarLog.d(this, "onError ex: " + ex);
-        }
-
-        @Override
-        public void onCancelled(Callback.CancelledException cex) {
-        }
-
-        @Override
-        public void onFinished() {
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onError ex: " + error);
         }
     };
 
     private void queryCarbillImages() {
-        HttpProxy.getInstance().getCarbillImages("cy", "NS201703240001", new ResonpseCallback<String>() {
+        HttpDelegator.getInstance().getCarbillImages("cy", "NS201703240001", new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "queryCarbillImages onSuccess Object: " + result);
@@ -224,18 +215,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             }
 
             @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                CarLog.d(this, "onError ex: " + ex);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
+            public void onFailed(String error) {
+                CarLog.d(TAG, "onError ex: " + error);
             }
         });
     }

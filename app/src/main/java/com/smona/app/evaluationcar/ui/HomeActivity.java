@@ -5,17 +5,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.HttpProxy;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.framework.request.Deletor;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
-import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
-import com.smona.app.evaluationcar.util.CarLog;
-
-import org.xutils.common.Callback;
 
 import java.util.List;
 
@@ -78,8 +72,6 @@ public class HomeActivity extends PermissionActivity implements RadioGroup.OnChe
             //Deletor.getInstance().requestImageMeta();
         }
     }
-
-
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

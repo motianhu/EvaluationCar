@@ -2,8 +2,8 @@ package com.smona.app.evaluationcar.framework.upload;
 
 import android.text.TextUtils;
 
-import com.smona.app.evaluationcar.business.HttpProxy;
-import com.smona.app.evaluationcar.business.ResonpseCallback;
+import com.smona.app.evaluationcar.business.HttpDelegator;
+import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -18,7 +18,7 @@ public class CarBillTask extends ActionTask {
 
     public void startTask() {
         if(TextUtils.isEmpty(mCarBillId)) {
-            HttpProxy.getInstance().createCarBillId(new ResonpseCallback<String>() {
+            HttpDelegator.getInstance().createCarBillId(new ResponseCallback<String>() {
 
                 @Override
                 public void onSuccess(String result) {
@@ -29,18 +29,8 @@ public class CarBillTask extends ActionTask {
                 }
 
                 @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-                    CarLog.d(TAG, "onError ex: " + ex);
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-                    CarLog.d(TAG, "CancelledException  cex: " + cex);
-                }
-
-                @Override
-                public void onFinished() {
-
+                public void onFailed(String error) {
+                    CarLog.d(TAG, "onError ex: " + error);
                 }
             });
         } else {

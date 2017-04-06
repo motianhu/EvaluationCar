@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.framework.request;
 
-import com.smona.app.evaluationcar.business.HttpProxy;
-import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
@@ -9,9 +7,6 @@ import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.util.CarLog;
-
-import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 

@@ -2,13 +2,15 @@ package com.smona.app.evaluationcar.business;
 
 import android.app.Application;
 
+import com.smona.app.evaluationcar.business.param.BannerParam;
+import com.smona.app.evaluationcar.business.param.CarbillParam;
+import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
@@ -17,16 +19,16 @@ import java.io.File;
  * Created by Moth on 2016/12/18.
  */
 
-public class HttpProxy implements IProxy {
+public class HttpDelegator implements IProxy {
 
-    private volatile static HttpProxy sInstance;
+    private volatile static HttpDelegator sInstance;
 
-    private HttpProxy() {
+    private HttpDelegator() {
     }
 
-    public static HttpProxy getInstance() {
+    public static HttpDelegator getInstance() {
         if (sInstance == null) {
-            sInstance = new HttpProxy();
+            sInstance = new HttpDelegator();
         }
         return sInstance;
     }
@@ -35,26 +37,44 @@ public class HttpProxy implements IProxy {
         x.Ext.init(app);
     }
 
-    private RequestParams createParams(int type) {
+    private ReqParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
-        RequestParams params = new RequestParams(url);
+        ReqParams params = new ReqParams(url);
         return params;
     }
 
-    public void checkUser(String userName, String password, ResonpseCallback callback) {
-        RequestParams params = createParams(UrlConstants.CHECK_USER);
-        params.addParameter("userName", userName);
-        params.addParameter("password", password);
+    public void checkUser(UserParam userParam, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.CHECK_USER);
+        params.addParameter(UserParam.USERNAME, userParam.userName);
+        params.addParameter(UserParam.PASSWORD, userParam.password);
         x.http().get(params, callback);
     }
 
-    public void createCarBillId(ResonpseCallback callback) {
-        RequestParams params = createParams(UrlConstants.CREATE_CARBILLID);
+    public void requestLatestNews(BannerParam bannerParam, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
+        params.addParameter(BannerParam.CLASSTYPE, bannerParam.classType);
         x.http().get(params, callback);
     }
+
+    public void createCarBillId(ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.CREATE_CARBILLID);
+        x.http().get(params, callback);
+    }
+
+    public void queryCarbillList(CarbillParam param, Callback.CommonCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_LIST);
+        params.addParameter(CarbillParam.USERNAME, param.userName);
+        params.addParameter(CarbillParam.STATUS, param.status);
+        params.addParameter(CarbillParam.CURPAGE, param.curPage);
+        params.addParameter(CarbillParam.PAGESIZE, param.pageSize);
+        x.http().get(params, callback);
+    }
+
+
+
 
     public void uploadImage(String createUser, CarImageBean bean, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.UPLOAD_IMAGE);
+        ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
         params.addParameter("createUser",createUser);
         params.addParameter("clientName","Android");
         params.addParameter("carBillId",bean.carBillId);
@@ -64,24 +84,15 @@ public class HttpProxy implements IProxy {
         x.http().post(params, callback);
     }
 
-    public void queryCarbillList(String userName, String status,int curPage, int pageSize, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_LIST);
-        params.addParameter("userName", userName);
-        params.addParameter("status", status);
-        params.addParameter("curPage",curPage);
-        params.addParameter("pageSize", pageSize);
-        x.http().get(params, callback);
-    }
-
     public void getCarbillImages(String userName, String carBillId, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);
     }
 
     public void submitCarBill(String userName, CarBillBean carBill, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.SUBMIT_CARBILL);
+        ReqParams params = createParams(UrlConstants.SUBMIT_CARBILL);
         params.addParameter("userName",userName);
         params.addParameter("carBillId",carBill.carBillId);
         params.addParameter("preSalePrice",carBill.preSalePrice);
@@ -90,24 +101,18 @@ public class HttpProxy implements IProxy {
     }
 
     public void queryOperationDesc(Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_OPERATION_DESC);
+        ReqParams params = createParams(UrlConstants.QUERY_OPERATION_DESC);
         x.http().get(params, callback);
     }
 
     public void queryCarbillCount(String userName, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
         params.addParameter("userName",userName);
         x.http().get(params, callback);
     }
 
-    public void queryLatestNews(String classType, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
-        params.addParameter("classType",classType);
-        x.http().get(params, callback);
-    }
-
     public void queryMoreNews(String classType, int curPage, int pageSize, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
+        ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
         params.addParameter("classType",classType);
         params.addParameter("curPage",curPage);
         params.addParameter("pageSize", pageSize);
@@ -115,7 +120,7 @@ public class HttpProxy implements IProxy {
     }
 
     public void queryNewsDetail(int newsId, Callback.CommonCallback callback) {
-        RequestParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
+        ReqParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
         params.addParameter("newsId",newsId);
         x.http().get(params, callback);
     }

@@ -4,9 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.business.param.BannerParam;
+import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.request.Deletor;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
@@ -64,8 +68,35 @@ public class HomeListView extends BaseListView {
 
 
     private void post() {
-        Deletor.getInstance().requestBanner();
-        Deletor.getInstance().requestNews();
+        BannerParam param = new BannerParam();
+        param.classType = "新闻公告";
+        DataDelegator.getInstance().requestBanner(param, new ResponseCallback<String>(){
+
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onFailed(String error) {
+
+            }
+        });
+
+        param = new BannerParam();
+        param.classType = "最新资讯";
+        DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>(){
+
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onFailed(String error) {
+
+            }
+        });
     }
 
 }
