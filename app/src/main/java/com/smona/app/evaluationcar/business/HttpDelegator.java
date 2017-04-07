@@ -102,9 +102,9 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryCarbillCount(ResponseCallback callback) {
+    public void queryCarbillCount(String userName, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
-        params.addParameter("userName","cy");
+        params.addParameter("userName",userName);
         x.http().get(params, callback);
     }
 

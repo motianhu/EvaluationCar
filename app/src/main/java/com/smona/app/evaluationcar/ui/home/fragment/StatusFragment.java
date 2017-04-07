@@ -5,16 +5,11 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.status.AuditingPage;
-import com.smona.app.evaluationcar.ui.status.NotPassPage;
-import com.smona.app.evaluationcar.ui.status.PassPage;
-import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.ui.status.auditing.AuditingLayer;
 import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
 import com.smona.app.evaluationcar.ui.status.notpass.NotPassLayer;
 import com.smona.app.evaluationcar.ui.status.pass.PassLayer;
-import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;

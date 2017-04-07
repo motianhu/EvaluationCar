@@ -129,13 +129,13 @@ public class DataDelegator {
         }
     }
 
-    public void requestCarbillCount(ResponseCallback<String> callback) {
+    public void requestCarbillCount(String userName, ResponseCallback<String> callback) {
         String url = UrlConstants.getInterface(UrlConstants.QUERY_CARBILL_COUNT);
         boolean cache = checkCacheExit(url);
         if (cache) {
             CacheDelegator.getInstance().queryCarbillCount(callback);
         } else {
-            HttpDelegator.getInstance().queryCarbillCount(callback);
+            HttpDelegator.getInstance().queryCarbillCount(userName, callback);
         }
     }
 

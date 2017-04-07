@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.PassStatusEvent;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
@@ -54,10 +55,14 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     }
 
     private void initRequestParams() {
-        mRequestParams.userName = "cy";
-        mRequestParams.curPage = 1;
-        mRequestParams.pageSize = 10;
-        mRequestParams.status = "80";
+        UserItem user = new UserItem();
+        boolean success = user.readSelf(getContext());
+        if (success) {
+            mRequestParams.userName = user.mId;
+            mRequestParams.curPage = 1;
+            mRequestParams.pageSize = 10;
+            mRequestParams.status = "80";
+        }
     }
 
     @Override

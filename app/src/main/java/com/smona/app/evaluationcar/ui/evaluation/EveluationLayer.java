@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
 import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
@@ -45,6 +46,8 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
     private View mNotPass;
     private View mPass;
 
+    private UserItem mUser;
+
     public EveluationLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -68,6 +71,9 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         mAuditingTv = (TextView) findViewById(R.id.tv_auditing);
         mNotPassTv = (TextView) findViewById(R.id.tv_notpass);
         mPassTv = (TextView) findViewById(R.id.tv_pass);
+
+        mUser = new UserItem();
+        mUser.readSelf(getContext());
     }
 
     @Override
@@ -110,7 +116,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
 
 
     private void post() {
-        DataDelegator.getInstance().requestCarbillCount(mCallbillCountCallback);
+        DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice(mNoticeCallback);
     }
 

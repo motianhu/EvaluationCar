@@ -15,6 +15,7 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -115,7 +116,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private String mCarBillId = null;
     private CarBillBean mCarBill = null;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,7 +186,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             carImageBean.imageSeqNum = i;
             ImageTask task = new ImageTask();
             //task. = mUploadImageCallback;
-            task.userName = "cy";
+            task.userName = mUser.mId;
             task.carImageBean = carImageBean;
             UploadTaskExecutor.pushTask(task);
         }
@@ -207,7 +207,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     };
 
     private void queryCarbillImages() {
-        HttpDelegator.getInstance().getCarbillImages("cy", "NS201703240001", new ResponseCallback<String>() {
+        HttpDelegator.getInstance().getCarbillImages(mUser.mId, "NS201703240001", new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(this, "queryCarbillImages onSuccess Object: " + result);
@@ -400,16 +400,16 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 //            return;
 //        }
 //
-//        String preScalePrice = mPrice.getText().toString();
-//        if (TextUtils.isEmpty(preScalePrice)) {
-//            return;
-//        }
+        String preScalePrice = mPrice.getText().toString();
+        if (TextUtils.isEmpty(preScalePrice)) {
+            return;
+        }
 
 
         String mark = mNote.getText().toString();
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
-        //bean.preSalePrice = Double.valueOf(preScalePrice);
+        bean.preSalePrice = Double.valueOf(preScalePrice);
         bean.mark = mark;
         bean.imageId = mImageId;
 
@@ -447,7 +447,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         CarBillTask carBillTask = new CarBillTask();
         carBillTask.mCarBill = bean;
-        carBillTask.userName = "cy";
+        carBillTask.userName = mUser.mId;
 
         List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
 
@@ -456,7 +456,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         for(CarImageBean image: images) {
             ImageTask task = new ImageTask();
             task.carImageBean = image;
-            task.userName = "cy";
+            task.userName = mUser.mId;
             preTask.mNextTask = task;
 
             preTask = task;
@@ -464,7 +464,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         CompleteTask comleteTask = new CompleteTask();
         comleteTask.carBill = bean;
-        comleteTask.userName = "cy";
+        comleteTask.userName = mUser.mId;
 
         preTask.mNextTask = comleteTask;
 

@@ -7,8 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
+import com.smona.app.evaluationcar.data.item.UserItem;
+import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -25,6 +27,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
     private ImageView mImage;
     private TextView mName;
 
+    private UserItem mUser;
 
     public MineLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,6 +44,9 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
         findViewById(R.id.setting_about).setOnClickListener(this);
         findViewById(R.id.setting_phone).setOnClickListener(this);
         findViewById(R.id.setting_logout).setOnClickListener(this);
+
+        mUser = new UserItem();
+        mUser.readSelf(getContext());
     }
 
 
@@ -64,6 +70,8 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 break;
             case R.id.setting_logout:
                 //弹出对话框，退出
+                mUser.saveSelf(getContext(), "", "");
+                ((BaseActivity)getContext()).finish();
                 break;
         }
     }
