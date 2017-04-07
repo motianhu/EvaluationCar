@@ -16,14 +16,13 @@ import java.util.List;
  * Created by motianhu on 2/28/17.
  */
 
-public class PassStatusListView extends StatusListView {
-    private static final String TAG = PassStatusListView.class.getSimpleName();
+public class PassPage extends StatusListView {
+    private static final String TAG = PassPage.class.getSimpleName();
 
 
-    public PassStatusListView(Context context, AttributeSet attrs) {
+    public PassPage(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PassStatusEvent event) {

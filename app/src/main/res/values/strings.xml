@@ -40,6 +40,7 @@
     <string name="list_item_number">单号: </string>
     <string name="list_item_time">创建时间: </string>
     <string name="list_item_note">未通过原因: </string>
+    <string name="no_carbillid">暂无单号</string>
 
     <!--评估 -->
     <string name="evalution_query_vin">查询车况号</string>
@@ -78,4 +79,18 @@
     <string name="permission_settings">权限设置</string>
     <string name="permission_tips_description">欢迎来到犀牛评,为确保所有功能正常使用,请开启以下权限,你可点击重置按钮来开启权限：</string>
     <string name="permission_reset">重            置</string>
+
+
+    <string name="already_bottom">已经到底了</string>
+    <string name="already_top">已经到顶了</string>
+    <string name="load_fail">网络异常</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">释放立即加载</string>
+    <string name="refreshing">正在加载</string>
+    <string name="refresh_succeed">加载成功</string>
+    <string name="refresh_fail">加载失败</string>
+    <string name="pullup_to_load">上拉加载更多</string>
+    <string name="release_to_load">释放立即加载</string>
+    <string name="network_irregular">网络迷路了,点击重新加载</string>
+    <string name="no_network">没有网络,请检查网络</string>
 </resources>

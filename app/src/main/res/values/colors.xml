@@ -52,4 +52,11 @@
     <color name="dialog_btn_cancle_pressed_text_color">#4e5475</color>
     <color name="permission_tips_title_text_color">#B8B8B8</color>
     <color name="permission_tips_content_text_color">#6974A0</color>
+
+
+    <color name="xlistview_header_bg_color">#1E1E2B</color>
+    <color name="xlistview_header_text_color">#6974a0</color>
+
+
+    <color name="no_network_color">#33000000</color>
 </resources>

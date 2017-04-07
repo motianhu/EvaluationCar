@@ -5,12 +5,12 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.status.AuditingStatusListView;
-import com.smona.app.evaluationcar.ui.status.LocalStatusListView;
-import com.smona.app.evaluationcar.ui.status.NotPassStatusListView;
-import com.smona.app.evaluationcar.ui.status.PassStatusListView;
+import com.smona.app.evaluationcar.ui.status.AuditingPage;
+import com.smona.app.evaluationcar.ui.status.NotPassPage;
+import com.smona.app.evaluationcar.ui.status.PassPage;
 import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
+import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -35,13 +35,13 @@ public class StatusFragment extends ContentFragment {
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
-        StatusListView view1 = (LocalStatusListView)ViewUtil.inflater(getContext(), R.layout.status_local_listview);
-        view1.setType(CacheContants.TYPE_SAVE);
-        StatusListView view2 = (AuditingStatusListView)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
+        LocalLayer view1 = (LocalLayer)ViewUtil.inflater(getContext(), R.layout.status_local_layer);
+
+        StatusListView view2 = (AuditingPage)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
         view2.setType(CacheContants.TYPE_AUDITING);
-        StatusListView view3 = (NotPassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
+        StatusListView view3 = (NotPassPage)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
         view3.setType(CacheContants.TYPE_NOTPASS);
-        StatusListView view4 = (PassStatusListView)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
+        StatusListView view4 = (PassPage)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
         view4.setType(CacheContants.TYPE_PASS);
 
         List<View> viewList = new ArrayList<View>();

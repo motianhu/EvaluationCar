@@ -12,7 +12,8 @@ import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
 import com.smona.app.evaluationcar.data.event.PassStatusEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.ui.common.base.BaseListView;
+import com.smona.app.evaluationcar.ui.common.base.RefreshListView;
+import com.smona.app.evaluationcar.ui.common.pullup.XListView;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -22,9 +23,10 @@ import java.util.ArrayList;
  * Created by motianhu on 2/28/17.
  */
 
-public class StatusListView extends BaseListView {
+public class StatusListView extends RefreshListView implements XListView.IXListViewListener {
     private static final String TAG = StatusListView.class.getSimpleName();
     protected int mType;
+    protected CarbillParam mRequestParams;
 
     public StatusListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,6 +48,24 @@ public class StatusListView extends BaseListView {
         super.onAttachedToWindow();
         CarLog.d(TAG, "onAttachedToWindow post " + mType);
         post();
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        setPullRefreshEnable(true);
+        setPullLoadEnable(true);
+        setXListViewListener(this);
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 
     private void post() {
@@ -72,12 +92,12 @@ public class StatusListView extends BaseListView {
                 break;
         }
         if (isHttp) {
-            CarbillParam param = new CarbillParam();
-            param.userName = "cy";
-            param.status = status;
-            param.curPage = 1;
-            param.pageSize = 10;
-            HttpDelegator.getInstance().queryCarbillList(param, new ResponseCallback<String>() {
+            mRequestParams = new CarbillParam();
+            mRequestParams.userName = "cy";
+            mRequestParams.status = status;
+            mRequestParams.curPage = 1;
+            mRequestParams.pageSize = 10;
+            HttpDelegator.getInstance().queryCarbillList(mRequestParams, new ResponseCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess: " + result);

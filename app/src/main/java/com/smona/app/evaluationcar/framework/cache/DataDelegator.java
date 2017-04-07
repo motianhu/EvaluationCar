@@ -3,15 +3,19 @@ package com.smona.app.evaluationcar.framework.cache;
 import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.BannerParam;
+import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.FileUtils;
 import com.smona.app.evaluationcar.util.MD5;
 import com.smona.app.evaluationcar.util.UrlConstants;
+
+import java.util.List;
 
 /**
  * Created by Moth on 2017/4/6.
@@ -104,6 +108,15 @@ public class DataDelegator {
 
     public void submitCarBill(String userName, CarBillBean carBill, ResponseCallback callback) {
         HttpDelegator.getInstance().submitCarBill(userName, carBill, callback);
+    }
+
+    public List<CarBillBean>  queryLocalCarbill(int curPage) {
+        List<CarBillBean> dataList = DBDelegator.getInstance().queryLocalCarbill();
+        return dataList;
+    }
+
+    public void  queryCarbillList(CarbillParam param, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().queryCarbillList(param, callback);
     }
 
 }
