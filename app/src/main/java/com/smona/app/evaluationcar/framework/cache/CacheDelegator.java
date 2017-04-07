@@ -55,4 +55,12 @@ public class CacheDelegator implements IProxy {
     public void queryOperationDesc(ResponseCallback<String> callback) {
 
     }
+
+    public void queryCarbillCount(ResponseCallback<String> callback) {
+
+    }
+
+    public void requestNotice(ResponseCallback<String> callback) {
+
+    }
 }

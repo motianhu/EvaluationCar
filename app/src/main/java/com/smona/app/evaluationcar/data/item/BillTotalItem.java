@@ -7,40 +7,11 @@ import com.smona.app.evaluationcar.data.bean.BaseBean;
  */
 
 public class BillTotalItem extends BaseBean {
-    private int unCommitCount;
-    private int passCount;
-    private int notPassCount;
-    private int auditingCount;
+    public static final String ALLCOUNT = "allCount";
+    public static final String PROCESSCOUNT = "processCount";
+    public static final String FINISHCOUNT = "finishCount";
+    public static final String REFUSECOUNT = "refuseCount";
 
-    public int getUnCommitCount() {
-        return unCommitCount;
-    }
-
-    public void setUnCommitCount(int unCommitCount) {
-        this.unCommitCount = unCommitCount;
-    }
-
-    public int getPassCount() {
-        return passCount;
-    }
-
-    public void setPassCount(int passCount) {
-        this.passCount = passCount;
-    }
-
-    public int getNotPassCount() {
-        return notPassCount;
-    }
-
-    public void setNotPassCount(int notPassCount) {
-        this.notPassCount = notPassCount;
-    }
-
-    public int getAuditingCount() {
-        return auditingCount;
-    }
-
-    public void setAuditingCount(int auditingCount) {
-        this.auditingCount = auditingCount;
-    }
+    public String infoType;
+    public int countInfo;
 }

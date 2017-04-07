@@ -128,4 +128,24 @@ public class DataDelegator {
             HttpDelegator.getInstance().queryOperationDesc(callback);
         }
     }
+
+    public void requestCarbillCount(ResponseCallback<String> callback) {
+        String url = UrlConstants.getInterface(UrlConstants.QUERY_CARBILL_COUNT);
+        boolean cache = checkCacheExit(url);
+        if (cache) {
+            CacheDelegator.getInstance().queryCarbillCount(callback);
+        } else {
+            HttpDelegator.getInstance().queryCarbillCount(callback);
+        }
+    }
+
+    public void requestNotice(ResponseCallback<String> callback) {
+        String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
+        boolean cache = checkCacheExit(url);
+        if (cache) {
+            CacheDelegator.getInstance().requestNotice(callback);
+        } else {
+            HttpDelegator.getInstance().requestNotice(callback);
+        }
+    }
 }

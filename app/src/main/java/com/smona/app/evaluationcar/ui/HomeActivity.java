@@ -114,7 +114,7 @@ public class HomeActivity extends PermissionActivity implements RadioGroup.OnChe
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess content=" + content);
+            CarLog.d(TAG, "onSuccess");
             ResImageMeta imageMetas = JsonParse.parseJson(content, ResImageMeta.class);
             if (imageMetas.data != null && imageMetas.data.size() > 0) {
                 for (ImageMetaBean bean : imageMetas.data) {

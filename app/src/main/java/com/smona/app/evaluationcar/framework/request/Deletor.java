@@ -24,10 +24,4 @@ public class Deletor {
     public void requestNews() {
         HomeDeletor.getInstance().requestNews();
     }
-
-    public void requestTotallBill() {HomeDeletor.getInstance().requestTotallBill();}
-
-    public void requestPerBillCount() {HomeDeletor.getInstance().requestTotallBill();}
-
-    public void requestNotice() {HomeDeletor.getInstance().requestTotallBill();}
 }

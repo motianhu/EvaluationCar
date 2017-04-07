@@ -7,10 +7,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
-import com.smona.app.evaluationcar.framework.request.Deletor;
+import com.smona.app.evaluationcar.data.model.ResCountPage;
+import com.smona.app.evaluationcar.data.model.ResNewsPage;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
@@ -105,27 +110,73 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
 
 
     private void post() {
-        Deletor.getInstance().requestPerBillCount();
-        Deletor.getInstance().requestNotice();
+        DataDelegator.getInstance().requestCarbillCount(mCallbillCountCallback);
+        DataDelegator.getInstance().requestNotice(mNoticeCallback);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BillTotalEvent event) {
-        BillTotalItem bean = (BillTotalItem) event.getContent();
-        if (bean != null) {
+        ResCountPage bean = (ResCountPage) event.getContent();
+        if (bean != null && bean.total > 0) {
             String content = getResources().getString(R.string.bill_count);
-            mUnCommitTv.setText(String.format(content, bean.getUnCommitCount()));
-            mAuditingTv.setText(String.format(content, bean.getAuditingCount()));
-            mNotPassTv.setText(String.format(content, bean.getNotPassCount()));
-            mPassTv.setText(String.format(content, bean.getPassCount()));
+            mUnCommitTv.setText(String.format(content, 0));
+            for (BillTotalItem item : bean.data) {
+                if (BillTotalItem.FINISHCOUNT.equals(item.infoType)) {
+                    mPassTv.setText(String.format(content, item.countInfo));
+                } else if (BillTotalItem.PROCESSCOUNT.equals(item.infoType)) {
+                    mAuditingTv.setText(String.format(content, item.countInfo));
+                } else if (BillTotalItem.REFUSECOUNT.equals(item.infoType)) {
+                    mNotPassTv.setText(String.format(content, item.countInfo));
+                }
+            }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(NoticeEvent event) {
-        NoticeEvent bean = (NoticeEvent) event.getContent();
-        if (bean != null) {
-            mNotice.setText(bean.getMessage());
+        ResNewsPage bean = (ResNewsPage) event.getContent();
+        if (bean != null && bean.total > 0) {
+            mNotice.setText(bean.data.get(0).summary);
         }
+    }
+
+    private ResponseCallback<String> mCallbillCountCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mCallbillCountCallback onFailed error= " + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mCallbillCountCallback onSuccess content= " + content);
+            ResCountPage resCountPage = JsonParse.parseJson(content, ResCountPage.class);
+            notifyUICount(resCountPage);
+        }
+    };
+
+    private void notifyUICount(ResCountPage page) {
+        BillTotalEvent event = new BillTotalEvent();
+        event.setContent(page);
+        EventProxy.post(event);
+    }
+
+    private ResponseCallback<String> mNoticeCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mNoticeCallback onFailed error= " + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mNoticeCallback onSuccess content= " + content);
+            ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
+            notifyUINotice(newsPage);
+        }
+    };
+
+    private void notifyUINotice(ResNewsPage page) {
+        NoticeEvent event = new NoticeEvent();
+        event.setContent(page);
+        EventProxy.post(event);
     }
 }

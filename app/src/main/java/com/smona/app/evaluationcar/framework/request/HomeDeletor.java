@@ -37,11 +37,6 @@ public class HomeDeletor extends BaseDelegator {
         EventProxy.post(news);
     }
 
-    public void requestTotallBill() {
-        BillTotalEvent bean = createBillTotalTest();
-        EventProxy.post(bean);
-    }
-
     private static BannerEvent createBannerTest() {
         BannerEvent event = new BannerEvent();
         ArrayList<BannerItem> bannerList = new ArrayList<BannerItem>();
@@ -71,17 +66,6 @@ public class HomeDeletor extends BaseDelegator {
             news.add(item);
         }
         event.setContent(news);
-        return event;
-    }
-
-    private static BillTotalEvent createBillTotalTest() {
-        BillTotalEvent event = new BillTotalEvent();
-        BillTotalItem bean = new BillTotalItem();
-        bean.setAuditingCount(20);
-        bean.setNotPassCount(10);
-        bean.setPassCount(15);
-        bean.setUnCommitCount(5);
-        event.setContent(bean);
         return event;
     }
 }

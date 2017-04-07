@@ -102,11 +102,21 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryCarbillCount(String userName, ResponseCallback callback) {
+    public void queryCarbillCount(ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
-        params.addParameter("userName",userName);
+        params.addParameter("userName","cy");
         x.http().get(params, callback);
     }
+
+    //Notice
+    public void requestNotice(ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
+        params.addParameter("classType","新闻公告");
+        params.addParameter("curPage",1);
+        params.addParameter("pageSize", 10);
+        x.http().get(params, callback);
+    }
+
 
     public void queryMoreNews(String classType, int curPage, int pageSize, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
