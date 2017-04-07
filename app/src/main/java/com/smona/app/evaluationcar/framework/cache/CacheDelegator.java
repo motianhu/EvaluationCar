@@ -51,4 +51,8 @@ public class CacheDelegator implements IProxy {
     public void requestNews(BannerParam params, ResponseCallback callback) {
 
     }
+
+    public void queryOperationDesc(ResponseCallback<String> callback) {
+
+    }
 }

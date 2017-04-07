@@ -119,4 +119,13 @@ public class DataDelegator {
         HttpDelegator.getInstance().queryCarbillList(param, callback);
     }
 
+    public void requestImageMeta(ResponseCallback<String> callback) {
+        String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
+        boolean cache = checkCacheExit(url);
+        if (cache) {
+            CacheDelegator.getInstance().queryOperationDesc(callback);
+        } else {
+            HttpDelegator.getInstance().queryOperationDesc(callback);
+        }
+    }
 }

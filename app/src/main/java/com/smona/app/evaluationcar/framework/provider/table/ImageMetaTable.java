@@ -7,15 +7,10 @@ package com.smona.app.evaluationcar.framework.provider.table;
 public class ImageMetaTable extends BaseTable {
     public static final String TABLE_NAME = "imagemeta";
 
-    public static final String IMAGEID = "imageId";
-    public static final String GROUPNAME = "groupName"; //分组名
-    public static final String LEAST = "least"; //拍照个数
-    public static final String MOST = "most"; //拍照个数
-    public static final String DISPLAYNAME = "displayName"; //水印名称
-    public static final String NOTE = "note"; //水印提示
-    public static final String MASKURL = "maskUrl";  //水印url
-    public static final String TODOURI = "todoUrl"; //提示url
-    public static final String TODO = "todo"; //提示内容
+    public static final String IMAGECLASS = "imageClass"; //图片分类
+    public static final String IMAGESEQNUM = "imageSeqNum"; //图片序列
+    public static final String IMAGEDES = "imageDesc"; //图片描述
+    public static final String WATERMARK = "waterMark"; //水印名称
 
     private static volatile ImageMetaTable mInstance = null;
 
@@ -39,15 +34,10 @@ public class ImageMetaTable extends BaseTable {
     public String createTableSql() {
         return "CREATE TABLE " + TABLE_NAME + "(" + _ID
                 + " INTEGER PRIMARY KEY, "
-                + IMAGEID + " INTEGER, "
-                + GROUPNAME + " TEXT, "
-                + LEAST + " INTEGER, "
-                + MOST + " INTEGER, "
-                + DISPLAYNAME + " TEXT, "
-                + NOTE + " TEXT, "
-                + MASKURL + " TEXT, "
-                + TODOURI + " TEXT, "
-                + TODO + " TEXT " + ")";
+                + IMAGECLASS + " TEXT, "
+                + IMAGESEQNUM + " INTEGER, "
+                + IMAGEDES + " TEXT, "
+                + WATERMARK + " TEXT " + ")";
     }
 
     @Override

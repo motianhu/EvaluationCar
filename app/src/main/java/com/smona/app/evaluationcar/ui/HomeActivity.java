@@ -5,19 +5,23 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
+import com.smona.app.evaluationcar.data.model.ResImageMeta;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
-
-import java.util.List;
+import com.smona.app.evaluationcar.util.CarLog;
 
 /**
  * Created by Moth on 2016/12/15.
  */
 
 public class HomeActivity extends PermissionActivity implements RadioGroup.OnCheckedChangeListener {
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     //UI Objects
     private RadioGroup mRbGroup;
@@ -67,10 +71,7 @@ public class HomeActivity extends PermissionActivity implements RadioGroup.OnChe
 
 
     private void requestImageMetas() {
-        List<ImageMetaBean> list = DBDelegator.getInstance().queryImageMeta();
-        if (list == null || list.size() < 1) {
-            //Deletor.getInstance().requestImageMeta();
-        }
+        DataDelegator.getInstance().requestImageMeta(mImageMeta);
     }
 
     @Override
@@ -104,4 +105,26 @@ public class HomeActivity extends PermissionActivity implements RadioGroup.OnChe
         mViewPager.setCurrentItem(pageHome, false);
         mRadioFunc[pageHome].setChecked(true);
     }
+
+    private ResponseCallback<String> mImageMeta = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "onSuccess content=" + content);
+            ResImageMeta imageMetas = JsonParse.parseJson(content, ResImageMeta.class);
+            if (imageMetas.data != null && imageMetas.data.size() > 0) {
+                for (ImageMetaBean bean : imageMetas.data) {
+                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
+                    if (success) {
+                        continue;
+                    }
+                    DBDelegator.getInstance().updateImageMeta(bean);
+                }
+            }
+        }
+    };
 }

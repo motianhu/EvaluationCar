@@ -134,6 +134,17 @@ public class DBDelegator {
         return dao.insertItem(bean);
     }
 
+    //Image Meta
+    public boolean insertImageMeta(ImageMetaBean bean) {
+        BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
+        return dao.insertItem(bean);
+    }
+
+    public void updateImageMeta(ImageMetaBean bean) {
+        BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
+        dao.updateItem(bean);
+    }
+
 
     //Upload Task
     public List<UploadTaskBean> queryUploadTask(String carBillId) {
