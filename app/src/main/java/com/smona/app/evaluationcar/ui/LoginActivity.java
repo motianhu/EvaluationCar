@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -27,12 +28,9 @@ import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.Utils;
-
-import java.util.ArrayList;
 
 public class LoginActivity extends PermissionActivity implements OnClickListener {
-    protected static final String TAG = "LoginActivity";
+    protected static final String TAG = LoginActivity.class.getSimpleName();
     private LinearLayout mLoginLinearLayout; // 登录内容的容器
     private Animation mTranslate; // 位移动画
     private Dialog mLoginingDlg; // 显示正在登录的Dialog
@@ -47,7 +45,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initUserList();
+        initUser();
         prepareSkip();
     }
 
@@ -67,10 +65,13 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
         mLoginLinearLayout.startAnimation(mTranslate); // Y轴水平移动
     }
 
-    private void initUserList() {
-        /* 获取已经保存好的用户密码 */
-        ArrayList<UserItem> users = Utils.getUserList(LoginActivity.this);
-        mUser = users.size() > 0 ? users.get(0) : null;
+    private void initUser() {
+        mUser = new UserItem();
+        mUser.readSelf(this);
+        if (TextUtils.isEmpty(mUser.mId) || TextUtils.isEmpty(mUser.mPwd)) {
+            mUser = null;
+            return;
+        }
     }
 
     private void setListener() {
@@ -214,26 +215,14 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
             public void run() {
                 closeLoginingDlg();// 关闭对话框
                 if (success) {
-                    mUser = new UserItem(mIdString, mPwdString);
+                    mUser = new UserItem();
+                    mUser.saveSelf(LoginActivity.this, mIdString, mPwdString);
                     gotoStartup();
                 } else {
                     Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    /* 退出此Activity时保存users */
-    @Override
-    public void onPause() {
-        super.onPause();
-        try {
-            if (mUser != null) {
-                Utils.saveUser(LoginActivity.this, mUser);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void gotoStartup() {

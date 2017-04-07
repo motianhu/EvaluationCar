@@ -1,55 +1,54 @@
 package com.smona.app.evaluationcar.data.item;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.smona.app.evaluationcar.util.AESUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
+import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.SPUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+import org.xutils.x;
 
 public class UserItem {
-    private String mId;
-    private String mPwd;
-    private static final String masterPassword = "FORYOU"; // AES加密算法的种子
-    private static final String JSON_ID = "user_id";
-    private static final String JSON_PWD = "user_pwd";
-    private static final String TAG = "UserItem";
+    private static final String TAG = UserItem.class.getSimpleName();
+    private static final String masterPassword = "www.smonatech.com"; // AES加密算法的种子
 
-    public UserItem(String id, String pwd) {
-        this.mId = id;
-        this.mPwd = pwd;
-    }
+    public String mId;
+    public String mPwd;
 
-    public UserItem(JSONObject json) throws Exception {
-        if (json.has(JSON_ID)) {
-            String id = json.getString(JSON_ID);
-            String pwd = json.getString(JSON_PWD);
-            // 解密后存放
-            mId = AESUtils.decrypt(masterPassword, id);
-            mPwd = AESUtils.decrypt(masterPassword, pwd);
-        }
-    }
-
-    public JSONObject toJSON() throws Exception {
-        // 使用AES加密算法加密后保存
-        String id = AESUtils.encrypt(masterPassword, mId);
-        String pwd = AESUtils.encrypt(masterPassword, mPwd);
-        Log.i(TAG, "加密后:" + id + "  " + pwd);
-        JSONObject json = new JSONObject();
+    public void saveSelf(Context context,String id, String pwd) {
         try {
-            json.put(JSON_ID, id);
-            json.put(JSON_PWD, pwd);
-        } catch (JSONException e) {
+            String userName = AESUtils.encrypt(masterPassword, id);
+            String password = AESUtils.encrypt(masterPassword, pwd);
+            CarLog.d(TAG, "saveSelf userName=" + userName + ", password=" + password);
+            SPUtil.put(context, CacheContants.LOGIN_USERNAME, userName);
+            SPUtil.put(context, CacheContants.LOGIN_PASSWORD, password);
+
+        } catch (Exception e) {
             e.printStackTrace();
+            CarLog.d(TAG, "saveSelf e=" + e);
         }
-        return json;
     }
 
-    public String getId() {
-        return mId;
-    }
+    public boolean readSelf(Context context) {
+        String userName = (String)SPUtil.get(context, CacheContants.LOGIN_USERNAME, "");
+        String password = (String)SPUtil.get(context, CacheContants.LOGIN_PASSWORD, "");
 
-    public String getPwd() {
-        return mPwd;
+        if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+            return false;
+        }
+        try {
+            mId = AESUtils.decrypt(masterPassword, userName);
+            mPwd = AESUtils.decrypt(masterPassword, password);
+        }catch(Exception e) {
+            e.printStackTrace();
+            CarLog.d(TAG, "readSelf e=" + e);
+        }
+        return false;
     }
 }
