@@ -21,6 +21,7 @@ import java.util.List;
  */
 
 public abstract class BaseDao<T> {
+    private static final String TAG = BaseDao.class.getSimpleName();
     public static final int TYPE_INSERT = 0x1;
     public static final int TYPE_DELETE = 0x2;
     public static final int TYPE_UPDATE = 0x3;
@@ -55,7 +56,7 @@ public abstract class BaseDao<T> {
 
             }
         } catch (Exception e) {
-            CarLog.d(this, "getResult error=" + e);
+            CarLog.d(TAG, "getResult error=" + e);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -111,10 +112,10 @@ public abstract class BaseDao<T> {
             mContentResolver.applyBatch(DBConstants.AUTHORITY, arrayList);
         } catch (RemoteException e) {
             e.printStackTrace();
-            CarLog.d(this, "e " + e);
+            CarLog.d(TAG, "e " + e);
         } catch (OperationApplicationException e) {
             e.printStackTrace();
-            CarLog.d(this, "e " + e);
+            CarLog.d(TAG, "e " + e);
         }
     }
 

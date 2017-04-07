@@ -35,19 +35,10 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener {
         mContext = context;
     }
 
-
-
-    private Object mLock = new Object();
-    private int mType = -1;
-
-    public void setType(int type) {
-        mType = type;
-    }
-
-    public void update(List datas) {
-        synchronized (mLock) {
-            mDataList.clear();
-            mDataList.addAll(datas);
+    public void update(List deltaList) {
+        if (deltaList != null) {
+            mDataList.addAll(mDataList.size(), deltaList);
+            notifyDataSetChanged();
         }
     }
 

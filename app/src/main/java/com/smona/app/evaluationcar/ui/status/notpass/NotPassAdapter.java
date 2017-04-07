@@ -13,7 +13,6 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
-import com.smona.app.evaluationcar.ui.status.StatusActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -26,7 +25,6 @@ import java.util.List;
  */
 
 public class NotPassAdapter extends BaseAdapter implements View.OnClickListener {
-
     private static final String TAG = NotPassAdapter.class.getSimpleName();
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
@@ -37,13 +35,10 @@ public class NotPassAdapter extends BaseAdapter implements View.OnClickListener 
         mContext = context;
     }
 
-
-    private Object mLock = new Object();
-
-    public void update(List datas) {
-        synchronized (mLock) {
-            mDataList.clear();
-            mDataList.addAll(datas);
+    public void update(List deltaList) {
+        if (deltaList != null) {
+            mDataList.addAll(mDataList.size(), deltaList);
+            notifyDataSetChanged();
         }
     }
 
@@ -99,4 +94,5 @@ public class NotPassAdapter extends BaseAdapter implements View.OnClickListener 
     protected void setScrollState(int state) {
         mScrollState = state;
     }
+
 }

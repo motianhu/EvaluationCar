@@ -11,4 +11,9 @@ public class StatusUtils {
     public static final int BILL_STATUS_UPLOADING = 2;
     public static final int BILL_STATUS_RETURN = 3;
 
+
+
+    public static final int MESSAGE_REQUEST_ERROR = 0x1;
+    public static final int MESSAGE_REQUEST_PAGE_LAST = 0x10000;
+    public static final int MESSAGE_REQUEST_PAGE_MORE = 0x10001;
 }

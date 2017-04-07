@@ -10,14 +10,16 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.AuditingStatusEvent;
-import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
-import com.smona.app.evaluationcar.data.model.ResCarBill;
+import com.smona.app.evaluationcar.data.model.ResCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
+import com.smona.app.evaluationcar.ui.status.RequestFace;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.StatusUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -25,7 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuditingLayer extends PullToRefreshLayout {
+public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     private static final String TAG = AuditingLayer.class.getSimpleName();
     private AuditingListView mAuditingListView = null;
     private View mNoDataLayout = null;
@@ -33,6 +35,8 @@ public class AuditingLayer extends PullToRefreshLayout {
     private View mHeadView;
     private View mFootView;
     private boolean mPullRequest = false;
+
+    private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
 
     private CarbillParam mRequestParams = new CarbillParam();
 
@@ -46,7 +50,6 @@ public class AuditingLayer extends PullToRefreshLayout {
 
     public AuditingLayer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
         initRequestParams();
     }
 
@@ -90,49 +93,85 @@ public class AuditingLayer extends PullToRefreshLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(AuditingStatusEvent event) {
-        List<CarBillBean> dataList = (List<CarBillBean>) event.getContent();
-        if (dataList != null) {
-            CarLog.d(TAG, "update " + dataList.size());
-            mAuditingListView.update(dataList);
+        List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
+        CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
+        if (deltaList != null) {
+            mAuditingListView.update(deltaList, mTag);
             if (mPullRequest) {
-                loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                if (mTag == StatusUtils.MESSAGE_REQUEST_ERROR) {
+                    postLoadmoreFail();
+                } else {
+                    loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                }
             }
+        } else if (deltaList == null && mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
+            mAuditingListView.update(deltaList, mTag);
+            loadmoreFinish(PullToRefreshLayout.SUCCEED);
         } else {
             if (mPullRequest) {
                 loadmoreFinish(PullToRefreshLayout.FAIL);
             }
         }
+
         mLoadingView.setVisibility(GONE);
+        CarLog.d(TAG, "update " + mAuditingListView.getItemCount());
         if (mAuditingListView.getItemCount() == 0) {
             mNoDataLayout.setVisibility(VISIBLE);
             mFootView.setVisibility(INVISIBLE);
             mHeadView.setVisibility(INVISIBLE);
-            NetworkTipUtil.showNetworkTip(AuditingLayer.this, mReloadClickListener);
+            NetworkTipUtil.showNetworkTip(this, mReloadClickListener);
         } else {
             mNoDataLayout.setVisibility(GONE);
             mFootView.setVisibility(VISIBLE);
             mHeadView.setVisibility(VISIBLE);
         }
-
     }
 
     private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
+            mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
             CarLog.d(TAG, "error: " + error);
+            AuditingStatusEvent event = new AuditingStatusEvent();
+            event.setContent(null);
+            EventProxy.post(event);
         }
 
         @Override
         public void onSuccess(String content) {
             CarLog.d(TAG, "onSuccess: " + content);
-            ResCarBill dataList = JsonParse.parseJson(content, ResCarBill.class);
+            ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
+            if (pages.total == 0) {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                saveToDB(pages.data);
+                notifyUpdateUI(pages.data);
+            } else {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+                notifyUpdateUI(pages.data);
+            }
         }
     };
+
+    private void saveToDB(List<CarBillBean> deltaList) {
+        if (deltaList == null || deltaList.size() == 0) {
+            return;
+        }
+        for (CarBillBean bean : deltaList) {
+            DBDelegator.getInstance().insertCarBill(bean);
+        }
+    }
+
+    private void notifyUpdateUI(List<CarBillBean> deltaList) {
+        AuditingStatusEvent event = new AuditingStatusEvent();
+        event.setContent(deltaList);
+        EventProxy.post(event);
+    }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         mAuditingListView = (AuditingListView) findViewById(R.id.local_listview);
+        mAuditingListView.setOnRequestFace(this);
         mNoDataLayout = findViewById(R.id.no_content_layout);
         mLoadingView = findViewById(R.id.loading);
         mHeadView = findViewById(R.id.head_view);
@@ -157,8 +196,24 @@ public class AuditingLayer extends PullToRefreshLayout {
 
     @Override
     protected void onLoadMore() {
-        mPullRequest = true;
-        DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+        CarLog.d(TAG, "onLoadMore mPullRequest=" + mPullRequest);
+        requestNext();
     }
 
+    @Override
+    public void requestNext() {
+        if (mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
+            postDelayed(mRunnable, 1000);
+        } else {
+            mPullRequest = true;
+            DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+        }
+    }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loadmoreFinish(PullToRefreshLayout.LAST);
+        }
+    };
 }

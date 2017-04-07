@@ -10,7 +10,10 @@ import com.smona.app.evaluationcar.ui.status.NotPassPage;
 import com.smona.app.evaluationcar.ui.status.PassPage;
 import com.smona.app.evaluationcar.ui.status.StatusListView;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
+import com.smona.app.evaluationcar.ui.status.auditing.AuditingLayer;
 import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
+import com.smona.app.evaluationcar.ui.status.notpass.NotPassLayer;
+import com.smona.app.evaluationcar.ui.status.pass.PassLayer;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -37,12 +40,12 @@ public class StatusFragment extends ContentFragment {
 
         LocalLayer view1 = (LocalLayer)ViewUtil.inflater(getContext(), R.layout.status_local_layer);
 
-        StatusListView view2 = (AuditingPage)ViewUtil.inflater(getContext(), R.layout.status_auditing_listview);
-        view2.setType(CacheContants.TYPE_AUDITING);
-        StatusListView view3 = (NotPassPage)ViewUtil.inflater(getContext(), R.layout.status_notpass_listview);
-        view3.setType(CacheContants.TYPE_NOTPASS);
-        StatusListView view4 = (PassPage)ViewUtil.inflater(getContext(), R.layout.status_pass_listview);
-        view4.setType(CacheContants.TYPE_PASS);
+        AuditingLayer view2 = (AuditingLayer)ViewUtil.inflater(getContext(), R.layout.status_auditing_layer);
+
+        NotPassLayer view3 = (NotPassLayer)ViewUtil.inflater(getContext(), R.layout.status_notpass_layer);
+
+        PassLayer view4 = (PassLayer)ViewUtil.inflater(getContext(), R.layout.status_pass_layer);
+
 
         List<View> viewList = new ArrayList<View>();
         viewList.add(view1);
