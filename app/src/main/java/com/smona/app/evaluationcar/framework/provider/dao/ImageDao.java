@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * Created by motianhu on 3/21/17.
  */
 
-public class ImageDao extends BaseDao<CarImageBean>  {
+public class ImageDao extends BaseDao<CarImageBean> {
+    private static final String TAG = ImageDao.class.getSimpleName();
 
     public ImageDao(Context context) {
         super(context);
@@ -40,8 +42,14 @@ public class ImageDao extends BaseDao<CarImageBean>  {
     }
 
     @Override
-    public void updateItem(CarImageBean itemInfo) {
-
+    public void updateItem(CarImageBean carImage) {
+        String where = CarImageTable.IMAGEID + "=? and " + CarImageTable.IMAGESEQNUM + "=?";
+        String[] whereArgs = new String[]{
+                carImage.imageId + "", carImage.imageSeqNum + ""
+        };
+        int count = mContentResolver.update(mTable.mContentUriNoNotify,
+                modelToContentValues(carImage), where, whereArgs);
+        CarLog.d(TAG, "updateItem count=" + count);
     }
 
     @Override

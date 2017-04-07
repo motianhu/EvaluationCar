@@ -7,7 +7,6 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBConstants;
@@ -17,13 +16,12 @@ import com.smona.app.evaluationcar.util.CarLog;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nostra13.universalimageloader.core.ImageLoader.TAG;
-
 /**
  * Created by motianhu on 3/21/17.
  */
 
 public class CarBillDao extends BaseDao<CarBillBean> {
+    private static final String TAG = CarBillDao.class.getSimpleName();
 
     public CarBillDao(Context context) {
         super(context);

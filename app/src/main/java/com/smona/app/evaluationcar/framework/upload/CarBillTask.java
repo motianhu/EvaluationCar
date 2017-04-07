@@ -24,6 +24,8 @@ public class CarBillTask extends ActionTask {
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result);
                     mCarBill.carBillId =  result.substring(1, result.length() - 1);
+                    mCarBillId = mCarBill.carBillId;
+
                     DBDelegator.getInstance().updateCarBill(mCarBill);
                     nextTask(mCarBillId);
                 }

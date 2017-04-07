@@ -82,6 +82,11 @@ public class DBDelegator {
         return dao.insertItem(bean);
     }
 
+    public void updateCarImage(CarImageBean carBill) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        dao.updateItem(carBill);
+    }
+
     //ImageMeta
     public List<ImageMetaBean> queryImageMeta() {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);

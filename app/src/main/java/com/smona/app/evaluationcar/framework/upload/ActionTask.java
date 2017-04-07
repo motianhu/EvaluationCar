@@ -13,8 +13,8 @@ public abstract class ActionTask {
     public abstract void startTask();
 
     protected void nextTask(String carBillId) {
-        mCarBillId = carBillId;
         if(mNextTask != null) {
+            mNextTask.mCarBillId = carBillId;
             mNextTask.startTask();
         }
     }
