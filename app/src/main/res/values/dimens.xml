@@ -28,7 +28,6 @@
     <dimen name="divider_height">0.2dp</dimen>
     <dimen name="border_line_width">0.8dp</dimen>
 
-
     <dimen name="evaluation_title_image_size">15dp</dimen>
     <dimen name="evaluation_title_image_margin_left">5dp</dimen>
 
@@ -56,4 +55,7 @@
     <dimen name="xlistview_header_textview_margin_top">8dp</dimen>
     <dimen name="xlistview_header_textview_textsize">10sp</dimen>
     <dimen name="xlistview_header_content_height">100dp</dimen>
+
+
+    <dimen name="evaluation_image_radius">5dp</dimen>
 </resources>

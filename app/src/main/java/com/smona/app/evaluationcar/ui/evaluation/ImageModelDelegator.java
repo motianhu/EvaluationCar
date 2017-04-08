@@ -81,14 +81,12 @@ public class ImageModelDelegator {
         return twoDimensionalArray;
     }
 
-    public List<CarImageBean> getDefaultModel(int type) {
+    private List<CarImageBean> getDefaultModel(int type) {
         List<CarImageBean> defaultList = new ArrayList<CarImageBean>();
-
-        String imageClass = null;
 
         for (int i = 0; i < mImageClassItems[type].size(); i++) {
             CarImageBean bean = new CarImageBean();
-            bean.imageClass = imageClass = mImageClass[type];
+            bean.imageClass = mImageClass[type];
             bean.displayName = mImageClassItems[type].get(i);
             bean.imageSeqNum = i;
             defaultList.add(bean);
@@ -111,12 +109,15 @@ public class ImageModelDelegator {
             for (int i = 0; i < size; i++)
                 if (i == saveCar.imageSeqNum) {
                     removeCar = defaultList.remove(i);
-                    saveCar.displayName = removeCar.displayName;
+                    saveCar.displayName = TextUtils.isEmpty(removeCar.displayName) ? mAddPic : removeCar.displayName;
                     defaultList.add(i, saveCar);
                     isMatch = true;
                     break;
                 }
             if (!isMatch) {
+                if(TextUtils.isEmpty(saveCar.displayName)){
+                    saveCar.displayName = mAddPic;
+                }
                 defaultList.add(saveCar);
             }
         }

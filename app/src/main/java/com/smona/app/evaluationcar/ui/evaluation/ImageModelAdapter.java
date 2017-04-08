@@ -84,7 +84,8 @@ public class ImageModelAdapter extends BaseAdapter {
         ViewUtil.setViewVisible(centerImage, true);
 
         TextView centerText = (TextView) convertView.findViewById(R.id.tv_part_center);
-        centerText.setText(bean.displayName);
+        String diplayName = TextUtils.isEmpty(bean.displayName) ? mContext.getString(R.string.add_picture) : bean.displayName;
+        centerText.setText(diplayName);
         ViewUtil.setViewVisible(centerText, true);
 
         TextView leftText = (TextView) convertView.findViewById(R.id.tv_part_left);
@@ -97,7 +98,7 @@ public class ImageModelAdapter extends BaseAdapter {
                 ViewUtil.setViewVisible(centerImage, false);
                 ViewUtil.setViewVisible(centerText, false);
                 ViewUtil.setViewVisible(leftText, true);
-                leftText.setText(bean.displayName);
+                leftText.setText(diplayName);
             } else {
                 centerImage.setImageResource(R.drawable.icon_camera);
             }

@@ -41,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="75dp"
         android:text="@string/system_description"
-        android:textColor="@color/black_transparent" />
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>

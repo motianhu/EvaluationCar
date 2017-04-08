@@ -142,15 +142,24 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 break;
             }
         }
-        CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
 
+        CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
+        //还是null，肯定是添加照片
+        if(mCurCarImage == null) {
+            mCurCarImage = new CarImageBean();
+            mCurCarImage.imageSeqNum = mImageSeqNum;
+            mCurCarImage.imageClass = mImageClass;
+            mCurCarImage.imageId = mImageId;
+            mCurCarImage.carBillId = mCarBillId;
+            mCurCarImage.displayName = getString(R.string.add_picture);
+        }
     }
 
     private void initDisplayName() {
         int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
         String disPlayName = ImageModelDelegator.getInstance().getDisplayName(type, mCurCarImage.imageSeqNum);
         if (disPlayName == null) {
-            disPlayName = getResources().getString(R.string.add_picture);
+            disPlayName = getString(R.string.add_picture);
         }
         mCurCarImage.displayName = disPlayName;
     }
@@ -195,10 +204,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
-        mDescription.setText(mCurCarImage != null ? mCurCarImage.displayName : null);
+        mDescription.setText(mCurCarImage.displayName );
         mNote = (TextView) findViewById(R.id.note);
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
-        mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : -1) + "/" + mCarImageList.size());
+        refreshNext();
 
         mBtnView = findViewById(R.id.lin_explain_btn);
         mBtnView.setOnClickListener(this);
@@ -210,8 +219,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void refreshNext() {
-        mDescription.setText(mCurCarImage != null ? mCurCarImage.displayName : "");
-        mNumPhoto.setText((mCurCarImage != null ? (mCurCarImage.imageSeqNum + 1) : 0) + "/" + mCarImageList.size());
+        boolean isAddPic = mCurCarImage.imageSeqNum >= mCarImageList.size();
+        mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size()+1:mCarImageList.size()));
     }
 
     private void initAnimate() {

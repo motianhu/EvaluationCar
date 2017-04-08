@@ -12,17 +12,18 @@
 
         <ImageView
             android:id="@+id/mine_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:background="@color/div_white"
-            android:src="@drawable/ic_launcher" />
+            android:src="@mipmap/ic_launcher" />
 
 
         <TextView
             android:id="@+id/mine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/mine_image"
             android:layout_centerHorizontal="true"
             android:gravity="center"

@@ -20,14 +20,16 @@ import com.smona.app.evaluationcar.R;
 public class RoundConerImageView extends ImageView {
 
     private Paint mPaint;
+    private int mRadius;
 
     public RoundConerImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         mPaint = new Paint();
+        mRadius = context.getResources().getDimensionPixelSize(R.dimen.evaluation_image_radius);
     }
 
     /**
@@ -41,7 +43,7 @@ public class RoundConerImageView extends ImageView {
         Drawable drawable = getDrawable();
         if (null != drawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getRoundBitmap(bitmap, 20);
+            Bitmap b = getRoundBitmap(bitmap, mRadius);
             final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
             final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
             mPaint.reset();
