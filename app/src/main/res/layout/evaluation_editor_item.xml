@@ -23,7 +23,7 @@
                 android:layout_width="15.0dip"
                 android:layout_height="15.0dip"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:src="@drawable/icon_circle" />
 
             <TextView
@@ -31,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5.0dip"
-                android:layout_toRightOf="@+id/iv_price"
+                android:layout_marginStart="5dip"
+                android:layout_toEndOf="@+id/iv_price"
                 android:text="估价"
                 android:textColor="@color/black_text"
                 android:textSize="16.0sp"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lin_price"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/view_space_vertical"
             android:text="预售价格(元)"
             android:textColor="@color/black_text"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/lin_price"
             android:layout_marginTop="@dimen/view_space_vertical"
-            android:layout_toRightOf="@+id/tv_1"
+            android:layout_toEndOf="@+id/tv_1"
             android:text="*"
             android:textColor="@color/red" />
 
@@ -71,12 +71,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lin_price"
-            android:layout_marginLeft="18.0dip"
+            android:layout_marginStart="18.0dip"
             android:layout_marginTop="@dimen/view_space_vertical"
-            android:layout_toRightOf="@+id/tv_2"
+            android:layout_toEndOf="@+id/tv_2"
             android:background="@color/white"
-            android:focusable="true"
-            android:gravity="center|left|top"
+            android:gravity="center|start|top"
             android:inputType="numberDecimal"
             android:maxLength="8"
             android:textColor="@color/black_text"
@@ -86,10 +85,10 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_below="@+id/lin_price"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/view_space_vertical"
             android:textColor="@color/red_theme" />
 
@@ -119,7 +118,7 @@
                 android:layout_width="15.0dip"
                 android:layout_height="15.0dip"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:src="@drawable/icon_circle" />
 
             <TextView
@@ -127,8 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5.0dip"
-                android:layout_toRightOf="@+id/iv_remark"
+                android:layout_marginStart="5dip"
+                android:layout_toEndOf="@+id/iv_remark"
                 android:text="备注"
                 android:textColor="@color/black_text"
                 android:textSize="16.0sp"
@@ -147,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/lin_remark"
             android:background="@color/white"
-            android:gravity="center|left|top"
+            android:gravity="center|start|top"
             android:minHeight="180.0dip"
             android:padding="@dimen/activity_horizontal_margin"
             android:textColor="@color/black_text"

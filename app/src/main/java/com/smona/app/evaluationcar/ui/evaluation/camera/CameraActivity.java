@@ -25,6 +25,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
@@ -106,7 +107,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void initStatus() {
-        int billStatus = (Integer) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
+        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
         CarLog.d(TAG, "initStatus billStatus=" + billStatus);
     }
 
@@ -325,9 +326,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void processPicData() {
         mCurCarImage.imageLocalUrl = mBitmapPath;
         int imageId = 0;
-        if (mImageId == 0) {
+        if (mImageId <= 0) {
             mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
             SPUtil.put(this, CacheContants.IMAGEID, mImageId);
+            SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
         }
         imageId = mCurCarImage.imageId =  mImageId;
         boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
@@ -466,6 +468,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     protected void onDestroy() {
         super.onDestroy();
         releaseCamera();
+        recycle(mBitmap);
     }
 
     /**
@@ -505,13 +508,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 mPreViewRunning = false;
-                //将data 转换为位图 或者你也可以直接保存为文件使用 FileOutputStream
-                //这里我相信大部分都有其他用处把 比如加个水印 后续再讲解
                 recycle(mBitmap);
-
-
                 mBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                mBitmapPath = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
+                mBitmapPath = DeviceStorageManager.getInstance().getThumbnailPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
                 BitmapUtils.saveJPGE_After(CameraActivity.this, mBitmap, mBitmapPath, 100);
                 CarLog.d(TAG, "captrue img_path " + mBitmapPath);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,8 +15,9 @@ import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.event.RefreshImageEvent;
+import com.smona.app.evaluationcar.data.event.background.QueryCarImageBackgroundEvent;
 import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
-import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResNormal;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -24,7 +26,6 @@ import com.smona.app.evaluationcar.framework.upload.ActionTask;
 import com.smona.app.evaluationcar.framework.upload.CarBillTask;
 import com.smona.app.evaluationcar.framework.upload.CompleteTask;
 import com.smona.app.evaluationcar.framework.upload.ImageTask;
-import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -101,17 +102,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private EditText mPrice;
     private EditText mNote;
 
-
     private String mAddPicStr;
-
-    private enum BillStatus {
-        NONE, SAVE, RETURN
-    }
-
-    private BillStatus mCurBillStatus = BillStatus.NONE;
+    private int mCurStatus = StatusUtils.BILL_STATUS_NONE;
 
     //save data
-    private int mImageId = -1;
+    private int mImageId = 0;
     //carbill data
     private String mCarBillId = null;
     private CarBillBean mCarBill = null;
@@ -121,8 +116,17 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         initDatas();
         initViews();
-        bindViews();
+        initImageList();
+        updateImageViews();
         EventProxy.register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initStatus();
+        initCarImage();
+        notifyReloadCarImage();
     }
 
     private void initDatas() {
@@ -133,21 +137,18 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initStatus() {
-        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
-
-        CarLog.d(TAG, "initStatus billStatus=" + billStatus);
-
-        if (billStatus == StatusUtils.BILL_STATUS_SAVE) {
-            mCurBillStatus = BillStatus.SAVE;
-        } else if (billStatus == StatusUtils.BILL_STATUS_RETURN) {
-            mCurBillStatus = BillStatus.RETURN;
-        } else if (billStatus == StatusUtils.BILL_STATUS_NONE) {
-            mCurBillStatus = BillStatus.NONE;
+        if(!statusIsNone()) {
+            return;
         }
+        mCurStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
+        CarLog.d(TAG, "initStatus mCurStatus=" + mCurStatus);
     }
 
     private void initCarImage() {
-        mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, -1);
+        if(mImageId > 0) {
+            return;
+        }
+        mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, 0);
         CarLog.d(TAG, "initCarImage imageId=" + mImageId);
     }
 
@@ -163,48 +164,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private void initOther() {
         mAddPicStr = getString(R.string.add_picture);
     }
-
-    private void uploadImage() {
-        uploadImage(ImageModelDelegator.IMAGE_Registration);
-        uploadImage(ImageModelDelegator.IMAGE_CarBody);
-        uploadImage(ImageModelDelegator.IMAGE_CarFrame);
-        //uploadImage(ImageModelDelegator.IMAGE_DifferenceSupplement);
-        uploadImage(ImageModelDelegator.IMAGE_DrivingLicense);
-        //uploadImage(ImageModelDelegator.IMAGE_OriginalCarInsurancet);
-        uploadImage(ImageModelDelegator.IMAGE_VehicleInterior);
-        uploadImage(ImageModelDelegator.IMAGE_VehicleNameplate);
-    }
-
-
-    private void uploadImage(int type) {
-        List<CarImageBean> carImageBeenList = ImageModelDelegator.getInstance().getDefaultModel(type);
-        for (int i = 0; i < 1; i++) {
-            CarImageBean carImageBean = carImageBeenList.get(i);
-            carImageBean.carBillId = mCarBillId;
-            carImageBean.imageLocalUrl = "/sdcard/Screenshots/Screenshot.png";
-            carImageBean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
-            carImageBean.imageSeqNum = i;
-            ImageTask task = new ImageTask();
-            //task. = mUploadImageCallback;
-            task.userName = mUser.mId;
-            task.carImageBean = carImageBean;
-            UploadTaskExecutor.pushTask(task);
-        }
-    }
-
-    private ResponseCallback mUploadImageCallback = new ResponseCallback<String>() {
-        @Override
-        public void onSuccess(String result) {
-            ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
-            CarLog.d(this, "onSuccess Object: " + result + ";resp: " + resp.success);
-            UploadTaskExecutor.nextTask();
-        }
-
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onError ex: " + error);
-        }
-    };
 
     private void queryCarbillImages() {
         HttpDelegator.getInstance().getCarbillImages(mUser.mId, "NS201703240001", new ResponseCallback<String>() {
@@ -289,62 +248,89 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         //保存及提交
         findViewById(R.id.btn_save).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
-    }
 
-    private void bindViews() {
-        mClassRegistrationList = new ArrayList<CarImageBean>();
-        initImageData(mClassRegistrationList, ImageModelDelegator.IMAGE_Registration);
-        mClassRegistrationAdapter.update(mClassRegistrationList);
-
-        mClassDrivingLicenseList = new ArrayList<CarImageBean>();
-        initImageData(mClassDrivingLicenseList, ImageModelDelegator.IMAGE_DrivingLicense);
-        mClassDrivingLicenseAdapter.update(mClassDrivingLicenseList);
-
-        mClassVehicleNameplateList = new ArrayList<CarImageBean>();
-        initImageData(mClassVehicleNameplateList, ImageModelDelegator.IMAGE_VehicleNameplate);
-        mClassVehicleNameplateAdapter.update(mClassVehicleNameplateList);
-
-        mClassCarBodyList = new ArrayList<CarImageBean>();
-        initImageData(mClassCarBodyList, ImageModelDelegator.IMAGE_CarBody);
-        mClassCarBodyAdapter.update(mClassCarBodyList);
-
-        mClassCarFrameList = new ArrayList<CarImageBean>();
-        initImageData(mClassCarFrameList, ImageModelDelegator.IMAGE_CarFrame);
-        mClassCarFrameAdapter.update(mClassCarFrameList);
-
-        mClassVehicleInteriorList = new ArrayList<CarImageBean>();
-        initImageData(mClassVehicleInteriorList, ImageModelDelegator.IMAGE_VehicleInterior);
-        mClassVehicleInteriorAdapter.update(mClassVehicleInteriorList);
-
-        mClassDifferenceSupplementList = new ArrayList<CarImageBean>();
-        initImageData(mClassDifferenceSupplementList, ImageModelDelegator.IMAGE_DifferenceSupplement);
-        mClassDifferenceSupplementAdapter.update(mClassDifferenceSupplementList);
-
-        mClassOriginalCarInsurancetList = new ArrayList<CarImageBean>();
-        initImageData(mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
-        mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
-
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (mCarBill != null) {
             mPrice.setText(mCarBill.preSalePrice + "");
             mNote.setText(mCarBill.mark);
         }
     }
 
+    private void initImageList() {
+        mClassRegistrationList = new ArrayList<CarImageBean>();
+        mClassDrivingLicenseList = new ArrayList<CarImageBean>();
+        mClassVehicleNameplateList = new ArrayList<CarImageBean>();
+        mClassCarBodyList = new ArrayList<CarImageBean>();
+        mClassCarFrameList = new ArrayList<CarImageBean>();
+        mClassVehicleInteriorList = new ArrayList<CarImageBean>();
+        mClassDifferenceSupplementList = new ArrayList<CarImageBean>();
+        mClassOriginalCarInsurancetList = new ArrayList<CarImageBean>();
+    }
+
+    private void updateImageViews() {
+        mClassRegistrationAdapter.update(mClassRegistrationList);
+        mClassDrivingLicenseAdapter.update(mClassDrivingLicenseList);
+        mClassVehicleNameplateAdapter.update(mClassVehicleNameplateList);
+        mClassCarBodyAdapter.update(mClassCarBodyList);
+        mClassCarFrameAdapter.update(mClassCarFrameList);
+        mClassVehicleInteriorAdapter.update(mClassVehicleInteriorList);
+        mClassDifferenceSupplementAdapter.update(mClassDifferenceSupplementList);
+        mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
+    }
+
+
+    private void notifyReloadCarImage() {
+        QueryCarImageBackgroundEvent event = new QueryCarImageBackgroundEvent();
+        EventProxy.post(event);
+        CarLog.d(TAG, "notifyReloadCarImage");
+    }
+
+    private void notifyRefreshViews() {
+        RefreshImageEvent event = new RefreshImageEvent();
+        EventProxy.post(event);
+        CarLog.d(TAG, "notifyRefreshViews");
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void backgroundLoadImageData(QueryCarImageBackgroundEvent queryCarImage) {
+        CarLog.d(TAG, "backgroundLoadImageData");
+        clearImageList();
+        reloadImageList();
+        notifyRefreshViews();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void mainRefreshImageViews(RefreshImageEvent queryCarImage) {
+        CarLog.d(TAG, "mainRefreshImageViews");
+        updateImageViews();
+    }
+
+    private void reloadImageList() {
+        initImageData(mClassRegistrationList, ImageModelDelegator.IMAGE_Registration);
+        initImageData(mClassDrivingLicenseList, ImageModelDelegator.IMAGE_DrivingLicense);
+        initImageData(mClassVehicleNameplateList, ImageModelDelegator.IMAGE_VehicleNameplate);
+        initImageData(mClassCarBodyList, ImageModelDelegator.IMAGE_CarBody);
+        initImageData(mClassCarFrameList, ImageModelDelegator.IMAGE_CarFrame);
+        initImageData(mClassVehicleInteriorList, ImageModelDelegator.IMAGE_VehicleInterior);
+        initImageData(mClassDifferenceSupplementList, ImageModelDelegator.IMAGE_DifferenceSupplement);
+        initImageData(mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
+    }
+
+    private void clearImageList() {
+        mClassRegistrationList.clear();
+        mClassDrivingLicenseList.clear();
+        mClassVehicleNameplateList.clear();
+        mClassCarBodyList.clear();
+        mClassCarFrameList.clear();
+        mClassVehicleInteriorList.clear();
+        mClassDifferenceSupplementList.clear();
+        mClassOriginalCarInsurancetList.clear();
+    }
+
     private void initImageData(List<CarImageBean> data, int type) {
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
-        if (statusIsNone()) {
-            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getDefaultModel(type);
-
-            CarImageBean bean = new CarImageBean();
-            bean.displayName = mAddPicStr;
-            bean.imageClass = imageClass;
-            bean.imageSeqNum = tempData.size();
-            tempData.add(bean);
-
-            data.addAll(tempData);
-        } else if (statusIsSave()) {
-            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+        if (statusIsReturn()) {
+            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
 
             CarImageBean bean = new CarImageBean();
             bean.displayName = mAddPicStr;
@@ -354,7 +340,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
             data.addAll(tempData);
         } else {
-            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
 
             CarImageBean bean = new CarImageBean();
             bean.displayName = mAddPicStr;
@@ -367,15 +353,15 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private boolean statusIsNone() {
-        return mCurBillStatus == BillStatus.NONE;
+        return mCurStatus == StatusUtils.BILL_STATUS_NONE;
     }
 
     private boolean statusIsSave() {
-        return mCurBillStatus == BillStatus.SAVE;
+        return mCurStatus == StatusUtils.BILL_STATUS_SAVE;
     }
 
     private boolean statusIsReturn() {
-        return mCurBillStatus == BillStatus.RETURN;
+        return mCurStatus == StatusUtils.BILL_STATUS_RETURN;
     }
 
     private void onSave() {
@@ -474,6 +460,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        CarLog.d(TAG, "requestCode: " + requestCode + "");
         if (requestCode == ActivityUtils.ACTION_CAMERA && resultCode == Activity.RESULT_OK && data != null) {
 
         }

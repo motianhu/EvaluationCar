@@ -40,7 +40,12 @@ public class ImageModelAdapter extends BaseAdapter {
     }
 
     public void update(List<CarImageBean> datas) {
+        if(datas ==null) {
+            return;
+        }
+        mDatas.clear();
         mDatas.addAll(datas);
+        notifyDataSetChanged();
     }
 
 

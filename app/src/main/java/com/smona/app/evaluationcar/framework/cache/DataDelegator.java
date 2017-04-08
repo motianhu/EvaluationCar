@@ -43,15 +43,11 @@ public class DataDelegator {
     private static String getFilePathByUrl(String url) {
         String md5 = MD5.getMD5(url);
         String allPath = DeviceStorageManager.getInstance().getMd5Path() + md5;
-        CarLog.d(TAG, "getFilePathByUrl url = " + url + " allPath = "
-                + allPath);
         return allPath;
     }
 
     public static boolean clearOldCacheByUrl(String url) {
         boolean result = FileUtils.deleteFile(getFilePathByUrl(url));
-        CarLog.d(TAG, "clearOldCacheByUrl url = " + url + " result = "
-                + result);
         return result;
     }
 

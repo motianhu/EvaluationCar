@@ -13,15 +13,17 @@
 
         <ImageView
             android:id="@+id/camera_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
+            android:scaleType="center"
             android:src="@drawable/selector_btn_camera_close1" />
 
         <ImageView
             android:id="@+id/flash_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="center"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/selector_btn_flash_light" />

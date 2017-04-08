@@ -41,10 +41,8 @@ public class DeviceStorageManager {
         makeFolder(rootPath);
         mMd5Path = rootPath + "/" + FolderContants.MD5CACHE;
         boolean success = makeFolder(mMd5Path);
-        CarLog.d(TAG, "success " + success + "; mMd5Path=" + mMd5Path);
         mThumbnailPath = rootPath + "/" + FolderContants.THUMBNAIL;
         success = makeFolder(mThumbnailPath);
-        CarLog.d(TAG, "success " + success + "; mThumbnailPath="  +mThumbnailPath);
     }
 
     private static boolean makeFolder(String folder) {

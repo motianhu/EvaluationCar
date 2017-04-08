@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,7 +18,7 @@ import com.smona.app.evaluationcar.ui.WebActivity;
 public class ActivityUtils {
 
     public static final int ACTION_GALLERY = 1;
-    public static final int ACTION_CAMERA = 1;
+    public static final int ACTION_CAMERA = 2;
 
     public static void jumpBannerDetail(Context context, BannerItem banner) {
         Intent intent = new Intent();
@@ -52,12 +53,13 @@ public class ActivityUtils {
     }
 
     //ImageId,CarBillId 来源于 EvaluationActivity
-    public static void jumpCameraActivity(Context context, CarImageBean bean, Class clazz) {
+    public static void jumpCameraActivity(Context contet, CarImageBean bean, Class clazz) {
         Intent intent = new Intent();
-        intent.setClass(context, clazz);
-        SPUtil.put(context, CacheContants.IMAGECLASS, bean.imageClass);
-        SPUtil.put(context, CacheContants.IMAGESEQNUM, bean.imageSeqNum);
-        context.startActivity(intent);
+        intent.setClass(contet, clazz);
+        SPUtil.put(contet, CacheContants.IMAGECLASS, bean.imageClass);
+        SPUtil.put(contet, CacheContants.IMAGESEQNUM, bean.imageSeqNum);
+        //activity.startActivityForResult(intent, ActivityUtils.ACTION_CAMERA);
+        contet.startActivity(intent);
     }
 
     public static void jumpOnlyActivity(Context context, Class clazz) {
