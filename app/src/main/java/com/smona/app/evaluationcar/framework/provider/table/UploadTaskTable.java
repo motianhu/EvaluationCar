@@ -11,6 +11,7 @@ public class UploadTaskTable extends BaseTable {
     public static final String IMAGECOUNT = "imageCount"; //
     public static final String UPLOADSTATUS = "uploadStatus"; //
     public static final String IMAGEUPLOADCOUNT = "imageUploadCount";  //
+    public static final String CREATETIME = "createtime";  //
 
     private static volatile UploadTaskTable mInstance = null;
 
@@ -37,6 +38,7 @@ public class UploadTaskTable extends BaseTable {
                 + CARBILLID + " TEXT, "
                 + IMAGECOUNT + " INTEGER, "
                 + IMAGEUPLOADCOUNT + " INTEGER, "
+                + CREATETIME + " TimeStamp NOT NULL DEFAULT CURRENT_TIMESTAMP, "
                 + UPLOADSTATUS + " INTEGER "
                 + ")";
     }

@@ -30,12 +30,14 @@ import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
@@ -341,9 +343,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
         }
         imageId = mCurCarImage.imageId =  mImageId;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
         boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
 
-        CarLog.d(TAG, "onTakeNextPicture success " + success + ", imageId=" + imageId+ ", mImageId: " + mImageId);
+        CarLog.d(TAG, "processPicData success " + success + ", imageId=" + imageId+ ", mImageId: " + mImageId);
 
         if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
             mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
@@ -353,6 +357,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (mCarBill == null) {
             mCarBill = new CarBillBean();
             mCarBill.imageId = imageId;
+            mCarBill.createTime = DateUtils.getCurrDate();
+            mCarBill.modifyTime = DateUtils.getCurrDate();
             success = DBDelegator.getInstance().insertCarBill(mCarBill);
             CarLog.d(TAG, "onTakeNextPicture success " + success + ", mCarBill=" + mCarBill);
         }
@@ -522,7 +528,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 mBitmapPath = DeviceStorageManager.getInstance().getThumbnailPath() +
                         File.separator + System.currentTimeMillis() + ".jpeg";
                 BitmapUtils.saveJPGE_After(CameraActivity.this, mBitmap, mBitmapPath, 100);
-                CarLog.d(TAG, "captrue img_path " + mBitmapPath);
+                CarLog.d(TAG, "captrue mBitmapPath " + mBitmapPath);
 
                 setShowPicture();
             }

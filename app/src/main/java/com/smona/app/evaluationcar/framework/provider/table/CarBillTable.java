@@ -16,6 +16,7 @@ public class CarBillTable extends BaseTable {
     public static final String THUMBUrl = "thumbUrl";
     public static final String APPLYALLOPINION = "applyAllOpinion";
     public static final String MARK = "mark";
+    public static final String LOCALSORT = "localSort";
     public static final String IMAGEID = "imageId";
 
     private static volatile CarBillTable sInstance = null;
@@ -41,14 +42,15 @@ public class CarBillTable extends BaseTable {
         return "CREATE TABLE " + TABLE_NAME + "("
                 + _ID + " INTEGER PRIMARY KEY, "
                 + CARBILLID + " TEXT , "
-                + CREATETIME + " TEXT, "
-                + MODIFYTIME + " TEXT, "
+                + CREATETIME + " TIMESTAMP NOT NULL default (datetime('now', 'localtime')), "
+                + MODIFYTIME + " TIMESTAMP NOT NULL default (datetime('now', 'localtime')), "
                 + BILLSTATUS + " INTEGER, "
                 + APPLYALLOPINION + " TEXT, "
                 + MARK + " TEXT, "
                 + THUMBUrl + " TEXT, "
                 + IMAGEID + " INTEGER, "
                 + EVALUATEPRICE + " DOUBLE, "
+                + LOCALSORT + " INTEGER, "
                 + PRESALEPRICE + " DOUBLE "
                 + ")";
     }

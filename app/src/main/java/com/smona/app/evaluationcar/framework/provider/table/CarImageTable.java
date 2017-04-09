@@ -44,8 +44,8 @@ public class CarImageTable extends BaseTable {
                 + IMAGECLASS + " TEXT, "
                 + IMAGEREMOTEURL + " TEXT, "
                 + IMAGELOCALURL + " TEXT,"
-                + CREATETIME + " TEXT,"
-                + UPDATETIEM + " TEXT "
+                + CREATETIME + " TIMESTAMP default (datetime('now', 'localtime')),"
+                + UPDATETIEM + " TIMESTAMP default (datetime('now', 'localtime')) "
                 + ")";
     }
 

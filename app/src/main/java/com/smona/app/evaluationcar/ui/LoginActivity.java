@@ -195,6 +195,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                             @Override
                             public void onFailed(String error) {
                                 CarLog.d(TAG, "onError ex: " + error);
+                                runUI(false);
                             }
                         });
                     }
