@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -182,6 +183,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void initViews() {
         mScrollView = (BaseScrollView) findViewById(R.id.baseScrollView);
+        mScrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        mScrollView.setFocusable(true);
+        mScrollView.setFocusableInTouchMode(true);
 
         //登记证
         mClassRegistrationTitle = findViewById(R.id.class_registration_layer);
@@ -243,13 +247,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         findViewById(R.id.rb_certificates).setOnClickListener(this);
         findViewById(R.id.rb_appended).setOnClickListener(this);
         findViewById(R.id.rb_editor).setOnClickListener(this);
+
         findViewById(R.id.rb_car_models).performClick();
 
         //保存及提交
         findViewById(R.id.btn_save).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (mCarBill != null) {
             mPrice.setText(mCarBill.preSalePrice + "");
             mNote.setText(mCarBill.mark);

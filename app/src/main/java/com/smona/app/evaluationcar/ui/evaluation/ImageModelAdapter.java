@@ -67,6 +67,7 @@ public class ImageModelAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final CarImageBean bean = mDatas.get(position);
+        ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
             convertView.setOnClickListener(new View.OnClickListener() {
@@ -76,35 +77,34 @@ public class ImageModelAdapter extends BaseAdapter {
                     ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
                 }
             });
+            viewHolder = new ViewHolder();
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
+            viewHolder.centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
+            viewHolder.centerText = (TextView) convertView.findViewById(R.id.tv_part_center);
+            viewHolder.leftText = (TextView) convertView.findViewById(R.id.tv_part_left);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
-        ImageView image = (ImageView) convertView.findViewById(R.id.image);
-        boolean hasPic = processImage(bean, image);
-
-        ImageView centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
-        ViewUtil.setViewVisible(centerImage, true);
-
-        TextView centerText = (TextView) convertView.findViewById(R.id.tv_part_center);
+        boolean hasPic = processImage(bean, viewHolder.image);
+        ViewUtil.setViewVisible(viewHolder.centerImage, true);
         String diplayName = TextUtils.isEmpty(bean.displayName) ? mContext.getString(R.string.add_picture) : bean.displayName;
-        centerText.setText(diplayName);
-        ViewUtil.setViewVisible(centerText, true);
-
-        TextView leftText = (TextView) convertView.findViewById(R.id.tv_part_left);
-        ViewUtil.setViewVisible(leftText, false);
+        viewHolder.centerText.setText(diplayName);
+        ViewUtil.setViewVisible(viewHolder.centerImage, true);
+        ViewUtil.setViewVisible(viewHolder.leftText, false);
 
         if (position == (mDatas.size() - 1)) {
-            centerImage.setImageResource(R.drawable.icon_add_photo);
+            viewHolder.centerImage.setImageResource(R.drawable.icon_add_photo);
         } else {
             if (hasPic) {
-                ViewUtil.setViewVisible(centerImage, false);
-                ViewUtil.setViewVisible(centerText, false);
-                ViewUtil.setViewVisible(leftText, true);
-                leftText.setText(diplayName);
+                ViewUtil.setViewVisible(viewHolder.centerImage, false);
+                ViewUtil.setViewVisible(viewHolder.centerText, false);
+                ViewUtil.setViewVisible(viewHolder.leftText, true);
+                viewHolder.leftText.setText(diplayName);
             } else {
-                centerImage.setImageResource(R.drawable.icon_camera);
+                viewHolder.centerImage.setImageResource(R.drawable.icon_camera);
             }
         }
-
-
         return convertView;
     }
 
@@ -121,10 +121,11 @@ public class ImageModelAdapter extends BaseAdapter {
             ImageLoaderProxy.loadImage(bean.imageRemoteUrl, image);
         } else if (!TextUtils.isEmpty(bean.imageLocalUrl)) {
             picUrl = "file://" + bean.imageLocalUrl;
-
         }
         if (!TextUtils.isEmpty(picUrl)) {
             ImageLoaderProxy.loadImage(picUrl, image);
+        } else {
+            image.setImageDrawable(null);
         }
 
         return !TextUtils.isEmpty(picUrl);
@@ -137,5 +138,12 @@ public class ImageModelAdapter extends BaseAdapter {
             }
         }
         return -1;
+    }
+
+    private final class ViewHolder {
+        ImageView image;
+        ImageView centerImage;
+        TextView centerText;
+        TextView leftText;
     }
 }

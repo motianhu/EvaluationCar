@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.framework.provider;
 
-import com.smona.app.evaluationcar.framework.request.Deletor;
-
 /**
  * Created by motianhu on 3/22/17.
  */
