@@ -63,7 +63,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = 3;
-            mRequestParams.status = "21,22,24,31,32,34,41,42,44,51,52,54";
+            mRequestParams.status = "21,22,24,31,32,34,41,42,44,51,52";
         }
     }
 
@@ -174,7 +174,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload LocalPager");
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
             mLoadingView.setVisibility(VISIBLE);
             mNoDataLayout.setVisibility(GONE);

@@ -14,8 +14,5 @@ public class CacheContants {
     public static final String IMAGECLASS = "imageClass";
     public static final String IMAGESEQNUM = "imageSeqNum";
 
-    public static final int TYPE_SAVE = 0;
-    public static final int TYPE_AUDITING = 1;
-    public static final int TYPE_NOTPASS = 2;
-    public static final int TYPE_PASS = 3;
+    public static final String CARBILLBEAN = "bean_carBill";
 }

@@ -105,7 +105,7 @@ public class LocalLayer extends PullToRefreshLayout {
 
         @Override
         public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload LocalPager");
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
             DataDelegator.getInstance().queryLocalCarbill(mCurPage);
             mLoadingView.setVisibility(VISIBLE);
             mNoDataLayout.setVisibility(GONE);

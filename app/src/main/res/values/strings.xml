@@ -95,4 +95,12 @@
     <string name="network_irregular">网络迷路了,点击重新加载</string>
     <string name="no_network">没有网络,请检查网络</string>
     <string name="loading">加载中</string>
+
+
+    <!--状态-->
+    <string name="status_cabillid">评估单号:</string>
+    <string name="status_bill_status">订单状态:</string>
+    <string name="status_time">时&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;间:</string>
+    <string name="status_mark">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注:</string>
+    <string name="status_apply_all_opinion">全部意见:</string>
 </resources>

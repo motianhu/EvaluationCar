@@ -63,7 +63,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = 10;
-            mRequestParams.status = "80";
+            mRequestParams.status = "54,80";
         }
     }
 
@@ -75,20 +75,6 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
 
     private void post() {
         DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
-    }
-
-    private Object createTest(int count) {
-        ArrayList<CarBillBean> carBillList = new ArrayList<CarBillBean>();
-        for (int i = 0; i < count; i++) {
-            CarBillBean carbill = new CarBillBean();
-            carbill.carBillId = "NS201612021100" + i;
-            carbill.createTime = "2016-12-01 12:11:00";
-            carbill.modifyTime = "2016-12-21 15:11:00";
-            carbill.status = 1;
-            carbill.thumbUrl = "http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg";
-            carBillList.add(carbill);
-        }
-        return carBillList;
     }
 
     @Override
@@ -188,7 +174,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload LocalPager");
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
             mLoadingView.setVisibility(VISIBLE);
             mNoDataLayout.setVisibility(GONE);

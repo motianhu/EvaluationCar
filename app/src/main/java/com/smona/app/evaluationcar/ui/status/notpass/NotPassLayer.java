@@ -174,7 +174,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload LocalPager");
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
             mLoadingView.setVisibility(VISIBLE);
             mNoDataLayout.setVisibility(GONE);

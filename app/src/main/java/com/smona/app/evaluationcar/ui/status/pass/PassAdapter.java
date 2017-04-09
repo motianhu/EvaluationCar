@@ -86,7 +86,7 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
-            ActivityUtils.jumpStatus(mContext, info.carBillId, StatusActivity.class);
+            ActivityUtils.jumpStatus(mContext, info, StatusActivity.class);
         }
     }
 

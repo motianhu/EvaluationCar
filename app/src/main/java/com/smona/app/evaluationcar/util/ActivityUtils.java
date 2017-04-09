@@ -38,9 +38,9 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpStatus(Context context, String carBillId,Class clazz) {
+    public static void jumpStatus(Context context, CarBillBean bean,Class clazz) {
         Intent intent = new Intent();
-        SPUtil.put(context, CacheContants.CARBILLID, carBillId);
+        intent.putExtra(CacheContants.CARBILLBEAN, bean);
         intent.setClass(context, clazz);
         context.startActivity(intent);
     }
