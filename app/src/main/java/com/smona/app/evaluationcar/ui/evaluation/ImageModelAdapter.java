@@ -31,9 +31,11 @@ public class ImageModelAdapter extends BaseAdapter {
     private List<CarImageBean> mDatas = new ArrayList<CarImageBean>();
     private Context mContext;
     private int mImageWidth;
+    private int mType;
 
-    public ImageModelAdapter(Context context) {
+    public ImageModelAdapter(Context context, int type) {
         mContext = context;
+        mType = type;
         int i = ScreenInfo.getInstance().getScreenWidth();
         int j = context.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         mImageWidth = ((i - j * 3) / 2);
@@ -131,13 +133,13 @@ public class ImageModelAdapter extends BaseAdapter {
         return !TextUtils.isEmpty(picUrl);
     }
 
-    public int checkPhoto() {
-        for (int i = 0; i < mDatas.size(); i++) {
+    public CarImageBean checkPhoto() {
+        for (int i = 0; i < mDatas.size() - 1; i++) {
             if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl)) {
-                return i;
+                return mDatas.get(i);
             }
         }
-        return -1;
+        return null;
     }
 
     private final class ViewHolder {

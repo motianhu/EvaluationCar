@@ -47,6 +47,7 @@
     <string name="evalution_pre">预评估</string>
     <string name="evalution_start">评估</string>
     <string name="evalution_gonggao">公告</string>
+    <string name="evalution_submit_tips">%1$s的%2$s没有拍照，请拍照</string>
 
 
     <string name="class_registration">登记证</string>

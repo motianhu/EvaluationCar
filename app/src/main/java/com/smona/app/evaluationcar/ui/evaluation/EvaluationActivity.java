@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +32,7 @@ import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
 
@@ -138,7 +138,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initStatus() {
-        if(!statusIsNone()) {
+        if (!statusIsNone()) {
             return;
         }
         mCurStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
@@ -146,7 +146,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initCarImage() {
-        if(mImageId > 0) {
+        if (mImageId > 0) {
             return;
         }
         mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, 0);
@@ -190,49 +190,49 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         //登记证
         mClassRegistrationTitle = findViewById(R.id.class_registration_layer);
         mClassRegistrationGrid = (LimitGridView) findViewById(R.id.class_registration);
-        mClassRegistrationAdapter = new ImageModelAdapter(this);
+        mClassRegistrationAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_Registration);
         mClassRegistrationGrid.setAdapter(mClassRegistrationAdapter);
 
         //行驶证
         mClassDrivingLicenseTitle = findViewById(R.id.class_driving_license_layer);
         mClassDrivingLicenseGrid = (LimitGridView) findViewById(R.id.class_driving_license);
-        mClassDrivingLicenseAdapter = new ImageModelAdapter(this);
+        mClassDrivingLicenseAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_DrivingLicense);
         mClassDrivingLicenseGrid.setAdapter(mClassDrivingLicenseAdapter);
 
         //车辆铭牌
         mClassVehicleNameplateTitle = findViewById(R.id.class_vehicle_nameplate_layer);
         mClassVehicleNameplateGrid = (LimitGridView) findViewById(R.id.class_vehicle_nameplate);
-        mClassVehicleNameplateAdapter = new ImageModelAdapter(this);
+        mClassVehicleNameplateAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_VehicleNameplate);
         mClassVehicleNameplateGrid.setAdapter(mClassVehicleNameplateAdapter);
 
         //车身外观
         mClassCarBodyTitle = findViewById(R.id.class_car_body_layer);
         mClassCarBodyGrid = (LimitGridView) findViewById(R.id.class_car_body);
-        mClassCarBodyAdapter = new ImageModelAdapter(this);
+        mClassCarBodyAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_CarBody);
         mClassCarBodyGrid.setAdapter(mClassCarBodyAdapter);
 
         //车骨架
         mClassCarFrameTitle = findViewById(R.id.class_car_frame_layer);
         mClassCarFrameGrid = (LimitGridView) findViewById(R.id.class_car_frame);
-        mClassCarFrameAdapter = new ImageModelAdapter(this);
+        mClassCarFrameAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_CarFrame);
         mClassCarFrameGrid.setAdapter(mClassCarFrameAdapter);
 
         //车辆内饰
         mClassVehicleInteriorTitle = findViewById(R.id.class_vehicle_interior_layer);
         mClassVehicleInteriorGrid = (LimitGridView) findViewById(R.id.class_vehicle_interior);
-        mClassVehicleInteriorAdapter = new ImageModelAdapter(this);
+        mClassVehicleInteriorAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_VehicleInterior);
         mClassVehicleInteriorGrid.setAdapter(mClassVehicleInteriorAdapter);
 
         //差异补充
         mClassDifferenceSupplementTitle = findViewById(R.id.class_difference_supplement_layer);
         mClassDifferenceSupplementGrid = (LimitGridView) findViewById(R.id.class_difference_supplement);
-        mClassDifferenceSupplementAdapter = new ImageModelAdapter(this);
+        mClassDifferenceSupplementAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_DifferenceSupplement);
         mClassDifferenceSupplementGrid.setAdapter(mClassDifferenceSupplementAdapter);
 
         //原车保险
         mClassOriginalCarInsurancetTitle = findViewById(R.id.class_original_car_insurancet_layer);
         mClassOriginalCarInsurancetGrid = (LimitGridView) findViewById(R.id.class_original_car_insurancet);
-        mClassOriginalCarInsurancetAdapter = new ImageModelAdapter(this);
+        mClassOriginalCarInsurancetAdapter = new ImageModelAdapter(this, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
         mClassOriginalCarInsurancetGrid.setAdapter(mClassOriginalCarInsurancetAdapter);
 
 
@@ -386,10 +386,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void submitNone() {
 
-//        if (isTakePhoto()) {
-//            return;
-//        }
-//
+        if (!isTakePhoto()) {
+            return;
+        }
+
         String preScalePrice = mPrice.getText().toString();
         if (TextUtils.isEmpty(preScalePrice)) {
             return;
@@ -410,30 +410,33 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private boolean isTakePhoto() {
-        return checkPhoto(mClassRegistrationAdapter) ||
-                checkPhoto(mClassDrivingLicenseAdapter) ||
-                checkPhoto(mClassVehicleNameplateAdapter) ||
-                checkPhoto(mClassCarBodyAdapter) ||
-                checkPhoto(mClassCarFrameAdapter) ||
-                checkPhoto(mClassVehicleInteriorAdapter) ||
-                checkPhoto(mClassDifferenceSupplementAdapter) ||
-                checkPhoto(mClassOriginalCarInsurancetAdapter);
+        return checkPhoto(mClassRegistrationAdapter) &&
+                checkPhoto(mClassDrivingLicenseAdapter) &&
+                checkPhoto(mClassVehicleNameplateAdapter) &&
+                checkPhoto(mClassCarBodyAdapter) &&
+                checkPhoto(mClassCarFrameAdapter) &&
+                checkPhoto(mClassVehicleInteriorAdapter);
     }
 
     private boolean checkPhoto(ImageModelAdapter adapter) {
-        int index;
-        index = adapter.checkPhoto();
-        if (index > -1) {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT);
-            return true;
+        CarImageBean bean = adapter.checkPhoto();
+        if (bean != null) {
+            String tip = String.format(getString(R.string.evalution_submit_tips), bean.imageClass, bean.displayName);
+            Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void startTask(TaskBackgroundEvent event) {
         CarLog.d(TAG, "TaskBackgroundEvent " + event);
         CarBillBean bean = (CarBillBean) event.getContent();
+
+        CarBillBean localBean = DBDelegator.getInstance().queryLocalCarbill(bean.imageId);
+        bean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
+        bean.modifyTime = TextUtils.isEmpty(localBean.modifyTime) ? DateUtils.getCurrDate() : localBean.modifyTime;
+        DBDelegator.getInstance().updateCarBill(bean);
 
         CarBillTask carBillTask = new CarBillTask();
         carBillTask.mCarBill = bean;
@@ -443,7 +446,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         ActionTask preTask = carBillTask;
 
-        for(CarImageBean image: images) {
+        for (CarImageBean image : images) {
             ImageTask task = new ImageTask();
             task.carImageBean = image;
             task.userName = mUser.mId;
