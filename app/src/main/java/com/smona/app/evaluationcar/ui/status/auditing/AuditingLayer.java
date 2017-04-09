@@ -130,7 +130,6 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess: " + content);
             ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {

@@ -102,17 +102,18 @@ public class DBDelegator {
     //CarBill
     public CarBillBean queryCarBill(String carBillId) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarImageTable.CARBILLID + "=" + carBillId;
-        List<CarBillBean> list = dao.getResult(select, null, null);
+        String where = CarImageTable.CARBILLID + "=?";
+        String[] whereArgs = new String[]{carBillId};
+        List<CarBillBean> list = dao.getResult(where, whereArgs, null);
         if (list.size() > 0) {
             return list.get(0);
         }
         return null;
     }
 
-    public List<CarBillBean> queryLocalCarbill() {
+    public List<CarBillBean> queryLocalCarbill(int curPage, int pageSize) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + ">0";
+        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + " >0" ;//+ " limit " + (curPage - 1) * pageSize + "," + pageSize;
         List<CarBillBean> list = dao.getResult(select, null, null);
         return list;
     }

@@ -106,8 +106,8 @@ public class DataDelegator {
         HttpDelegator.getInstance().submitCarBill(userName, carBill, callback);
     }
 
-    public List<CarBillBean>  queryLocalCarbill(int curPage) {
-        List<CarBillBean> dataList = DBDelegator.getInstance().queryLocalCarbill();
+    public List<CarBillBean>  queryLocalCarbill(int curPage, int pageSize) {
+        List<CarBillBean> dataList = DBDelegator.getInstance().queryLocalCarbill(curPage, pageSize);
         return dataList;
     }
 
