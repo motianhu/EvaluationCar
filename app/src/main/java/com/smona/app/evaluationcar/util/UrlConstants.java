@@ -31,34 +31,38 @@ public class UrlConstants {
     public static final int QUERY_NEWS_DETAIL = 11;
 
     static {
-        INTEFACES.put(CHECK_USER, "external/app/checkUser.html");
-        INTEFACES.put(CREATE_CARBILLID, "external/carBill/getCarBillIdNextVal.html");
-        INTEFACES.put(UPLOAD_IMAGE, "external/app/uploadAppImage.html");
-        INTEFACES.put(SUBMIT_CARBILL, "external/app/finishCreateAppCarBill.html");
-        INTEFACES.put(QUERY_CARBILL_LIST, "external/app/getAppBillList.html");
-        INTEFACES.put(QUERY_CARBILL_IMAGE, "external/app/getAppBillImageList.html");
-        INTEFACES.put(QUERY_CARBILL_COUNT, "external/app/getApplyCountInfo.html");
-        INTEFACES.put(QUERY_OPERATION_DESC, "external/source/operation-desc.json");
-        INTEFACES.put(QUERY_NEWS_LATEST, "external/news/latestList.html");
-        INTEFACES.put(QUERY_NEWS_MORE, "external/news/moreList.html");
-        INTEFACES.put(QUERY_NEWS_DETAIL, "external/news/newsDetail.html");
+        INTEFACES.put(CHECK_USER, "/external/app/checkUser.html");
+        INTEFACES.put(CREATE_CARBILLID, "/external/carBill/getCarBillIdNextVal.html");
+        INTEFACES.put(UPLOAD_IMAGE, "/external/app/uploadAppImage.html");
+        INTEFACES.put(SUBMIT_CARBILL, "/external/app/finishCreateAppCarBill.html");
+        INTEFACES.put(QUERY_CARBILL_LIST, "/external/app/getAppBillList.html");
+        INTEFACES.put(QUERY_CARBILL_IMAGE, "/external/app/getAppBillImageList.html");
+        INTEFACES.put(QUERY_CARBILL_COUNT, "/external/app/getApplyCountInfo.html");
+        INTEFACES.put(QUERY_OPERATION_DESC, "/external/source/operation-desc.json");
+        INTEFACES.put(QUERY_NEWS_LATEST, "/external/news/latestList.html");
+        INTEFACES.put(QUERY_NEWS_MORE, "/external/news/moreList.html");
+        INTEFACES.put(QUERY_NEWS_DETAIL, "/external/news/newsDetail.html");
     }
 
 
     public static String getInterface(int type) {
+        String domain = getProjectInterface();
+        return getInterface(domain, type);
+    }
+
+    public static String getProjectInterface() {
         String domain;
         if (IS_TEST_ENV) {
             domain = DOMAIN_TEST;
         } else {
             domain = DOMAIN;
         }
-        return getInterface(domain, type);
+        return domain + ":" + PORT + "/" + PROJECT;
     }
 
     private static String getInterface(String domain, int type) {
-        String url = domain + ":" + PORT + "/" + PROJECT + "/";
         String interfaceUrl = INTEFACES.get(type);
-        return url + interfaceUrl;
+        return domain + interfaceUrl;
     }
 
 }

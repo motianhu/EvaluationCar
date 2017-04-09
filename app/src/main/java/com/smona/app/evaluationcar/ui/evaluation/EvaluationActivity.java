@@ -18,7 +18,7 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.event.RefreshImageEvent;
 import com.smona.app.evaluationcar.data.event.background.QueryCarImageBackgroundEvent;
 import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
-import com.smona.app.evaluationcar.data.model.ResNormal;
+import com.smona.app.evaluationcar.data.model.ResCarImagePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -119,6 +119,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         initViews();
         initImageList();
         updateImageViews();
+        requestImageForCarBillId();
         EventProxy.register(this);
     }
 
@@ -154,7 +155,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void initCarBill() {
-        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, null);
+        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, "");
         CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
 
         if (!TextUtils.isEmpty(mCarBillId)) {
@@ -166,12 +167,21 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mAddPicStr = getString(R.string.add_picture);
     }
 
-    private void queryCarbillImages() {
-        HttpDelegator.getInstance().getCarbillImages(mUser.mId, "NS201703240001", new ResponseCallback<String>() {
+    private void requestImageForCarBillId() {
+        if (TextUtils.isEmpty(mCarBillId)) {
+            return;
+        }
+        HttpDelegator.getInstance().getCarbillImages(mUser.mId, mCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                CarLog.d(this, "queryCarbillImages onSuccess Object: " + result);
-                ResNormal resp = JsonParse.parseJson(result, ResNormal.class);
+                ResCarImagePage resp = JsonParse.parseJson(result, ResCarImagePage.class);
+                if (resp.total > 0) {
+                    for (CarImageBean bean : resp.data) {
+                        DBDelegator.getInstance().updateCarImage(bean);
+                        CarLog.d(TAG, "requestImageForCarBillId bean: " + bean);
+                    }
+                    notifyReloadCarImage();
+                }
             }
 
             @Override

@@ -15,7 +15,7 @@ public class ImageTask extends ActionTask {
     public CarImageBean carImageBean;
 
     public void startTask() {
-        if (carImageBean == null || !TextUtils.isEmpty(carImageBean.imageRemoteUrl)) {
+        if (carImageBean == null || !TextUtils.isEmpty(carImageBean.imagePath)) {
             nextTask(mCarBillId);
         } else {
             carImageBean.carBillId = mCarBillId;
@@ -26,7 +26,8 @@ public class ImageTask extends ActionTask {
                     CarLog.d(TAG, "onSuccess mCarBillId=" + mCarBillId + ", result: " + content + "; carImageBean: " + carImageBean);
                     ResNormal resModel = JsonParse.parseJson(content, ResNormal.class);
                     if (resModel.success) {
-                        carImageBean.imageRemoteUrl = resModel.object;
+                        carImageBean.imagePath = resModel.object;
+                        carImageBean.imageThumbPath = resModel.object;
                         DBDelegator.getInstance().updateCarImage(carImageBean);
                     }
                     nextTask(mCarBillId);

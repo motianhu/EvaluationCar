@@ -11,7 +11,8 @@ public class CarImageTable extends BaseTable {
     public static final String CARBILLID = "carBillId"; //对应单据ID
     public static final String IMAGESEQNUM = "imageSeqNum"; //汽车图片当前序号/wechat
     public static final String IMAGECLASS = "imageClass"; //图片分类/wechat
-    public static final String IMAGEREMOTEURL = "imageRemoteUrl";  //服务器地址,有值则代表已上传成功
+    public static final String IMAGEREMOTEURL = "imagePath";  //服务器地址,有值则代表已上传成功
+    public static final String IMAGEREMOTETHUMBNAILURL = "imageThumbPath";  //服务器地址,有值则代表已上传成功
     public static final String IMAGELOCALURL = "iamgeLocalUrl"; //本机地址
     public static final String CREATETIME = "createTime"; //
     public static final String UPDATETIEM = "updateTime"; //图片分类
@@ -43,6 +44,7 @@ public class CarImageTable extends BaseTable {
                 + IMAGESEQNUM + " INTEGER, "
                 + IMAGECLASS + " TEXT, "
                 + IMAGEREMOTEURL + " TEXT, "
+                + IMAGEREMOTETHUMBNAILURL + " TEXT, "
                 + IMAGELOCALURL + " TEXT,"
                 + CREATETIME + " TIMESTAMP default (datetime('now', 'localtime')),"
                 + UPDATETIEM + " TIMESTAMP default (datetime('now', 'localtime')) "

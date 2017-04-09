@@ -15,6 +15,7 @@ import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ScreenInfo;
+import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -118,9 +119,8 @@ public class ImageModelAdapter extends BaseAdapter {
 
         String picUrl = null;
 
-        if (!TextUtils.isEmpty(bean.imageRemoteUrl)) {
-            picUrl = bean.imageRemoteUrl;
-            ImageLoaderProxy.loadImage(bean.imageRemoteUrl, image);
+        if (!TextUtils.isEmpty(bean.imageThumbPath)) {
+            picUrl = UrlConstants.getProjectInterface() + bean.imageThumbPath;
         } else if (!TextUtils.isEmpty(bean.imageLocalUrl)) {
             picUrl = "file://" + bean.imageLocalUrl;
         }
