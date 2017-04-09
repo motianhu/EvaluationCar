@@ -30,11 +30,12 @@ public class NetworkTipUtil {
         imageView.setOnClickListener(l);
     }
 
-    public static void showNoDataTip(View parent, String tipText) {
+    public static void showNoDataTip(View parent, String tipText, View.OnClickListener l) {
         TextView tip = (TextView) parent.findViewById(R.id.no_content_text);
         ImageView imageView = (ImageView) parent.findViewById(R.id.no_content_image);
         tip.setText(tipText);
         imageView.setImageResource(R.drawable.tip_no_data);
+        imageView.setOnClickListener(l);
     }
 
     public static boolean hasNetworkInfo(Context context) {

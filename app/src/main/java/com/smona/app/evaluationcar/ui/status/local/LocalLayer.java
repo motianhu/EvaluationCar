@@ -13,7 +13,10 @@ import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
+import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.StatusUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,7 +32,7 @@ public class LocalLayer extends PullToRefreshLayout {
     private View mFootView;
     private boolean mPullRequest = false;
 
-    private int mCurPage;
+    private int mCurPage = 1;
 
     public LocalLayer(Context context) {
         super(context);
@@ -46,6 +49,10 @@ public class LocalLayer extends PullToRefreshLayout {
     @Override
     public void addObserver() {
         EventProxy.register(this);
+        post();
+    }
+
+    private void post() {
         EventProxy.post(new LocalStatusBackgroundEvent());
     }
 
@@ -82,7 +89,7 @@ public class LocalLayer extends PullToRefreshLayout {
             mNoDataLayout.setVisibility(VISIBLE);
             mFootView.setVisibility(INVISIBLE);
             mHeadView.setVisibility(INVISIBLE);
-            NetworkTipUtil.showNetworkTip(LocalLayer.this, mReloadClickListener);
+            NetworkTipUtil.showNoDataTip(LocalLayer.this, getContext().getString(R.string.no_data_tips), mReloadClickListener);
         } else {
             mNoDataLayout.setVisibility(GONE);
             mFootView.setVisibility(VISIBLE);
@@ -105,10 +112,7 @@ public class LocalLayer extends PullToRefreshLayout {
 
         @Override
         public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
-            DataDelegator.getInstance().queryLocalCarbill(mCurPage);
-            mLoadingView.setVisibility(VISIBLE);
-            mNoDataLayout.setVisibility(GONE);
+            ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
         }
     };
 

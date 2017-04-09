@@ -99,7 +99,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
                 break;
             case R.id.evalution:
-                ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, null, 0, EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
                 break;
             case R.id.queryVin:
                 ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
