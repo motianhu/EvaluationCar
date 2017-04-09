@@ -43,10 +43,12 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
 
     public NotPassLayer(Context context) {
         super(context);
+        initRequestParams();
     }
 
     public NotPassLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initRequestParams();
     }
 
     public NotPassLayer(Context context, AttributeSet attrs, int defStyle) {
@@ -72,23 +74,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
     }
 
     private void post() {
-        NotPassStatusEvent event = new NotPassStatusEvent();
-        event.setContent(createTest(25));
-        EventProxy.post(event);
-    }
-
-    private Object createTest(int count) {
-        ArrayList<CarBillBean> carBillList = new ArrayList<CarBillBean>();
-        for (int i = 0; i < count; i++) {
-            CarBillBean carbill = new CarBillBean();
-            carbill.carBillId = "NS201612021100" + i;
-            carbill.createTime = "2016-12-01 12:11:00";
-            carbill.modifyTime = "2016-12-21 15:11:00";
-            carbill.status = 1;
-            carbill.thumbUrl = "http://113.107.245.39:90/attachs/theme/wallpaper/hd/2016/07/995g7j41eegpfngasjs9vsi7m5/312x277/SD-G-RW-062108.jpg";
-            carBillList.add(carbill);
-        }
-        return carBillList;
+        DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
     }
 
     @Override
@@ -146,7 +132,8 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
         public void onSuccess(String content) {
             CarLog.d(TAG, "onSuccess: " + content);
             ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
-            if (pages.total == 0) {
+            int total = mRequestParams.curPage * mRequestParams.pageSize;
+            if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
                 saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
@@ -211,6 +198,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
             postDelayed(mRunnable, 1000);
         } else {
             mPullRequest = true;
+            mRequestParams.curPage += 1;
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
         }
     }

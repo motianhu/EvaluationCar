@@ -43,10 +43,12 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
 
     public PassLayer(Context context) {
         super(context);
+        initRequestParams();
     }
 
     public PassLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initRequestParams();
     }
 
     public PassLayer(Context context, AttributeSet attrs, int defStyle) {
@@ -72,9 +74,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     }
 
     private void post() {
-        PassStatusEvent event = new PassStatusEvent();
-        event.setContent(createTest(7));
-        EventProxy.post(event);
+        DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
     }
 
     private Object createTest(int count) {
@@ -146,7 +146,8 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
         public void onSuccess(String content) {
             CarLog.d(TAG, "onSuccess: " + content);
             ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
-            if (pages.total == 0) {
+            int total = mRequestParams.curPage * mRequestParams.pageSize;
+            if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
                 saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
@@ -211,6 +212,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
             postDelayed(mRunnable, 1000);
         } else {
             mPullRequest = true;
+            mRequestParams.curPage += 1;
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
         }
     }

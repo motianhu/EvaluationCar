@@ -45,6 +45,7 @@ public class UserItem {
         try {
             mId = AESUtils.decrypt(masterPassword, userName);
             mPwd = AESUtils.decrypt(masterPassword, password);
+            return true;
         }catch(Exception e) {
             e.printStackTrace();
             CarLog.d(TAG, "readSelf e=" + e);
