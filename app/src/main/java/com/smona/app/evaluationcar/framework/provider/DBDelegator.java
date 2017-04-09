@@ -60,7 +60,7 @@ public class DBDelegator {
         return list;
     }
 
-    public List<CarImageBean> queryImages(String carBillId, String imageClass) {
+    public List<CarImageBean> queryImages(String imageClass, String carBillId) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         String select = CarImageTable.CARBILLID + "=? and " + CarImageTable.IMAGECLASS + "=? ";
         List<CarImageBean> list = dao.getResult(select, new String[]{carBillId, imageClass}, CarImageTable.IMAGESEQNUM + " asc ");

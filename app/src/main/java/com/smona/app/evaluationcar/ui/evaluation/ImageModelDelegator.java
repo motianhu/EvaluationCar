@@ -98,8 +98,27 @@ public class ImageModelDelegator {
     public List<CarImageBean> getSaveModel(int type, int imageId) {
         String imageClass = getImageClassForType(type);
 
-        List<CarImageBean> saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
+        List<CarImageBean> saveList =null;
+        if(imageId > 0 ) {
+            saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
+        } else {
+            saveList = new ArrayList<>();
+        }
         List<CarImageBean> defaultList = getDefaultModel(type);
+        composeModel(saveList, defaultList);
+        return defaultList;
+    }
+
+    public List<CarImageBean> getHttpModel(String carBillId, String imageClass) {
+        List<CarImageBean> saveList =DBDelegator.getInstance().queryImages(imageClass, carBillId);
+        int type = getTypeForImageClass(imageClass);
+
+        List<CarImageBean> defaultList = getDefaultModel(type);
+        composeModel(saveList, defaultList);
+        return defaultList;
+    }
+
+    private void composeModel(List<CarImageBean> saveList, List<CarImageBean> defaultList) {
         boolean isMatch;
         int size;
         CarImageBean removeCar;
@@ -121,7 +140,6 @@ public class ImageModelDelegator {
                 defaultList.add(saveCar);
             }
         }
-        return defaultList;
     }
 
     public String getImageClassForType(int type) {

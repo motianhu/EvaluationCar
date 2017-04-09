@@ -344,7 +344,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private void initImageData(List<CarImageBean> data, int type) {
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsReturn()) {
-            List<CarImageBean> tempData = DBDelegator.getInstance().queryImages(mCarBillId, imageClass);
+            List<CarImageBean> tempData = ImageModelDelegator.getInstance().getHttpModel(mCarBillId, imageClass);
 
             CarImageBean bean = new CarImageBean();
             bean.displayName = mAddPicStr;
