@@ -99,6 +99,7 @@ public class ImageDao extends BaseDao<CarImageBean> {
         item.imageLocalUrl = getString(cursor, CarImageTable.IMAGELOCALURL);
         item.imagePath = getString(cursor, CarImageTable.IMAGEREMOTEURL);
         item.imageThumbPath = getString(cursor, CarImageTable.IMAGEREMOTETHUMBNAILURL);
+        item.imageUpdate = getInt(cursor, CarImageTable.IMAGEUPDATE);
         item.createTime = getString(cursor, CarImageTable.CREATETIME);
         item.updateTime = getString(cursor, CarImageTable.UPDATETIEM);
         return item;
@@ -114,6 +115,7 @@ public class ImageDao extends BaseDao<CarImageBean> {
         values.put(CarImageTable.IMAGELOCALURL, item.imageLocalUrl);
         values.put(CarImageTable.IMAGEREMOTEURL, item.imagePath);
         values.put(CarImageTable.IMAGEREMOTETHUMBNAILURL, item.imageThumbPath);
+        values.put(CarImageTable.IMAGEUPDATE, item.imageUpdate);
         values.put(CarImageTable.CREATETIME, item.createTime);
         values.put(CarImageTable.UPDATETIEM, item.updateTime);
         return values;

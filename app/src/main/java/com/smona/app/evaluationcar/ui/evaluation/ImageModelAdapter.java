@@ -135,7 +135,7 @@ public class ImageModelAdapter extends BaseAdapter {
 
     public CarImageBean checkPhoto() {
         for (int i = 0; i < mDatas.size() - 1; i++) {
-            if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl)) {
+            if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl) && TextUtils.isEmpty(mDatas.get(i).imagePath)) {
                 return mDatas.get(i);
             }
         }

@@ -178,7 +178,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                 if (resp.total > 0) {
                     for (CarImageBean bean : resp.data) {
                         DBDelegator.getInstance().updateCarImage(bean);
-                        CarLog.d(TAG, "requestImageForCarBillId bean: " + bean);
                     }
                     notifyReloadCarImage();
                 }
@@ -391,7 +390,26 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void submitReturn() {
+        if (!isTakePhoto()) {
+            return;
+        }
 
+        String preScalePrice = mPrice.getText().toString();
+        if (TextUtils.isEmpty(preScalePrice)) {
+            return;
+        }
+
+        String mark = mNote.getText().toString();
+        CarBillBean bean = new CarBillBean();
+        bean.carBillId = mCarBillId;
+        bean.preSalePrice = Double.valueOf(preScalePrice);
+        bean.mark = mark;
+        bean.imageId = mImageId;
+
+        //send background post
+        TaskBackgroundEvent event = new TaskBackgroundEvent();
+        event.setContent(bean);
+        EventProxy.post(event);
     }
 
     private void submitNone() {
@@ -442,17 +460,40 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     public void startTask(TaskBackgroundEvent event) {
         CarLog.d(TAG, "TaskBackgroundEvent " + event);
         CarBillBean bean = (CarBillBean) event.getContent();
+        if (statusIsReturn()) {
+            startTarkForReturn(bean);
+        } else {
+            startTarkForSave(bean);
+        }
+    }
 
+    public void startTarkForReturn(CarBillBean bean) {
+        CarBillBean carBillBean = DBDelegator.getInstance().queryCarBill(mCarBillId);
+        carBillBean.preSalePrice = bean.preSalePrice;
+        carBillBean.mark = bean.mark;
+        DBDelegator.getInstance().updateCarBill(carBillBean);
+
+        List<CarImageBean> images = DBDelegator.getInstance().queryUpdateImages(mCarBillId);
+
+        generateTask(carBillBean, images);
+    }
+
+    public void startTarkForSave(CarBillBean bean) {
         CarBillBean localBean = DBDelegator.getInstance().queryLocalCarbill(bean.imageId);
         bean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
         bean.modifyTime = TextUtils.isEmpty(localBean.modifyTime) ? DateUtils.getCurrDate() : localBean.modifyTime;
         DBDelegator.getInstance().updateCarBill(bean);
 
+        List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
+
+        generateTask(bean, images);
+    }
+
+    private void generateTask(CarBillBean bean, List<CarImageBean> images) {
         CarBillTask carBillTask = new CarBillTask();
         carBillTask.mCarBill = bean;
         carBillTask.userName = mUser.mId;
-
-        List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
+        carBillTask.mCarBillId = mCarBillId;
 
         ActionTask preTask = carBillTask;
 

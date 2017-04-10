@@ -98,12 +98,11 @@ public class ImageModelDelegator {
     public List<CarImageBean> getSaveModel(int type, int imageId) {
         String imageClass = getImageClassForType(type);
 
-        List<CarImageBean> saveList =null;
+        List<CarImageBean> saveList = new ArrayList<>();
         if(imageId > 0 ) {
             saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
-        } else {
-            saveList = new ArrayList<>();
         }
+
         List<CarImageBean> defaultList = getDefaultModel(type);
         composeModel(saveList, defaultList);
         return defaultList;

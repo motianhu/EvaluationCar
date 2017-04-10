@@ -58,7 +58,6 @@ public class ActivityUtils {
         intent.setClass(contet, clazz);
         SPUtil.put(contet, CacheContants.IMAGECLASS, bean.imageClass);
         SPUtil.put(contet, CacheContants.IMAGESEQNUM, bean.imageSeqNum);
-        //activity.startActivityForResult(intent, ActivityUtils.ACTION_CAMERA);
         contet.startActivity(intent);
     }
 

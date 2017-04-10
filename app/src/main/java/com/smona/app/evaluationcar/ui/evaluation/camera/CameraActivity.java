@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -31,13 +30,12 @@ import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.DateUtils;
-import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
@@ -81,6 +79,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private String mBitmapPath;
     private Bitmap mBitmap;
 
+    private int mStatus;
     private int mImageId;
     private String mImageClass;
     private int mImageSeqNum;
@@ -103,36 +102,31 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void initDatas() {
         initStatus();
-        initCarBill();
-        initCarImage();
         initOther();
     }
 
     private void initStatus() {
-        int billStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
-        CarLog.d(TAG, "initStatus billStatus=" + billStatus);
-    }
-
-    private void initCarImage() {
+        mStatus = (int) SPUtil.get(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
         mImageId = (int) SPUtil.get(this, CacheContants.IMAGEID, 0);
         mImageClass = (String) SPUtil.get(this, CacheContants.IMAGECLASS, "");
         mImageSeqNum = (int) SPUtil.get(this, CacheContants.IMAGESEQNUM, 0);
+        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, "");
 
-        CarLog.d(TAG, "initCarImage imageId=" + mImageId + ", imageClass=" + mImageClass + ", imageSeqNum=" + mImageSeqNum);
-        mCurCarImage = DBDelegator.getInstance().queryImages(mImageId, mImageClass, mImageSeqNum);
-
-        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
-        mCarImageList = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
-
-        CarLog.d(TAG, "initCarImage carImageList=" + mCarImageList.size());
-
-        if (mImageId != 0 && mCarBill == null) {
-            mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
-            CarLog.d(TAG, "initCarImage queryLocalCarbill carBill=" + mCarBill);
+        CarLog.d(TAG, "initStatus billStatus=" + mStatus + ", imageId=" + mImageId + ", imageClass=" + mImageClass + ", imageSeqNum=" + mImageSeqNum + ", mCarBillId=" + mCarBillId);
+        if (statusIsNone()) {
+            initCarImageForNone();
+        } else if (statusIsSave()) {
+            initCarImageForSave();
+        } else {
+            initCarImageForReturn();
         }
 
+        CarLog.d(TAG, "initStatus mCarImageList=" + mCarImageList.size());
+        CarLog.d(TAG, "initStatus mCarBill=" + mCarBill);
+        CarLog.d(TAG, "initStatus mCurCarImage=" + mCurCarImage);
+
+        //save(maybe) or carbill
         if (mCurCarImage != null) {
-            CarLog.d(TAG, "initCarImage 1 carImage=" + mCurCarImage);
             initDisplayName();
             return;
         }
@@ -145,9 +139,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             }
         }
 
-        CarLog.d(TAG, "initCarImage 2 carImage=" + mCurCarImage);
+        CarLog.d(TAG, "imageList carImage=" + mCurCarImage);
         //还是null，肯定是添加照片
-        if(mCurCarImage == null) {
+        if (mCurCarImage == null) {
             mCurCarImage = new CarImageBean();
             mCurCarImage.imageSeqNum = mImageSeqNum;
             mCurCarImage.imageClass = mImageClass;
@@ -157,6 +151,34 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
+    private boolean statusIsNone() {
+        return mStatus == StatusUtils.BILL_STATUS_NONE;
+    }
+
+    private boolean statusIsSave() {
+        return mStatus == StatusUtils.BILL_STATUS_SAVE;
+    }
+
+    private void initCarImageForNone() {
+        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
+        mCarImageList = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+    }
+
+    private void initCarImageForSave() {
+        mCurCarImage = DBDelegator.getInstance().queryImageClassForImageId(mImageId, mImageClass, mImageSeqNum);
+        mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
+
+        int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
+        mCarImageList = ImageModelDelegator.getInstance().getSaveModel(type, mImageId);
+    }
+
+    private void initCarImageForReturn() {
+        mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
+        mCurCarImage = DBDelegator.getInstance().queryImageClassForCarBillId(mCarBillId, mImageClass, mImageSeqNum);
+        mCarImageList = ImageModelDelegator.getInstance().getHttpModel(mCarBillId, mImageClass);
+    }
+
+
     private void initDisplayName() {
         int type = ImageModelDelegator.getInstance().getTypeForImageClass(mImageClass);
         String disPlayName = ImageModelDelegator.getInstance().getDisplayName(type, mCurCarImage.imageSeqNum);
@@ -164,15 +186,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             disPlayName = getString(R.string.add_picture);
         }
         mCurCarImage.displayName = disPlayName;
-    }
-
-    private void initCarBill() {
-        mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, null);
-        CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
-
-        if (!TextUtils.isEmpty(mCarBillId)) {
-            mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
-        }
     }
 
     private void initOther() {
@@ -206,7 +219,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
-        mDescription.setText(mCurCarImage.displayName );
+        mDescription.setText(mCurCarImage.displayName);
         mNote = (TextView) findViewById(R.id.note);
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         refreshNext();
@@ -222,7 +235,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void refreshNext() {
         boolean isAddPic = mCurCarImage.imageSeqNum >= mCarImageList.size();
-        mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size()+1:mCarImageList.size()));
+        mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size() + 1 : mCarImageList.size()));
     }
 
     private void initAnimate() {
@@ -313,9 +326,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (getResources().getString(R.string.cancel).equals(text)) {
             finish();
         } else if (getResources().getString(R.string.complete).equals(text)) {
-
-            processPicData();
-
+            processImageData();
             finish();
         } else {
             onTakeNextPicture();
@@ -323,45 +334,82 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void onTakeNextPicture() {
+        changePreview();
+        showTakePhotoPicture(false);
+        processImageData();
+        refreshNext();
+    }
+
+    private void changePreview() {
         if (mPreViewRunning) {
             mCamera.stopPreview();
         } else {
             mCamera.startPreview();
         }
-
-        showTakePhotoPicture(false);
-        processPicData();
-        refreshNext();
     }
 
-    private void processPicData() {
+    private void processImageData() {
         mCurCarImage.imageLocalUrl = mBitmapPath;
-        int imageId = 0;
-        if (mImageId <= 0) {
-            mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
-            SPUtil.put(this, CacheContants.IMAGEID, mImageId);
-            SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
+        if(statusIsNone()) {
+            processImageDataInNone();
+        } else if(statusIsSave()) {
+            processImageDataInSave();
+        } else {
+            processImageDataInReturn();
         }
-        imageId = mCurCarImage.imageId =  mImageId;
-        mCurCarImage.createTime = DateUtils.getCurrDate();
-        mCurCarImage.updateTime = DateUtils.getCurrDate();
-        boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
+        changeNextCarImage();
+    }
 
-        CarLog.d(TAG, "processPicData success " + success + ", imageId=" + imageId+ ", mImageId: " + mImageId);
-
+    private void changeNextCarImage() {
         if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
             mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
             initDisplayName();
         }
+    }
 
-        if (mCarBill == null) {
-            mCarBill = new CarBillBean();
-            mCarBill.imageId = imageId;
-            mCarBill.createTime = DateUtils.getCurrDate();
-            mCarBill.modifyTime = DateUtils.getCurrDate();
-            success = DBDelegator.getInstance().insertCarBill(mCarBill);
-            CarLog.d(TAG, "onTakeNextPicture success " + success + ", mCarBill=" + mCarBill);
+    private void processImageDataInNone() {
+        if(mImageId <= 0 ) {
+            mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
+            SPUtil.put(this, CacheContants.IMAGEID, mImageId);
+            SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
         }
+
+        mCurCarImage.imageId = mImageId;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+
+        DBDelegator.getInstance().insertCarImage(mCurCarImage);
+
+        mCarBill = new CarBillBean();
+        mCarBill.imageId = mImageId;
+        mCarBill.createTime = DateUtils.getCurrDate();
+        mCarBill.modifyTime = DateUtils.getCurrDate();
+        boolean success = DBDelegator.getInstance().insertCarBill(mCarBill);
+        CarLog.d(TAG, "processImageDataInNone success " + success + ", mCarBill=" + mCarBill);
+    }
+
+    private void processImageDataInSave() {
+        mCurCarImage.imageId = mImageId;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+
+        boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
+        CarLog.d(TAG, "processImageDataInSave success " + success + ", mCurCarImage=" + mCurCarImage);
+
+        mCarBill.imageId = mImageId;
+        mCarBill.createTime = DateUtils.getCurrDate();
+        mCarBill.modifyTime = DateUtils.getCurrDate();
+        DBDelegator.getInstance().updateCarBill(mCarBill);
+        CarLog.d(TAG, "processImageDataInSave mCarBill=" + mCarBill);
+    }
+
+    private void processImageDataInReturn() {
+        mCurCarImage.imageId = mImageId;
+        mCurCarImage.imageUpdate = StatusUtils.IMAGE_UPDATE;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+        DBDelegator.getInstance().updateCarImage(mCurCarImage);
+        CarLog.d(TAG, "processImageDataInReturn mCurCarImage=" + mCurCarImage);
     }
 
 
@@ -420,11 +468,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
         } else {
-            if (mPreViewRunning) {
-                mCamera.stopPreview();
-            } else {
-                mCamera.startPreview();
-            }
+            changePreview();
             mBitmapPath = null;
             showTakePhotoPicture(false);
         }

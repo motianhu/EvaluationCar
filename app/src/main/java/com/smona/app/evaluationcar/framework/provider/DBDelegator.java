@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.framework.provider.dao.DaoFactory;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.StatusUtils;
 
 import java.util.List;
 
@@ -52,6 +53,13 @@ public class DBDelegator {
         return list;
     }
 
+    public List<CarImageBean> queryUpdateImages(String carBillId) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        String select = CarImageTable.CARBILLID + " =? and " + CarImageTable.IMAGEUPDATE + " =? ";
+        List<CarImageBean> list = dao.getResult(select, new String[]{carBillId, StatusUtils.IMAGE_UPDATE + ""}, CarImageTable.IMAGESEQNUM + " asc ");
+        return list;
+    }
+
 
     public List<CarImageBean> queryImages(String imageClass, int imageId) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
@@ -67,10 +75,20 @@ public class DBDelegator {
         return list;
     }
 
-    public CarImageBean queryImages(int imageId, String imageClass, int imageSeqNum) {
+    public CarImageBean queryImageClassForImageId(int imageId, String imageClass, int imageSeqNum) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
         String select = CarImageTable.IMAGEID + "=? and " + CarImageTable.IMAGECLASS + "=? and " + CarImageTable.IMAGESEQNUM + "=?";
         List<CarImageBean> list = dao.getResult(select, new String[]{imageId + "", imageClass, imageSeqNum + ""}, CarImageTable.IMAGESEQNUM + " asc ");
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public CarImageBean queryImageClassForCarBillId(String carBillId, String imageClass, int imageSeqNum) {
+        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
+        String select = CarImageTable.CARBILLID + "=? and " + CarImageTable.IMAGECLASS + "=? and " + CarImageTable.IMAGESEQNUM + "=?";
+        List<CarImageBean> list = dao.getResult(select, new String[]{carBillId, imageClass, imageSeqNum + ""}, CarImageTable.IMAGESEQNUM + " asc ");
         if (list.size() > 0) {
             return list.get(0);
         }
@@ -113,7 +131,7 @@ public class DBDelegator {
 
     public List<CarBillBean> queryLocalCarbill(int curPage, int pageSize) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + " >0" ;//+ " limit " + (curPage - 1) * pageSize + "," + pageSize;
+        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + " >0";//+ " limit " + (curPage - 1) * pageSize + "," + pageSize;
         List<CarBillBean> list = dao.getResult(select, null, null);
         return list;
     }

@@ -4,6 +4,7 @@ import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.CarLog;
 
 /**
@@ -23,6 +24,7 @@ public class CompleteTask extends ActionTask {
                     @Override
                     public void onSuccess(String result) {
                         CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
+                        DBDelegator.getInstance().updateCarBill(carBill);
                         nextTask(mCarBillId);
                     }
 

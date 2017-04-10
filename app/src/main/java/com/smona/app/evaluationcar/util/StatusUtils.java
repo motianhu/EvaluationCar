@@ -13,6 +13,8 @@ public class StatusUtils {
     public static final int BILL_STATUS_UPLOADING = 2;
     public static final int BILL_STATUS_RETURN = 3;
 
+    public static final int IMAGE_DEFAULT = 0;
+    public static final int IMAGE_UPDATE = 1;
 
 
     public static final int MESSAGE_REQUEST_ERROR = 0x1;
