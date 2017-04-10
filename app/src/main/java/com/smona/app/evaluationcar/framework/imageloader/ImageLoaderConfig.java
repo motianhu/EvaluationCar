@@ -34,6 +34,42 @@ public class ImageLoaderConfig {
         return options;
     }
 
+    public static DisplayImageOptions getWaterOptions() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                // 设置图片在下载期间显示的图片
+                .showImageOnLoading(R.drawable.mask_left_45)
+                // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnLoading(R.drawable.mask_left_45)
+                // 设置图片加载/解码过程中错误时候显示的图片
+                .showImageOnLoading(R.drawable.mask_left_45)
+                // 设置下载的图片是否缓存在内存中
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                // 设置下载的图片是否缓存在SD卡中
+                .considerExifParams(true)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .bitmapConfig(Bitmap.Config.ARGB_8888).build();
+        return options;
+    }
+
+    public static DisplayImageOptions getImageDesc() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                // 设置图片在下载期间显示的图片
+                .showImageOnLoading(R.drawable.icon_no_car)
+                // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnLoading(R.drawable.icon_no_car)
+                // 设置图片加载/解码过程中错误时候显示的图片
+                .showImageOnLoading(R.drawable.icon_no_car)
+                // 设置下载的图片是否缓存在内存中
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                // 设置下载的图片是否缓存在SD卡中
+                .considerExifParams(true)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .bitmapConfig(Bitmap.Config.ARGB_8888).build();
+        return options;
+    }
+
     /**
      * 异步图片加载ImageLoader的初始化操作，在Application中调用此方法
      *

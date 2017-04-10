@@ -38,6 +38,14 @@ public class ImageLoaderManager {
         ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getBannerOptions(), mImageListenser);
     }
 
+    public void loadWaterImage(String uri, ImageView imageView) {
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getWaterOptions(), mImageListenser);
+    }
+
+    public void loadImageDesc(String uri, ImageView imageView) {
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getImageDesc(), mImageListenser);
+    }
+
     ImageLoadingListener mImageListenser = new ImageLoadingListener() {
 
         @Override
