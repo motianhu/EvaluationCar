@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
+import com.smona.app.evaluationcar.ui.status.RequestFace;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -31,6 +33,9 @@ public class LocalListView extends PullableListView implements
     private boolean mListPullLoading = false;
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
+    private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+    private RequestFace mRequestFace;
+
     public LocalListView(Context context) {
         super(context);
         init(context);
@@ -47,6 +52,10 @@ public class LocalListView extends PullableListView implements
         init(context);
     }
 
+    public void setOnRequestFace(RequestFace face) {
+        mRequestFace = face;
+    }
+
     private void init(Context context) {
         mListAdapter = new LocalAdapter(context);
         setOnScrollListener(this);
@@ -54,13 +63,24 @@ public class LocalListView extends PullableListView implements
         mFootView = ViewUtil.inflater(context, R.layout.refresh_foot_load);
     }
 
-    public void update(List<CarBillBean> dataList) {
-        mListAdapter.update(dataList);
+    public void update(List<CarBillBean> deltaList, int tag) {
+        mListAdapter.update(deltaList);
         mListPullLoading = false;
-        View progress = mFootView.findViewById(R.id.loading_icon);
-        TextView tip = (TextView) mFootView.findViewById(R.id.loadstate_tv);
-        progress.setVisibility(View.GONE);
-        tip.setText(R.string.pullup_to_load);
+        mTag = tag;
+
+        if (mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
+            removeFooterView(mFootView);
+        } else if (mTag == StatusUtils.MESSAGE_REQUEST_ERROR) {
+            View progress = mFootView.findViewById(R.id.loading_icon);
+            TextView tip = (TextView) mFootView.findViewById(R.id.loadstate_tv);
+            progress.setVisibility(View.GONE);
+            tip.setText(R.string.load_fail);
+        } else {
+            View progress = mFootView.findViewById(R.id.loading_icon);
+            TextView tip = (TextView) mFootView.findViewById(R.id.loadstate_tv);
+            progress.setVisibility(View.GONE);
+            tip.setText(R.string.pullup_to_load);
+        }
     }
 
     public int getItemCount() {
@@ -117,7 +137,7 @@ public class LocalListView extends PullableListView implements
                     tip.setText(R.string.loading);
                     progress.setVisibility(View.VISIBLE);
                     mListPullLoading = true;
-                    //Delegator.getInstance().requestLiveWallPaper();
+                    mRequestFace.requestNext();
                 }
             }
         }
@@ -139,6 +159,6 @@ public class LocalListView extends PullableListView implements
 
     @Override
     protected boolean isPageLast() {
-        return false;
+        return mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
     }
 }

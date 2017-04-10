@@ -14,6 +14,7 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
+import com.smona.app.evaluationcar.ui.status.RequestFace;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -23,7 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class LocalLayer extends PullToRefreshLayout {
+public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
     private static final String TAG = LocalLayer.class.getSimpleName();
     private LocalListView mLocalListView = null;
     private View mNoDataLayout = null;
@@ -79,19 +80,27 @@ public class LocalLayer extends PullToRefreshLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(LocalStatusEvent event) {
-        List<CarBillBean> dataList = (List<CarBillBean>) event.getContent();
-        if (dataList != null) {
-            CarLog.d(TAG, "LocalStatusEvent " + dataList.size());
-            mLocalListView.update(dataList);
+        List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
+        if (deltaList != null) {
+            mLocalListView.update(deltaList, mTag);
             if (mPullRequest) {
-                loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                if (mTag == StatusUtils.MESSAGE_REQUEST_ERROR) {
+                    postLoadmoreFail();
+                } else {
+                    loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                }
             }
+        } else if (deltaList == null && mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
+            mLocalListView.update(deltaList, mTag);
+            loadmoreFinish(PullToRefreshLayout.SUCCEED);
         } else {
             if (mPullRequest) {
                 loadmoreFinish(PullToRefreshLayout.FAIL);
             }
         }
+
         mLoadingView.setVisibility(GONE);
+        CarLog.d(TAG, "update " + mLocalListView.getItemCount());
         if (mLocalListView.getItemCount() == 0) {
             mNoDataLayout.setVisibility(VISIBLE);
             mFootView.setVisibility(INVISIBLE);
@@ -109,6 +118,7 @@ public class LocalLayer extends PullToRefreshLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mLocalListView = (LocalListView) findViewById(R.id.local_listview);
+        mLocalListView.setOnRequestFace(this);
         mNoDataLayout = findViewById(R.id.no_content_layout);
         mLoadingView = findViewById(R.id.loading);
         mHeadView = findViewById(R.id.head_view);
@@ -134,6 +144,7 @@ public class LocalLayer extends PullToRefreshLayout {
         requestNext();
     }
 
+    @Override
     public void requestNext() {
         if (mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
             postDelayed(mRunnable, 1000);

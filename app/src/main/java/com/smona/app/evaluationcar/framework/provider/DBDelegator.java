@@ -138,7 +138,8 @@ public class DBDelegator {
     public List<CarBillBean> queryLocalCarbill(int curPage, int pageSize) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + " >0";//+ " limit " + (curPage - 1) * pageSize + "," + pageSize;
-        List<CarBillBean> list = dao.getResult(select, null, null);
+        String order = CarBillTable.CARBILLID + " desc limit " + (curPage - 1) * pageSize + "," + pageSize;
+        List<CarBillBean> list = dao.getResult(select, null, order);
         return list;
     }
 
