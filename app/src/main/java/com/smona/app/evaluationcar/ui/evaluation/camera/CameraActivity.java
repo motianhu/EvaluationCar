@@ -23,6 +23,9 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
@@ -67,6 +70,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private TextView mNote;
     private TextView mNumPhoto;
 
+    private ImageView mImageDesc;
+    private ImageView mWaterImage;
+
     private TextView mGallery;
     private TextView mCancel;
 
@@ -88,7 +94,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private String mCarBillId;
     private CarBillBean mCarBill;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,6 +222,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCancel = (TextView) findViewById(R.id.cancel);
         mCancel.setOnClickListener(this);
 
+        //水印和说明
+        mImageDesc = (ImageView)findViewById(R.id.iv_take_photo_model);
+        mWaterImage = (ImageView)findViewById(R.id.structure);
+
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
         mDescription.setText(mCurCarImage.displayName);
@@ -236,6 +245,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void refreshNext() {
         boolean isAddPic = mCurCarImage.imageSeqNum >= mCarImageList.size();
         mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size() + 1 : mCarImageList.size()));
+        ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mImageClass, mImageSeqNum);
+        if(imageMeta != null) {
+            CarLog.d(TAG, "imageMeta: " + imageMeta);
+            ImageLoaderProxy.loadImage(imageMeta.imageDesc, mImageDesc);
+            ImageLoaderProxy.loadImage(imageMeta.waterMark, mWaterImage);
+        }
     }
 
     private void initAnimate() {
@@ -278,6 +293,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     @Override
     public void onClick(View v) {
+        closeAnimal();
         switch (v.getId()) {
             case R.id.img_camera:
                 onCamera();

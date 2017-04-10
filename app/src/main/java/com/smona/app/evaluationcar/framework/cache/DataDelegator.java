@@ -8,6 +8,7 @@ import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -143,5 +144,9 @@ public class DataDelegator {
         } else {
             HttpDelegator.getInstance().requestNotice(callback);
         }
+    }
+
+    public ImageMetaBean requestImageMeta(String imageClass, int imageSeqNum) {
+        return DBDelegator.getInstance().queryImageMeta(imageClass,imageSeqNum);
     }
 }

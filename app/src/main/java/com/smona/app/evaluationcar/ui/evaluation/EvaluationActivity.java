@@ -399,6 +399,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
 
+        postEvent(preScalePrice);
+    }
+
+    private void postEvent(String preScalePrice) {
         String mark = mNote.getText().toString();
         CarBillBean bean = new CarBillBean();
         bean.carBillId = mCarBillId;
@@ -410,10 +414,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         TaskBackgroundEvent event = new TaskBackgroundEvent();
         event.setContent(bean);
         EventProxy.post(event);
+
+        Toast.makeText(this, R.string.evaluation_submit_tips, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void submitNone() {
-
         if (!isTakePhoto()) {
             return;
         }
@@ -423,18 +429,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
 
-
-        String mark = mNote.getText().toString();
-        CarBillBean bean = new CarBillBean();
-        bean.carBillId = mCarBillId;
-        bean.preSalePrice = Double.valueOf(preScalePrice);
-        bean.mark = mark;
-        bean.imageId = mImageId;
-
-        //send background post
-        TaskBackgroundEvent event = new TaskBackgroundEvent();
-        event.setContent(bean);
-        EventProxy.post(event);
+        postEvent(preScalePrice);
     }
 
     private boolean isTakePhoto() {

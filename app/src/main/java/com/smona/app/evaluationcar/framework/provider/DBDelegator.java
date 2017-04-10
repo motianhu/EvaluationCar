@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.framework.provider.dao.BaseDao;
 import com.smona.app.evaluationcar.framework.provider.dao.DaoFactory;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
+import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 
@@ -111,10 +112,15 @@ public class DBDelegator {
     }
 
     //ImageMeta
-    public List<ImageMetaBean> queryImageMeta() {
+    public ImageMetaBean queryImageMeta(String imageClass, int imageSeqNum) {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
-        List<ImageMetaBean> list = dao.getResult(null, null, null);
-        return list;
+        String where = ImageMetaTable.IMAGECLASS + "=? and " + ImageMetaTable.IMAGESEQNUM + "=?";
+        String[] whereArgs = new String[]{imageClass, imageSeqNum + ""};
+        List<ImageMetaBean> list = dao.getResult(where, whereArgs, CarImageTable.IMAGESEQNUM + " asc ");
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     //CarBill

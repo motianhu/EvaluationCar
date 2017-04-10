@@ -104,4 +104,6 @@
     <string name="status_time">时&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;间:</string>
     <string name="status_mark">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注:</string>
     <string name="status_apply_all_opinion">全部意见:</string>
+
+    <string name="evaluation_submit_tips">正在后台上传,稍后请到审核中查看！</string>
 </resources>
