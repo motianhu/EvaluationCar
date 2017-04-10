@@ -95,4 +95,7 @@ public class NotPassAdapter extends BaseAdapter implements View.OnClickListener 
         mScrollState = state;
     }
 
+    public void clear() {
+        mDataList.clear();
+    }
 }

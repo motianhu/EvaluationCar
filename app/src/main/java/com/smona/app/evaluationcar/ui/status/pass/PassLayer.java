@@ -80,6 +80,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void deleteObserver() {
         EventProxy.unregister(this);
+        mPassListView.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

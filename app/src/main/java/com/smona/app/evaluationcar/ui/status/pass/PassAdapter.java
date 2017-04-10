@@ -93,4 +93,8 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
     protected void setScrollState(int state) {
         mScrollState = state;
     }
+
+    public void clear() {
+        mDataList.clear();
+    }
 }

@@ -80,6 +80,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void deleteObserver() {
         EventProxy.unregister(this);
+        mNotPassListView.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

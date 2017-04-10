@@ -62,6 +62,7 @@ public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
     @Override
     public void deleteObserver() {
         EventProxy.unregister(this);
+        mLocalListView.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

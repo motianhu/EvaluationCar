@@ -161,4 +161,8 @@ public class LocalListView extends PullableListView implements
     protected boolean isPageLast() {
         return mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
     }
+
+    public void clear() {
+        mListAdapter.clear();
+    }
 }

@@ -80,6 +80,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void deleteObserver() {
         EventProxy.unregister(this);
+        mAuditingListView.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
