@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.data.item;
 
-import android.os.Parcel;
-
 import com.smona.app.evaluationcar.data.bean.BaseBean;
 
 /**

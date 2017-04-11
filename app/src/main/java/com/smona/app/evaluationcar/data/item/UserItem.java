@@ -2,17 +2,11 @@ package com.smona.app.evaluationcar.data.item;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.smona.app.evaluationcar.util.AESUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.SPUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-import org.xutils.x;
 
 public class UserItem {
     private static final String TAG = UserItem.class.getSimpleName();

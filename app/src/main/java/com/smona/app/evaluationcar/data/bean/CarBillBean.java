@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.data.bean;
 
-import android.os.Parcel;
-
 /**
  * Created by motianhu on 2/28/17.
  */

@@ -171,7 +171,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         if (TextUtils.isEmpty(mCarBillId)) {
             return;
         }
-        HttpDelegator.getInstance().getCarbillImages(mUser.mId, mCarBillId, new ResponseCallback<String>() {
+        HttpDelegator.getInstance().getCarbillImages(mUserBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 ResCarImagePage resp = JsonParse.parseJson(result, ResCarImagePage.class);
@@ -485,9 +485,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void generateTask(CarBillBean bean, List<CarImageBean> images) {
+        String userName = mUserBean.userLoginName;
         CarBillTask carBillTask = new CarBillTask();
         carBillTask.mCarBill = bean;
-        carBillTask.userName = mUser.mId;
+        carBillTask.userName = userName;
         carBillTask.mCarBillId = mCarBillId;
 
         ActionTask preTask = carBillTask;
@@ -495,7 +496,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         for (CarImageBean image : images) {
             ImageTask task = new ImageTask();
             task.carImageBean = image;
-            task.userName = mUser.mId;
+            task.userName = userName;
             preTask.mNextTask = task;
 
             preTask = task;
@@ -503,7 +504,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         CompleteTask comleteTask = new CompleteTask();
         comleteTask.carBill = bean;
-        comleteTask.userName = mUser.mId;
+        comleteTask.userName = userName;
 
         preTask.mNextTask = comleteTask;
 

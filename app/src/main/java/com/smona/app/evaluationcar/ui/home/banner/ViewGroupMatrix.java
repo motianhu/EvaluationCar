@@ -1,10 +1,11 @@
 package com.smona.app.evaluationcar.ui.home.banner;
 
-import com.smona.app.evaluationcar.ui.home.banner.ViewGroupPager.PageTranformationInfo;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.view.View;
+
+import com.smona.app.evaluationcar.ui.home.banner.ViewGroupPager.PageTranformationInfo;
 
 public class ViewGroupMatrix {
 

@@ -9,8 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 
-import com.smona.app.evaluationcar.framework.provider.table.BaseTable;
 import com.smona.app.evaluationcar.framework.provider.DBConstants;
+import com.smona.app.evaluationcar.framework.provider.table.BaseTable;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;

@@ -25,7 +25,6 @@ import com.smona.app.evaluationcar.util.StatusUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotPassLayer extends PullToRefreshLayout implements RequestFace {

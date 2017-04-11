@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.framework.imageloader;
 
-import java.io.File;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -11,7 +9,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.smona.app.evaluationcar.framework.EvaluationApp;
-import com.smona.app.evaluationcar.util.CarLog;
 
 public class ImageLoaderManager {
     private static final String TAG = "ImageLoaderManager";

@@ -1,8 +1,5 @@
 package com.smona.app.evaluationcar.data.bean;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**

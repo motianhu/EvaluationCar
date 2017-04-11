@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
-import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
+import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -20,7 +20,7 @@ import com.smona.app.evaluationcar.util.CarLog;
  * Created by Moth on 2016/12/15.
  */
 
-public class HomeActivity extends PermissionActivity implements RadioGroup.OnCheckedChangeListener {
+public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedChangeListener {
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     //UI Objects

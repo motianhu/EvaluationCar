@@ -1,6 +1,5 @@
 package com.smona.app.evaluationcar.framework.upload;
 
-import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;

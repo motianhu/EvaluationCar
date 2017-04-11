@@ -181,7 +181,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                         closeLoginingDlg();// 关闭对话框
                         gotoStartup();
                     } else {
-                        UserParam param = new UserParam();
+                        final UserParam param = new UserParam();
                         param.userName = mIdString;
                         param.password = mPwdString;
                         DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
@@ -189,6 +189,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                             public void onSuccess(String result) {
                                 ResUser normal = JsonParse.parseJson(result, ResUser.class);
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
+                                DataDelegator.getInstance().saveNewCacheByUrl(param, result);
                                 runUI(normal.success);
                             }
 

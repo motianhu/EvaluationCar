@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.framework.upload;
 import android.os.Handler;
 
 import com.smona.app.evaluationcar.util.CarLog;
+
 import java.util.LinkedList;
 
 public final class UploadTaskExecutor {

@@ -7,9 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.data.bean.UserInfoBean;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -26,6 +28,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
     //头像
     private ImageView mImage;
     private TextView mName;
+    private UserInfoBean mUserBean;
 
     private UserItem mUser;
 
@@ -35,9 +38,10 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
 
     @Override
     public void init() {
+        mUserBean = ((UserActivity)getContext()).getUserBean();
         mImage = (ImageView) findViewById(R.id.mine_image);
         mName = (TextView) findViewById(R.id.mine_name);
-        mName.setText(R.string.app_name);
+        mName.setText(mUserBean.userChineseName);
 
         findViewById(R.id.setting_info).setOnClickListener(this);
         findViewById(R.id.setting_update).setOnClickListener(this);

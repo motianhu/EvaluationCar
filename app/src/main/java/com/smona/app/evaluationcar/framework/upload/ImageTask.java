@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.framework.upload;
 
-import android.text.TextUtils;
-
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNormal;

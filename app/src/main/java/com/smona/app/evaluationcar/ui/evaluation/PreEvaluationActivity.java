@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
+import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.common.group.GroupListView;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -13,7 +13,7 @@ import com.smona.app.evaluationcar.util.ViewUtil;
  * Created by Moth on 2017/3/6.
  */
 //http://blog.csdn.net/u010335298/article/details/51178179
-public class PreEvaluationActivity extends BaseActivity {
+public class PreEvaluationActivity extends UserActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

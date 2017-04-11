@@ -1,8 +1,6 @@
 
 package com.smona.app.evaluationcar.ui.common.refresh;
 
-import java.util.Observable;
-
 import android.content.Context;
 import android.util.AttributeSet;
 

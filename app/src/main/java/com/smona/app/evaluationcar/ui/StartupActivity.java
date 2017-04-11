@@ -6,13 +6,13 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
+import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 
 /**
  * Created by Moth on 2017/3/29.
  */
 
-public class StartupActivity extends PermissionActivity {
+public class StartupActivity extends UserActivity {
 
     private Handler mMainHandler = new Handler() {
         public void handleMessage(Message msg) {

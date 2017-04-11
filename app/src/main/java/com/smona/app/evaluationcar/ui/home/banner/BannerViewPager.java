@@ -1,8 +1,5 @@
 package com.smona.app.evaluationcar.ui.home.banner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PointF;
@@ -17,6 +14,9 @@ import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class BannerViewPager extends BaseViewPager {

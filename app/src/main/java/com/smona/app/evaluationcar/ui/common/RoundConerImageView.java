@@ -12,7 +12,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-
 import android.widget.ImageView;
 
 import com.smona.app.evaluationcar.R;

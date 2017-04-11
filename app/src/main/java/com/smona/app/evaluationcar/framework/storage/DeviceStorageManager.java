@@ -3,7 +3,6 @@ package com.smona.app.evaluationcar.framework.storage;
 import android.content.Context;
 import android.os.Environment;
 
-import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.FileUtils;
 import com.smona.app.evaluationcar.util.FolderContants;
 

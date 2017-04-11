@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.util.ViewUtil;
  * Created by motianhu on 3/11/17.
  */
 
-public abstract class HeaderActivity extends BaseActivity {
+public abstract class HeaderActivity extends UserActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

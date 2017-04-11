@@ -9,6 +9,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.util.UrlConstants;
+
 import org.xutils.x;
 
 import java.io.File;

@@ -28,6 +28,7 @@ import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
+import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
@@ -42,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
+public class CameraActivity extends UserActivity implements SurfaceHolder.Callback, View.OnClickListener {
     private static final String TAG = CameraActivity.class.getSimpleName();
 
     private Camera mCamera;

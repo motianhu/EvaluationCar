@@ -12,6 +12,7 @@ import com.smona.app.evaluationcar.framework.push.PushProxy;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ScreenInfo;
+
 import java.lang.ref.WeakReference;
 
 /**
