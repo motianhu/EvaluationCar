@@ -9,4 +9,8 @@ public class ImageMetaBean {
     public String imageClass; //图片类型
     public String imageDesc; //拍照描述
     public String waterMark; //水印名称
+
+    public String toString() {
+        return "imageClass=" + imageClass + ",imageSeqNum=" + imageSeqNum + ",imageDesc=" + imageDesc + ", waterMark=" + waterMark;
+    }
 }

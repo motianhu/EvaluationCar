@@ -35,6 +35,7 @@ import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
@@ -223,8 +224,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCancel.setOnClickListener(this);
 
         //水印和说明
-        mImageDesc = (ImageView)findViewById(R.id.iv_take_photo_model);
-        mWaterImage = (ImageView)findViewById(R.id.structure);
+        mImageDesc = (ImageView) findViewById(R.id.iv_take_photo_model);
+        mWaterImage = (ImageView) findViewById(R.id.structure);
 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
@@ -245,11 +246,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void refreshNext() {
         boolean isAddPic = mCurCarImage.imageSeqNum >= mCarImageList.size();
         mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size() + 1 : mCarImageList.size()));
-        ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mImageClass, mImageSeqNum);
-        if(imageMeta != null) {
-            CarLog.d(TAG, "imageMeta: " + imageMeta);
-            ImageLoaderProxy.loadImageDesc(imageMeta.imageDesc, mImageDesc);
-            ImageLoaderProxy.loadWaterImage(imageMeta.waterMark, mWaterImage);
+        CarLog.d(TAG, "refreshNext mCurCarImage: " + mCurCarImage);
+        ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mImageClass, mCurCarImage.imageSeqNum);
+        if (imageMeta != null) {
+            CarLog.d(TAG, "refreshNext imageMeta: " + imageMeta);
+            ImageLoaderProxy.loadImageDesc(UrlConstants.getProjectInterface() + imageMeta.imageDesc, mImageDesc);
+            ImageLoaderProxy.loadWaterImage(UrlConstants.getProjectInterface() + imageMeta.waterMark, mWaterImage);
         }
     }
 
@@ -293,32 +295,40 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     @Override
     public void onClick(View v) {
-        closeAnimal();
-        switch (v.getId()) {
-            case R.id.img_camera:
-                onCamera();
-                break;
-            //退出相机界面 释放资源
-            case R.id.camera_close:
-                finish();
-                break;
-            //闪光灯
-            case R.id.flash_light:
-                onFlashLight();
-                break;
-            case R.id.gallery:
-                onGallery();
-                break;
-            case R.id.cancel:
-                onCancel();
-                break;
-            case R.id.lin_explain_btn:
-                onAnimationExplain();
-                break;
-            case R.id.rel_explain:
-                closeAnimal();
-                break;
+        int id = v.getId();
+        if (id == R.id.lin_explain_btn) {
+            onAnimationExplain();
+        } else {
+            if(closeAnimal()) {
+                return;
+            }
+            switch (id) {
+                case R.id.img_camera:
+                    onCamera();
+                    break;
+                //退出相机界面 释放资源
+                case R.id.camera_close:
+                    finish();
+                    break;
+                //闪光灯
+                case R.id.flash_light:
+                    onFlashLight();
+                    break;
+                case R.id.gallery:
+                    onGallery();
+                    break;
+                case R.id.cancel:
+                    onCancel();
+                    break;
+                case R.id.lin_explain_btn:
+                    onAnimationExplain();
+                    break;
+                case R.id.rel_explain:
+                    closeAnimal();
+                    break;
+            }
         }
+
     }
 
     private void onAnimationExplain() {
@@ -330,11 +340,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mExplainView.startAnimation(this.mExpandAnimation);
     }
 
-    private void closeAnimal() {
+    private boolean closeAnimal() {
         if (mExplainView.getVisibility() != View.VISIBLE)
-            return;
+            return false;
         this.mExplainView.setVisibility(View.GONE);
         this.mExplainView.startAnimation(this.mCollapseAnimation);
+        return true;
     }
 
     private void onCancel() {
@@ -366,9 +377,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void processImageData() {
         mCurCarImage.imageLocalUrl = mBitmapPath;
-        if(statusIsNone()) {
+        if (statusIsNone()) {
             processImageDataInNone();
-        } else if(statusIsSave()) {
+        } else if (statusIsSave()) {
             processImageDataInSave();
         } else {
             processImageDataInReturn();
@@ -380,11 +391,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if ((mCurCarImage.imageSeqNum + 1) < mCarImageList.size()) {
             mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
             initDisplayName();
+            mDescription.setText(mCurCarImage.displayName);
         }
     }
 
     private void processImageDataInNone() {
-        if(mImageId <= 0 ) {
+        if (mImageId <= 0) {
             mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
             SPUtil.put(this, CacheContants.IMAGEID, mImageId);
             SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
