@@ -60,6 +60,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
             notifyUICount(resCountPage);
         }
     };
+
     private ResponseCallback<String> mNoticeCallback = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
@@ -93,10 +94,19 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         mNotice = (TextView) findViewById(R.id.notice_content);
         mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
 
+        String content = getResources().getString(R.string.home_bill_total);
+
         mUnCommitTv = (TextView) findViewById(R.id.tv_uncommit);
+        mUnCommitTv.setText(String.format(content, 0));
+
         mAuditingTv = (TextView) findViewById(R.id.tv_auditing);
+        mAuditingTv.setText(String.format(content, 0));
+
         mNotPassTv = (TextView) findViewById(R.id.tv_notpass);
+        mNotPassTv.setText(String.format(content, 0));
+
         mPassTv = (TextView) findViewById(R.id.tv_pass);
+        mPassTv.setText(String.format(content, 0));
 
         mUser = new UserItem();
         mUser.readSelf(getContext());
