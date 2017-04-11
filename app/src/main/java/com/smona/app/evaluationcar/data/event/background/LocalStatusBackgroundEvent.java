@@ -7,4 +7,5 @@ import com.smona.app.evaluationcar.data.event.common.BackgroundEvent;
  */
 
 public class LocalStatusBackgroundEvent extends BackgroundEvent {
+    public static final String ADD_CARBILL= "add_carbill";
 }

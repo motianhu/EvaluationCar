@@ -155,6 +155,18 @@ public class DBDelegator {
         }
     }
 
+    public int queryLocalBillCount() {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + ">0";
+        List<CarBillBean> list = dao.getResult(select, null, null);
+        CarLog.d("DBDelegator", "queryLocalBillCount " + list.size());
+        if (list != null && list.size() > 0) {
+            return list.size();
+        } else {
+            return 0;
+        }
+    }
+
     public void updateCarBill(CarBillBean carBill) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         dao.updateItem(carBill);

@@ -78,6 +78,15 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(LocalStatusBackgroundEvent event) {
+        if(LocalStatusBackgroundEvent.ADD_CARBILL.equals(event.getMessage())) {
+            mLocalListView.clear();
+            mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+            mCurPage = 1;
+        }
+        reloadNormal();
+    }
+
+    private void reloadNormal() {
         List<CarBillBean> datas = DataDelegator.getInstance().queryLocalCarbill(mCurPage, PAGE_SIZE);
         if (datas.size() < PAGE_SIZE) {
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;

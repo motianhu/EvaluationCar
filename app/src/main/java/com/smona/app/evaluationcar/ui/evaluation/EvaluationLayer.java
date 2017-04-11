@@ -9,7 +9,9 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
+import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
+import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
@@ -17,6 +19,7 @@ import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
@@ -31,8 +34,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by motianhu on 2/28/17.
  */
 
-public class EveluationLayer extends BaseRelativeLayout implements View.OnClickListener {
-    private static final String TAG = EveluationLayer.class.getSimpleName();
+public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickListener {
+    private static final String TAG = EvaluationLayer.class.getSimpleName();
 
     private TextView mNotice;
 
@@ -41,10 +44,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
     private TextView mNotPassTv;
     private TextView mPassTv;
 
-    private View mUnCommit;
-    private View mAuditing;
-    private View mNotPass;
-    private View mPass;
+    private int mLocalCount = 0;
 
     private UserItem mUser;
     private ResponseCallback<String> mCallbillCountCallback = new ResponseCallback<String>() {
@@ -75,7 +75,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         }
     };
 
-    public EveluationLayer(Context context, AttributeSet attrs) {
+    public EvaluationLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -97,7 +97,7 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         String content = getResources().getString(R.string.home_bill_total);
 
         mUnCommitTv = (TextView) findViewById(R.id.tv_uncommit);
-        mUnCommitTv.setText(String.format(content, 0));
+        mUnCommitTv.setText(String.format(content, mLocalCount));
 
         mAuditingTv = (TextView) findViewById(R.id.tv_auditing);
         mAuditingTv.setText(String.format(content, 0));
@@ -153,14 +153,15 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice(mNoticeCallback);
+        EventProxy.post(new LocalStatusBackgroundEvent());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BillTotalEvent event) {
+        String content = getResources().getString(R.string.bill_count);
         ResCountPage bean = (ResCountPage) event.getContent();
         if (bean != null && bean.total > 0) {
-            String content = getResources().getString(R.string.bill_count);
-            mUnCommitTv.setText(String.format(content, 0));
+            mUnCommitTv.setText(String.format(content, mLocalCount));
             for (BillTotalItem item : bean.data) {
                 if (BillTotalItem.FINISHCOUNT.equals(item.infoType)) {
                     mPassTv.setText(String.format(content, item.countInfo));
@@ -171,6 +172,13 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
                 }
             }
         }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void update(LocalStatusEvent event) {
+        String content = getResources().getString(R.string.bill_count);
+        mUnCommitTv.setText(String.format(content, mLocalCount));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -179,6 +187,12 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         if (bean != null && bean.total > 0) {
             mNotice.setText(bean.data.get(0).summary);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void reloadDBData(LocalStatusBackgroundEvent event) {
+        mLocalCount = DBDelegator.getInstance().queryLocalBillCount();
+        notifyUILocalCount();
     }
 
     private void notifyUICount(ResCountPage page) {
@@ -191,5 +205,9 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         NoticeEvent event = new NoticeEvent();
         event.setContent(page);
         EventProxy.post(event);
+    }
+
+    private void notifyUILocalCount() {
+        EventProxy.post(new LocalStatusEvent());
     }
 }

@@ -24,7 +24,9 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
+import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
@@ -414,7 +416,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCarBill.createTime = DateUtils.getCurrDate();
         mCarBill.modifyTime = DateUtils.getCurrDate();
         boolean success = DBDelegator.getInstance().insertCarBill(mCarBill);
+        postLocalCarbill();
         CarLog.d(TAG, "processImageDataInNone success " + success + ", mCarBill=" + mCarBill);
+    }
+
+    private void postLocalCarbill() {
+        LocalStatusBackgroundEvent local = new LocalStatusBackgroundEvent();
+        local.setContent(mCarBill);
+        local.setMessage(LocalStatusBackgroundEvent.ADD_CARBILL);
+        EventProxy.post(local);
     }
 
     private void processImageDataInSave() {
