@@ -8,8 +8,8 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.event.UpgradeEvent;
-import com.smona.app.evaluationcar.data.model.ResBaseApi;
 import com.smona.app.evaluationcar.data.model.ResImageMetaArray;
+import com.smona.app.evaluationcar.data.model.ResUpgradeApi;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -40,27 +40,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
     private RadioButton[] mRadioFunc = new RadioButton[5];
     private NoScrollViewPager mViewPager;
     private HomeFragmentPagerAdapter mFragmentAdapter;
-    private ResponseCallback<String> mImageMeta = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess");
-            ResImageMetaArray imageMetas = JsonParse.parseJson(content, ResImageMetaArray.class);
-            if (imageMetas.data != null && imageMetas.data.size() > 0) {
-                for (ImageMetaBean bean : imageMetas.data) {
-                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
-                    if (success) {
-                        continue;
-                    }
-                    DBDelegator.getInstance().updateImageMeta(bean);
-                }
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +76,15 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
     private void initDatas() {
         requestImageMetas();
-        getUpgradeInfo();
+        requestUpgradeInfo();
     }
 
     private void requestImageMetas() {
-        DataDelegator.getInstance().requestImageMeta(mImageMeta);
+        DataDelegator.getInstance().requestImageMeta(mImageMetaCallback);
+    }
+
+    private void requestUpgradeInfo() {
+        DataDelegator.getInstance().requestUpgradeInfo(mUpgradeCallback);
     }
 
     @Override
@@ -135,8 +118,9 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         mRadioFunc[pageHome].setChecked(true);
     }
 
-    private void getUpgradeInfo() {
-        DataDelegator.getInstance().getUpgradeInfo(mUpgradeCallback);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void update(UpgradeEvent event) {
+
     }
 
     private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
@@ -147,8 +131,8 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess result=" + content);
-            ResBaseApi newBaseApi = JsonParse.parseJson(content, ResBaseApi.class);
+            CarLog.d(TAG, "mUpgradeCallback onSuccess result=" + content);
+            ResUpgradeApi newBaseApi = JsonParse.parseJson(content, ResUpgradeApi.class);
             if(newBaseApi != null) {
                 if(newBaseApi.versionCode > Utils.getVersion(HomeActivity.this)) {
                     UpgradeEvent upgradeEvent = new UpgradeEvent();
@@ -159,8 +143,24 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         }
     };
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(UpgradeEvent event) {
-        
-    }
+    private ResponseCallback<String> mImageMetaCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            ResImageMetaArray imageMetas = JsonParse.parseJson(content, ResImageMetaArray.class);
+            if (imageMetas.data != null && imageMetas.data.size() > 0) {
+                for (ImageMetaBean bean : imageMetas.data) {
+                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
+                    if (success) {
+                        continue;
+                    }
+                    DBDelegator.getInstance().updateImageMeta(bean);
+                }
+            }
+        }
+    };
 }

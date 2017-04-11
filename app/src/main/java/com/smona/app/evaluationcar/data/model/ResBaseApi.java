@@ -5,10 +5,5 @@ package com.smona.app.evaluationcar.data.model;
  */
 
 public class ResBaseApi {
-    public String id;
-    public String clientName;
-    public int versionCode;
-    public String publishTime;
-    public String updateType;
-    public String apiURL;
+
 }

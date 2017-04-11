@@ -130,7 +130,7 @@ public class DataDelegator {
         return DBDelegator.getInstance().queryImageMeta(imageClass, imageSeqNum);
     }
 
-    public void getUpgradeInfo(ResponseCallback<String> callback) {
+    public void requestUpgradeInfo(ResponseCallback<String> callback) {
         HttpDelegator.getInstance().requestUpgradeInfo(callback);
     }
 }
