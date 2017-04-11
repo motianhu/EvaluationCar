@@ -34,6 +34,8 @@ public class ImageModelAdapter extends BaseAdapter {
     private Context mContext;
     private int mImageWidth;
 
+    private boolean mNeedReload = true;
+
     public ImageModelAdapter(Context context, int type) {
         mContext = context;
         int i = ScreenInfo.getInstance().getScreenWidth();
@@ -42,14 +44,26 @@ public class ImageModelAdapter extends BaseAdapter {
     }
 
     public void update(List<CarImageBean> datas) {
-        if (datas == null) {
+        if(!isNeedReload()) {
             return;
         }
+        if (datas == null) {
+            setNeedReload(false);
+            return;
+        }
+        setNeedReload(false);
         mDatas.clear();
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
+    public boolean isNeedReload() {
+        return mNeedReload;
+    }
+
+    public void setNeedReload(boolean needReload) {
+        this.mNeedReload = needReload;
+    }
 
     @Override
     public int getCount() {
@@ -76,6 +90,7 @@ public class ImageModelAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     CarLog.d(TAG, "bean: " + bean);
+                    setNeedReload(true);
                     ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
                 }
             });

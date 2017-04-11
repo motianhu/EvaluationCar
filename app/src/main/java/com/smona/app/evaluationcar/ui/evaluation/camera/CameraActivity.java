@@ -43,7 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class CameraActivity extends UserActivity implements SurfaceHolder.Callback, View.OnClickListener {
+public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
     private static final String TAG = CameraActivity.class.getSimpleName();
 
     private Camera mCamera;

@@ -118,7 +118,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         initDatas();
         initViews();
         initImageList();
-        updateImageViews();
+        //updateImageViews();
         requestImageForCarBillId();
         EventProxy.register(this);
     }
@@ -319,28 +319,37 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void reloadImageList() {
-        initImageData(mClassRegistrationList, ImageModelDelegator.IMAGE_Registration);
-        initImageData(mClassDrivingLicenseList, ImageModelDelegator.IMAGE_DrivingLicense);
-        initImageData(mClassVehicleNameplateList, ImageModelDelegator.IMAGE_VehicleNameplate);
-        initImageData(mClassCarBodyList, ImageModelDelegator.IMAGE_CarBody);
-        initImageData(mClassCarFrameList, ImageModelDelegator.IMAGE_CarFrame);
-        initImageData(mClassVehicleInteriorList, ImageModelDelegator.IMAGE_VehicleInterior);
-        initImageData(mClassDifferenceSupplementList, ImageModelDelegator.IMAGE_DifferenceSupplement);
-        initImageData(mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
+        initImageData(mClassRegistrationAdapter, mClassRegistrationList, ImageModelDelegator.IMAGE_Registration);
+        initImageData(mClassDrivingLicenseAdapter, mClassDrivingLicenseList, ImageModelDelegator.IMAGE_DrivingLicense);
+        initImageData(mClassVehicleNameplateAdapter, mClassVehicleNameplateList, ImageModelDelegator.IMAGE_VehicleNameplate);
+        initImageData(mClassCarBodyAdapter, mClassCarBodyList, ImageModelDelegator.IMAGE_CarBody);
+        initImageData(mClassCarFrameAdapter, mClassCarFrameList, ImageModelDelegator.IMAGE_CarFrame);
+        initImageData(mClassVehicleInteriorAdapter, mClassVehicleInteriorList, ImageModelDelegator.IMAGE_VehicleInterior);
+        initImageData(mClassDifferenceSupplementAdapter, mClassDifferenceSupplementList, ImageModelDelegator.IMAGE_DifferenceSupplement);
+        initImageData(mClassOriginalCarInsurancetAdapter, mClassOriginalCarInsurancetList, ImageModelDelegator.IMAGE_OriginalCarInsurancet);
     }
 
     private void clearImageList() {
-        mClassRegistrationList.clear();
-        mClassDrivingLicenseList.clear();
-        mClassVehicleNameplateList.clear();
-        mClassCarBodyList.clear();
-        mClassCarFrameList.clear();
-        mClassVehicleInteriorList.clear();
-        mClassDifferenceSupplementList.clear();
-        mClassOriginalCarInsurancetList.clear();
+        clearImageList(mClassRegistrationAdapter, mClassRegistrationList);
+        clearImageList(mClassDrivingLicenseAdapter, mClassDrivingLicenseList);
+        clearImageList(mClassVehicleNameplateAdapter, mClassVehicleNameplateList);
+        clearImageList(mClassCarBodyAdapter, mClassCarBodyList);
+        clearImageList(mClassCarFrameAdapter, mClassCarFrameList);
+        clearImageList(mClassVehicleInteriorAdapter, mClassVehicleInteriorList);
+        clearImageList(mClassDifferenceSupplementAdapter, mClassDifferenceSupplementList);
+        clearImageList(mClassOriginalCarInsurancetAdapter, mClassOriginalCarInsurancetList);
     }
 
-    private void initImageData(List<CarImageBean> data, int type) {
+    private void clearImageList(ImageModelAdapter adapter, List<CarImageBean> dataList) {
+        if (adapter.isNeedReload()) {
+            dataList.clear();
+        }
+    }
+
+    private void initImageData(ImageModelAdapter adapter, List<CarImageBean> data, int type) {
+        if (!adapter.isNeedReload()) {
+            return;
+        }
         String imageClass = ImageModelDelegator.getInstance().getImageClassForType(type);
         if (statusIsReturn()) {
             List<CarImageBean> tempData = ImageModelDelegator.getInstance().getHttpModel(mCarBillId, imageClass);
