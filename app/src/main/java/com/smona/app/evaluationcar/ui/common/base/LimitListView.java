@@ -30,6 +30,6 @@ public class LimitListView extends ListView {
     }
 
     protected void onMeasure(int paramInt1, int paramInt2) {
-        super.onMeasure(paramInt1, View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE>>2, MeasureSpec.AT_MOST));
+        super.onMeasure(paramInt1, View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST));
     }
 }

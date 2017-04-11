@@ -7,44 +7,74 @@ import android.widget.RadioGroup;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.data.model.ResImageMeta;
+import com.smona.app.evaluationcar.data.event.UpgradeEvent;
+import com.smona.app.evaluationcar.data.model.ResBaseApi;
+import com.smona.app.evaluationcar.data.model.ResImageMetaArray;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.Utils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Moth on 2016/12/15.
  */
 
 public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedChangeListener {
-    private static final String TAG = HomeActivity.class.getSimpleName();
-
-    //UI Objects
-    private RadioGroup mRbGroup;
-    private RadioButton[] mRadioFunc = new RadioButton[5];
-
-    private NoScrollViewPager mViewPager;
-    private HomeFragmentPagerAdapter mFragmentAdapter;
-
     //几个代表页面的常量
     public static final int PAGE_HOME = 0;
     public static final int PAGE_EVALUATION = 1;
     public static final int PAGE_MESSAGE = 2;
     public static final int PAGE_LIST = 3;
     public static final int PAGE_SETTING = 4;
+    private static final String TAG = HomeActivity.class.getSimpleName();
+    //UI Objects
+    private RadioGroup mRbGroup;
+    private RadioButton[] mRadioFunc = new RadioButton[5];
+    private NoScrollViewPager mViewPager;
+    private HomeFragmentPagerAdapter mFragmentAdapter;
+    private ResponseCallback<String> mImageMeta = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
 
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "onSuccess");
+            ResImageMetaArray imageMetas = JsonParse.parseJson(content, ResImageMetaArray.class);
+            if (imageMetas.data != null && imageMetas.data.size() > 0) {
+                for (ImageMetaBean bean : imageMetas.data) {
+                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
+                    if (success) {
+                        continue;
+                    }
+                    DBDelegator.getInstance().updateImageMeta(bean);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        EventProxy.register(this);
         initViews();
-
         initDatas();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventProxy.unregister(this);
     }
 
     private void initViews() {
@@ -67,8 +97,8 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
     private void initDatas() {
         requestImageMetas();
+        getUpgradeInfo();
     }
-
 
     private void requestImageMetas() {
         DataDelegator.getInstance().requestImageMeta(mImageMeta);
@@ -100,13 +130,16 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         mFragmentAdapter.changeFragment(position);
     }
 
-
     private void changeFragment(int pageHome, int titleId) {
         mViewPager.setCurrentItem(pageHome, false);
         mRadioFunc[pageHome].setChecked(true);
     }
 
-    private ResponseCallback<String> mImageMeta = new ResponseCallback<String>() {
+    private void getUpgradeInfo() {
+        DataDelegator.getInstance().getUpgradeInfo(mUpgradeCallback);
+    }
+
+    private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
             CarLog.d(TAG, "onFailed error=" + error);
@@ -114,17 +147,20 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess");
-            ResImageMeta imageMetas = JsonParse.parseJson(content, ResImageMeta.class);
-            if (imageMetas.data != null && imageMetas.data.size() > 0) {
-                for (ImageMetaBean bean : imageMetas.data) {
-                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
-                    if (success) {
-                        continue;
-                    }
-                    DBDelegator.getInstance().updateImageMeta(bean);
+            CarLog.d(TAG, "onSuccess result=" + content);
+            ResBaseApi newBaseApi = JsonParse.parseJson(content, ResBaseApi.class);
+            if(newBaseApi != null) {
+                if(newBaseApi.versionCode > Utils.getVersion(HomeActivity.this)) {
+                    UpgradeEvent upgradeEvent = new UpgradeEvent();
+                    upgradeEvent.mResBaseApi = newBaseApi;
+                    EventProxy.post(upgradeEvent);
                 }
             }
         }
     };
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void update(UpgradeEvent event) {
+        
+    }
 }

@@ -29,6 +29,10 @@ public class DeviceStorageManager {
         return sInstance;
     }
 
+    private static boolean makeFolder(String folder) {
+        return FileUtils.makeFolders(folder);
+    }
+
     public void setContext(Context context) {
         mAppContext = context;
         mAppCachePath = context.getCacheDir().getAbsolutePath();
@@ -44,11 +48,7 @@ public class DeviceStorageManager {
         success = makeFolder(mThumbnailPath);
     }
 
-    private static boolean makeFolder(String folder) {
-        return FileUtils.makeFolders(folder);
-    }
-
-    public  String getMd5Path() {
+    public String getMd5Path() {
         return mMd5Path;
     }
 

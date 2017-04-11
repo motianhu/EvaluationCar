@@ -8,12 +8,12 @@ import org.xutils.common.Callback;
 
 public abstract class ResponseCallback<T> implements Callback.CommonCallback<String> {
     @Override
-    public void onCancelled(Callback.CancelledException cex){
+    public void onCancelled(Callback.CancelledException cex) {
         onFailed("onCanceled " + cex);
     }
 
     @Override
-    public void onFinished(){
+    public void onFinished() {
 
     }
 

@@ -1,4 +1,3 @@
-
 package com.smona.app.evaluationcar.ui.common.refresh;
 
 import android.content.Context;
@@ -23,7 +22,7 @@ public abstract class PullableListView extends ListView implements Pullable {
     public boolean canPullDown() {
         if (getCount() == 0) {
             return false;
-        } else if (isPageTop()&&getFirstVisiblePosition() == 0 && getChildAt(0) != null && getChildAt(0).getTop() >= 0) {
+        } else if (isPageTop() && getFirstVisiblePosition() == 0 && getChildAt(0) != null && getChildAt(0).getTop() >= 0) {
             return true;
         } else {
             return false;
@@ -37,13 +36,13 @@ public abstract class PullableListView extends ListView implements Pullable {
         } else if (isPageLast() && (getLastVisiblePosition() == (getCount() - 1))) {
             if (getChildAt(getLastVisiblePosition() - getFirstVisiblePosition()) != null
                     && getChildAt(getLastVisiblePosition()
-                            - getFirstVisiblePosition()).getBottom() <= getMeasuredHeight())
+                    - getFirstVisiblePosition()).getBottom() <= getMeasuredHeight())
                 return true;
         }
         return false;
     }
 
-    protected boolean isPageTop(){
+    protected boolean isPageTop() {
         return true;
     }
 

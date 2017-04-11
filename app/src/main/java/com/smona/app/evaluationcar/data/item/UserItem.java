@@ -15,7 +15,7 @@ public class UserItem {
     public String mId;
     public String mPwd;
 
-    public void saveSelf(Context context,String id, String pwd) {
+    public void saveSelf(Context context, String id, String pwd) {
         try {
             String userName = AESUtils.encrypt(masterPassword, id);
             String password = AESUtils.encrypt(masterPassword, pwd);
@@ -30,17 +30,17 @@ public class UserItem {
     }
 
     public boolean readSelf(Context context) {
-        String userName = (String)SPUtil.get(context, CacheContants.LOGIN_USERNAME, "");
-        String password = (String)SPUtil.get(context, CacheContants.LOGIN_PASSWORD, "");
+        String userName = (String) SPUtil.get(context, CacheContants.LOGIN_USERNAME, "");
+        String password = (String) SPUtil.get(context, CacheContants.LOGIN_PASSWORD, "");
 
-        if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
             return false;
         }
         try {
             mId = AESUtils.decrypt(masterPassword, userName);
             mPwd = AESUtils.decrypt(masterPassword, password);
             return true;
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             CarLog.d(TAG, "readSelf e=" + e);
         }

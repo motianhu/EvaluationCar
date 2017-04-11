@@ -26,14 +26,11 @@ public class ImageModelDelegator {
     public static final int IMAGE_VehicleInterior = 5;
     public static final int IMAGE_DifferenceSupplement = 6;
     public static final int IMAGE_OriginalCarInsurancet = 7;
-
+    private volatile static ImageModelDelegator sInstance;
     private String[] mImageClass = null;
     private List<String>[] mImageClassItems = null;
     private Map<String, Integer> mImageClassMap = null;
-
     private String mAddPic;
-
-    private volatile static ImageModelDelegator sInstance;
 
     private ImageModelDelegator() {
         mImageClassMap = new HashMap<String, Integer>();
@@ -99,7 +96,7 @@ public class ImageModelDelegator {
         String imageClass = getImageClassForType(type);
 
         List<CarImageBean> saveList = new ArrayList<>();
-        if(imageId > 0 ) {
+        if (imageId > 0) {
             saveList = DBDelegator.getInstance().queryImages(imageClass, imageId);
         }
 
@@ -109,7 +106,7 @@ public class ImageModelDelegator {
     }
 
     public List<CarImageBean> getHttpModel(String carBillId, String imageClass) {
-        List<CarImageBean> saveList =DBDelegator.getInstance().queryImages(imageClass, carBillId);
+        List<CarImageBean> saveList = DBDelegator.getInstance().queryImages(imageClass, carBillId);
         int type = getTypeForImageClass(imageClass);
 
         List<CarImageBean> defaultList = getDefaultModel(type);
@@ -133,7 +130,7 @@ public class ImageModelDelegator {
                     break;
                 }
             if (!isMatch) {
-                if(TextUtils.isEmpty(saveCar.displayName)){
+                if (TextUtils.isEmpty(saveCar.displayName)) {
                     saveCar.displayName = mAddPic;
                 }
                 defaultList.add(saveCar);

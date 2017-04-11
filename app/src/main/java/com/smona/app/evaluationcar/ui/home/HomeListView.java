@@ -68,7 +68,7 @@ public class HomeListView extends BaseListView {
     private void post() {
         BannerParam param = new BannerParam();
         param.classType = "新闻公告";
-        DataDelegator.getInstance().requestBanner(param, new ResponseCallback<String>(){
+        DataDelegator.getInstance().requestBanner(param, new ResponseCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -83,7 +83,7 @@ public class HomeListView extends BaseListView {
 
         param = new BannerParam();
         param.classType = "最新资讯";
-        DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>(){
+        DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>() {
 
             @Override
             public void onSuccess(String result) {

@@ -1,4 +1,3 @@
-
 package com.smona.app.evaluationcar.ui.common.refresh;
 
 import android.content.Context;
@@ -21,40 +20,31 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
     public static final int RELEASE_TO_LOAD = 3;
     public static final int LOADING = 4;
     public static final int DONE = 5;
-
-    protected int mState = INIT;
-
     public static final int SUCCEED = 0;
     public static final int FAIL = 1;
     public static final int LAST = 2;
-
-    private float mDownY, mLastY;
-
-    private float mPullDownY = 0;
-    private float mPullUpY = 0;
     private static final int DIST = 100;
-    private float mRefreshDist = 200;
-    private float mLoadmoreDist = 200;
-
-    private float mSpeed = 8;
-
-    private boolean mIsLayout = false;
-
-    private boolean mIsTouch = false;
-
-    private float mRadio = 2;
-
+    protected int mState = INIT;
     protected View mRefreshView;
     protected View mLoadmoreView;
     protected View mLoadingView;
-
     protected TextView mLoadStateTextView;
+    protected Runnable mRunnable = new Runnable() {
 
-    private View mPullableView;
-    private int mEvents;
-    private boolean mCanPullDown = true;
-    private boolean mCanPullUp = true;
-
+        @Override
+        public void run() {
+            changeState(DONE);
+            post(mUpdateRunnable);
+        }
+    };
+    private float mDownY, mLastY;
+    private float mPullDownY = 0;
+    private float mPullUpY = 0;
+    private float mRefreshDist = 200;
+    private float mLoadmoreDist = 200;
+    private float mSpeed = 8;
+    private boolean mIsLayout = false;
+    private boolean mIsTouch = false;
     protected Runnable mUpdateRunnable = new Runnable() {
 
         @Override
@@ -102,6 +92,18 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
             }
         }
     };
+    private float mRadio = 2;
+    private View mPullableView;
+    private int mEvents;
+    private boolean mCanPullDown = true;
+    private boolean mCanPullUp = true;
+    private Runnable mFailRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            loadmoreFinish(PullToRefreshLayout.FAIL);
+        }
+    };
 
     public PullToRefreshLayout(Context context) {
         super(context);
@@ -128,14 +130,6 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
         changeState(DONE);
         post(mUpdateRunnable);
     }
-
-    private Runnable mFailRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            loadmoreFinish(PullToRefreshLayout.FAIL);
-        }
-    };
 
     protected void postLoadmoreFail() {
         postDelayed(mFailRunnable, 1000);
@@ -172,15 +166,6 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
         }
     }
 
-    protected Runnable mRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            changeState(DONE);
-            post(mUpdateRunnable);
-        }
-    };
-
     protected void justChangeState(int to) {
         mState = to;
 
@@ -215,7 +200,7 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
     }
 
     //modification for 终端项目Bug #15853 by liu_s begins
-    protected boolean disptchSuperTouchEvent(MotionEvent ev){
+    protected boolean disptchSuperTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
     //modification for 终端项目Bug #15853 by liu_s ends
@@ -303,7 +288,7 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
                 } else if (mState == RELEASE_TO_LOAD) {
                     changeState(LOADING);
                     onLoadMore();
-                    postDelayed(mUpdateRunnable,100);
+                    postDelayed(mUpdateRunnable, 100);
                     break;
                 }
                 changeState(DONE);
@@ -355,13 +340,13 @@ public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
         return false;
     }
 
-    protected float getmRefreshDist(){
+    protected float getmRefreshDist() {
         float dist = ((ViewGroup) mRefreshView).getChildAt(0)
                 .getMeasuredHeight();
         return dist;
     }
 
-    protected float getmLoadmoreDist(){
+    protected float getmLoadmoreDist() {
         float dist = ((ViewGroup) mLoadmoreView).getChildAt(0)
                 .getMeasuredHeight();
         return dist;

@@ -42,7 +42,7 @@ public class ImageModelAdapter extends BaseAdapter {
     }
 
     public void update(List<CarImageBean> datas) {
-        if(datas ==null) {
+        if (datas == null) {
             return;
         }
         mDatas.clear();
@@ -86,7 +86,7 @@ public class ImageModelAdapter extends BaseAdapter {
             viewHolder.leftText = (TextView) convertView.findViewById(R.id.tv_part_left);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder)convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         boolean hasPic = processImage(bean, viewHolder.image);
         ViewUtil.setViewVisible(viewHolder.centerImage, true);

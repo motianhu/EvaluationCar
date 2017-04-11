@@ -18,7 +18,7 @@ public final class UploadTaskExecutor {
             } else {
                 sRunCount--;
             }
-            CarLog.d(this, "sRunCount:" +sRunCount+ "  sTasks.size():" + sTasks.size());
+            CarLog.d(this, "sRunCount:" + sRunCount + "  sTasks.size():" + sTasks.size());
         }
     };
 

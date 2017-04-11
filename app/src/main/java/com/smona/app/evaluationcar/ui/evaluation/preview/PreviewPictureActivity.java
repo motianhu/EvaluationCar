@@ -35,5 +35,4 @@ public class PreviewPictureActivity extends BaseActivity {
     }
 
 
-
 }

@@ -71,9 +71,9 @@ public class HttpDelegator implements IProxy {
 
     public void uploadImage(String createUser, CarImageBean bean, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
-        params.addParameter("createUser",createUser);
-        params.addParameter("clientName","Android");
-        params.addParameter("carBillId",bean.carBillId);
+        params.addParameter("createUser", createUser);
+        params.addParameter("clientName", "Android");
+        params.addParameter("carBillId", bean.carBillId);
         params.addParameter("imageSeqNum", bean.imageSeqNum);
         params.addParameter("imageClass", bean.imageClass);
         params.addBodyParameter("image", new File(bean.imageLocalUrl));
@@ -82,13 +82,12 @@ public class HttpDelegator implements IProxy {
 
     public void submitCarBill(String userName, CarBillBean carBill, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.SUBMIT_CARBILL);
-        params.addParameter("userName",userName);
-        params.addParameter("carBillId",carBill.carBillId);
-        params.addParameter("preSalePrice",carBill.preSalePrice);
-        params.addParameter("mark",carBill.mark);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBill.carBillId);
+        params.addParameter("preSalePrice", carBill.preSalePrice);
+        params.addParameter("mark", carBill.mark);
         x.http().get(params, callback);
     }
-
 
 
     public void getCarbillImages(String userName, String carBillId, ResponseCallback callback) {
@@ -105,15 +104,15 @@ public class HttpDelegator implements IProxy {
 
     public void queryCarbillCount(String userName, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
-        params.addParameter("userName",userName);
+        params.addParameter("userName", userName);
         x.http().get(params, callback);
     }
 
     //Notice
     public void requestNotice(ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
-        params.addParameter("classType","新闻公告");
-        params.addParameter("curPage",1);
+        params.addParameter("classType", "新闻公告");
+        params.addParameter("curPage", 1);
         params.addParameter("pageSize", 10);
         x.http().get(params, callback);
     }
@@ -121,16 +120,23 @@ public class HttpDelegator implements IProxy {
 
     public void queryMoreNews(String classType, int curPage, int pageSize, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
-        params.addParameter("classType",classType);
-        params.addParameter("curPage",curPage);
+        params.addParameter("classType", classType);
+        params.addParameter("curPage", curPage);
         params.addParameter("pageSize", pageSize);
         x.http().get(params, callback);
     }
 
     public void queryNewsDetail(int newsId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
-        params.addParameter("newsId",newsId);
+        params.addParameter("newsId", newsId);
         x.http().get(params, callback);
     }
+
+    public void requestUpgradeInfo(ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_APP_UPGRADE);
+        params.addParameter("clientName", "android");
+        x.http().get(params, callback);
+    }
+
 
 }

@@ -10,6 +10,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtils {
+    private final static String HEX = "0123456789ABCDEF";
+
     public static String encrypt(String seed, String cleartext)
             throws Exception {
         byte[] rawKey = getRawKey(seed.getBytes());
@@ -80,8 +82,6 @@ public class AESUtils {
         }
         return result.toString();
     }
-
-    private final static String HEX = "0123456789ABCDEF";
 
     private static void appendHex(StringBuffer sb, byte b) {
         sb.append(HEX.charAt((b >> 4) & 0x0f)).append(HEX.charAt(b & 0x0f));

@@ -20,6 +20,14 @@ public abstract class BaseViewPager extends ViewGroupPager {
         }
     };
 
+    public BaseViewPager(Context context) {
+        super(context);
+    }
+
+    public BaseViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
     public void stopAutoScroll() {
         mHandler.removeCallbacks(mRunnable);
     }
@@ -29,29 +37,21 @@ public abstract class BaseViewPager extends ViewGroupPager {
         mHandler.postDelayed(mRunnable, DELAY_TIME);
     }
 
-    public BaseViewPager(Context context) {
-        super(context);
-    }
-
-    public BaseViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         switch (action) {
-        case MotionEvent.ACTION_DOWN:
-            stopAutoScroll();
-            break;
-        case MotionEvent.ACTION_MOVE:
-            break;
-        case MotionEvent.ACTION_UP:
-        case MotionEvent.ACTION_CANCEL:
-            startAutoScroll();
-            break;
-        default:
-            break;
+            case MotionEvent.ACTION_DOWN:
+                stopAutoScroll();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                startAutoScroll();
+                break;
+            default:
+                break;
         }
         return super.dispatchTouchEvent(ev);
     }

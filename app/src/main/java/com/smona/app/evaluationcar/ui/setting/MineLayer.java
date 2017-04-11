@@ -38,7 +38,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
 
     @Override
     public void init() {
-        mUserBean = ((UserActivity)getContext()).getUserBean();
+        mUserBean = ((UserActivity) getContext()).getUserBean();
         mImage = (ImageView) findViewById(R.id.mine_image);
         mName = (TextView) findViewById(R.id.mine_name);
         mName.setText(mUserBean.userChineseName);
@@ -62,7 +62,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch(id) {
+        switch (id) {
             case R.id.setting_info:
                 break;
             case R.id.setting_update:
@@ -75,7 +75,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
             case R.id.setting_logout:
                 //弹出对话框，退出
                 mUser.saveSelf(getContext(), "", "");
-                ((BaseActivity)getContext()).finish();
+                ((BaseActivity) getContext()).finish();
                 break;
         }
     }

@@ -300,7 +300,7 @@ public class CameraActivity extends UserActivity implements SurfaceHolder.Callba
         if (id == R.id.lin_explain_btn) {
             onAnimationExplain();
         } else {
-            if(closeAnimal()) {
+            if (closeAnimal()) {
                 return;
             }
             switch (id) {

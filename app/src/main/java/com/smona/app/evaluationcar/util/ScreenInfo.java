@@ -9,20 +9,19 @@ import android.util.DisplayMetrics;
  */
 
 public class ScreenInfo {
+    private static volatile ScreenInfo sInstance;
     private int mScreenWidth;
     private int mScreenHeight;
     private int mScreenDpi;
 
-    private static volatile ScreenInfo sInstance;
+    private ScreenInfo() {
+    }
 
     public static ScreenInfo getInstance() {
         if (sInstance == null) {
             sInstance = new ScreenInfo();
         }
         return sInstance;
-    }
-
-    private ScreenInfo() {
     }
 
     public void init(Context context) {

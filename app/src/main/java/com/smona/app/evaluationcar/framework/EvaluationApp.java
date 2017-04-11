@@ -37,12 +37,11 @@ public class EvaluationApp extends Application {
         DeviceStorageManager.getInstance().initPath();
     }
 
+    public EvaluationProvider getWallpaperProvider() {
+        return mProvider.get();
+    }
 
     public void setWallpaperProvider(EvaluationProvider provider) {
         mProvider = new WeakReference<EvaluationProvider>(provider);
-    }
-
-    public EvaluationProvider getWallpaperProvider() {
-        return mProvider.get();
     }
 }

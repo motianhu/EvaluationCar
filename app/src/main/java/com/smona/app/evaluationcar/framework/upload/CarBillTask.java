@@ -17,13 +17,13 @@ public class CarBillTask extends ActionTask {
     public CarBillBean mCarBill;
 
     public void startTask() {
-        if(TextUtils.isEmpty(mCarBillId)) {
+        if (TextUtils.isEmpty(mCarBillId)) {
             HttpDelegator.getInstance().createCarBillId(new ResponseCallback<String>() {
 
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result);
-                    mCarBill.carBillId =  result.substring(1, result.length() - 1);
+                    mCarBill.carBillId = result.substring(1, result.length() - 1);
                     mCarBillId = mCarBill.carBillId;
 
                     DBDelegator.getInstance().updateCarBill(mCarBill);

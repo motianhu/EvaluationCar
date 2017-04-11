@@ -23,11 +23,13 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.item.UserItem;
-import com.smona.app.evaluationcar.data.model.ResUser;
+import com.smona.app.evaluationcar.data.model.ResUserModel;
+import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.UrlConstants;
 
 public class LoginActivity extends PermissionActivity implements OnClickListener {
     protected static final String TAG = LoginActivity.class.getSimpleName();
@@ -187,9 +189,10 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                         DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
-                                ResUser normal = JsonParse.parseJson(result, ResUser.class);
+                                ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
-                                DataDelegator.getInstance().saveNewCacheByUrl(param, result);
+                                String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
+                                CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
                                 runUI(normal.success);
                             }
 

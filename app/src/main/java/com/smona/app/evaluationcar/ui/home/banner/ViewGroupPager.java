@@ -23,22 +23,25 @@ public class ViewGroupPager extends ViewGroup {
     public static final int SCROLL_DIRECTION_LEFT = -1;
     public static final int SCROLL_DIRECTION_MEDDILE = 0;
     public static final int SCROLL_DIRECTION_RIGHT = 1;
-
-    private int mDirection = SCROLL_DIRECTION_MEDDILE;
-    private int mScrollState = SCROLL_STATE_IDLE;
-
     private static final int INVALID_POINTER = -1;
     private static final int ANI_DURATION = 900;
-
+    private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
+    private static final int CLOSE_ENOUGH = 2; // dp
+    private static final int INVALID_INDEX = -1;
+    private static final Interpolator INTERPOLATOR = new Interpolator() {
+        public float getInterpolation(float t) {
+            t -= 1.0f;
+            return t * t * t * t * t + 1.0f;
+        }
+    };
+    private int mDirection = SCROLL_DIRECTION_MEDDILE;
+    private int mScrollState = SCROLL_STATE_IDLE;
     private int mCurIndex;
     private int mWidth;
-
     private PageTranformationInfo mFirstPageTranformation = new PageTranformationInfo();
     private PageTranformationInfo mSecondPageTranformation = new PageTranformationInfo();
-
     private VelocityTracker mVelocityTracker;
     private Scroller mScroller;
-
     private float mInitialMotionX;
     private float mInitialMotionY;
     private float mLastMotionX;
@@ -53,59 +56,18 @@ public class ViewGroupPager extends ViewGroup {
     private int mCloseEnough;
     private PageListener mPageListener;
     private PageClickListener mPageClickListener;
-
-    private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
-    private static final int CLOSE_ENOUGH = 2; // dp
-
     private boolean mConsistencyIntercepterVerifier = false;
     private float mDetalX = 0;
-
     private View mCurPage = null;
     private View mNextPage = null;
     private View mPrePage = null;
-
     private ViewGroupMatrix mEffectPrePage = new ViewGroupMatrix();
     private ViewGroupMatrix mEffectCurPage = new ViewGroupMatrix();
     private ViewGroupMatrix mEffectNextPage = new ViewGroupMatrix();
-
     private boolean mIsEnd = false;
     private boolean mIndexChanged = false;
-
-    private static final int INVALID_INDEX = -1;
     private int mCurrentPageIndex = INVALID_INDEX;
     private int mAlpha;
-
-    protected interface PageListener {
-
-        void onPageSelseted(int index);
-
-        void onPageSrcollStateChange(int state);
-
-        void onPageScrollDirection(int direction);
-
-    }
-
-    public interface PageClickListener {
-        void onPageClick();
-    }
-
-    private static final Interpolator INTERPOLATOR = new Interpolator() {
-        public float getInterpolation(float t) {
-            t -= 1.0f;
-            return t * t * t * t * t + 1.0f;
-        }
-    };
-
-    static class PageTranformationInfo {
-        protected boolean mIsMatrixDirty;
-        protected View mPagedView;
-        protected final Matrix mPagedTransMatrix = new Matrix();
-
-        public void resetAndrecyle() {
-            mPagedView = null;
-            mPagedTransMatrix.reset();
-        }
-    }
 
     public ViewGroupPager(Context context) {
         super(context);
@@ -279,17 +241,17 @@ public class ViewGroupPager extends ViewGroup {
         }
 
         switch (action) {
-        case MotionEvent.ACTION_MOVE:
-            interceptTouchMove(ev);
-            break;
-        case MotionEvent.ACTION_DOWN:
-            interceptTouchDown(ev);
-            break;
-        case MotionEvent.ACTION_POINTER_UP:
-            onSecondaryPointerUp(ev);
-            break;
-        default:
-            break;
+            case MotionEvent.ACTION_MOVE:
+                interceptTouchMove(ev);
+                break;
+            case MotionEvent.ACTION_DOWN:
+                interceptTouchDown(ev);
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                break;
+            default:
+                break;
         }
 
         if (mVelocityTracker == null) {
@@ -415,53 +377,53 @@ public class ViewGroupPager extends ViewGroup {
         boolean needsInvalidate = false;
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
-        case MotionEvent.ACTION_DOWN: {
-            mScroller.abortAnimation();
-            // Remember where the motion event started
-            mLastMotionX = mInitialMotionX = ev.getX();
-            mInitialMotionY = ev.getY();
-            mActivePointerId = ev.getPointerId(0);
-            break;
-        }
-        case MotionEvent.ACTION_MOVE:
-            if (!mIsBeingDragged) {
-                dragMove(ev);
+            case MotionEvent.ACTION_DOWN: {
+                mScroller.abortAnimation();
+                // Remember where the motion event started
+                mLastMotionX = mInitialMotionX = ev.getX();
+                mInitialMotionY = ev.getY();
+                mActivePointerId = ev.getPointerId(0);
+                break;
             }
-            if (mIsBeingDragged && mActivePointerId != INVALID_POINTER) {
-                final int activePointerIndex = ev
-                        .findPointerIndex(mActivePointerId);
-                if (activePointerIndex == -1) {
-                    break;
+            case MotionEvent.ACTION_MOVE:
+                if (!mIsBeingDragged) {
+                    dragMove(ev);
                 }
-                final float x = mLastMotionX = ev.getX(activePointerIndex);
-                needsInvalidate = performDrag(x);
+                if (mIsBeingDragged && mActivePointerId != INVALID_POINTER) {
+                    final int activePointerIndex = ev
+                            .findPointerIndex(mActivePointerId);
+                    if (activePointerIndex == -1) {
+                        break;
+                    }
+                    final float x = mLastMotionX = ev.getX(activePointerIndex);
+                    needsInvalidate = performDrag(x);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mIsBeingDragged) {
+                    dragUp(ev);
+                }
+                performClickItemUp(ev);
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                if (mIsBeingDragged) {
+                    mActivePointerId = INVALID_POINTER;
+                    endDrag();
+                }
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                final int index = ev.getActionIndex();
+                final float x = ev.getX(index);
+                mLastMotionX = x;
+                mActivePointerId = ev.getPointerId(index);
+                break;
             }
-            break;
-        case MotionEvent.ACTION_UP:
-            if (mIsBeingDragged) {
-                dragUp(ev);
-            }
-            performClickItemUp(ev);
-            break;
-        case MotionEvent.ACTION_CANCEL:
-            if (mIsBeingDragged) {
-                mActivePointerId = INVALID_POINTER;
-                endDrag();
-            }
-            break;
-        case MotionEvent.ACTION_POINTER_DOWN: {
-            final int index = ev.getActionIndex();
-            final float x = ev.getX(index);
-            mLastMotionX = x;
-            mActivePointerId = ev.getPointerId(index);
-            break;
-        }
-        case MotionEvent.ACTION_POINTER_UP:
-            onSecondaryPointerUp(ev);
-            mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
-            break;
-        default:
-            break;
+            case MotionEvent.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
+                break;
+            default:
+                break;
         }
         if (needsInvalidate) {
             postInvalidate();
@@ -535,6 +497,10 @@ public class ViewGroupPager extends ViewGroup {
         return detalX;
     }
 
+    public int getCurrentIndex() {
+        return mCurIndex;
+    }
+
     private void setCurrentIndex(int item) {
         if (mCurIndex == item) {
             mIndexChanged = false;
@@ -547,12 +513,8 @@ public class ViewGroupPager extends ViewGroup {
         }
     }
 
-    public int getCurrentIndex() {
-        return mCurIndex;
-    }
-
     private int determineTargetPage(int currentPage, float pageOffset,
-            int velocity, int deltaX) {
+                                    int velocity, int deltaX) {
         int targetPage;
         if (Math.abs(deltaX) > mFlingDistance
                 && Math.abs(velocity) > mMinimumVelocity) {
@@ -872,6 +834,31 @@ public class ViewGroupPager extends ViewGroup {
         clearPageView(mCurPage);
         clearPageView(mNextPage);
         clearPageView(mPrePage);
+    }
+
+    protected interface PageListener {
+
+        void onPageSelseted(int index);
+
+        void onPageSrcollStateChange(int state);
+
+        void onPageScrollDirection(int direction);
+
+    }
+
+    public interface PageClickListener {
+        void onPageClick();
+    }
+
+    static class PageTranformationInfo {
+        protected final Matrix mPagedTransMatrix = new Matrix();
+        protected boolean mIsMatrixDirty;
+        protected View mPagedView;
+
+        public void resetAndrecyle() {
+            mPagedView = null;
+            mPagedTransMatrix.reset();
+        }
     }
 
 }

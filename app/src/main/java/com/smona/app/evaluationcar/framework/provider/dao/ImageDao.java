@@ -80,7 +80,7 @@ public class ImageDao extends BaseDao<CarImageBean> {
                         + CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
         String[] whereArgs = new String[]{
                 (hasCarBillId ? carImage.carBillId + "" : carImage.imageId + ""),
-                          carImage.imageSeqNum + "", carImage.imageClass
+                carImage.imageSeqNum + "", carImage.imageClass
         };
         int count = mContentResolver.update(mTable.mContentUriNoNotify,
                 modelToContentValues(carImage), where, whereArgs);

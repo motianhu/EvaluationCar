@@ -37,8 +37,8 @@ public class StringUtils {
         char c = str.charAt(0);
         return (!Character.isLetter(c) || Character.isUpperCase(c)) ? str
                 : new StringBuilder(str.length())
-                        .append(Character.toUpperCase(c))
-                        .append(str.substring(1)).toString();
+                .append(Character.toUpperCase(c))
+                .append(str.substring(1)).toString();
     }
 
     public static String utf8Encode(String str) {

@@ -1,4 +1,3 @@
-
 package com.smona.app.evaluationcar.ui.common;
 
 import android.content.Context;

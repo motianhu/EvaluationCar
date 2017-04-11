@@ -28,18 +28,17 @@ public class StatusFragment extends ContentFragment {
     }
 
 
-
     protected void init(View root) {
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
-        LocalLayer view1 = (LocalLayer)ViewUtil.inflater(getContext(), R.layout.status_local_layer);
+        LocalLayer view1 = (LocalLayer) ViewUtil.inflater(getContext(), R.layout.status_local_layer);
 
-        AuditingLayer view2 = (AuditingLayer)ViewUtil.inflater(getContext(), R.layout.status_auditing_layer);
+        AuditingLayer view2 = (AuditingLayer) ViewUtil.inflater(getContext(), R.layout.status_auditing_layer);
 
-        NotPassLayer view3 = (NotPassLayer)ViewUtil.inflater(getContext(), R.layout.status_notpass_layer);
+        NotPassLayer view3 = (NotPassLayer) ViewUtil.inflater(getContext(), R.layout.status_notpass_layer);
 
-        PassLayer view4 = (PassLayer)ViewUtil.inflater(getContext(), R.layout.status_pass_layer);
+        PassLayer view4 = (PassLayer) ViewUtil.inflater(getContext(), R.layout.status_pass_layer);
 
 
         List<View> viewList = new ArrayList<View>();

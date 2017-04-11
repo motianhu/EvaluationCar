@@ -1,4 +1,3 @@
-
 package com.smona.app.evaluationcar.ui.status.local;
 
 import android.content.Context;
@@ -24,18 +23,30 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
+public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     private static final String TAG = LocalLayer.class.getSimpleName();
+    private static final int PAGE_SIZE = 10;
     private LocalListView mLocalListView = null;
     private View mNoDataLayout = null;
     private View mLoadingView = null;
     private View mHeadView;
     private View mFootView;
     private boolean mPullRequest = false;
-
-    private static final int PAGE_SIZE = 10;
     private int mCurPage = 1;
-    private int  mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+    private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+    private View.OnClickListener mReloadClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
+        }
+    };
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loadmoreFinish(PullToRefreshLayout.LAST);
+        }
+    };
 
     public LocalLayer(Context context) {
         super(context);
@@ -68,7 +79,7 @@ public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(LocalStatusBackgroundEvent event) {
         List<CarBillBean> datas = DataDelegator.getInstance().queryLocalCarbill(mCurPage, PAGE_SIZE);
-        if(datas.size() < PAGE_SIZE) {
+        if (datas.size() < PAGE_SIZE) {
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
         } else {
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -126,14 +137,6 @@ public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
         mFootView = findViewById(R.id.loadmore_view);
     }
 
-    private View.OnClickListener mReloadClickListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
-        }
-    };
-
     @Override
     protected void onRefresh() {
         refreshFinish(PullToRefreshLayout.SUCCEED);
@@ -155,12 +158,5 @@ public class LocalLayer extends PullToRefreshLayout  implements RequestFace {
             post();
         }
     }
-
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            loadmoreFinish(PullToRefreshLayout.LAST);
-        }
-    };
 
 }

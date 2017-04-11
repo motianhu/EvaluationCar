@@ -23,7 +23,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     public void changeFragment(int position) {
-        ((StatusFragment)mFragmentHome[3]).changeFragment(position);
+        ((StatusFragment) mFragmentHome[3]).changeFragment(position);
     }
 
     @Override

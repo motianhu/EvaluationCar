@@ -2,7 +2,7 @@ package com.smona.app.evaluationcar.framework.upload;
 
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
-import com.smona.app.evaluationcar.data.model.ResNormal;
+import com.smona.app.evaluationcar.data.model.ResNormalArray;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -16,13 +16,13 @@ public class ImageTask extends ActionTask {
     public void startTask() {
         if (carImageBean == null) {
             nextTask(mCarBillId);
-        } else if(carImageBean.imageUpdate == StatusUtils.IMAGE_UPDATE) {
+        } else if (carImageBean.imageUpdate == StatusUtils.IMAGE_UPDATE) {
             carImageBean.carBillId = mCarBillId;
             DataDelegator.getInstance().uploadImage(userName, carImageBean, new ResponseCallback<String>() {
                 @Override
                 public void onSuccess(String content) {
                     CarLog.d(TAG, "onSuccess mCarBillId=" + mCarBillId + ", result: " + content + "; carImageBean: " + carImageBean);
-                    ResNormal resModel = JsonParse.parseJson(content, ResNormal.class);
+                    ResNormalArray resModel = JsonParse.parseJson(content, ResNormalArray.class);
                     if (resModel.success) {
                         carImageBean.imagePath = resModel.object;
                         carImageBean.imageThumbPath = resModel.object;
@@ -45,7 +45,7 @@ public class ImageTask extends ActionTask {
                 @Override
                 public void onSuccess(String content) {
                     CarLog.d(TAG, "onSuccess mCarBillId=" + mCarBillId + ", result: " + content + "; carImageBean: " + carImageBean);
-                    ResNormal resModel = JsonParse.parseJson(content, ResNormal.class);
+                    ResNormalArray resModel = JsonParse.parseJson(content, ResNormalArray.class);
                     if (resModel.success) {
                         carImageBean.imagePath = resModel.object;
                         carImageBean.imageThumbPath = resModel.object;

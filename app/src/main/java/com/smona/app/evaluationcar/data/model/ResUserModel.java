@@ -6,5 +6,5 @@ import com.smona.app.evaluationcar.data.bean.UserInfoBean;
  * Created by Moth on 2017/3/29.
  */
 
-public class ResUser extends ResModel<UserInfoBean> {
+public class ResUserModel extends ResBaseModel<UserInfoBean> {
 }

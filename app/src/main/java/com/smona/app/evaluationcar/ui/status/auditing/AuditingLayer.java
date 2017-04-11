@@ -1,4 +1,3 @@
-
 package com.smona.app.evaluationcar.ui.status.auditing;
 
 import android.content.Context;
@@ -39,6 +38,46 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
 
     private CarbillParam mRequestParams = new CarbillParam();
+    private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
+            CarLog.d(TAG, "error: " + error);
+            AuditingStatusEvent event = new AuditingStatusEvent();
+            event.setContent(null);
+            EventProxy.post(event);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
+            int total = mRequestParams.curPage * mRequestParams.pageSize;
+            if (pages.total <= total) {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                saveToDB(pages.data);
+                notifyUpdateUI(pages.data);
+            } else {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+                notifyUpdateUI(pages.data);
+            }
+        }
+    };
+    private OnClickListener mReloadClickListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
+            DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+            mLoadingView.setVisibility(VISIBLE);
+            mNoDataLayout.setVisibility(GONE);
+        }
+    };
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loadmoreFinish(PullToRefreshLayout.LAST);
+        }
+    };
 
     public AuditingLayer(Context context) {
         super(context);
@@ -118,31 +157,6 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
         }
     }
 
-    private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
-            CarLog.d(TAG, "error: " + error);
-            AuditingStatusEvent event = new AuditingStatusEvent();
-            event.setContent(null);
-            EventProxy.post(event);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
-            int total = mRequestParams.curPage * mRequestParams.pageSize;
-            if (pages.total <= total) {
-                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
-                saveToDB(pages.data);
-                notifyUpdateUI(pages.data);
-            } else {
-                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
-                notifyUpdateUI(pages.data);
-            }
-        }
-    };
-
     private void saveToDB(List<CarBillBean> deltaList) {
         if (deltaList == null || deltaList.size() == 0) {
             return;
@@ -169,17 +183,6 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
         mFootView = findViewById(R.id.loadmore_view);
     }
 
-    private OnClickListener mReloadClickListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
-            DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
-            mLoadingView.setVisibility(VISIBLE);
-            mNoDataLayout.setVisibility(GONE);
-        }
-    };
-
     @Override
     protected void onRefresh() {
         refreshFinish(PullToRefreshLayout.SUCCEED);
@@ -201,11 +204,4 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
         }
     }
-
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            loadmoreFinish(PullToRefreshLayout.LAST);
-        }
-    };
 }

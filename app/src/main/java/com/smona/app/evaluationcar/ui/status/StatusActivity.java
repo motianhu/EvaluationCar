@@ -25,7 +25,7 @@ public class StatusActivity extends HeaderActivity {
     }
 
     private void initViews() {
-        CarBillBean bean = (CarBillBean)getIntent().getSerializableExtra(CacheContants.CARBILLBEAN);
+        CarBillBean bean = (CarBillBean) getIntent().getSerializableExtra(CacheContants.CARBILLBEAN);
 
         View parent = findViewById(R.id.carbill);
         TextView textKey = (TextView) parent.findViewById(R.id.key);
@@ -52,7 +52,7 @@ public class StatusActivity extends HeaderActivity {
         WebView webView = (WebView) findViewById(R.id.note);
         String str = "<html><head><title>欢迎你</title></head><body>"
                 + bean.applyAllOpinion
-                +"</body></html>";
+                + "</body></html>";
 
         webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
     }

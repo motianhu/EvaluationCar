@@ -12,9 +12,6 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
-import com.smona.app.evaluationcar.util.FileUtils;
-import com.smona.app.evaluationcar.util.MD5;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import java.util.List;
@@ -24,9 +21,6 @@ import java.util.List;
  */
 
 public class DataDelegator {
-    private static final String TAG = DataDelegator.class.getSimpleName();
-    private static final String CHARSET = "UTF-8";
-
     private volatile static DataDelegator sInstance;
 
     private DataDelegator() {
@@ -39,59 +33,19 @@ public class DataDelegator {
         return sInstance;
     }
 
-    private boolean checkCacheExit(String url) {
-        return FileUtils.isFileExist(getFilePathByUrl(url));
-    }
-
-    private String getFilePathByUrl(String url) {
-        String md5 = MD5.getMD5(url);
-        String allPath = DeviceStorageManager.getInstance().getMd5Path() + md5;
-        return allPath;
-    }
-
-    public boolean clearOldCacheByUrl(String url) {
-        boolean result = FileUtils.deleteFile(getFilePathByUrl(url));
-        return result;
-    }
-
-    public void saveNewCacheByUrl(Params params, String content) {
-        if (params instanceof UserParam) {
-            String url = UrlConstants.getInterface(UrlConstants.CHECK_USER);
-            clearOldCacheByUrl(url);
-            FileUtils.writeFile(getFilePathByUrl(url), content, false);
-        } else {
-
-        }
-    }
-
-    public String loadCacheByUrl(String url) {
-        if (checkCacheExit(url)) {
-            return FileUtils.readFile(getFilePathByUrl(url), CHARSET).toString();
-        } else {
-            return null;
-        }
-    }
-
-    public String loadUserInfo(String url) {
-        if (checkCacheExit(url)) {
-            return FileUtils.readFile(getFilePathByUrl(url), CHARSET).toString();
-        } else {
-            return null;
-        }
-    }
-
     public void checkUser(Params params, ResponseCallback callback) {
         if (params instanceof UserParam) {
-            String url = UrlConstants.getInterface(UrlConstants.CHECK_USER);
-            boolean cache = checkCacheExit(url);
+            UserParam user = (UserParam) params;
+            String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + user.userName;
+            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
             if (cache) {
-                String cacheData = loadCacheByUrl(url);
+                String cacheData = CacheDelegator.getInstance().loadCacheByUrl(url);
                 if (!TextUtils.isEmpty(cacheData)) {
                     CacheDelegator.getInstance().checkUser(cacheData, callback);
                     return;
                 }
             }
-            HttpDelegator.getInstance().checkUser((UserParam) params, callback);
+            HttpDelegator.getInstance().checkUser(user, callback);
         } else {
             callback.onFailed("params not UserParam!");
         }
@@ -100,7 +54,7 @@ public class DataDelegator {
     public void requestBanner(Params params, ResponseCallback callback) {
         if (params instanceof BannerParam) {
             String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-            boolean cache = checkCacheExit(url);
+            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
             if (cache) {
                 CacheDelegator.getInstance().requestBanner((BannerParam) params, callback);
             } else {
@@ -114,7 +68,7 @@ public class DataDelegator {
     public void requestNews(Params params, ResponseCallback callback) {
         if (params instanceof BannerParam) {
             String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-            boolean cache = checkCacheExit(url);
+            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
             if (cache) {
                 CacheDelegator.getInstance().requestNews((BannerParam) params, callback);
             } else {
@@ -144,7 +98,7 @@ public class DataDelegator {
 
     public void requestImageMeta(ResponseCallback<String> callback) {
         String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-        boolean cache = checkCacheExit(url);
+        boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
         if (cache) {
             CacheDelegator.getInstance().queryOperationDesc(callback);
         } else {
@@ -154,7 +108,7 @@ public class DataDelegator {
 
     public void requestCarbillCount(String userName, ResponseCallback<String> callback) {
         String url = UrlConstants.getInterface(UrlConstants.QUERY_CARBILL_COUNT);
-        boolean cache = checkCacheExit(url);
+        boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
         if (cache) {
             CacheDelegator.getInstance().queryCarbillCount(callback);
         } else {
@@ -164,7 +118,7 @@ public class DataDelegator {
 
     public void requestNotice(ResponseCallback<String> callback) {
         String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-        boolean cache = checkCacheExit(url);
+        boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
         if (cache) {
             CacheDelegator.getInstance().requestNotice(callback);
         } else {
@@ -174,5 +128,9 @@ public class DataDelegator {
 
     public ImageMetaBean requestImageMeta(String imageClass, int imageSeqNum) {
         return DBDelegator.getInstance().queryImageMeta(imageClass, imageSeqNum);
+    }
+
+    public void getUpgradeInfo(ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().requestUpgradeInfo(callback);
     }
 }

@@ -27,13 +27,20 @@ import com.smona.app.evaluationcar.R;
 
 public class XListView extends ListView implements OnScrollListener {
     private static final String TAG = "XListView";
+    private final static int SCROLLBACK_HEADER = 0;
+    private final static int SCROLLBACK_FOOTER = 1;
+    private final static int SCROLL_DURATION = 400; // scroll back duration
+    private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
+    // at bottom, trigger
+    // load more.
+    private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
+    // feature.
+    private final static int STAY_DURATION = 1000; // stay to show status
     private float mLastY = -1; // save event y
     private Scroller mScroller; // used for scroll back
     private OnScrollListener mScrollListener; // user's scroll listener
-
     // the interface to trigger refresh and load more.
     private IXListViewListener mListViewListener;
-
     // -- header view
     private XListViewHeader mHeaderView;
     // header view content, use it to calculate the Header's height. And hide it
@@ -43,29 +50,15 @@ public class XListView extends ListView implements OnScrollListener {
     private int mHeaderViewHeight; // header view's height
     private boolean mEnablePullRefresh = true;
     private boolean mPullRefreshing = false; // is refreashing.
-
     // -- footer view
     private XListViewFooter mFooterView;
     private boolean mEnablePullLoad;
     private boolean mPullLoading;
     private boolean mIsFooterReady = false;
-
     // total list items, used to detect is at the bottom of listview.
     private int mTotalItemCount;
-
     // for mScroller, scroll back from header or footer.
     private int mScrollBack;
-    private final static int SCROLLBACK_HEADER = 0;
-    private final static int SCROLLBACK_FOOTER = 1;
-
-    private final static int SCROLL_DURATION = 400; // scroll back duration
-    private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
-    // at bottom, trigger
-    // load more.
-    private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
-    // feature.
-    private final static int STAY_DURATION = 1000; // stay to show status
-
     private boolean mEnablePullDown = false;
     private int mResultStatue;
 

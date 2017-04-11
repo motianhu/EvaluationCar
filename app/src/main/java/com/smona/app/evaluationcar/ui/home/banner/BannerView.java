@@ -28,6 +28,16 @@ public class BannerView extends FrameLayout {
 
     private List<BannerItem> mDataList = new ArrayList<BannerItem>();
     private Object mLock = new Object();
+    private BannerViewPager.PageSelecteListener mSelectListener = new BannerViewPager.PageSelecteListener() {
+        @Override
+        public void onPageSelecteListener(int pos) {
+            setIndicatorEnabled(pos % mIndicatorCount);
+        }
+    };
+
+    public BannerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     @Override
     protected void onAttachedToWindow() {
@@ -37,10 +47,6 @@ public class BannerView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-    }
-
-    public BannerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
     }
 
     @Override
@@ -73,7 +79,6 @@ public class BannerView extends FrameLayout {
         updateBannerView(context, mPageCount);
         updateIndicator(context, mIndicatorGroup, mIndicatorCount);
     }
-
 
     private void updateBannerView(final Context context, int count) {
         mBannerViewPager.update(mDataList);
@@ -136,11 +141,4 @@ public class BannerView extends FrameLayout {
             mPageCount = size;
         }
     }
-
-    private BannerViewPager.PageSelecteListener mSelectListener = new BannerViewPager.PageSelecteListener() {
-        @Override
-        public void onPageSelecteListener(int pos) {
-            setIndicatorEnabled(pos % mIndicatorCount);
-        }
-    };
 }

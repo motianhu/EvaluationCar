@@ -14,9 +14,9 @@ import java.io.IOException;
 
 public class BitmapUtil {
 
+    public static final Paint HIGH_PAINT = new Paint(Paint.FILTER_BITMAP_FLAG);
     private static final Bitmap.Config DEFAULT_BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int MAX_DIFFER_PX = 10;
-    public static final Paint HIGH_PAINT = new Paint(Paint.FILTER_BITMAP_FLAG);
 
     public static Bitmap createBitmap(int width, int height, Bitmap.Config config) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, config);

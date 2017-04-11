@@ -16,12 +16,12 @@ public abstract class AbstractAdapter<T> extends BaseAdapter implements View.OnC
     protected Context mContext;
     protected List<T> mDatas;
 
-    public abstract void update(List<T> datas);
-
     public AbstractAdapter(Context context) {
         mDatas = new ArrayList<T>();
         mContext = context;
     }
+
+    public abstract void update(List<T> datas);
 
     @Override
     public int getCount() {

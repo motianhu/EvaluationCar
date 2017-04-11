@@ -3,10 +3,9 @@ package com.smona.app.evaluationcar.data.model;
 import java.util.List;
 
 /**
- * Created by motianhu on 4/7/17.
+ * Created by Moth on 2017/4/8.
  */
 
-public class ResPage<T> {
-    public int total;
+public class ResBaseArray<T> {
     public List<T> data;
 }

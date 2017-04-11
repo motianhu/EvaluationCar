@@ -37,7 +37,7 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpStatus(Context context, CarBillBean bean,Class clazz) {
+    public static void jumpStatus(Context context, CarBillBean bean, Class clazz) {
         Intent intent = new Intent();
         intent.putExtra(CacheContants.CARBILLBEAN, bean);
         intent.setClass(context, clazz);

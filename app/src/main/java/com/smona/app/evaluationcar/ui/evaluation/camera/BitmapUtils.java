@@ -35,13 +35,12 @@ import java.io.IOException;
  * Bitmap处理工具
  */
 public class BitmapUtils {
-    private BitmapUtils() {
-    }
-
     public static final int Config_480P = 1;// 800*480
     public static final int Config_720P = 2;// 1280*720
     public static final int Config_1080P = 3;// 1920*1080
     public static final int Config_2K = 4;// 2560*1440
+    private BitmapUtils() {
+    }
 
     private static int getSize(int config) {
         int size = 0;
@@ -291,19 +290,16 @@ public class BitmapUtils {
     /**
      * 图片压缩处理（使用Options的方法）
      *
+     * @param reqWidth  目标宽度
+     * @param reqHeight 目标高度
      * @使用方法 首先你要将Options的inJustDecodeBounds属性设置为true，BitmapFactory.decode一次图片。
-     *       然后将Options连同期望的宽度和高度一起传递到到本方法中。
-     *       之后再使用本方法的返回值做参数调用BitmapFactory.decode创建图片。
-     *
+     * 然后将Options连同期望的宽度和高度一起传递到到本方法中。
+     * 之后再使用本方法的返回值做参数调用BitmapFactory.decode创建图片。
      * @explain BitmapFactory创建bitmap会尝试为已经构建的bitmap分配内存
-     *          ，这时就会很容易导致OOM出现。为此每一种创建方法都提供了一个可选的Options参数
-     *          ，将这个参数的inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存
-     *          ，返回值也不再是一个Bitmap对象， 而是null。虽然Bitmap是null了，但是Options的outWidth、
-     *          outHeight和outMimeType属性都会被赋值。
-     * @param reqWidth
-     *            目标宽度
-     * @param reqHeight
-     *            目标高度
+     * ，这时就会很容易导致OOM出现。为此每一种创建方法都提供了一个可选的Options参数
+     * ，将这个参数的inJustDecodeBounds属性设置为true就可以让解析方法禁止为bitmap分配内存
+     * ，返回值也不再是一个Bitmap对象， 而是null。虽然Bitmap是null了，但是Options的outWidth、
+     * outHeight和outMimeType属性都会被赋值。
      */
     public static BitmapFactory.Options calculateInSampleSize(
             final BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -607,23 +603,6 @@ public class BitmapUtils {
     }
 
     /**
-     * 镜像水平翻转
-     *
-     * @param bmp
-     * @return
-     */
-    public Bitmap convertMirrorBmp(Bitmap bmp) {
-        int w = bmp.getWidth();
-        int h = bmp.getHeight();
-
-        Matrix matrix = new Matrix();
-        matrix.postScale(-1, 1); // 镜像水平翻转
-        Bitmap convertBmp = Bitmap.createBitmap(bmp, 0, 0, w, h, matrix, true);
-
-        return convertBmp;
-    }
-
-    /**
      * 垂直翻转
      *
      * @param bmp
@@ -691,7 +670,6 @@ public class BitmapUtils {
         drawable.draw(canvas);
         return bitmap;
     }
-
 
     /**
      * 把被系统旋转了的图片，转正
@@ -774,7 +752,6 @@ public class BitmapUtils {
         return bitmap;
     }
 
-
     /**
      * 将View转为Bitmap
      *
@@ -836,11 +813,12 @@ public class BitmapUtils {
 
     /**
      * 创建期望大小的bitmap
+     *
      * @param bitmap
      * @param reqWidth
      * @return
      */
-    public static Bitmap createBitmap(Bitmap bitmap, int reqWidth, int reqHeight){
+    public static Bitmap createBitmap(Bitmap bitmap, int reqWidth, int reqHeight) {
         Bitmap bmp = null;
         int inSampleSize = 0;
 
@@ -857,9 +835,9 @@ public class BitmapUtils {
             inSampleSize = heightRatio < widthRatio ? widthRatio : heightRatio;
         }
         try {
-            if(inSampleSize != 0){
-                bmp = Bitmap.createBitmap(bWidth/inSampleSize, bHeight/inSampleSize, Config.ARGB_8888);
-            }else{
+            if (inSampleSize != 0) {
+                bmp = Bitmap.createBitmap(bWidth / inSampleSize, bHeight / inSampleSize, Config.ARGB_8888);
+            } else {
                 bmp = Bitmap.createBitmap(bWidth, bHeight, Config.ARGB_8888);
             }
         } catch (OutOfMemoryError e) {
@@ -867,9 +845,9 @@ public class BitmapUtils {
             while (bmp == null) {
                 System.gc();
                 System.runFinalization();
-                if(inSampleSize != 0){
-                    bmp = Bitmap.createBitmap(bWidth/inSampleSize, bHeight/inSampleSize, Config.ARGB_8888);
-                }else{
+                if (inSampleSize != 0) {
+                    bmp = Bitmap.createBitmap(bWidth / inSampleSize, bHeight / inSampleSize, Config.ARGB_8888);
+                } else {
                     bmp = Bitmap.createBitmap(bWidth, bHeight, Config.ARGB_8888);
                 }
             }
@@ -927,6 +905,23 @@ public class BitmapUtils {
         contrast_canvas.drawBitmap(bitmap, 0, 0, contrast_paint);
 
         return contrast_bmp;
+    }
+
+    /**
+     * 镜像水平翻转
+     *
+     * @param bmp
+     * @return
+     */
+    public Bitmap convertMirrorBmp(Bitmap bmp) {
+        int w = bmp.getWidth();
+        int h = bmp.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(-1, 1); // 镜像水平翻转
+        Bitmap convertBmp = Bitmap.createBitmap(bmp, 0, 0, w, h, matrix, true);
+
+        return convertBmp;
     }
 
 }

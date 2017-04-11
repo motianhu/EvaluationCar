@@ -20,27 +20,72 @@ import java.util.List;
 
 @SuppressLint("NewApi")
 public class BannerViewPager extends BaseViewPager {
+    final static float START_DAMPING_TOUCH_SLOP_ANGLE = (float) Math.PI / 6;
+    final static float MAX_SWIPE_ANGLE = (float) Math.PI / 3;
+    final static float TOUCH_SLOP_DAMPING_FACTOR = 4;
     private static final String TAG = "BannerViewPager";
     private static final int CHILD_COUNT = 2;
     // touch
     private final static int MIN_DIS = 10;
-    final static float START_DAMPING_TOUCH_SLOP_ANGLE = (float) Math.PI / 6;
-    final static float MAX_SWIPE_ANGLE = (float) Math.PI / 3;
-    final static float TOUCH_SLOP_DAMPING_FACTOR = 4;
-
+    // click
+    OnSingleTouchListener onSingleTouchListener;
     private boolean mScrollEnable = false;
     private List<BannerItem> mDataList = new ArrayList<BannerItem>();
     private int mCurrentIndex = 0;
     private int mCurrentPos = 0;
     private int mDirection = SCROLL_DIRECTION_MEDDILE;
     private PageSelecteListener mPageSelecteListener = null;
-
     private PointF mDownP = new PointF();
     private PointF mCurrP = new PointF();
     private boolean mIsCalc = false;
+    private PageListener mPageListener = new PageListener() {
 
-    // click
-    OnSingleTouchListener onSingleTouchListener;
+        @Override
+        public void onPageSrcollStateChange(int state) {
+
+        }
+
+        @Override
+        public void onPageSelseted(int index) {
+            if (index != mCurrentIndex) {
+                mCurrentIndex = index;
+                setNewPostion(mDirection);
+                if (mPageSelecteListener != null) {
+                    mPageSelecteListener.onPageSelecteListener(mCurrentPos);
+                }
+            }
+        }
+
+        @Override
+        public void onPageScrollDirection(int direction) {
+            if (direction == SCROLL_DIRECTION_LEFT
+                    && mDirection != SCROLL_DIRECTION_LEFT) {
+                mDirection = direction;
+                int index = getLeftIndex();
+                int pos = getLeftPos();
+                requestImage(pos, index);
+            } else if (direction == SCROLL_DIRECTION_RIGHT
+                    && mDirection != SCROLL_DIRECTION_RIGHT) {
+                mDirection = direction;
+                int index = getRightIndex();
+                int pos = getRightPos();
+                requestImage(pos, index);
+            } else if (direction == SCROLL_DIRECTION_MEDDILE) {
+                mDirection = direction;
+            }
+        }
+    };
+    private OnSingleTouchListener mPageClickListener = new OnSingleTouchListener() {
+        @Override
+        public void onSingleTouch() {
+            if (mDataList.size() <= mCurrentPos) {
+                return;
+            }
+            BannerItem info = mDataList.get(mCurrentPos);
+            ActivityUtils.jumpBannerDetail(getContext(), info);
+        }
+
+    };
 
     public BannerViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -146,17 +191,9 @@ public class BannerViewPager extends BaseViewPager {
         super.stopAutoScroll();
     }
 
-    public interface OnSingleTouchListener {
-        void onSingleTouch();
-    }
-
     public void setOnSingleTouchListener(
             OnSingleTouchListener onSingleTouchListener) {
         this.onSingleTouchListener = onSingleTouchListener;
-    }
-
-    public interface PageSelecteListener {
-        void onPageSelecteListener(int pos);
     }
 
     public void setPageSelecteListener(PageSelecteListener listener) {
@@ -201,44 +238,6 @@ public class BannerViewPager extends BaseViewPager {
             ImageLoaderProxy.loadImage(url, view);
         }
     }
-
-    private PageListener mPageListener = new PageListener() {
-
-        @Override
-        public void onPageSrcollStateChange(int state) {
-
-        }
-
-        @Override
-        public void onPageSelseted(int index) {
-            if (index != mCurrentIndex) {
-                mCurrentIndex = index;
-                setNewPostion(mDirection);
-                if (mPageSelecteListener != null) {
-                    mPageSelecteListener.onPageSelecteListener(mCurrentPos);
-                }
-            }
-        }
-
-        @Override
-        public void onPageScrollDirection(int direction) {
-            if (direction == SCROLL_DIRECTION_LEFT
-                    && mDirection != SCROLL_DIRECTION_LEFT) {
-                mDirection = direction;
-                int index = getLeftIndex();
-                int pos = getLeftPos();
-                requestImage(pos, index);
-            } else if (direction == SCROLL_DIRECTION_RIGHT
-                    && mDirection != SCROLL_DIRECTION_RIGHT) {
-                mDirection = direction;
-                int index = getRightIndex();
-                int pos = getRightPos();
-                requestImage(pos, index);
-            } else if (direction == SCROLL_DIRECTION_MEDDILE) {
-                mDirection = direction;
-            }
-        }
-    };
 
     private void setNewPostion(int direction) {
         if (direction == SCROLL_DIRECTION_LEFT) {
@@ -287,15 +286,11 @@ public class BannerViewPager extends BaseViewPager {
         return mCurrentPos + 1;
     }
 
-    private OnSingleTouchListener mPageClickListener = new OnSingleTouchListener() {
-        @Override
-        public void onSingleTouch() {
-            if (mDataList.size() <= mCurrentPos) {
-                return;
-            }
-            BannerItem info = mDataList.get(mCurrentPos);
-            ActivityUtils.jumpBannerDetail(getContext(), info);
-        }
+    public interface OnSingleTouchListener {
+        void onSingleTouch();
+    }
 
-    };
+    public interface PageSelecteListener {
+        void onPageSelecteListener(int pos);
+    }
 }

@@ -21,13 +21,12 @@ import java.util.List;
  */
 
 public abstract class BaseDao<T> {
-    private static final String TAG = BaseDao.class.getSimpleName();
     public static final int TYPE_INSERT = 0x1;
     public static final int TYPE_DELETE = 0x2;
     public static final int TYPE_UPDATE = 0x3;
     public static final int SINGLE_AFFECT_DATA = 0x1;
     public static final int LIST_AFFECT_DATA = 0x2;
-
+    private static final String TAG = BaseDao.class.getSimpleName();
     protected BaseTable mTable;
     protected Context mContext;
     protected ContentResolver mContentResolver;
@@ -123,7 +122,7 @@ public abstract class BaseDao<T> {
         if (itemInfo == null) {
             return false;
         }
-        return  mContentResolver.insert(mTable.mContentUriNoNotify, modelToContentValues(itemInfo)) != null;
+        return mContentResolver.insert(mTable.mContentUriNoNotify, modelToContentValues(itemInfo)) != null;
     }
 
     public void clear() {

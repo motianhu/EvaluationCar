@@ -4,18 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SPUtil {
-    private static final String TAG = "SPUtil";
     /**
      * 保存在手机里面的文件名
      */
     public static final String FILE_NAME = "cache_data";
-
     // time relative
     public static final String HOME_LAST_UPDATE_TIME = "last_update_time";
+    private static final String TAG = "SPUtil";
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
-     * 
+     *
      * @param context
      * @param key
      * @param object
@@ -46,7 +45,7 @@ public class SPUtil {
 
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
-     * 
+     *
      * @param context
      * @param key
      * @param defaultObject
@@ -74,7 +73,7 @@ public class SPUtil {
 
     /**
      * 移除某个key值已经对应的值
-     * 
+     *
      * @param context
      * @param key
      */
@@ -88,7 +87,7 @@ public class SPUtil {
 
     /**
      * 清除所有数据
-     * 
+     *
      * @param context
      */
     public static void clear(Context context) {

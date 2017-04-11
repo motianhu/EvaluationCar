@@ -27,20 +27,14 @@ import java.util.HashMap;
 
 public class EvaluationProvider extends ContentProvider {
     private final static String TAG = EvaluationProvider.class.getSimpleName();
-
-    private DatabaseHelper mDataHelper;
-
     private static final String PARAMETER_NOTIFY = "notify";
-
     private static final int CODE_BASE = 0;
     private static final int CODE_CARBILL = CODE_BASE + 1;
     private static final int CODE_CARIMAGE = CODE_BASE + 2;
     private static final int CODE_IMAGEMETA = CODE_BASE + 3;
     private static final int CODE_UPLOADTASK = CODE_BASE + 4;
-
     private static final UriMatcher URI_MATCH = new UriMatcher(
             UriMatcher.NO_MATCH);
-
     private static HashMap<Integer, String> TABLE_MATCH = new HashMap<Integer, String>();
 
     static {
@@ -58,6 +52,8 @@ public class EvaluationProvider extends ContentProvider {
         TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_UPLOADTASK, UploadTaskTable.TABLE_NAME);
     }
+
+    private DatabaseHelper mDataHelper;
 
     @Override
     public boolean onCreate() {

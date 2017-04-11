@@ -22,7 +22,9 @@ public abstract class BaseTable implements BaseColumns {
     }
 
     protected abstract String getTableName();
+
     protected abstract String createTableSql();
+
     protected abstract String updateTableSql();
 
     public String dropTableSql() {

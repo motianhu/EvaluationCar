@@ -33,7 +33,7 @@ public class BannerHeader extends LinearLayout {
     }
 
     public void update(List<BannerItem> bannerList) {
-        if(bannerList == null || bannerList.size() <=0) {
+        if (bannerList == null || bannerList.size() <= 0) {
             ViewUtil.setViewVisible(mBanner, false);
         } else {
             ViewUtil.setViewVisible(mBanner, true);

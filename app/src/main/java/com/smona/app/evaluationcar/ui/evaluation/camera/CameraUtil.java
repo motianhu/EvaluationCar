@@ -33,7 +33,7 @@ public class CameraUtil {
         }
     }
 
-    public void camera(Activity activity){
+    public void camera(Activity activity) {
         Intent intent = new Intent(activity, CameraActivity.class);
         activity.startActivityForResult(intent, AppConstant.REQUEST_CODE.CAMERA);
     }
@@ -46,7 +46,7 @@ public class CameraUtil {
      * @param camera
      */
     public void setCameraDisplayOrientation(Activity activity,
-                                                   int cameraId, Camera camera) {
+                                            int cameraId, Camera camera) {
         Camera.CameraInfo info =
                 new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, info);
@@ -54,10 +54,18 @@ public class CameraUtil {
                 .getRotation();
         int degrees = 0;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
         }
 
         int result;
@@ -84,7 +92,7 @@ public class CameraUtil {
      * @param angle 旋转角度
      * @return bitmap 图片
      */
-    public  Bitmap rotaingImageView(int id, int angle, Bitmap bitmap) {
+    public Bitmap rotaingImageView(int id, int angle, Bitmap bitmap) {
         //旋转图片 动作
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
@@ -121,36 +129,9 @@ public class CameraUtil {
         return list.get(i);
     }
 
-    //升序 按照高度
-    public class CameraAscendSizeComparatorForHeight implements Comparator<Size> {
-        public int compare(Size lhs, Size rhs) {
-            if (lhs.height == rhs.height) {
-                return 0;
-            } else if (lhs.height > rhs.height) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-    }
-
     public boolean equalRate(Size s, float rate) {
         float r = (float) (s.width) / (float) (s.height);
         return Math.abs(r - rate) <= 0.03;
-    }
-
-    //升序
-    public class CameraAscendSizeComparator implements Comparator<Size> {
-        public int compare(Size lhs, Size rhs) {
-            if (lhs.width == rhs.width) {
-                return 0;
-            } else if (lhs.width > rhs.width) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }
-
     }
 
     /**
@@ -183,7 +164,6 @@ public class CameraUtil {
         }
     }
 
-
     /**
      * 自动模式闪光灯
      *
@@ -214,7 +194,6 @@ public class CameraUtil {
         }
     }
 
-
     /**
      * 关闭闪光灯
      *
@@ -242,5 +221,32 @@ public class CameraUtil {
             } else {
             }
         }
+    }
+
+    //升序 按照高度
+    public class CameraAscendSizeComparatorForHeight implements Comparator<Size> {
+        public int compare(Size lhs, Size rhs) {
+            if (lhs.height == rhs.height) {
+                return 0;
+            } else if (lhs.height > rhs.height) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    //升序
+    public class CameraAscendSizeComparator implements Comparator<Size> {
+        public int compare(Size lhs, Size rhs) {
+            if (lhs.width == rhs.width) {
+                return 0;
+            } else if (lhs.width > rhs.width) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
     }
 }

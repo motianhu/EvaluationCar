@@ -8,19 +8,19 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
  */
 
 public class ProxyFactory {
-    private volatile static  ProxyFactory sProxyFactory;
+    private volatile static ProxyFactory sProxyFactory;
     private IProxy mImageLoaderProxy;
     private IProxy mEventProxy;
     private IProxy mHttpProxy;
 
-    private ProxyFactory(){
+    private ProxyFactory() {
         mImageLoaderProxy = new ImageLoaderProxy();
         mEventProxy = new EventProxy();
     }
 
     public static ProxyFactory getInstance() {
         synchronized (ProxyFactory.class) {
-            if(sProxyFactory == null) {
+            if (sProxyFactory == null) {
                 sProxyFactory = new ProxyFactory();
             }
             return sProxyFactory;
@@ -28,10 +28,10 @@ public class ProxyFactory {
     }
 
     public ImageLoaderProxy getImageLoaderProxy() {
-        return (ImageLoaderProxy)mImageLoaderProxy;
+        return (ImageLoaderProxy) mImageLoaderProxy;
     }
 
     public EventProxy getEventProxy() {
-        return (EventProxy)mEventProxy;
+        return (EventProxy) mEventProxy;
     }
 }

@@ -20,18 +20,18 @@ public class CompleteTask extends ActionTask {
         } else {
             carBill.carBillId = mCarBillId;
             DataDelegator.getInstance().submitCarBill(userName, carBill, new ResponseCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
-                        DBDelegator.getInstance().updateCarBill(carBill);
-                        nextTask(mCarBillId);
-                    }
+                @Override
+                public void onSuccess(String result) {
+                    CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
+                    DBDelegator.getInstance().updateCarBill(carBill);
+                    nextTask(mCarBillId);
+                }
 
-                    @Override
-                    public void onFailed(String error) {
-                        CarLog.d(TAG, "onError ex: " + error);
-                        nextTask(mCarBillId);
-                    }
+                @Override
+                public void onFailed(String error) {
+                    CarLog.d(TAG, "onError ex: " + error);
+                    nextTask(mCarBillId);
+                }
             });
         }
 

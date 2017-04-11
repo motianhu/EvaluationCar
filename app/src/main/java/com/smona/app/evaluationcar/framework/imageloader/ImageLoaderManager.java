@@ -13,36 +13,6 @@ import com.smona.app.evaluationcar.framework.EvaluationApp;
 public class ImageLoaderManager {
     private static final String TAG = "ImageLoaderManager";
     private volatile static ImageLoaderManager sInstance;
-
-    public synchronized static ImageLoaderManager getInstance() {
-        if (sInstance == null) {
-            sInstance = new ImageLoaderManager();
-        }
-        return sInstance;
-    }
-
-    private ImageLoaderManager() {
-    }
-
-    public void initImageLoader(Context appContext) {
-        if (!(appContext instanceof EvaluationApp)) {
-            throw new RuntimeException("appContext is not Application Context!");
-        }
-        ImageLoaderConfig.initImageLoader(appContext, null);
-    }
-
-    public void loadImage(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getBannerOptions(), mImageListenser);
-    }
-
-    public void loadWaterImage(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getWaterOptions(), mImageListenser);
-    }
-
-    public void loadImageDesc(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getImageDesc(), mImageListenser);
-    }
-
     ImageLoadingListener mImageListenser = new ImageLoadingListener() {
 
         @Override
@@ -66,4 +36,33 @@ public class ImageLoaderManager {
             //CarLog.d(this, "onLoadingCancelled imageUri: " + imageUri);
         }
     };
+
+    private ImageLoaderManager() {
+    }
+
+    public synchronized static ImageLoaderManager getInstance() {
+        if (sInstance == null) {
+            sInstance = new ImageLoaderManager();
+        }
+        return sInstance;
+    }
+
+    public void initImageLoader(Context appContext) {
+        if (!(appContext instanceof EvaluationApp)) {
+            throw new RuntimeException("appContext is not Application Context!");
+        }
+        ImageLoaderConfig.initImageLoader(appContext, null);
+    }
+
+    public void loadImage(String uri, ImageView imageView) {
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getBannerOptions(), mImageListenser);
+    }
+
+    public void loadWaterImage(String uri, ImageView imageView) {
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getWaterOptions(), mImageListenser);
+    }
+
+    public void loadImageDesc(String uri, ImageView imageView) {
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getImageDesc(), mImageListenser);
+    }
 }

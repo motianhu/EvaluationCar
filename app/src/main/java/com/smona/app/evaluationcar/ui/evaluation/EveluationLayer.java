@@ -47,6 +47,32 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
     private View mPass;
 
     private UserItem mUser;
+    private ResponseCallback<String> mCallbillCountCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mCallbillCountCallback onFailed error= " + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mCallbillCountCallback onSuccess content= " + content);
+            ResCountPage resCountPage = JsonParse.parseJson(content, ResCountPage.class);
+            notifyUICount(resCountPage);
+        }
+    };
+    private ResponseCallback<String> mNoticeCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mNoticeCallback onFailed error= " + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mNoticeCallback onSuccess content= " + content);
+            ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
+            notifyUINotice(newsPage);
+        }
+    };
 
     public EveluationLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -114,7 +140,6 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         post();
     }
 
-
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice(mNoticeCallback);
@@ -146,39 +171,11 @@ public class EveluationLayer extends BaseRelativeLayout implements View.OnClickL
         }
     }
 
-    private ResponseCallback<String> mCallbillCountCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "mCallbillCountCallback onFailed error= " + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mCallbillCountCallback onSuccess content= " + content);
-            ResCountPage resCountPage = JsonParse.parseJson(content, ResCountPage.class);
-            notifyUICount(resCountPage);
-        }
-    };
-
     private void notifyUICount(ResCountPage page) {
         BillTotalEvent event = new BillTotalEvent();
         event.setContent(page);
         EventProxy.post(event);
     }
-
-    private ResponseCallback<String> mNoticeCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "mNoticeCallback onFailed error= " + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mNoticeCallback onSuccess content= " + content);
-            ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
-            notifyUINotice(newsPage);
-        }
-    };
 
     private void notifyUINotice(ResNewsPage page) {
         NoticeEvent event = new NoticeEvent();

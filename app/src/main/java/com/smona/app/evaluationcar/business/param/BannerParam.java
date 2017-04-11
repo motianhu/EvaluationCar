@@ -5,7 +5,7 @@ package com.smona.app.evaluationcar.business.param;
  */
 
 public class BannerParam extends Params {
-    public static final String CLASSTYPE= "classType";
+    public static final String CLASSTYPE = "classType";
 
     public String classType;
 }

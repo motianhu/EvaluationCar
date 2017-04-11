@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtils {
-    private static final String TAG = "FileUtils";
-
     public static final String NAME_SPLIT = "_&_";
     public static final String JPG = ".jpg";
     public static final String JPEG = ".jpeg";
@@ -27,8 +25,8 @@ public class FileUtils {
     public static final String ZIP_NO_DOT = "zip";
     public static final String APK_SUFFIX = ".apk";
     public static final String APK_SUFFIX_NO_DOT = "apk";
-
     public final static String FILE_EXTENSION_SEPARATOR = ".";
+    private static final String TAG = "FileUtils";
 
     private FileUtils() {
         throw new AssertionError();

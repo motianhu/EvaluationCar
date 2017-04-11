@@ -13,7 +13,7 @@ import java.util.List;
  * Created by motianhu on 3/21/17.
  */
 
-public class ImageMetaDao extends BaseDao<ImageMetaBean>  {
+public class ImageMetaDao extends BaseDao<ImageMetaBean> {
 
     public ImageMetaDao(Context context) {
         super(context);

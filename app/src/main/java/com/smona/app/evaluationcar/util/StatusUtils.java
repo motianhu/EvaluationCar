@@ -23,6 +23,7 @@ public class StatusUtils {
 
 
     public static final HashMap<Integer, String> BILL_STATUS_MAP = new HashMap<Integer, String>();
+
     static {
         BILL_STATUS_MAP.put(21, "等待初审");
         BILL_STATUS_MAP.put(22, "初审中");

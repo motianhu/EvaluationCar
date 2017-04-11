@@ -115,12 +115,10 @@ public class SystemUtils {
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    public static int dp2sp(Context context, float dpValue){
-        float px=dp2px(context,dpValue);
-        return px2sp(context,px);
+    public static int dp2sp(Context context, float dpValue) {
+        float px = dp2px(context, dpValue);
+        return px2sp(context, px);
     }
-
-
 
 
     /**

@@ -6,5 +6,5 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
  * Created by Moth on 2017/3/24.
  */
 
-public class ResCarBill extends ResModel<CarBillBean> {
+public class ResCarBillModel extends ResBaseModel<CarBillBean> {
 }
