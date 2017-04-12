@@ -2,6 +2,8 @@ package com.smona.app.evaluationcar.ui.evaluation.camera;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -30,7 +33,6 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
-import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
@@ -38,6 +40,7 @@ import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -55,6 +58,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     //屏幕宽高
     private int mScreenWidth;
+    private int mScreenHeight;
     private int mPicHeight;
 
     //闪光灯模式 0:关闭 1: 开启 2: 自动
@@ -198,8 +202,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void initOther() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         DisplayMetrics dm = getResources().getDisplayMetrics();
         mScreenWidth = dm.widthPixels;
+        mScreenHeight = dm.heightPixels;
     }
 
     private void initView() {
@@ -411,7 +417,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         DBDelegator.getInstance().insertCarImage(mCurCarImage);
 
-        if(mCarBill == null) {
+        if (mCarBill == null) {
             mCarBill = new CarBillBean();
             mCarBill.imageId = mImageId;
             mCarBill.createTime = DateUtils.getCurrDate();
@@ -558,6 +564,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         releaseCamera();
@@ -592,6 +603,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         } catch (IOException e) {
             e.printStackTrace();
             CarLog.d(TAG, "startPreview e: " + e);
+        } catch(RuntimeException e) {
+            e.printStackTrace();
+            CarLog.d(TAG, "startPreview e: " + e);
+            ToastUtils.show(this, R.string.camera_busy_now);
+            finish();
         }
     }
 
@@ -643,6 +659,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         camera.setParameters(parameters);
 
+        int surfaceW = mScreenWidth - getResources().getDimensionPixelSize(R.dimen.camera_left_w)  - getResources().getDimensionPixelSize(R.dimen.camera_right_w) ;
+        int surfaceH = surfaceW * 4 / 3;
+        ViewGroup.LayoutParams localLayoutParams = mSurfaceView.getLayoutParams();
+        localLayoutParams.width = surfaceW;
+        localLayoutParams.height = surfaceH;
+        mSurfaceView.setLayoutParams(localLayoutParams);
+
         /**
          * 设置surfaceView的尺寸 因为camera默认是横屏，所以取得支持尺寸也都是横屏的尺寸
          * 我们在startPreview方法里面把它矫正了过来，但是这里我们设置设置surfaceView的尺寸的时候要注意 previewSize.height<previewSize.width
@@ -651,6 +674,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
          *
          */
         mPicHeight = (mScreenWidth * pictrueSize.width) / pictrueSize.height;
+        CarLog.d(TAG, "setupCamera previewSize=" + previewSize.width + "," + previewSize.height + "; pictrueSize=" + pictrueSize.width + "," + pictrueSize.height + ", mPicHeight=" + mPicHeight + ", mScreenWidth=" + mScreenWidth);
     }
 
     /**

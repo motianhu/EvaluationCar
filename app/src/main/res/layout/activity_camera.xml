@@ -4,7 +4,7 @@
 
     <RelativeLayout
         android:id="@+id/left"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/camera_left_w"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:background="@color/camera_split_side"
@@ -31,7 +31,7 @@
 
     <RelativeLayout
         android:id="@+id/right"
-        android:layout_width="110dp"
+        android:layout_width="@dimen/camera_right_w"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:background="@color/camera_split_side"
@@ -77,6 +77,7 @@
 
         <SurfaceView
             android:id="@+id/surfaceView"
+            android:keepScreenOn="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

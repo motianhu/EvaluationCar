@@ -92,11 +92,7 @@ public class ImageModelAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     CarLog.d(TAG, "bean: " + bean);
                     setNeedReload(true);
-                    if (TextUtils.isEmpty(bean.imageLocalUrl)) {
-                        ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
-                    } else {
-                        ActivityUtils.jumpOnlyActivity(mContext, PreviewPictureActivity.class);
-                    }
+                    ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
                 }
             });
             viewHolder = new ViewHolder();

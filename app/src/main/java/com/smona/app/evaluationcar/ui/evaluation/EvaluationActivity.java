@@ -400,7 +400,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void onSave() {
-
+        finish();
     }
 
     private void onSubmit() {
