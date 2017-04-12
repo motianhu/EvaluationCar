@@ -14,6 +14,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.status.StatusActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -62,18 +63,21 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
         CarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
-                    R.layout.status_list_local_item);
+                    R.layout.status_list_pass_item);
         }
 
         convertView.setOnClickListener(this);
         convertView.setTag(carbill);
 
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
-        ImageLoaderProxy.loadImage(carbill.thumbUrl, carImage);
+        ImageLoaderProxy.loadImage(UrlConstants.getProjectInterface() + carbill.imageThumbPath, carImage);
 
         TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
         textNum.setText(mContext.getString(R.string.list_item_number) + " " + carTitle);
+
+        TextView textPrice = (TextView) convertView.findViewById(R.id.carPrice);
+        textPrice.setText(mContext.getString(R.string.list_item_price) + " " + carbill.evaluatePrice);
 
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);

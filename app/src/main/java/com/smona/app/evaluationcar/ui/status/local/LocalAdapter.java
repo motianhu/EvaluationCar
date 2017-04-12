@@ -70,7 +70,7 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener {
         convertView.setTag(carbill);
 
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
-        ImageLoaderProxy.loadImage(carbill.thumbUrl, carImage);
+        ImageLoaderProxy.loadImage(carbill.imageThumbPath, carImage);
 
         TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;

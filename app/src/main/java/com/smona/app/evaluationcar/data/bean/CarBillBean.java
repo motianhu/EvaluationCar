@@ -13,6 +13,6 @@ public class CarBillBean extends BaseBean {
     public String applyAllOpinion;
     public double preSalePrice;
     public double evaluatePrice;
-    public String thumbUrl;
+    public String imageThumbPath;
     public int imageId;
 }

@@ -59,4 +59,6 @@
 
 
     <color name="no_network_color">#33000000</color>
+
+    <color name="green">#04b201</color>
 </resources>

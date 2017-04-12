@@ -98,7 +98,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         item.modifyTime = getString(cursor, CarBillTable.MODIFYTIME);
         item.preSalePrice = getDouble(cursor, CarBillTable.PRESALEPRICE);
         item.evaluatePrice = getDouble(cursor, CarBillTable.EVALUATEPRICE);
-        item.thumbUrl = getString(cursor, CarBillTable.THUMBUrl);
+        item.imageThumbPath = getString(cursor, CarBillTable.THUMBUrl);
         item.mark = getString(cursor, CarBillTable.MARK);
         item.applyAllOpinion = getString(cursor, CarBillTable.APPLYALLOPINION);
         item.imageId = getInt(cursor, CarBillTable.IMAGEID);
@@ -114,7 +114,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         values.put(CarBillTable.MODIFYTIME, item.modifyTime);
         values.put(CarBillTable.PRESALEPRICE, item.preSalePrice);
         values.put(CarBillTable.EVALUATEPRICE, item.evaluatePrice);
-        values.put(CarBillTable.THUMBUrl, item.thumbUrl);
+        values.put(CarBillTable.THUMBUrl, item.imageThumbPath);
         values.put(CarBillTable.MARK, item.mark);
         values.put(CarBillTable.APPLYALLOPINION, item.applyAllOpinion);
         values.put(CarBillTable.IMAGEID, item.imageId);

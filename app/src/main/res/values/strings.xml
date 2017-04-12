@@ -42,6 +42,9 @@
     <string name="list_item_time">创建时间: </string>
     <string name="list_item_note">未通过原因: </string>
     <string name="no_carbillid">暂无单号</string>
+    <string name="list_item_price">评估价格: </string>
+    <string name="list_item_notpass_time">退回时间: </string>
+    <string name="status_bill_progress">审核进度:</string>
 
     <!--评估 -->
     <string name="evalution_query_vin">查询车况号</string>
