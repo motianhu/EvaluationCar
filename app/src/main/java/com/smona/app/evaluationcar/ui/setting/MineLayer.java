@@ -11,7 +11,6 @@ import com.smona.app.evaluationcar.data.bean.UserInfoBean;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
-import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.ui.LoginActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;

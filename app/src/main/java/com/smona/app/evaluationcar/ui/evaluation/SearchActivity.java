@@ -3,7 +3,6 @@ package com.smona.app.evaluationcar.ui.evaluation;
 import android.os.Bundle;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 
 

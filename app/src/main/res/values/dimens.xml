@@ -60,6 +60,7 @@
     <dimen name="evaluation_image_radius">5dp</dimen>
 
 
+    <dimen name="status_height">25dp</dimen>
     <dimen name="camera_left_w">50dp</dimen>
     <dimen name="camera_right_w">110dp</dimen>
 </resources>

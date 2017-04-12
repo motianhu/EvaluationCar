@@ -90,6 +90,7 @@
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
+            android:background="@color/camera_split_side"
             android:layout_height="match_parent"
             android:visibility="gone" />
 

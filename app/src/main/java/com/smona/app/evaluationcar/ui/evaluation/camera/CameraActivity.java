@@ -4,20 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -42,6 +37,7 @@ import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
+import com.smona.app.evaluationcar.util.Utils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
@@ -280,7 +276,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void showTakePhotoPicture(boolean isShow) {
-        mPreViewRunning = !isShow;
+        setPreviewRunning(!isShow);
 
         mThumbnail.setImageBitmap(isShow ? mBitmap : null);
         if (!isShow) {
@@ -357,19 +353,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         return true;
     }
 
-    private void onCancel() {
-        String text = mCancel.getText().toString();
-        if (getResources().getString(R.string.cancel).equals(text)) {
-            finish();
-        } else if (getResources().getString(R.string.complete).equals(text)) {
-            processImageData();
-            finish();
-        } else {
-            onTakeNextPicture();
-        }
-    }
 
-    private void onTakeNextPicture() {
+
+    private void takeNextPicture() {
+        setPreviewRunning(false);
         changePreview();
         showTakePhotoPicture(false);
         processImageData();
@@ -469,7 +456,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     break;
             }
             captrue();
-            mPreViewRunning = false;
+            setPreviewRunning(false);
         }
     }
 
@@ -501,6 +488,19 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
     }
 
+
+    private void onCancel() {
+        String text = mCancel.getText().toString();
+        if (getResources().getString(R.string.cancel).equals(text)) {
+            finish();
+        } else if (getResources().getString(R.string.complete).equals(text)) {
+            processImageData();
+            finish();
+        } else {
+            takeNextPicture();
+        }
+    }
+
     private void onGallery() {
         String text = mGallery.getText().toString();
         if (getResources().getString(R.string.gallery).equals(text)) {
@@ -508,6 +508,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, ActivityUtils.ACTION_GALLERY);
         } else {
+            setPreviewRunning(false);
             changePreview();
             mBitmapPath = null;
             showTakePhotoPicture(false);
@@ -519,38 +520,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ActivityUtils.ACTION_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
-            String[] filePathColumns = {MediaStore.Images.Media.DATA};
-            Cursor c = null;
-            try {
-                c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePathColumns[0]);
-                String imagePath = c.getString(columnIndex);
+            String imagePath = Utils.getRealPathFromURI(this, selectedImage);
+            CarLog.d(TAG, "onActivityResult imagePath: " + imagePath);
 
-                CarLog.d(TAG, "onActivityResult imagePath: " + imagePath);
+            recycle(mBitmap);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            mBitmap = BitmapFactory.decodeFile(imagePath, options);
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.outHeight = mPicHeight;
-                options.outWidth = mScreenWidth;
-                Bitmap saveBitmap = BitmapFactory.decodeFile(imagePath, options);
+            //save as
+            mBitmapPath = DeviceStorageManager.getInstance().getThumbnailPath() +
+                    File.separator + System.currentTimeMillis() + ".jpeg";
+            BitmapUtils.saveJPGE_After(CameraActivity.this, mBitmap, mBitmapPath, 100);
+            CarLog.d(TAG, "onActivityResult mBitmapPath " + mBitmapPath);
 
-                Matrix matrix = new Matrix();
-                matrix.setRotate(270f);
-
-                recycle(mBitmap);
-                mBitmap = Bitmap.createBitmap(saveBitmap, 0, 0, mScreenWidth, mScreenWidth * 4 / 3, matrix, true);
-
-                String img_path = getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath() +
-                        File.separator + System.currentTimeMillis() + ".jpeg";
-                BitmapUtils.saveJPGE_After(CameraActivity.this, saveBitmap, img_path, 100);
-                recycle(saveBitmap);
-
-                setShowPicture();
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
+            setShowPicture();
         }
     }
 
@@ -599,16 +582,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             camera.setPreviewDisplay(holder);
             CameraUtil.getInstance().setCameraDisplayOrientation(this, mCameraId, camera);
             camera.startPreview();
-            mPreViewRunning = true;
+            setPreviewRunning(true);
         } catch (IOException e) {
             e.printStackTrace();
-            CarLog.d(TAG, "startPreview e: " + e);
-        } catch(RuntimeException e) {
+            CarLog.d(TAG, "IOException startPreview e: " + e);
+        } catch (RuntimeException e) {
             e.printStackTrace();
-            CarLog.d(TAG, "startPreview e: " + e);
+            CarLog.d(TAG, "RuntimeException startPreview e: " + e);
             ToastUtils.show(this, R.string.camera_busy_now);
             finish();
         }
+    }
+
+    private void setPreviewRunning(boolean preview) {
+        mPreViewRunning = preview;
     }
 
 
@@ -616,7 +603,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                mPreViewRunning = false;
                 recycle(mBitmap);
                 mBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                 mBitmapPath = DeviceStorageManager.getInstance().getThumbnailPath() +
@@ -659,13 +645,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         camera.setParameters(parameters);
 
-        int surfaceW = mScreenWidth - getResources().getDimensionPixelSize(R.dimen.camera_left_w)  - getResources().getDimensionPixelSize(R.dimen.camera_right_w) ;
-        int surfaceH = surfaceW * 4 / 3;
-        ViewGroup.LayoutParams localLayoutParams = mSurfaceView.getLayoutParams();
-        localLayoutParams.width = surfaceW;
-        localLayoutParams.height = surfaceH;
-        mSurfaceView.setLayoutParams(localLayoutParams);
-
         /**
          * 设置surfaceView的尺寸 因为camera默认是横屏，所以取得支持尺寸也都是横屏的尺寸
          * 我们在startPreview方法里面把它矫正了过来，但是这里我们设置设置surfaceView的尺寸的时候要注意 previewSize.height<previewSize.width
@@ -674,7 +653,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
          *
          */
         mPicHeight = (mScreenWidth * pictrueSize.width) / pictrueSize.height;
-        CarLog.d(TAG, "setupCamera previewSize=" + previewSize.width + "," + previewSize.height + "; pictrueSize=" + pictrueSize.width + "," + pictrueSize.height + ", mPicHeight=" + mPicHeight + ", mScreenWidth=" + mScreenWidth);
     }
 
     /**

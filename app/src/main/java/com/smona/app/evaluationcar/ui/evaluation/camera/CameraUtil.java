@@ -12,8 +12,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.view.Surface;
 
-import com.smona.app.evaluationcar.util.CarLog;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -120,7 +118,6 @@ public class CameraUtil {
 
         int i = 0;
         for (Size s : list) {
-            CarLog.d("getPropSizeForHeight", "size=" + s.width + "," + s.height);
             if ((s.height >= minHeight)) {
                 break;
             }
