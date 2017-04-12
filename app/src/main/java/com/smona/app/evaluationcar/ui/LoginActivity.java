@@ -17,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
@@ -29,6 +28,7 @@ import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 public class LoginActivity extends PermissionActivity implements OnClickListener {
@@ -173,11 +173,9 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
                 CarLog.d(this, mIdString + "  " + mPwdString + ", mUser: " + mUser);
                 if (mIdString == null || mIdString.equals("")) { // 账号为空时
-                    Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_SHORT)
-                            .show();
+                    ToastUtils.show(LoginActivity.this, R.string.login_input_account_error);
                 } else if (mPwdString == null || mPwdString.equals("")) {// 密码为空时
-                    Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT)
-                            .show();
+                    ToastUtils.show(LoginActivity.this, R.string.login_input_password_error);
                 } else {// 账号和密码都不为空时
                     if (mUser != null) {
                         closeLoginingDlg();// 关闭对话框
@@ -224,7 +222,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     mUser.saveSelf(LoginActivity.this, mIdString, mPwdString);
                     gotoStartup();
                 } else {
-                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.show(LoginActivity.this,R.string.login_error);
                 }
             }
         });

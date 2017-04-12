@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpDelegator;
@@ -35,6 +34,7 @@ import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.ToastUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -174,11 +174,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         HttpDelegator.getInstance().getCarbillImages(mUserBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                CarLog.d(TAG, "getCarbillImages onSuccess: " + result);
                 ResCarImagePage resp = JsonParse.parseJson(result, ResCarImagePage.class);
                 if (resp.total > 0) {
                     for (CarImageBean bean : resp.data) {
                         DBDelegator.getInstance().updateCarImage(bean);
                     }
+                    setNeedReload();
                     notifyReloadCarImage();
                 }
             }
@@ -188,6 +190,17 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                 CarLog.d(TAG, "onError ex: " + error);
             }
         });
+    }
+
+    private void setNeedReload() {
+        mClassRegistrationAdapter.setNeedReload(true);
+        mClassDrivingLicenseAdapter.setNeedReload(true);
+        mClassVehicleNameplateAdapter.setNeedReload(true);
+        mClassCarBodyAdapter.setNeedReload(true);
+        mClassCarFrameAdapter.setNeedReload(true);
+        mClassVehicleInteriorAdapter.setNeedReload(true);
+        mClassDifferenceSupplementAdapter.setNeedReload(true);
+        mClassOriginalCarInsurancetAdapter.setNeedReload(true);
     }
 
     private void initViews() {
@@ -405,6 +418,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         String preScalePrice = mPrice.getText().toString();
         if (TextUtils.isEmpty(preScalePrice)) {
+            ToastUtils.show(this, R.string.evaluation_input_pre_price);
             return;
         }
 
@@ -424,7 +438,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         event.setContent(bean);
         EventProxy.post(event);
 
-        Toast.makeText(this, R.string.evaluation_submit_tips, Toast.LENGTH_SHORT).show();
+        ToastUtils.show(this, R.string.evaluation_submit_tips);
         finish();
     }
 
@@ -435,6 +449,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         String preScalePrice = mPrice.getText().toString();
         if (TextUtils.isEmpty(preScalePrice)) {
+            ToastUtils.show(this, R.string.evaluation_input_pre_price);
             return;
         }
 
@@ -454,7 +469,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         CarImageBean bean = adapter.checkPhoto();
         if (bean != null) {
             String tip = String.format(getString(R.string.evalution_submit_tips), bean.imageClass, bean.displayName);
-            Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+            ToastUtils.show(this, tip);
             return false;
         }
         return true;

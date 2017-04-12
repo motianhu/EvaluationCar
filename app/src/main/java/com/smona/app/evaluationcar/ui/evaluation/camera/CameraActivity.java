@@ -411,13 +411,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         DBDelegator.getInstance().insertCarImage(mCurCarImage);
 
-        mCarBill = new CarBillBean();
-        mCarBill.imageId = mImageId;
-        mCarBill.createTime = DateUtils.getCurrDate();
-        mCarBill.modifyTime = DateUtils.getCurrDate();
-        boolean success = DBDelegator.getInstance().insertCarBill(mCarBill);
-        postLocalCarbill();
-        CarLog.d(TAG, "processImageDataInNone success " + success + ", mCarBill=" + mCarBill);
+        if(mCarBill == null) {
+            mCarBill = new CarBillBean();
+            mCarBill.imageId = mImageId;
+            mCarBill.createTime = DateUtils.getCurrDate();
+            mCarBill.modifyTime = DateUtils.getCurrDate();
+            boolean success = DBDelegator.getInstance().insertCarBill(mCarBill);
+            CarLog.d(TAG, "processImageDataInNone success " + success + ", mCarBill=" + mCarBill);
+            postLocalCarbill();
+        }
     }
 
     private void postLocalCarbill() {
@@ -431,15 +433,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCurCarImage.imageId = mImageId;
         mCurCarImage.createTime = DateUtils.getCurrDate();
         mCurCarImage.updateTime = DateUtils.getCurrDate();
-
         boolean success = DBDelegator.getInstance().insertCarImage(mCurCarImage);
         CarLog.d(TAG, "processImageDataInSave success " + success + ", mCurCarImage=" + mCurCarImage);
-
-        mCarBill.imageId = mImageId;
-        mCarBill.createTime = DateUtils.getCurrDate();
-        mCarBill.modifyTime = DateUtils.getCurrDate();
-        DBDelegator.getInstance().updateCarBill(mCarBill);
-        CarLog.d(TAG, "processImageDataInSave mCarBill=" + mCarBill);
     }
 
     private void processImageDataInReturn() {
