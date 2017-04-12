@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 /**
  * Created by Moth on 2016/12/18.
@@ -34,11 +35,23 @@ public class StatusActivity extends HeaderActivity {
         textValue.setText(bean.carBillId);
 
 
+        String status = StatusUtils.BILL_STATUS_MAP.get(bean.status);
         parent = findViewById(R.id.billstatus);
         textKey = (TextView) parent.findViewById(R.id.key);
         textValue = (TextView) parent.findViewById(R.id.value);
         textKey.setText(R.string.status_bill_status);
-        textValue.setText(StatusUtils.BILL_STATUS_MAP.get(bean.status));
+        textValue.setText(status);
+        textValue.setTextColor(getResources().getColor(R.color.red));
+
+        if("评估完成".equals(status) || "高评通过".equals(status)) {
+            parent = findViewById(R.id.billprice);
+            ViewUtil.setViewVisible(parent, true);
+            textKey = (TextView) parent.findViewById(R.id.key);
+            textValue = (TextView) parent.findViewById(R.id.value);
+            textKey.setText(R.string.list_item_price);
+            textValue.setText(bean.evaluatePrice + "");
+            textValue.setTextColor(getResources().getColor(R.color.green));
+        }
 
         parent = findViewById(R.id.billtime);
         textKey = (TextView) parent.findViewById(R.id.key);

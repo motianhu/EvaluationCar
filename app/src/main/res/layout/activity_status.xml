@@ -40,6 +40,14 @@
                     android:layout_marginTop="10dp" />
 
                 <include
+                    android:id="@+id/billprice"
+                    layout="@layout/status_text_key_value"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp" />
+
+                <include
                     android:id="@+id/billtime"
                     layout="@layout/status_text_key_value"
                     android:layout_width="match_parent"
