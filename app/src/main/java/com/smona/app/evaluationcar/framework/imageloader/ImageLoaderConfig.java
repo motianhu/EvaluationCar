@@ -30,14 +30,14 @@ public class ImageLoaderConfig {
         return options;
     }
 
-    public static DisplayImageOptions getWaterOptions() {
+    public static DisplayImageOptions getImageDesc() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 // 设置图片在下载期间显示的图片
-                .showImageOnLoading(R.drawable.mask_left_45)
+                .showImageOnLoading(R.drawable.icon_no_car)
                 // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnLoading(R.drawable.mask_left_45)
+                .showImageOnLoading(R.drawable.icon_no_car)
                 // 设置图片加载/解码过程中错误时候显示的图片
-                .showImageOnLoading(R.drawable.mask_left_45)
+                .showImageOnLoading(R.drawable.icon_no_car)
                 // 设置下载的图片是否缓存在内存中
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -48,14 +48,14 @@ public class ImageLoaderConfig {
         return options;
     }
 
-    public static DisplayImageOptions getImageDesc() {
+    public static DisplayImageOptions getImageWaterMark() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 // 设置图片在下载期间显示的图片
-                .showImageOnLoading(R.drawable.icon_no_car)
+                .showImageOnLoading(R.drawable.transport)
                 // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnLoading(R.drawable.icon_no_car)
+                .showImageOnLoading(R.drawable.transport)
                 // 设置图片加载/解码过程中错误时候显示的图片
-                .showImageOnLoading(R.drawable.icon_no_car)
+                .showImageOnLoading(R.drawable.transport)
                 // 设置下载的图片是否缓存在内存中
                 .cacheInMemory(true)
                 .cacheOnDisk(true)

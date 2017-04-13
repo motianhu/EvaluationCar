@@ -39,7 +39,7 @@ public class RoundConerImageView extends ImageView {
     protected void onDraw(Canvas canvas) {
 
         Drawable drawable = getDrawable();
-        if (null != drawable) {
+        if (null != drawable && ((BitmapDrawable) drawable).getBitmap() != null) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Bitmap b = getRoundBitmap(bitmap, mRadius);
             final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());

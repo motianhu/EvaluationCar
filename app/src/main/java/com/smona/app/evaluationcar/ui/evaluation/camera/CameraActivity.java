@@ -107,6 +107,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         initView();
         initAnimate();
         initCamera();
+        loadWaterAndDes();
     }
 
     private void initDatas() {
@@ -252,11 +253,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         boolean isAddPic = mCurCarImage.imageSeqNum >= mCarImageList.size();
         mNumPhoto.setText((mCurCarImage.imageSeqNum + 1) + "/" + (isAddPic ? mCarImageList.size() + 1 : mCarImageList.size()));
         CarLog.d(TAG, "refreshNext mCurCarImage: " + mCurCarImage);
+        loadWaterAndDes();
+    }
+
+    private void loadWaterAndDes() {
         ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mImageClass, mCurCarImage.imageSeqNum);
         if (imageMeta != null) {
             CarLog.d(TAG, "refreshNext imageMeta: " + imageMeta);
             ImageLoaderProxy.loadImageDesc(UrlConstants.getProjectInterface() + imageMeta.imageDesc, mImageDesc);
-            ImageLoaderProxy.loadWaterImage(UrlConstants.getProjectInterface() + imageMeta.waterMark, mWaterImage);
+            ImageLoaderProxy.loadImageWaterMark(UrlConstants.getProjectInterface() + imageMeta.waterMark, mWaterImage);
         }
     }
 

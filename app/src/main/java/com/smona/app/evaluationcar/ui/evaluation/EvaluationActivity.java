@@ -381,6 +381,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             bean.displayName = mAddPicStr;
             bean.imageClass = imageClass;
             bean.imageSeqNum = tempData.size();
+            bean.imageId = mImageId;
             tempData.add(bean);
 
             data.addAll(tempData);

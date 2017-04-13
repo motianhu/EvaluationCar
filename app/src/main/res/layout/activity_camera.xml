@@ -23,9 +23,9 @@
             android:id="@+id/flash_light"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="center"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:scaleType="center"
             android:src="@drawable/selector_btn_flash_light" />
     </RelativeLayout>
 
@@ -77,21 +77,20 @@
 
         <SurfaceView
             android:id="@+id/surfaceView"
-            android:keepScreenOn="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:keepScreenOn="true" />
 
         <ImageView
             android:id="@+id/structure"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/mask_left_45" />
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
-            android:background="@color/camera_split_side"
             android:layout_height="match_parent"
+            android:background="@color/camera_split_side"
             android:visibility="gone" />
 
         <LinearLayout
@@ -170,8 +169,8 @@
                 android:layout_width="10dip"
                 android:layout_height="10dip"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="7dip"
                 android:layout_marginEnd="7dip"
+                android:layout_marginTop="7dip"
                 android:src="@drawable/icon_close" />
         </RelativeLayout>
     </RelativeLayout>

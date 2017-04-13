@@ -81,19 +81,11 @@ public class ImageModelAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final CarImageBean bean = mDatas.get(position);
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CarLog.d(TAG, "bean: " + bean);
-                    setNeedReload(true);
-                    ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
-                }
-            });
             viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
             viewHolder.centerImage = (ImageView) convertView.findViewById(R.id.iv_add_center);
@@ -103,15 +95,27 @@ public class ImageModelAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CarLog.d(TAG, "bean: " + bean);
+                setNeedReload(true);
+                ActivityUtils.jumpCameraActivity(mContext, bean, CameraActivity.class);
+            }
+        });
+
         boolean hasPic = processImage(bean, viewHolder.image);
-        ViewUtil.setViewVisible(viewHolder.centerImage, true);
         String diplayName = TextUtils.isEmpty(bean.displayName) ? mContext.getString(R.string.add_picture) : bean.displayName;
         viewHolder.centerText.setText(diplayName);
         ViewUtil.setViewVisible(viewHolder.centerImage, true);
+        ViewUtil.setViewVisible(viewHolder.centerText, true);
         ViewUtil.setViewVisible(viewHolder.leftText, false);
 
         if (position == (mDatas.size() - 1)) {
             viewHolder.centerImage.setImageResource(R.drawable.icon_add_photo);
+            viewHolder.image.setImageBitmap(null);
+            viewHolder.image.setBackgroundResource(R.drawable.round_grey_border);
         } else {
             if (hasPic) {
                 ViewUtil.setViewVisible(viewHolder.centerImage, false);
@@ -141,9 +145,8 @@ public class ImageModelAdapter extends BaseAdapter {
         if (!TextUtils.isEmpty(picUrl)) {
             ImageLoaderProxy.loadImage(picUrl, image);
         } else {
-            image.setImageDrawable(null);
+            image.setImageBitmap(null);
         }
-
         return !TextUtils.isEmpty(picUrl);
     }
 

@@ -18,11 +18,11 @@ public class ImageLoaderProxy implements IProxy {
         ImageLoaderManager.getInstance().loadImage(url, image);
     }
 
-    public static void loadWaterImage(String url, ImageView image) {
-        ImageLoaderManager.getInstance().loadWaterImage(url, image);
-    }
-
     public static void loadImageDesc(String url, ImageView image) {
         ImageLoaderManager.getInstance().loadImageDesc(url, image);
+    }
+
+    public static void loadImageWaterMark(String url, ImageView image) {
+        ImageLoaderManager.getInstance().loadImageWaterMark(url, image);
     }
 }
