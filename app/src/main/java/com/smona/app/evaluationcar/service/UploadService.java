@@ -16,6 +16,7 @@ import com.smona.app.evaluationcar.framework.upload.CompleteTask;
 import com.smona.app.evaluationcar.framework.upload.ImageTask;
 import com.smona.app.evaluationcar.framework.upload.StartupTask;
 import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
+import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +40,7 @@ public class UploadService extends Service {
     public void onCreate() {
         super.onCreate();
         CarLog.d(TAG, "onCreate");
+        UploadTaskExecutor.getInstance().init();
         EventProxy.register(this);
     }
 
@@ -65,8 +67,13 @@ public class UploadService extends Service {
             CarLog.d(TAG, "user is null");
             return;
         }
+
+        if (!NetworkTipUtil.hasNetworkInfo(this)) {
+            CarLog.d(TAG, "no network!");
+            return;
+        }
+
         List<CarBillBean> uploadDatas = DBDelegator.getInstance().queryCarBillInUpload();
-        CarLog.d(TAG, "startTask " + uploadDatas);
         for (CarBillBean carbill : uploadDatas) {
             CarLog.d(TAG, "startTask carbill=" + carbill);
             if (TextUtils.isEmpty(carbill.carBillId)) {
@@ -80,7 +87,6 @@ public class UploadService extends Service {
     private void putTaskInSave(String userName, CarBillBean carbill) {
         List<CarImageBean> images = DBDelegator.getInstance().queryImages(carbill.imageId);
         generateTask(userName, carbill, images);
-
     }
 
     private void putTaskInReturn(String userName, CarBillBean carbill) {
@@ -111,6 +117,6 @@ public class UploadService extends Service {
 
         preTask.mNextTask = comleteTask;
 
-        UploadTaskExecutor.pushTask(startTask);
+        UploadTaskExecutor.getInstance().pushTask(startTask);
     }
 }

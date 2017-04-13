@@ -51,7 +51,7 @@ public class CarBillTable extends BaseTable {
                 + THUMBUrl + " TEXT, "
                 + IMAGEID + " INTEGER, "
                 + EVALUATEPRICE + " DOUBLE, "
-                + LOCALSORT + " INTEGER, "
+                + LOCALSORT + " INTEGER default 0, "
                 + UPLOADStATUS + " INTEGER default 0, "
                 + PRESALEPRICE + " DOUBLE "
                 + ")";

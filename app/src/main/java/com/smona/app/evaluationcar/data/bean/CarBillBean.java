@@ -18,4 +18,10 @@ public class CarBillBean extends BaseBean {
     public String imageThumbPath;
     public int imageId;
     public int uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
+
+    public String toString() {
+        return "carBillId=" + carBillId + ",status=" + status +
+                ",imageThumbPath=" + imageThumbPath + ",imageId=" + imageId +
+                ",preSalePrice=" + preSalePrice + ",uploadStatus=" + uploadStatus;
+    }
 }

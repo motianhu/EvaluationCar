@@ -505,10 +505,14 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     public void startTarkForSave(CarBillBean bean) {
         CarBillBean localBean = DBDelegator.getInstance().queryLocalCarbill(bean.imageId);
-        bean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
-        bean.modifyTime = DateUtils.getCurrDate();
-        bean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
-        DBDelegator.getInstance().updateCarBill(bean);
+        localBean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
+        localBean.modifyTime = DateUtils.getCurrDate();
+        localBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
+        localBean.preSalePrice = bean.preSalePrice;
+        localBean.mark = bean.mark;
+        DBDelegator.getInstance().updateCarBill(localBean);
+
+        CarLog.d(TAG, "startTarkForSave localBean=" + localBean);
 
         ActivityUtils.startUpService(this);
     }

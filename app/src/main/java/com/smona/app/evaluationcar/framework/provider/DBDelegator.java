@@ -147,7 +147,6 @@ public class DBDelegator {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         String select = CarBillTable.CARBILLID + " ='' and " + CarBillTable.IMAGEID + "=" + imageId;
         List<CarBillBean> list = dao.getResult(select, null, null);
-        CarLog.d("DBDelegator", "queryLocalCarbill " + list.size());
         if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
@@ -179,10 +178,9 @@ public class DBDelegator {
 
     public List<CarBillBean> queryCarBillInUpload() {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String where = CarBillTable.UPLOADStATUS + "=?";
-        String[] whereArgs = new String[]{StatusUtils.BILL_UPLOAD_STATUS_UPLOADING + ""};
+        String where = CarBillTable.UPLOADStATUS + "=" + StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
         String orderBy = CarBillTable.MODIFYTIME + " desc ";
-        List<CarBillBean> list = dao.getResult(where, whereArgs, orderBy);
+        List<CarBillBean> list = dao.getResult(where, null, orderBy);
         return list;
     }
 

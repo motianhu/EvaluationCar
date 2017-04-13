@@ -27,14 +27,14 @@ public class CompleteTask extends ActionTask {
                     carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
                     DBDelegator.getInstance().updateCarBill(carBill);
                     nextTask(mCarBillId);
-                    UploadTaskExecutor.nextTask();
+                    UploadTaskExecutor.getInstance().nextTask();
                 }
 
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
                     nextTask(mCarBillId);
-                    UploadTaskExecutor.nextTask();
+                    UploadTaskExecutor.getInstance().nextTask();
                 }
             });
         }

@@ -7,11 +7,28 @@ import com.smona.app.evaluationcar.util.CarLog;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public final class UploadTaskExecutor {
-    private static LinkedList<ActionTask> sTasks = new LinkedList<ActionTask>();
-    private static int sRunCount = 0;
+public class UploadTaskExecutor {
+    private static final String TAG = UploadTaskExecutor.class.getSimpleName();
 
-    private static Handler sHandler = new Handler() {
+    private static final int MULTI_THREAD_COUNT = 2;
+
+    private LinkedList<ActionTask> sTasks = new LinkedList<ActionTask>();
+    private int sRunCount = 0;
+    private static UploadTaskExecutor sInstance;
+
+    private UploadTaskExecutor() {
+    }
+
+    public static UploadTaskExecutor getInstance() {
+        if (sInstance == null) {
+            sInstance = new UploadTaskExecutor();
+        }
+        return sInstance;
+    }
+
+    public void init(){}
+
+    private Handler sHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             ActionTask waitTask = sTasks.poll();
             if (null != waitTask) {
@@ -19,12 +36,12 @@ public final class UploadTaskExecutor {
             } else {
                 sRunCount--;
             }
-            CarLog.d(this, "sRunCount:" + sRunCount + "  sTasks.size():" + sTasks.size());
+            CarLog.d(TAG, "sRunCount:" + sRunCount + "  sTasks.size():" + sTasks.size());
         }
     };
 
 
-    private static boolean existTask(ActionTask task) {
+    private boolean existTask(ActionTask task) {
         Iterator<ActionTask> it = sTasks.iterator();
         while (it.hasNext()) {
             ActionTask action = it.next();
@@ -35,11 +52,13 @@ public final class UploadTaskExecutor {
         return false;
     }
 
-    public static void pushTask(ActionTask task) {
+    public void pushTask(ActionTask task) {
         if (existTask(task)) {
+            CarLog.d(TAG, "existTask pushTask " + task);
             return;
         }
-        if (sRunCount >= 1) {
+        CarLog.d(TAG, "pushTask " + task);
+        if (sRunCount >= MULTI_THREAD_COUNT) {
             sTasks.offer(task);
         } else {
             task.startTask();
@@ -47,7 +66,7 @@ public final class UploadTaskExecutor {
         }
     }
 
-    public static void nextTask() {
+    public void nextTask() {
         sHandler.sendEmptyMessage(0);
     }
 
