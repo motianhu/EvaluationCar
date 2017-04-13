@@ -156,6 +156,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         if (!TextUtils.isEmpty(mCarBillId)) {
             mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
+        } else if(statusIsSave()) {
+            mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
     }
 
@@ -416,6 +418,16 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void onSave() {
+        if (!TextUtils.isEmpty(mCarBillId)) {
+            mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
+        } else if(statusIsSave()) {
+            mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
+        }
+        if(mCarBill != null) {
+            mCarBill.preSalePrice = Double.valueOf(mPrice.getText().toString());
+            mCarBill.mark = mNote.getText().toString();
+            DBDelegator.getInstance().updateCarBill(mCarBill);
+        }
         finish();
     }
 
