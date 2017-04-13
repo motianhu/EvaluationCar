@@ -7,7 +7,7 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
-import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
+import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
@@ -67,7 +67,7 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     }
 
     private void post() {
-        EventProxy.post(new LocalStatusBackgroundEvent());
+        EventProxy.post(new LocalStatusSubEvent());
     }
 
     @Override
@@ -77,8 +77,8 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void reloadDBData(LocalStatusBackgroundEvent event) {
-        if(LocalStatusBackgroundEvent.ADD_CARBILL.equals(event.getMessage())) {
+    public void reloadDBData(LocalStatusSubEvent event) {
+        if(LocalStatusSubEvent.ADD_CARBILL.equals(event.getMessage())) {
             mLocalListView.clear();
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
             mCurPage = 1;
@@ -93,7 +93,7 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
         } else {
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
         }
-        CarLog.d(TAG, "LocalStatusBackgroundEvent " + datas.size());
+        CarLog.d(TAG, "LocalStatusSubEvent " + datas.size());
         LocalStatusEvent local = new LocalStatusEvent();
         local.setContent(datas);
         EventProxy.post(local);

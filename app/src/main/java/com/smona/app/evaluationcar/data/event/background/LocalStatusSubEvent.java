@@ -1,10 +1,13 @@
-package com.smona.app.evaluationcar.data.event.common;
+package com.smona.app.evaluationcar.data.event.background;
+
+import com.smona.app.evaluationcar.data.event.common.SubEvent;
 
 /**
  * Created by Moth on 2017/3/29.
  */
 
-public class BackgroundEvent implements BaseEvent {
+public class LocalStatusSubEvent extends SubEvent {
+    public static final String ADD_CARBILL= "add_carbill";
 
     private Object mContent;
     private String mMessage;

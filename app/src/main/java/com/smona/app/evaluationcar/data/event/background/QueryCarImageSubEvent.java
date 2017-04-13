@@ -3,8 +3,8 @@ package com.smona.app.evaluationcar.data.event.background;
 import com.smona.app.evaluationcar.data.event.common.SubEvent;
 
 /**
- * Created by motianhu on 4/13/17.
+ * Created by Moth on 2017/4/8.
  */
 
-public class UploadEvent extends SubEvent {
+public class QueryCarImageSubEvent extends SubEvent {
 }

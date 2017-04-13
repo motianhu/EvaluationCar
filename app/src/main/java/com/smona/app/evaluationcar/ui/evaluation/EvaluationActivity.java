@@ -14,9 +14,9 @@ import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
-import com.smona.app.evaluationcar.data.event.RefreshImageEvent;
-import com.smona.app.evaluationcar.data.event.background.QueryCarImageBackgroundEvent;
-import com.smona.app.evaluationcar.data.event.background.TaskBackgroundEvent;
+import com.smona.app.evaluationcar.data.event.EvaActionEvent;
+import com.smona.app.evaluationcar.data.event.background.QueryCarImageSubEvent;
+import com.smona.app.evaluationcar.data.event.background.TaskSubEvent;
 import com.smona.app.evaluationcar.data.model.ResCarImagePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -302,29 +302,48 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
 
     private void notifyReloadCarImage() {
-        QueryCarImageBackgroundEvent event = new QueryCarImageBackgroundEvent();
+        TaskSubEvent event = new TaskSubEvent();
+        event.action = TaskSubEvent.ACTION_RELOAD;
         EventProxy.post(event);
         CarLog.d(TAG, "notifyReloadCarImage");
     }
 
-    private void notifyRefreshViews() {
-        RefreshImageEvent event = new RefreshImageEvent();
+    private void notifyActionMain(int action) {
+        EvaActionEvent event = new EvaActionEvent();
+        event.action = action;
         EventProxy.post(event);
-        CarLog.d(TAG, "notifyRefreshViews");
+        CarLog.d(TAG, "notifyActionMain");
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void backgroundLoadImageData(QueryCarImageBackgroundEvent queryCarImage) {
-        CarLog.d(TAG, "backgroundLoadImageData");
-        clearImageList();
-        reloadImageList();
-        notifyRefreshViews();
+    public void actionSubEvent(TaskSubEvent event) {
+        int action = event.action;
+        CarLog.d(TAG, "actionSubEvent action= " + action);
+        if(action == TaskSubEvent.ACTION_TASK) {
+            CarBillBean bean = (CarBillBean) event.obj;
+            if (statusIsReturn()) {
+                startTarkForReturn(bean);
+            } else {
+                startTarkForSave(bean);
+            }
+            notifyActionMain(EvaActionEvent.FINISH);
+        } else {
+            clearImageList();
+            reloadImageList();
+            notifyActionMain(EvaActionEvent.REFRESH);
+        }
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void mainRefreshImageViews(RefreshImageEvent queryCarImage) {
-        CarLog.d(TAG, "mainRefreshImageViews");
-        updateImageViews();
+    public void actionMainEvent(EvaActionEvent actionEvent) {
+        int action = actionEvent.action;
+        CarLog.d(TAG, "actionMainEvent action " + action);
+        if(action == EvaActionEvent.REFRESH) {
+            updateImageViews();
+        } else {
+            runFinish();
+        }
     }
 
     private void reloadImageList() {
@@ -445,8 +464,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         bean.imageId = mImageId;
 
         //send background post
-        TaskBackgroundEvent event = new TaskBackgroundEvent();
-        event.setContent(bean);
+        TaskSubEvent event = new TaskSubEvent();
+        event.obj = bean;
+        event.action = TaskSubEvent.ACTION_TASK;
         EventProxy.post(event);
     }
 
@@ -469,26 +489,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         return true;
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void startTask(TaskBackgroundEvent event) {
-        CarBillBean bean = (CarBillBean) event.getContent();
-        CarLog.d(TAG, "startTask " + bean);
-        if (statusIsReturn()) {
-            startTarkForReturn(bean);
-        } else {
-            startTarkForSave(bean);
-        }
-        runFinish();
-    }
-
     private void runFinish() {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtils.show(EvaluationActivity.this, R.string.evaluation_submit_tips);
-                finish();
-            }
-        });
+        ToastUtils.show(EvaluationActivity.this, R.string.evaluation_submit_tips);
+        finish();
     }
 
     public void startTarkForReturn(CarBillBean bean) {

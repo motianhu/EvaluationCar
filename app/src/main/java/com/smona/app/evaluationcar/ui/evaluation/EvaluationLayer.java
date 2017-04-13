@@ -11,7 +11,7 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
-import com.smona.app.evaluationcar.data.event.background.LocalStatusBackgroundEvent;
+import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
@@ -153,7 +153,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice(mNoticeCallback);
-        EventProxy.post(new LocalStatusBackgroundEvent());
+        EventProxy.post(new LocalStatusSubEvent());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -190,7 +190,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void reloadDBData(LocalStatusBackgroundEvent event) {
+    public void reloadDBData(LocalStatusSubEvent event) {
         mLocalCount = DBDelegator.getInstance().queryLocalBillCount();
         notifyUILocalCount();
     }
