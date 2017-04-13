@@ -448,8 +448,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         TaskBackgroundEvent event = new TaskBackgroundEvent();
         event.setContent(bean);
         EventProxy.post(event);
-
-        ToastUtils.show(this, R.string.evaluation_submit_tips);
     }
 
     private boolean isTakePhoto() {
@@ -473,8 +471,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void startTask(TaskBackgroundEvent event) {
-        CarLog.d(TAG, "TaskBackgroundEvent " + event);
         CarBillBean bean = (CarBillBean) event.getContent();
+        CarLog.d(TAG, "startTask " + bean);
         if (statusIsReturn()) {
             startTarkForReturn(bean);
         } else {
@@ -487,6 +485,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ToastUtils.show(EvaluationActivity.this, R.string.evaluation_submit_tips);
                 finish();
             }
         });

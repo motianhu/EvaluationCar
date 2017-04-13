@@ -66,6 +66,7 @@ public class UploadService extends Service {
             return;
         }
         List<CarBillBean> uploadDatas = DBDelegator.getInstance().queryCarBillInUpload();
+        CarLog.d(TAG, "startTask " + uploadDatas);
         for (CarBillBean carbill : uploadDatas) {
             CarLog.d(TAG, "startTask carbill=" + carbill);
             if (TextUtils.isEmpty(carbill.carBillId)) {
