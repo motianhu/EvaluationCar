@@ -12,6 +12,7 @@ import com.smona.app.evaluationcar.data.model.ResImageMetaArray;
 import com.smona.app.evaluationcar.data.model.ResUpgradeApi;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
@@ -126,7 +127,7 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(UpgradeEvent event) {
-
+        UpgradeUtils.showUpdataDialog(this, event.mResBaseApi);
     }
 
     private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
@@ -165,8 +166,12 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
                         continue;
                     }
                     DBDelegator.getInstance().updateImageMeta(bean);
+                    ImageLoaderProxy.loadUrl(bean.imageDesc);
+                    ImageLoaderProxy.loadUrl(bean.waterMark);
                 }
             }
         }
     };
+
+
 }

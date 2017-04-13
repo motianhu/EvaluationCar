@@ -25,4 +25,8 @@ public class ImageLoaderProxy implements IProxy {
     public static void loadImageWaterMark(String url, ImageView image) {
         ImageLoaderManager.getInstance().loadImageWaterMark(url, image);
     }
+
+    public static void loadUrl(String url) {
+        ImageLoaderManager.getInstance().loadUrl(url);
+    }
 }

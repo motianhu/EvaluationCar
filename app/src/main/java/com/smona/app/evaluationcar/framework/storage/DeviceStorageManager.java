@@ -18,6 +18,7 @@ public class DeviceStorageManager {
     private String mPrefixPath;
     private String mThumbnailPath;
     private String mMd5Path;
+    private String mTempPath;
 
     private DeviceStorageManager() {
     }
@@ -46,6 +47,8 @@ public class DeviceStorageManager {
         boolean success = makeFolder(mMd5Path);
         mThumbnailPath = rootPath + "/" + FolderContants.THUMBNAIL;
         success = makeFolder(mThumbnailPath);
+        mTempPath = rootPath + "/" + FolderContants.TEMP;
+        success = makeFolder(mTempPath);
     }
 
     public String getMd5Path() {
@@ -54,5 +57,9 @@ public class DeviceStorageManager {
 
     public String getThumbnailPath() {
         return mThumbnailPath;
+    }
+
+    public String getTemp() {
+        return mTempPath;
     }
 }

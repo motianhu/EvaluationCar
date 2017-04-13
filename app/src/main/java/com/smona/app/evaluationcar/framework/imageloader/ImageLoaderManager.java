@@ -65,4 +65,8 @@ public class ImageLoaderManager {
     public void loadImageWaterMark(String uri, ImageView imageView) {
         ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getImageWaterMark(), mImageListenser);
     }
+
+    public void loadUrl(String uri) {
+        ImageLoader.getInstance().loadImage(uri, mImageListenser);
+    }
 }
