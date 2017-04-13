@@ -5,7 +5,7 @@ package com.smona.app.evaluationcar.framework.upload;
  */
 
 public abstract class ActionTask {
-
+    public int mImageId;
     public String mCarBillId;
     public String userName;
     public ActionTask mNextTask;
@@ -17,5 +17,11 @@ public abstract class ActionTask {
             mNextTask.mCarBillId = carBillId;
             mNextTask.startTask();
         }
+    }
+
+    public boolean isSelf(ActionTask task) {
+        return ((mCarBillId != null) && mCarBillId.equals(task.mCarBillId))
+                ||
+                ((mCarBillId == null) && mImageId == task.mImageId);
     }
 }

@@ -21,10 +21,6 @@ import com.smona.app.evaluationcar.data.model.ResCarImagePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.framework.upload.ActionTask;
-import com.smona.app.evaluationcar.framework.upload.StartupTask;
-import com.smona.app.evaluationcar.framework.upload.CompleteTask;
-import com.smona.app.evaluationcar.framework.upload.ImageTask;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
@@ -426,24 +422,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         postEvent(preScalePrice);
     }
 
-    private void postEvent(String preScalePrice) {
-        String mark = mNote.getText().toString();
-        CarBillBean bean = new CarBillBean();
-        bean.carBillId = mCarBillId;
-        bean.preSalePrice = Double.valueOf(preScalePrice);
-        bean.mark = mark;
-        bean.imageId = mImageId;
-        bean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
-
-        //send background post
-        TaskBackgroundEvent event = new TaskBackgroundEvent();
-        event.setContent(bean);
-        EventProxy.post(event);
-
-        ToastUtils.show(this, R.string.evaluation_submit_tips);
-        finish();
-    }
-
     private void submitNone() {
         if (!isTakePhoto()) {
             return;
@@ -456,6 +434,22 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         }
 
         postEvent(preScalePrice);
+    }
+
+    private void postEvent(String preScalePrice) {
+        String mark = mNote.getText().toString();
+        CarBillBean bean = new CarBillBean();
+        bean.carBillId = mCarBillId;
+        bean.preSalePrice = Double.valueOf(preScalePrice);
+        bean.mark = mark;
+        bean.imageId = mImageId;
+
+        //send background post
+        TaskBackgroundEvent event = new TaskBackgroundEvent();
+        event.setContent(bean);
+        EventProxy.post(event);
+
+        ToastUtils.show(this, R.string.evaluation_submit_tips);
     }
 
     private boolean isTakePhoto() {
@@ -486,6 +480,16 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         } else {
             startTarkForSave(bean);
         }
+        runFinish();
+    }
+
+    private void runFinish() {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        });
     }
 
     public void startTarkForReturn(CarBillBean bean) {
@@ -494,48 +498,20 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         carBillBean.mark = bean.mark;
         DBDelegator.getInstance().updateCarBill(carBillBean);
 
-        List<CarImageBean> images = DBDelegator.getInstance().queryUpdateImages(mCarBillId);
-
-        generateTask(carBillBean, images);
+        ActivityUtils.startUpService(this);
     }
 
     public void startTarkForSave(CarBillBean bean) {
         CarBillBean localBean = DBDelegator.getInstance().queryLocalCarbill(bean.imageId);
         bean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
         bean.modifyTime = DateUtils.getCurrDate();
+        bean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
         DBDelegator.getInstance().updateCarBill(bean);
 
-        List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
-
-        //generateTask(bean, images);
+        ActivityUtils.startUpService(this);
     }
 
-    private void generateTask(CarBillBean bean, List<CarImageBean> images) {
-        String userName = mUserBean.userLoginName;
-        StartupTask carBillTask = new StartupTask();
-        carBillTask.mCarBill = bean;
-        carBillTask.userName = userName;
-        carBillTask.mCarBillId = mCarBillId;
 
-        ActionTask preTask = carBillTask;
-
-        for (CarImageBean image : images) {
-            ImageTask task = new ImageTask();
-            task.carImageBean = image;
-            task.userName = userName;
-            preTask.mNextTask = task;
-
-            preTask = task;
-        }
-
-        CompleteTask comleteTask = new CompleteTask();
-        comleteTask.carBill = bean;
-        comleteTask.userName = userName;
-
-        preTask.mNextTask = comleteTask;
-
-        carBillTask.startTask();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

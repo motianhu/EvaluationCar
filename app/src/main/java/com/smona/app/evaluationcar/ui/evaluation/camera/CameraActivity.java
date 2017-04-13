@@ -411,6 +411,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         if (mCarBill == null) {
             mCarBill = new CarBillBean();
+            mCarBill.carBillId = "";
             mCarBill.imageId = mImageId;
             mCarBill.createTime = DateUtils.getCurrDate();
             mCarBill.modifyTime = DateUtils.getCurrDate();

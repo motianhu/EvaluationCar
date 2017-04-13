@@ -126,7 +126,7 @@ public class DBDelegator {
     //CarBill
     public CarBillBean queryCarBill(String carBillId) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String where = CarImageTable.CARBILLID + "=?";
+        String where = CarBillTable.CARBILLID + "=?";
         String[] whereArgs = new String[]{carBillId};
         List<CarBillBean> list = dao.getResult(where, whereArgs, null);
         if (list.size() > 0) {
@@ -137,7 +137,7 @@ public class DBDelegator {
 
     public List<CarBillBean> queryLocalCarbill(int curPage, int pageSize) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarBillTable.CARBILLID + " is null and " + CarBillTable.IMAGEID + " >0";
+        String select = CarBillTable.CARBILLID + " ='' and " + CarBillTable.IMAGEID + " >0";
         String order = CarBillTable.CREATETIME + " desc limit " + (curPage - 1) * pageSize + "," + pageSize;
         List<CarBillBean> list = dao.getResult(select, null, order);
         return list;
@@ -175,6 +175,15 @@ public class DBDelegator {
     public boolean insertCarBill(CarBillBean bean) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
         return dao.insertItem(bean);
+    }
+
+    public List<CarBillBean> queryCarBillInUpload() {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        String where = CarBillTable.UPLOADStATUS + "=?";
+        String[] whereArgs = new String[]{StatusUtils.BILL_UPLOAD_STATUS_UPLOADING + ""};
+        String orderBy = CarBillTable.MODIFYTIME + " desc ";
+        List<CarBillBean> list = dao.getResult(where, whereArgs, orderBy);
+        return list;
     }
 
     //Image Meta

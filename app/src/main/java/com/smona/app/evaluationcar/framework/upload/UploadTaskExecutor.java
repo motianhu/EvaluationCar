@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import com.smona.app.evaluationcar.util.CarLog;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public final class UploadTaskExecutor {
@@ -22,7 +23,22 @@ public final class UploadTaskExecutor {
         }
     };
 
+
+    private static boolean existTask(ActionTask task) {
+        Iterator<ActionTask> it = sTasks.iterator();
+        while (it.hasNext()) {
+            ActionTask action = it.next();
+            if (action.isSelf(task)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void pushTask(ActionTask task) {
+        if (existTask(task)) {
+            return;
+        }
         if (sRunCount >= 1) {
             sTasks.offer(task);
         } else {
@@ -34,4 +50,5 @@ public final class UploadTaskExecutor {
     public static void nextTask() {
         sHandler.sendEmptyMessage(0);
     }
+
 }

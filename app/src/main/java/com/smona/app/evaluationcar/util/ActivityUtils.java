@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.item.BannerItem;
+import com.smona.app.evaluationcar.service.UploadService;
 import com.smona.app.evaluationcar.ui.WebActivity;
 
 /**
@@ -64,5 +65,10 @@ public class ActivityUtils {
         Intent intent = new Intent();
         intent.setClass(context, clazz);
         context.startActivity(intent);
+    }
+
+    public static void startUpService(Context context) {
+        Intent intent = new Intent(context, UploadService.class);
+        context.startService(intent);
     }
 }

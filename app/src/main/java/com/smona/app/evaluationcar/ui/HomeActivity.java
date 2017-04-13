@@ -17,6 +17,7 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.Utils;
 
@@ -48,6 +49,11 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         EventProxy.register(this);
         initViews();
         initDatas();
+        startUploadService();
+    }
+
+    private void startUploadService() {
+        ActivityUtils.startUpService(this);
     }
 
     @Override
