@@ -1,5 +1,7 @@
 package com.smona.app.evaluationcar.data.bean;
 
+import com.smona.app.evaluationcar.util.StatusUtils;
+
 /**
  * Created by motianhu on 2/28/17.
  */
@@ -15,4 +17,5 @@ public class CarBillBean extends BaseBean {
     public double evaluatePrice;
     public String imageThumbPath;
     public int imageId;
+    public int uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
 }

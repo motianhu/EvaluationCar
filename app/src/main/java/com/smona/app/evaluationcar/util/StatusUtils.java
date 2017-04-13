@@ -10,11 +10,13 @@ public class StatusUtils {
     //local callbill
     public static final int BILL_STATUS_NONE = 0;
     public static final int BILL_STATUS_SAVE = 1;
-    public static final int BILL_STATUS_UPLOADING = 2;
     public static final int BILL_STATUS_RETURN = 3;
 
     public static final int IMAGE_DEFAULT = 0;
     public static final int IMAGE_UPDATE = 1;
+
+    public static final int BILL_UPLOAD_STATUS_NONE = 0;
+    public static final int BILL_UPLOAD_STATUS_UPLOADING = 1;
 
 
     public static final int MESSAGE_REQUEST_ERROR = 0x1;

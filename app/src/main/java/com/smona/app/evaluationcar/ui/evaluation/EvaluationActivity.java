@@ -22,7 +22,7 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.upload.ActionTask;
-import com.smona.app.evaluationcar.framework.upload.CarBillTask;
+import com.smona.app.evaluationcar.framework.upload.StartupTask;
 import com.smona.app.evaluationcar.framework.upload.CompleteTask;
 import com.smona.app.evaluationcar.framework.upload.ImageTask;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
@@ -433,6 +433,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         bean.preSalePrice = Double.valueOf(preScalePrice);
         bean.mark = mark;
         bean.imageId = mImageId;
+        bean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
 
         //send background post
         TaskBackgroundEvent event = new TaskBackgroundEvent();
@@ -501,17 +502,17 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     public void startTarkForSave(CarBillBean bean) {
         CarBillBean localBean = DBDelegator.getInstance().queryLocalCarbill(bean.imageId);
         bean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
-        bean.modifyTime = TextUtils.isEmpty(localBean.modifyTime) ? DateUtils.getCurrDate() : localBean.modifyTime;
+        bean.modifyTime = DateUtils.getCurrDate();
         DBDelegator.getInstance().updateCarBill(bean);
 
         List<CarImageBean> images = DBDelegator.getInstance().queryImages(bean.imageId);
 
-        generateTask(bean, images);
+        //generateTask(bean, images);
     }
 
     private void generateTask(CarBillBean bean, List<CarImageBean> images) {
         String userName = mUserBean.userLoginName;
-        CarBillTask carBillTask = new CarBillTask();
+        StartupTask carBillTask = new StartupTask();
         carBillTask.mCarBill = bean;
         carBillTask.userName = userName;
         carBillTask.mCarBillId = mCarBillId;

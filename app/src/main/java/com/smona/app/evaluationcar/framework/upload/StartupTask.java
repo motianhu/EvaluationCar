@@ -12,14 +12,13 @@ import com.smona.app.evaluationcar.util.CarLog;
  * Created by motianhu on 4/5/17.
  */
 
-public class CarBillTask extends ActionTask {
-    private static final String TAG = CarBillTask.class.getSimpleName();
+public class StartupTask extends ActionTask {
+    private static final String TAG = StartupTask.class.getSimpleName();
     public CarBillBean mCarBill;
 
     public void startTask() {
         if (TextUtils.isEmpty(mCarBillId)) {
             HttpDelegator.getInstance().createCarBillId(new ResponseCallback<String>() {
-
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result);
