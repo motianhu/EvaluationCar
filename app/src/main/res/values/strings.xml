@@ -126,6 +126,8 @@
     <string name="upgrade_title">版本升级</string>
     <string name="upgrade_ok">"确定"</string>
     <string name="upgrade_cancle">"取消"</string>
+    <string name="upgrading">"检查新版本..."</string>
+    <string name="upgrade_new">"亲,已是最新版本"</string>
 
     <string name="mine_info">"我的信息"</string>
     <string name="mine_display_name">"名&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;字:"</string>
@@ -133,4 +135,5 @@
 
     <string name="mine_about">"关于我们"</string>
     <string name="mine_telephone">"0755-86962135"</string>
+
 </resources>

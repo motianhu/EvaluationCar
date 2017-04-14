@@ -17,12 +17,14 @@ import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.LoginActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -115,7 +117,8 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 ActivityUtils.jumpOnlyActivity(getContext(), MineActivity.class);
                 break;
             case R.id.setting_update:
-
+                ((HomeActivity) getContext()).requestUpgradeInfo(true);
+                ToastUtils.show(getContext(), R.string.upgrading);
                 break;
             case R.id.setting_about:
                 ActivityUtils.jumpOnlyActivity(getContext(), SettingActivity.class);
