@@ -70,11 +70,13 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 ActivityUtils.jumpOnlyActivity(getContext(), MineActivity.class);
                 break;
             case R.id.setting_update:
+
                 break;
             case R.id.setting_about:
+                ActivityUtils.jumpOnlyActivity(getContext(), SettingActivity.class);
                 break;
             case R.id.setting_phone:
-                ActivityUtils.callPhone(getContext(), "123456789");
+                ActivityUtils.callPhone(getContext(), getContext().getString(R.string.mine_telephone));
                 break;
             case R.id.setting_logout:
                 //弹出对话框，退出
