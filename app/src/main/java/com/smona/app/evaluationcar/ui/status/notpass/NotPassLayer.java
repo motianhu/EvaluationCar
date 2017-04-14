@@ -28,6 +28,8 @@ import java.util.List;
 
 public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
     private static final String TAG = NotPassLayer.class.getSimpleName();
+    private static final int PAGE_SIZE = 10;
+
     private NotPassListView mNotPassListView = null;
     private View mNoDataLayout = null;
     private View mLoadingView = null;
@@ -101,7 +103,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
         if (success) {
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
-            mRequestParams.pageSize = 10;
+            mRequestParams.pageSize = PAGE_SIZE;
             mRequestParams.status = "23,33,43,53";
         }
     }

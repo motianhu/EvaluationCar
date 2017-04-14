@@ -7,11 +7,8 @@ import android.widget.RadioGroup;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.data.event.UpgradeEvent;
 import com.smona.app.evaluationcar.data.model.ResImageMetaArray;
-import com.smona.app.evaluationcar.data.model.ResUpgradeApi;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -20,10 +17,6 @@ import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.Utils;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Moth on 2016/12/15.
@@ -47,7 +40,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        EventProxy.register(this);
         initViews();
         initDatas();
         startUploadService();
@@ -60,7 +52,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventProxy.unregister(this);
     }
 
     private void initViews() {
@@ -83,15 +74,15 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
     private void initDatas() {
         requestImageMetas();
-        requestUpgradeInfo();
+        startService();
     }
 
     private void requestImageMetas() {
         DataDelegator.getInstance().requestImageMeta(mImageMetaCallback);
     }
 
-    private void requestUpgradeInfo() {
-        DataDelegator.getInstance().requestUpgradeInfo(mUpgradeCallback);
+    private void startService() {
+        ActivityUtils.startUpgradeService(this, UpgradeUtils.UPGRADE_NORMAL);
     }
 
     @Override
@@ -124,31 +115,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         mViewPager.setCurrentItem(pageHome, false);
         mRadioFunc[pageHome].setChecked(true);
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(UpgradeEvent event) {
-        UpgradeUtils.showUpdataDialog(this, event.mResBaseApi);
-    }
-
-    private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mUpgradeCallback onSuccess result=" + content);
-            ResUpgradeApi newBaseApi = JsonParse.parseJson(content, ResUpgradeApi.class);
-            if(newBaseApi != null) {
-                if(newBaseApi.versionCode > Utils.getVersion(HomeActivity.this)) {
-                    UpgradeEvent upgradeEvent = new UpgradeEvent();
-                    upgradeEvent.mResBaseApi = newBaseApi;
-                    EventProxy.post(upgradeEvent);
-                }
-            }
-        }
-    };
 
     private ResponseCallback<String> mImageMetaCallback = new ResponseCallback<String>() {
         @Override

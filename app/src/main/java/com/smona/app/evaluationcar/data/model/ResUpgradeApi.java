@@ -8,7 +8,6 @@ public class ResUpgradeApi extends ResBaseApi {
     public static final String UPDATE_TYPE_FORCE = "force";
     public String id;
     public String clientName;
-    public int versionCode;
     public String versionName;
     public String publishTime;
     public String updateType;

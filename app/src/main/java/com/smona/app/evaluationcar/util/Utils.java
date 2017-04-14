@@ -16,15 +16,15 @@ import android.provider.MediaStore;
  */
 
 public class Utils {
-    public static int getVersion(Context context) {
+    public static String getVersion(Context context) {
         try {
             PackageManager manager = context.getPackageManager();
             PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-            return info.versionCode;
+            return info.versionName;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
+        return null;
     }
 
     public static String getRealPathFromURI(final Context context, final Uri uri) {

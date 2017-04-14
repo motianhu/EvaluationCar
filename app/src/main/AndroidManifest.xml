@@ -106,7 +106,6 @@
 
         <service android:name=".service.UploadService" />
 
-
         <provider
             android:name="com.smona.app.evaluationcar.framework.provider.EvaluationProvider"
             android:authorities="com.smona.app.evaluationcar"

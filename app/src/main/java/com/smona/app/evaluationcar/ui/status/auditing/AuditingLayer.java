@@ -28,6 +28,8 @@ import java.util.List;
 
 public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     private static final String TAG = AuditingLayer.class.getSimpleName();
+    private static final int PAGE_SIZE = 10;
+
     private AuditingListView mAuditingListView = null;
     private View mNoDataLayout = null;
     private View mLoadingView = null;
@@ -100,7 +102,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
         if (success) {
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
-            mRequestParams.pageSize = 3;
+            mRequestParams.pageSize = PAGE_SIZE;
             mRequestParams.status = "21,22,24,31,32,34,41,42,44,51,52";
         }
     }
