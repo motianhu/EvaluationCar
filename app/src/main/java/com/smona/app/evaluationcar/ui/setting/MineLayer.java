@@ -7,10 +7,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.UserInfoBean;
 import com.smona.app.evaluationcar.data.event.SettingEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
+import com.smona.app.evaluationcar.data.model.ResUserModel;
 import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.LoginActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
@@ -27,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 
 public class MineLayer extends BaseLinearLayout implements View.OnClickListener {
+    private static final String TAG = MineLayer.class.getSimpleName();
 
     //头像
     private ImageView mImage;
@@ -44,11 +51,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
         mUserBean = ((UserActivity) getContext()).getUserBean();
         mImage = (ImageView) findViewById(R.id.mine_image);
         mName = (TextView) findViewById(R.id.mine_name);
-        if(mUserBean == null) {
-            mName.setText("null");
-        } else {
-            mName.setText(mUserBean.userChineseName);
-        }
+        runUI(true);
 
         findViewById(R.id.setting_info).setOnClickListener(this);
         findViewById(R.id.setting_update).setOnClickListener(this);
@@ -60,10 +63,47 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
         mUser.readSelf(getContext());
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(SettingEvent event) {
-        CarLog.d(this, "update SettingEvent: " + event);
+        CarLog.d(TAG, "update SettingEvent: " + event);
+        runUI(false);
+    }
+
+    private void requestUserInfo() {
+        final UserItem user = new UserItem();
+        user.readSelf(getContext());
+        UserParam param = new UserParam();
+        param.userName = user.mId;
+        param.password = user.mPwd;
+        DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
+                CarLog.d(TAG, "onSuccess normal: " + normal);
+                String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + user.mId;
+                if (normal.object != null) {
+                    CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
+                    mUserBean = normal.object;
+                    EventProxy.post(new SettingEvent());
+                }
+            }
+
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "onError ex: " + error);
+            }
+        });
+    }
+
+
+    private void runUI(boolean isRequest) {
+        if (mUserBean == null) {
+            if (isRequest) {
+                requestUserInfo();
+            }
+        } else {
+            mName.setText(mUserBean.userChineseName);
+        }
     }
 
     @Override
@@ -85,7 +125,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 break;
             case R.id.setting_logout:
                 //弹出对话框，退出
-                String key = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName="+mUser.mId;
+                String key = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mUser.mId;
                 mUser.saveSelf(getContext(), "", "");
                 CacheDelegator.getInstance().clearOldCacheByUrl(key);
                 ActivityUtils.jumpOnlyActivity(getContext(), LoginActivity.class);

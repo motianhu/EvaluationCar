@@ -6,6 +6,8 @@ import android.os.Environment;
 import com.smona.app.evaluationcar.util.FileUtils;
 import com.smona.app.evaluationcar.util.FolderContants;
 
+import java.io.File;
+
 /**
  * Created by Moth on 2017/4/6.
  */
@@ -41,13 +43,13 @@ public class DeviceStorageManager {
 
     public void initPath() {
         mPrefixPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String rootPath = mPrefixPath + "/" + FolderContants.ROOT;
+        String rootPath = mPrefixPath + File.separator + FolderContants.ROOT;
         makeFolder(rootPath);
-        mMd5Path = rootPath + "/" + FolderContants.MD5CACHE;
+        mMd5Path = rootPath + File.separator + FolderContants.MD5CACHE;
         boolean success = makeFolder(mMd5Path);
-        mThumbnailPath = rootPath + "/" + FolderContants.THUMBNAIL;
+        mThumbnailPath = rootPath + File.separator + FolderContants.THUMBNAIL;
         success = makeFolder(mThumbnailPath);
-        mTempPath = rootPath + "/" + FolderContants.TEMP;
+        mTempPath = rootPath +File.separator + FolderContants.TEMP;
         success = makeFolder(mTempPath);
     }
 
