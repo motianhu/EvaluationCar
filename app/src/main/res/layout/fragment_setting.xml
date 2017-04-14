@@ -40,7 +40,7 @@
         <View
             android:id="@+id/info_img"
             style="@style/setting_item_logo"
-            android:background="@drawable/tab_menu_mine" />
+            android:background="@drawable/mine_info" />
 
         <TextView
             style="@style/setting_item_text"
@@ -61,7 +61,7 @@
         <View
             android:id="@+id/update_img"
             style="@style/setting_item_logo"
-            android:background="@drawable/tab_menu_mine" />
+            android:background="@drawable/mine_upgrade" />
 
         <TextView
 
@@ -89,7 +89,7 @@
         <View
             android:id="@+id/phone_img"
             style="@style/setting_item_logo"
-            android:background="@drawable/tab_menu_mine" />
+            android:background="@drawable/mine_call" />
 
         <TextView
             style="@style/setting_item_text"
@@ -115,7 +115,7 @@
         <View
             android:id="@+id/about_img"
             style="@style/setting_item_logo"
-            android:background="@drawable/tab_menu_mine" />
+            android:background="@drawable/mine_setting" />
 
         <TextView
             style="@style/setting_item_text"
@@ -135,7 +135,7 @@
         <View
             android:id="@+id/logout_img"
             style="@style/setting_item_logo"
-            android:background="@drawable/tab_menu_mine" />
+            android:background="@drawable/mine_logout" />
 
         <TextView
             style="@style/setting_item_text"

@@ -67,6 +67,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
         int id = v.getId();
         switch (id) {
             case R.id.setting_info:
+                ActivityUtils.jumpOnlyActivity(getContext(), MineActivity.class);
                 break;
             case R.id.setting_update:
                 break;

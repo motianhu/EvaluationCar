@@ -94,6 +94,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.setting.MineActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
         <service android:name=".service.UploadService" />
 
 
