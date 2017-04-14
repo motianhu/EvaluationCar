@@ -171,7 +171,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                 // 启动登录
                 showLoginingDlg(); // 显示"正在登录"对话框
 
-                CarLog.d(this, mIdString + "  " + mPwdString + ", mUser: " + mUser);
+                CarLog.d(TAG, mIdString + "  " + mPwdString + ", mUser: " + mUser);
                 if (mIdString == null || mIdString.equals("")) { // 账号为空时
                     ToastUtils.show(LoginActivity.this, R.string.login_input_account_error);
                 } else if (mPwdString == null || mPwdString.equals("")) {// 密码为空时
@@ -190,7 +190,9 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                                 ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
                                 String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
-                                CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
+                                if (normal.object != null) {
+                                    CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
+                                }
                                 runUI(normal.success);
                             }
 
@@ -222,7 +224,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     mUser.saveSelf(LoginActivity.this, mIdString, mPwdString);
                     gotoStartup();
                 } else {
-                    ToastUtils.show(LoginActivity.this,R.string.login_error);
+                    ToastUtils.show(LoginActivity.this, R.string.login_error);
                 }
             }
         });
