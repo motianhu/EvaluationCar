@@ -1,5 +1,7 @@
 package com.smona.app.evaluationcar.util;
 
+import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +25,10 @@ public class UrlConstants {
     public static final int QUERY_APP_API_UPDATE = 13;
 
 
-    private static final String DOMAIN = "http://119.23.128.214";
+    private static final String DOMAIN = "http://119.23.21.133";
     private static final String DOMAIN_TEST = "http://119.23.128.214";
     private static final String PORT = "8080";
     private static final String PROJECT = "carWeb";
-    private static boolean IS_TEST_ENV = true;
     private static Map<Integer, String> INTEFACES = new HashMap<>();
 
     static {
@@ -54,7 +55,7 @@ public class UrlConstants {
 
     public static String getProjectInterface() {
         String domain;
-        if (IS_TEST_ENV) {
+        if (DeviceStorageManager.getInstance().isTestEvn()) {
             domain = DOMAIN_TEST;
         } else {
             domain = DOMAIN;
