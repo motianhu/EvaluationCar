@@ -27,8 +27,9 @@ public class UrlConstants {
     //
     public static final int QUERY_PREEVALUATION_SUBMIT = 14;
     public static final int QUERY_PREEVALUATION = 15;
-    public static final int QUERY_PREEVALUATION_CARBRAND = 16;
-    public static final int QUERY_PREEVALUATION_CARSET = 17;
+    public static final int QUERY_CARBRAND = 16;
+    public static final int QUERY_CARSET = 17;
+    public static final int QUERY_CARBTYPE = 18;
 
 
     private static final String DOMAIN = "http://119.23.21.133";
@@ -54,8 +55,9 @@ public class UrlConstants {
 
         INTEFACES.put(QUERY_PREEVALUATION_SUBMIT, "/external/app/getAppApiCacheVersion.html");
         INTEFACES.put(QUERY_PREEVALUATION, "/external/app/getAppApiCacheVersion.html");
-        INTEFACES.put(QUERY_PREEVALUATION_CARBRAND, "/external/app/getAppApiCacheVersion.html");
-        INTEFACES.put(QUERY_PREEVALUATION_CARSET, "/external/app/getAppApiCacheVersion.html");
+        INTEFACES.put(QUERY_CARBRAND, "/external/app/getCarBrandCommonList.html");
+        INTEFACES.put(QUERY_CARSET, "/external/app/getCarSetCommonList.html");
+        INTEFACES.put(QUERY_CARBTYPE, "/external/app/getCarTypeCommonList.html");
     }
 
 

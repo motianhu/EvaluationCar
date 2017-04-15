@@ -18,9 +18,7 @@ import java.util.List;
 /**
  * Created by Moth on 2017/3/6.
  */
-//http://blog.csdn.net/u010335298/article/details/51178179
 public class PreEvaluationActivity extends HeaderActivity {
-    private static final String TAG = PreEvaluationActivity.class.getSimpleName();
 
     private ViewPager mViewPager;
 
@@ -55,7 +53,6 @@ public class PreEvaluationActivity extends HeaderActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) ViewUtil.inflater(this, R.layout.preevaluation_edit_layer);
-
         PreEvaluationListLayer view2 = (PreEvaluationListLayer) ViewUtil.inflater(this, R.layout.preevaluation_list_layer);
 
         List<View> viewList = new ArrayList<View>();
@@ -71,10 +68,8 @@ public class PreEvaluationActivity extends HeaderActivity {
         tabLayout.addTab(tabLayout.newTab().setText(titleList.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(titleList.get(1)));
 
-
         mViewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
-
         mViewPager.setAdapter(pagerAdapter);
     }
 }
