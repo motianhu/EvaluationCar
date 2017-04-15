@@ -141,5 +141,16 @@
     <string name="evaluation_car_set">车系</string>
     <string name="evaluation_car_brand">品牌</string>
 
-    <string name="select_car_model">点击选择车型</string>
+    <string name="select_car_model">请选择品牌车型</string>
+    <string name="select_car_time">请选择上牌时间</string>
+    <string name="select_car_licheng">请输入</string>
+    <string name="select_car_licheng_unit">万公里</string>
+    <string name="select_car_city">请选择上牌城市</string>
+
+    <string name="title_car_time">上牌时间</string>
+    <string name="title_car_licheng">行驶里程</string>
+    <string name="title_car_city">选择城市</string>
+    <string name="title_car_type">品牌车型</string>
+
+    <string name="pre_evaluation_submit">提&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;交</string>
 </resources>

@@ -24,8 +24,8 @@ public class PreEvaluationEditLayer extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mCarModel = (TextView) findViewById(R.id.car_model);
-        mCarModel.setOnClickListener(mOnClickListener);
+        mCarModel = (TextView) findViewById(R.id.tv_type_content);
+        findViewById(R.id.container_cartype).setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
