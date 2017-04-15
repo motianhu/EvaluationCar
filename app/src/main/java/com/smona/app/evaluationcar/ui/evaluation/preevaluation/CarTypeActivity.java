@@ -20,10 +20,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Moth on 2017/4/15.
@@ -125,12 +122,15 @@ public class CarTypeActivity extends HeaderActivity {
     public void actionMainEvent(BrandActionEvent actionEvent) {
         CarLog.d(TAG, "actionMainEvent");
         mExpandableAdapter.notifyDataSetChanged();
+        for (int i = 0; i < mExpandableAdapter.getGroupCount(); i++) {
+            mExpandableListView.expandGroup(i);
+        }
     }
 
     private void clear() {
         mBrandList.clear();
         mLetterList.clear();
-        for(GroupInfo info: mGroupByList) {
+        for (GroupInfo info : mGroupByList) {
             info.childList.clear();
         }
         mGroupByList.clear();
@@ -150,7 +150,7 @@ public class CarTypeActivity extends HeaderActivity {
     }
 
     private void processGroupBy() {
-        HashMap<String, Integer> letterMap= new HashMap<>();
+        HashMap<String, Integer> letterMap = new HashMap<>();
         Integer index;
         for (BrandItem brand : mBrandList) {
             index = letterMap.get(brand.brandFirstName);

@@ -61,4 +61,5 @@
     <color name="no_network_color">#33000000</color>
 
     <color name="green">#04b201</color>
+    <color name="exend_list_group_bg">#ebeaea</color>
 </resources>

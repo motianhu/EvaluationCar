@@ -55,7 +55,7 @@ public class ImageLoaderManager {
     }
 
     public void loadImage(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getBannerOptions(), mImageListenser);
+        ImageLoader.getInstance().displayImage(uri, imageView, ImageLoaderConfig.getDefaultOption(), mImageListenser);
     }
 
     public void loadImageDesc(String uri, ImageView imageView) {

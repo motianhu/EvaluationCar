@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.BrandItem;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -74,37 +74,31 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = ViewUtil.inflater(context, R.layout.expendlist_group);
             groupHolder = new GroupHolder();
-            groupHolder.txt = (TextView) convertView.findViewById(R.id.txt);
-            groupHolder.img = (ImageView) convertView.findViewById(R.id.img);
+            groupHolder.letter = (TextView) convertView.findViewById(R.id.letter);
             convertView.setTag(groupHolder);
         } else {
             groupHolder = (GroupHolder) convertView.getTag();
         }
 
-        if (!isExpanded) {
-            groupHolder.img.setBackgroundResource(R.drawable.ic_launcher);
-        } else {
-            groupHolder.img.setBackgroundResource(R.drawable.ic_launcher);
-        }
-
-        groupHolder.txt.setText(mGroupList.get(groupPosition));
+        groupHolder.letter.setText(mGroupList.get(groupPosition));
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        BrandItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
             convertView = ViewUtil.inflater(context, R.layout.expendlist_item);
             itemHolder = new ItemHolder();
-            itemHolder.txt = (TextView) convertView.findViewById(R.id.txt);
-            itemHolder.img = (ImageView) convertView.findViewById(R.id.img);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.brandName);
+            itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.txt.setText(mItemsList.get(groupPosition).childList.get(childPosition).brandName);
-//        item_listemHolder.img.setBackgroundResource(item_list2.get(groupPosition).get(childPosition));
+        itemHolder.brandName.setText(item.brandName);
+        ImageLoaderProxy.loadImage(item.iconUrl, itemHolder.icon);
         return convertView;
     }
 
@@ -116,13 +110,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 }
 
 class GroupHolder {
-    TextView txt;
-    ImageView img;
+    TextView letter;
 }
 
 class ItemHolder {
-    ImageView img;
-    TextView txt;
+    ImageView icon;
+    TextView brandName;
 }
 
 

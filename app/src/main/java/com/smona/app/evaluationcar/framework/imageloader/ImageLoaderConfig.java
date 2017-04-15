@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.R;
 
 public class ImageLoaderConfig {
 
-    public static DisplayImageOptions getBannerOptions() {
+    public static DisplayImageOptions getDefaultOption() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 // 设置图片在下载期间显示的图片
                 .showImageOnLoading(R.drawable.ad_empty)
@@ -92,7 +92,7 @@ public class ImageLoaderConfig {
         builder.denyCacheImageMultipleSizesInMemory();
         // 设定缓存的SDcard目录，UnlimitDiscCache速度最快
         // 设置ImageLoader的配置参数
-        builder.defaultDisplayImageOptions(getBannerOptions());
+        builder.defaultDisplayImageOptions(getDefaultOption());
 
         // 初始化ImageLoader
         ImageLoader.getInstance().init(builder.build());
