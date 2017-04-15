@@ -5,5 +5,11 @@
     android:descendantFocusability="beforeDescendants"
     android:gravity="center_horizontal">
 
+    <ExpandableListView
+        android:id="@+id/expendlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000" />
+
 
 </com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationEditLayer>

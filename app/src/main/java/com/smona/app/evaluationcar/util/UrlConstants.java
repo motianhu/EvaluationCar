@@ -24,6 +24,12 @@ public class UrlConstants {
     public static final int QUERY_APP_UPGRADE = 12;
     public static final int QUERY_APP_API_UPDATE = 13;
 
+    //
+    public static final int QUERY_PREEVALUATION_SUBMIT = 14;
+    public static final int QUERY_PREEVALUATION = 15;
+    public static final int QUERY_PREEVALUATION_CARBRAND = 16;
+    public static final int QUERY_PREEVALUATION_CARSET = 17;
+
 
     private static final String DOMAIN = "http://119.23.21.133";
     private static final String DOMAIN_TEST = "http://119.23.128.214";
@@ -45,6 +51,11 @@ public class UrlConstants {
         INTEFACES.put(QUERY_NEWS_DETAIL, "/external/news/newsDetail.html");
         INTEFACES.put(QUERY_APP_UPGRADE, "/external/app/getAppSystemVersion.html");
         INTEFACES.put(QUERY_APP_API_UPDATE, "/external/app/getAppApiCacheVersion.html");
+
+        INTEFACES.put(QUERY_PREEVALUATION_SUBMIT, "/external/app/getAppApiCacheVersion.html");
+        INTEFACES.put(QUERY_PREEVALUATION, "/external/app/getAppApiCacheVersion.html");
+        INTEFACES.put(QUERY_PREEVALUATION_CARBRAND, "/external/app/getAppApiCacheVersion.html");
+        INTEFACES.put(QUERY_PREEVALUATION_CARSET, "/external/app/getAppApiCacheVersion.html");
     }
 
 
