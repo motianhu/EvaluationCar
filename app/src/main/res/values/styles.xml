@@ -155,4 +155,9 @@
         <item name="android:layout_height">@dimen/permission_tips_image_logo_height</item>
         <item name="android:layout_marginTop">@dimen/permission_tips_deny_image_margin_top</item>
     </style>
+
+    <style name="Theme.DrawerLayout" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 </resources>

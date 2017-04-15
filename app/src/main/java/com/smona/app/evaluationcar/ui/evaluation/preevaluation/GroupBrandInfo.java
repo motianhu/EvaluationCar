@@ -8,7 +8,7 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class GroupInfo {
+public class GroupBrandInfo {
     public String letter;
     public List<BrandItem> childList;
 }

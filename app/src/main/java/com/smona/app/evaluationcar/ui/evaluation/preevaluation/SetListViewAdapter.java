@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -8,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.item.BrandItem;
-import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -18,17 +18,17 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
+public class SetListViewAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;
-    private List<GroupInfo> mItemsList;
+    private List<GroupSetInfo> mItemsList;
 
-    public ExpandableListViewAdapter(Context context) {
+    public SetListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setGroupList(List<String> groupList, List<GroupInfo> itemsList) {
+    public void setGroupList(List<String> groupList, List<GroupSetInfo> itemsList) {
         this.mGroupList = groupList;
         mItemsList = itemsList;
     }
@@ -80,25 +80,25 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             groupHolder = (GroupHolder) convertView.getTag();
         }
 
-        groupHolder.letter.setText(mGroupList.get(groupPosition));
+        String letter = TextUtils.isEmpty(mGroupList.get(groupPosition)) ? "#" : mGroupList.get(groupPosition);
+        groupHolder.letter.setText(letter);
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        BrandItem item = mItemsList.get(groupPosition).childList.get(childPosition);
+        SetItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
-            convertView = ViewUtil.inflater(context, R.layout.expendlist_item);
+            convertView = ViewUtil.inflater(context, R.layout.expendlist_set_item);
             itemHolder = new ItemHolder();
-            itemHolder.brandName = (TextView) convertView.findViewById(R.id.brandName);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.setName);
             itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.brandName);
-        ImageLoaderProxy.loadImage(item.iconUrl, itemHolder.icon);
+        itemHolder.brandName.setText(item.carSetName);
         return convertView;
     }
 
