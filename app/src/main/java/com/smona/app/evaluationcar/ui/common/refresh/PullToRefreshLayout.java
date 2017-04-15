@@ -12,7 +12,7 @@ import com.smona.app.evaluationcar.R;
 /**
  * @author Moth
  */
-public abstract class PullToRefreshLayout extends BaseRelatetiveLayout {
+public abstract class PullToRefreshLayout extends BaseRefreshLayout {
     public static final String TAG = PullToRefreshLayout.class.getSimpleName();
     public static final int INIT = 0;
     public static final int RELEASE_TO_REFRESH = 1;

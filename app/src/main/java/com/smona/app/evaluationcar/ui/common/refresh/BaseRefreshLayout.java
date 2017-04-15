@@ -7,17 +7,17 @@ import android.widget.RelativeLayout;
 /**
  * @author Moth
  */
-public abstract class BaseRelatetiveLayout extends RelativeLayout implements INotifyInterface {
+public abstract class BaseRefreshLayout extends RelativeLayout implements INotifyInterface {
 
-    public BaseRelatetiveLayout(Context context) {
+    public BaseRefreshLayout(Context context) {
         super(context);
     }
 
-    public BaseRelatetiveLayout(Context context, AttributeSet attrs) {
+    public BaseRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BaseRelatetiveLayout(Context context, AttributeSet attrs, int defStyle) {
+    public BaseRefreshLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

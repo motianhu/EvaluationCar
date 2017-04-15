@@ -1,21 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="2">
-    <com.smona.app.evaluationcar.ui.common.group.GroupListView
-        android:id="@+id/brandListView"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+    android:orientation="vertical">
 
-    <com.smona.app.evaluationcar.ui.common.group.GroupListView
-        android:id="@+id/setListView"
-        android:layout_weight="1"
+    <include
+        layout="@layout/common_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="50dp" />
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/setting_bg"
+        app:tabIndicatorColor="@color/bg_black"
+        app:tabSelectedTextColor="@color/bg_black"
+        app:tabTextColor="@color/text_gray" />
+
+    <com.smona.app.evaluationcar.ui.common.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

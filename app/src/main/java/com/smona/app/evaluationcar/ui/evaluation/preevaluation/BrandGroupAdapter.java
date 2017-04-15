@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
 import android.view.View;
 import android.view.ViewGroup;

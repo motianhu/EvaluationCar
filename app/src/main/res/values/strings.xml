@@ -136,4 +136,5 @@
     <string name="mine_about">"关于我们"</string>
     <string name="mine_telephone">"0755-86962135"</string>
 
+    <string name="evalution_pre_status">预评估状态</string>
 </resources>

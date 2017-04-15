@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation;
+package com.smona.app.evaluationcar.ui.evaluation.search;
 
 import android.os.Bundle;
 
