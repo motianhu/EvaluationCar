@@ -26,13 +26,23 @@ public class PreEvaluationEditLayer extends RelativeLayout {
         super.onFinishInflate();
         mCarModel = (TextView) findViewById(R.id.tv_type_content);
         findViewById(R.id.container_cartype).setOnClickListener(mOnClickListener);
+        findViewById(R.id.container_cartime).setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            ActivityUtils.jumpOnlyActivity(getContext(), CarTypeActivity.class);
+            int id = v.getId();
+            switch (id) {
+                case R.id.container_cartime:
+                    ActivityUtils.jumpOnlyActivity(getContext(), TimePickerActivity.class);
+                    break;
+                case R.id.container_cartype:
+                    ActivityUtils.jumpOnlyActivity(getContext(), CarTypeActivity.class);
+                    break;
+            }
+
         }
     };
 }
