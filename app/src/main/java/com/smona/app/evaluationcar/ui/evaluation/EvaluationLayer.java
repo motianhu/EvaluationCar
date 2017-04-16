@@ -28,6 +28,7 @@ import com.smona.app.evaluationcar.ui.evaluation.search.SearchActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.ToastUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -140,7 +141,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
                 break;
             case R.id.queryVin:
-                ActivityUtils.jumpOnlyActivity(getContext(), PreviewPictureActivity.class);
+                ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
         }
     }

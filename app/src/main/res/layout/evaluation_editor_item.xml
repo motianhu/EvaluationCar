@@ -35,7 +35,7 @@
                 android:layout_toEndOf="@+id/iv_price"
                 android:text="估价"
                 android:textColor="@color/black_text"
-                android:textSize="16.0sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <View
@@ -54,7 +54,7 @@
             android:layout_marginTop="@dimen/view_space_vertical"
             android:text="预售价格(元)"
             android:textColor="@color/black_text"
-            android:textSize="16.0sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_2"
@@ -79,7 +79,7 @@
             android:inputType="numberDecimal"
             android:maxLength="8"
             android:textColor="@color/black_text"
-            android:textSize="16.0sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_price"
@@ -130,7 +130,7 @@
                 android:layout_toEndOf="@+id/iv_remark"
                 android:text="备注"
                 android:textColor="@color/black_text"
-                android:textSize="16.0sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <View
@@ -147,7 +147,7 @@
             android:layout_below="@+id/lin_remark"
             android:background="@color/white"
             android:gravity="center|start|top"
-            android:minHeight="180.0dip"
+            android:minHeight="180dip"
             android:padding="@dimen/activity_horizontal_margin"
             android:textColor="@color/black_text"
             android:textSize="16.0sp" />

@@ -55,6 +55,51 @@
             android:background="@color/bg_gray" />
 
         <RelativeLayout
+            android:id="@+id/container_color"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <ImageView
+                android:id="@+id/iv_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/icon_licheng" />
+
+            <TextView
+                android:id="@+id/tv_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="50dp"
+                android:text="@string/title_car_color" />
+
+
+            <EditText
+                android:id="@+id/tv_car_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="25dp"
+                android:background="@color/white"
+                android:gravity="center|start|top"
+                android:hint="@string/select_car_color"
+                android:maxLength="8"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <RelativeLayout
             android:id="@+id/container_cartime"
             android:layout_width="match_parent"
             android:layout_height="60dp">
@@ -83,7 +128,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
-                android:hint="@string/select_car_model" />
+                android:hint="@string/select_car_time" />
 
             <ImageView style="@style/setting_item_arrow_style" />
         </RelativeLayout>
@@ -96,6 +141,8 @@
         <RelativeLayout
             android:id="@+id/container_licheng"
             android:layout_width="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_height="60dp">
 
             <ImageView
@@ -115,13 +162,18 @@
                 android:text="@string/title_car_licheng" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_car_licheng"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="60dp"
+                android:layout_marginEnd="40dp"
+                android:background="@color/white"
+                android:gravity="center|start|top"
+                android:maxLength="8"
+                android:textColor="@color/black_text"
+                android:textSize="16sp"
                 android:hint="@string/select_car_licheng" />
 
             <TextView
@@ -168,11 +220,47 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
-                android:hint="@string/select_car_licheng" />
+                android:hint="@string/select_car_city" />
 
             <ImageView style="@style/setting_item_arrow_style" />
 
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <LinearLayout
+            android:id="@+id/container_mark"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="50dp"
+                android:text="@string/title_mark" />
+
+            <EditText
+                android:id="@+id/tv_car_mark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="18dip"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:gravity="center|start|top"
+                android:maxLength="8"
+                android:textColor="@color/black_text"
+                android:textSize="16.0sp" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
