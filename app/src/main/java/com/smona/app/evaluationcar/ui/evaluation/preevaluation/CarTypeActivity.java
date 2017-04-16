@@ -12,10 +12,13 @@ import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BrandActionEvent;
 import com.smona.app.evaluationcar.data.event.SetActionEvent;
+import com.smona.app.evaluationcar.data.event.TypeActionEvent;
 import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
+import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.data.model.ResBrandPage;
 import com.smona.app.evaluationcar.data.model.ResSetPage;
+import com.smona.app.evaluationcar.data.model.ResTypePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
@@ -49,10 +52,10 @@ public class CarTypeActivity extends HeaderActivity {
 
 
     private ExpandableListView mTypeListView;
-    private SetListViewAdapter mTypeAdapter;
-    private List<BrandItem> mTypeList = new ArrayList<>();
+    private TypeListViewAdapter mTypeAdapter;
+    private List<TypeItem> mTypeList = new ArrayList<>();
     private List<String> mTypeLetterList = new ArrayList<>();
-    private List<GroupBrandInfo> mTypeGroupByList = new ArrayList<>();
+    private List<GroupTypeInfo> mTypeGroupByList = new ArrayList<>();
 
     private DrawerLayout mCarBrandDrawer;
     private DrawerLayout mCarSetDrawer;
@@ -83,7 +86,7 @@ public class CarTypeActivity extends HeaderActivity {
         mCarSetDrawer = (DrawerLayout)findViewById(R.id.drawerCarSet);
         mCarSetDrawer.setScrimColor(Color.TRANSPARENT);
 
-        //车品牌
+        /********车品牌************/
         mBrandListView = (ExpandableListView) findViewById(R.id.carBrandList);
         mBrandListView.setGroupIndicator(null);
         mBrandListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -95,26 +98,24 @@ public class CarTypeActivity extends HeaderActivity {
                 return false;
             }
         });
-
-        // 监听每个分组里子控件的点击事件
         mBrandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 mCarBrandDrawer.openDrawer(Gravity.RIGHT);
+                mCarSetDrawer.closeDrawer(Gravity.RIGHT);
                 BrandItem item = mBrandGroupByList.get(groupPosition).childList.get(childPosition);
                 mSelectBrandId = item.id;
                 querySet(item.id);
                 return false;
             }
         });
-
         mBrandAdapter = new BrandListViewAdapter(this);
         mBrandAdapter.setGroupList(mBrandLetterList, mBrandGroupByList);
         mBrandListView.setAdapter(mBrandAdapter);
 
 
-        //车系
+        /********车系************/
         mSetListView = (ExpandableListView) findViewById(R.id.carSetList);
         mSetListView.setGroupIndicator(null);
         mSetListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -126,21 +127,44 @@ public class CarTypeActivity extends HeaderActivity {
                 return false;
             }
         });
-
-        // 监听每个分组里子控件的点击事件
         mSetListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 mCarSetDrawer.openDrawer(Gravity.RIGHT);
-
+                SetItem item = mSetGroupByList.get(groupPosition).childList.get(childPosition);
+                mSelectSetId = item.id;
+                queryType(mSelectBrandId, mSelectSetId);
                 return false;
             }
         });
-
         mSetAdapter = new SetListViewAdapter(this);
         mSetAdapter.setGroupList(mSetLetterList, mSetGroupByList);
         mSetListView.setAdapter(mSetAdapter);
+
+
+        /********车型************/
+        mTypeListView = (ExpandableListView) findViewById(R.id.carTypeList);
+        mTypeListView.setGroupIndicator(null);
+        mTypeListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (mTypeGroupByList.get(groupPosition) == null) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        mTypeListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                return false;
+            }
+        });
+        mTypeAdapter = new TypeListViewAdapter(this);
+        mTypeAdapter.setGroupList(mTypeLetterList, mTypeGroupByList);
+        mTypeListView.setAdapter(mTypeAdapter);
     }
 
     @Override
@@ -168,7 +192,7 @@ public class CarTypeActivity extends HeaderActivity {
     }
 
     private void queryType(String brandId, String setId) {
-        HttpDelegator.getInstance().queryCarType(brandId, setId, mSetCallback);
+        HttpDelegator.getInstance().queryCarType(brandId, setId, mTypeCallback);
     }
 
     private ResponseCallback<String> mBrandCallback = new ResponseCallback<String>() {
@@ -213,6 +237,27 @@ public class CarTypeActivity extends HeaderActivity {
         }
     };
 
+    private ResponseCallback<String> mTypeCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mTypeCallback onSuccess content=" + content);
+            ResTypePage typePage = JsonParse.parseJson(content, ResTypePage.class);
+            clearType();
+            if (typePage.data != null && typePage.data.size() > 0) {
+                mTypeList.addAll(typePage.data);
+                processTypeLetter();
+                processTypeGroupBY();
+
+                EventProxy.post(new TypeActionEvent());
+            }
+        }
+    };
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void actionMainEvent(BrandActionEvent actionEvent) {
         CarLog.d(TAG, "actionMainEvent BrandActionEvent");
@@ -228,6 +273,15 @@ public class CarTypeActivity extends HeaderActivity {
         mSetAdapter.notifyDataSetChanged();
         for (int i = 0; i < mSetAdapter.getGroupCount(); i++) {
             mSetListView.expandGroup(i);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void actionMainEvent(TypeActionEvent actionEvent) {
+        CarLog.d(TAG, "actionMainEvent TypeActionEvent");
+        mTypeAdapter.notifyDataSetChanged();
+        for (int i = 0; i < mTypeAdapter.getGroupCount(); i++) {
+            mTypeListView.expandGroup(i);
         }
     }
 
@@ -249,6 +303,15 @@ public class CarTypeActivity extends HeaderActivity {
             info.childList.clear();
         }
         mSetGroupByList.clear();
+    }
+
+    private void clearType() {
+        mTypeList.clear();
+        mTypeLetterList.clear();
+        for (GroupTypeInfo info : mTypeGroupByList) {
+            info.childList.clear();
+        }
+        mTypeGroupByList.clear();
     }
 
 
@@ -315,4 +378,19 @@ public class CarTypeActivity extends HeaderActivity {
         }
     }
 
+
+    private void processTypeLetter() {
+        mTypeLetterList.add(getResources().getString(R.string.evalution_car_type));
+    }
+
+    private void processTypeGroupBY() {
+        List<TypeItem> value = new ArrayList<>();
+        GroupTypeInfo info = new GroupTypeInfo();
+        info.childList = value;
+        info.letter = getResources().getString(R.string.evalution_car_type);
+        for (TypeItem type : mTypeList) {
+            value.add(type);
+        }
+        mTypeGroupByList.add(info);
+    }
 }

@@ -8,7 +8,7 @@ import com.smona.app.evaluationcar.data.bean.BaseBean;
 
 public class TypeItem extends BaseBean {
     public String id;
-    public String typeName;
+    public String carTypeName;
     public String carBrandId;
     public String carSetId;
 }
