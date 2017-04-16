@@ -77,6 +77,13 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.evaluation.preevaluation.CityActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.DrawerLayout"
+            android:screenOrientation="portrait" />
+
+
+        <activity
             android:name=".ui.evaluation.preevaluation.TimePickerActivity"
             android:theme="@style/SampleTheme.Light"
             android:label="@string/app_name"

@@ -26,6 +26,7 @@ public class TimePickerActivity extends BaseActivity {
         year.setFocusable(false);
         year.setFocusableInTouchMode(false);
 
+
         NumberPicker month = (NumberPicker) findViewById(R.id.selectMonth);
         month.setMaxValue(12);
         month.setMinValue(1);

@@ -156,5 +156,9 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
+    public void queryCity(ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_CITY);
+        x.http().get(params, callback);
+    }
 
 }

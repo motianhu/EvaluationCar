@@ -30,6 +30,7 @@ public class UrlConstants {
     public static final int QUERY_CARBRAND = 16;
     public static final int QUERY_CARSET = 17;
     public static final int QUERY_CARBTYPE = 18;
+    public static final int QUERY_CITY = 19;
 
 
     private static final String DOMAIN = "http://119.23.21.133";
@@ -58,6 +59,8 @@ public class UrlConstants {
         INTEFACES.put(QUERY_CARBRAND, "/external/app/getCarBrandCommonList.html");
         INTEFACES.put(QUERY_CARSET, "/external/app/getCarSetCommonList.html");
         INTEFACES.put(QUERY_CARBTYPE, "/external/app/getCarTypeCommonList.html");
+
+        INTEFACES.put(QUERY_CITY, "/external/app/getCarBrandCommonList.html");
     }
 
 
