@@ -21,7 +21,7 @@ public class DaoFactory {
         } else if (type == TYPE_IMAGEMETA) {
             dao = new ImageMetaDao(context);
         } else if (type == TYPE_UPLOADTASK) {
-            dao = new UploadTaskDao(context);
+            dao = new PreCarBillDao(context);
         }
         return dao;
     }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.data.bean.UploadTaskBean;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.provider.dao.BaseDao;
 import com.smona.app.evaluationcar.framework.provider.dao.DaoFactory;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
@@ -197,10 +197,10 @@ public class DBDelegator {
 
 
     //Upload Task
-    public List<UploadTaskBean> queryUploadTask(String carBillId) {
-        BaseDao<UploadTaskBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
+    public List<PreCarBillBean> queryUploadTask(String carBillId) {
+        BaseDao<PreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
         String select = CarImageTable.CARBILLID + "=" + carBillId;
-        List<UploadTaskBean> list = dao.getResult(select, null, null);
+        List<PreCarBillBean> list = dao.getResult(select, null, null);
         return list;
     }
 

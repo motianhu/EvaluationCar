@@ -15,7 +15,7 @@ import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
 import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
-import com.smona.app.evaluationcar.framework.provider.table.UploadTaskTable;
+import com.smona.app.evaluationcar.framework.provider.table.PreCarBillTable;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
@@ -45,12 +45,12 @@ public class EvaluationProvider extends ContentProvider {
         URI_MATCH.addURI(DBConstants.AUTHORITY,
                 ImageMetaTable.TABLE_NAME, CODE_IMAGEMETA);
         URI_MATCH.addURI(DBConstants.AUTHORITY,
-                UploadTaskTable.TABLE_NAME, CODE_UPLOADTASK);
+                PreCarBillTable.TABLE_NAME, CODE_UPLOADTASK);
 
         TABLE_MATCH.put(CODE_CARBILL, CarBillTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_CARIMAGE, CarImageTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
-        TABLE_MATCH.put(CODE_UPLOADTASK, UploadTaskTable.TABLE_NAME);
+        TABLE_MATCH.put(CODE_UPLOADTASK, PreCarBillTable.TABLE_NAME);
     }
 
     private DatabaseHelper mDataHelper;
@@ -167,7 +167,7 @@ public class EvaluationProvider extends ContentProvider {
             String carbills = CarBillTable.getInstance().createTableSql();
             String carimage = CarImageTable.getInstance().createTableSql();
             String imagemeta = ImageMetaTable.getInstance().createTableSql();
-            String uploadtask = UploadTaskTable.getInstance().createTableSql();
+            String uploadtask = PreCarBillTable.getInstance().createTableSql();
 
             sqlList.add(carbills);
             sqlList.add(carimage);
