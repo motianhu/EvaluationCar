@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
+                android:textColor="@color/black_text"
                 android:text="@string/title_car_type" />
 
 
@@ -74,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:textColor="@color/black_text"
                 android:layout_marginStart="50dp"
                 android:text="@string/title_car_color" />
 
@@ -118,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
+                android:textColor="@color/black_text"
                 android:text="@string/title_car_time" />
 
 
@@ -127,7 +130,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="25dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/black_text"
                 android:hint="@string/select_car_time" />
 
             <ImageView style="@style/setting_item_arrow_style" />
@@ -159,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
+                android:textColor="@color/black_text"
                 android:text="@string/title_car_licheng" />
 
 
@@ -210,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
+                android:textColor="@color/black_text"
                 android:text="@string/title_car_city" />
 
 
@@ -246,6 +253,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="50dp"
+                android:textColor="@color/black_text"
                 android:text="@string/title_mark" />
 
             <EditText

@@ -62,4 +62,6 @@
 
     <color name="green">#04b201</color>
     <color name="exend_list_group_bg">#ebeaea</color>
+
+    <color name="blue">#1E90FF</color>
 </resources>

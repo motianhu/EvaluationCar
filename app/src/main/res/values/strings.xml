@@ -159,5 +159,9 @@
     <string name="pre_evaluation_submit">提交预评估</string>
     <string name="select_city">选择城市</string>
 
+    <string name="select_car_date">选择上牌时间</string>
+    <string name="finish">完成</string>
+    <string name="car_time">%1$s年%2$s月</string>
+
     <string name="coming_soon">敬请期待...</string>
 </resources>
