@@ -14,6 +14,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by motianhu on 4/7/17.
  */
 
-public class LocalAdapter extends BaseAdapter implements View.OnClickListener {
+public class LocalAdapter extends BaseAdapter implements View.OnClickListener, View.OnLongClickListener {
     private static final String TAG = LocalAdapter.class.getSimpleName();
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
@@ -67,6 +68,7 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener {
         }
 
         convertView.setOnClickListener(this);
+        convertView.setOnLongClickListener(this);
         convertView.setTag(carbill);
 
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
@@ -97,5 +99,11 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener {
 
     public void clear() {
         mDataList.clear();
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        CarLog.d(TAG, "TAG " + v);
+        return false;
     }
 }

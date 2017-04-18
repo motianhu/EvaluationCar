@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
@@ -29,7 +29,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
-    private List<CarBillBean> mDataList = new ArrayList<CarBillBean>();
+    private List<PreCarBillBean> mDataList = new ArrayList<>();
 
     public PreEvaluationListAdapter(Context context) {
         mContext = context;
@@ -60,7 +60,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CarBillBean carbill = mDataList.get(position);
+        PreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
                     R.layout.status_list_local_item);
@@ -68,9 +68,6 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
         convertView.setOnClickListener(this);
         convertView.setTag(carbill);
-
-        ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
-        ImageLoaderProxy.loadImage(carbill.imageThumbPath, carImage);
 
         TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
@@ -85,10 +82,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if (tag instanceof CarBillBean) {
-            CarBillBean info = (CarBillBean) tag;
-            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, EvaluationActivity.class);
-        }
+
     }
 
     protected void setScrollState(int state) {

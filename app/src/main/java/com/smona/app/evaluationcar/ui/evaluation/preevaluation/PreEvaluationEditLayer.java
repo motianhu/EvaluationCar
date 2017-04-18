@@ -2,6 +2,7 @@ package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -9,7 +10,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.Calendar;
@@ -19,9 +25,14 @@ import java.util.Calendar;
  */
 
 public class PreEvaluationEditLayer extends RelativeLayout {
+    private static final String TAG = PreEvaluationEditLayer.class.getSimpleName();
 
     private TextView mCarModel;
     private TextView mCarDate;
+    private TextView mCarColor;
+    private TextView mCarLicheng;
+    private TextView mCarCity;
+    private TextView mCarMark;
 
     public PreEvaluationEditLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,10 +43,15 @@ public class PreEvaluationEditLayer extends RelativeLayout {
         super.onFinishInflate();
         mCarModel = (TextView) findViewById(R.id.tv_type_content);
         mCarDate = (TextView) findViewById(R.id.tv_timecontent);
+        mCarColor = (TextView) findViewById(R.id.tv_car_color);
+        mCarLicheng = (TextView) findViewById(R.id.tv_car_licheng);
+        mCarCity = (TextView) findViewById(R.id.tv_car_city);
+        mCarMark = (TextView) findViewById(R.id.tv_car_mark);
 
         findViewById(R.id.container_cartype).setOnClickListener(mOnClickListener);
         findViewById(R.id.container_cartime).setOnClickListener(mOnClickListener);
         findViewById(R.id.container_city).setOnClickListener(mOnClickListener);
+        findViewById(R.id.pre_submit).setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -45,7 +61,6 @@ public class PreEvaluationEditLayer extends RelativeLayout {
             int id = v.getId();
             switch (id) {
                 case R.id.container_cartime:
-                    //ActivityUtils.jumpOnlyActivity(getContext(), TimePickerActivity.class);
                     initSelectDate();
                     break;
                 case R.id.container_cartype:
@@ -53,6 +68,9 @@ public class PreEvaluationEditLayer extends RelativeLayout {
                     break;
                 case R.id.container_city:
                     ActivityUtils.jumpOnlyActivity(getContext(), CityActivity.class);
+                    break;
+                case R.id.pre_submit:
+                    onSubmit();
                     break;
             }
 
@@ -98,4 +116,63 @@ public class PreEvaluationEditLayer extends RelativeLayout {
             }
         });
     }
+
+    private void onSubmit() {
+        String carType = mCarModel.getText().toString();
+        if(TextUtils.isEmpty(carType)) {
+            ToastUtils.show(getContext(), R.string.no_select_cartype);
+            return;
+        }
+        String carColor = mCarColor.getText().toString();
+        if(TextUtils.isEmpty(carColor)) {
+            ToastUtils.show(getContext(), R.string.no_select_color);
+            return;
+        }
+        String carDate = mCarDate.getText().toString();
+        if(TextUtils.isEmpty(carDate)) {
+            ToastUtils.show(getContext(), R.string.no_select_date);
+            return;
+        }
+        String carLicheng = mCarLicheng.getText().toString();
+        if(TextUtils.isEmpty(carLicheng)) {
+            ToastUtils.show(getContext(), R.string.no_select_licheng);
+            return;
+        }
+        String carCity = mCarCity.getText().toString();
+        if(TextUtils.isEmpty(carCity)) {
+            ToastUtils.show(getContext(), R.string.no_select_city);
+            return;
+        }
+
+        PreCarBillBean bean = new PreCarBillBean();
+        submitTask(bean);
+        clear();
+    }
+
+    private void submitTask(PreCarBillBean bean) {
+        DataDelegator.getInstance().submitPreCallBill(bean, mPreCarBillCallback);
+    }
+
+    private ResponseCallback<String> mPreCarBillCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mPreCarBillCallback onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String result) {
+            CarLog.d(TAG, "mPreCarBillCallback onSuccess result=" + result);
+        }
+    };
+
+    private void clear() {
+        mCarModel.setText("");
+        mCarColor.setText("");
+        mCarDate.setText("");
+        mCarLicheng.setText("");
+        mCarCity.setText("");
+        mCarMark.setText("");
+        ToastUtils.show(getContext(), R.string.submit_precallbill_success);
+    }
+
 }

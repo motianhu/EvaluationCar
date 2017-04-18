@@ -7,14 +7,13 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
-import com.smona.app.evaluationcar.data.event.NotPassStatusEvent;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
-import com.smona.app.evaluationcar.data.model.ResCarBillPage;
+import com.smona.app.evaluationcar.data.model.ResPreCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
-import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
@@ -78,7 +77,6 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = PAGE_SIZE;
-            mRequestParams.status = "23,33,43,53";
         }
     }
 
@@ -89,7 +87,7 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
     }
 
     private void post() {
-        DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+        DataDelegator.getInstance().queryPreCarbillList(mRequestParams, mResonponseCallBack);
     }
 
     private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
@@ -97,7 +95,7 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
         public void onFailed(String error) {
             mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
             CarLog.d(TAG, "error: " + error);
-            NotPassStatusEvent event = new NotPassStatusEvent();
+            PreCarbillEvent event = new PreCarbillEvent();
             event.setContent(null);
             EventProxy.post(event);
         }
@@ -105,11 +103,10 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
         @Override
         public void onSuccess(String content) {
             CarLog.d(TAG, "onSuccess: " + content);
-            ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
+            ResPreCarBillPage pages = JsonParse.parseJson(content, ResPreCarBillPage.class);
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
-                saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
             } else {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -122,7 +119,7 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
         @Override
         public void onClick(View v) {
             CarLog.d(TAG, "mReloadClickListener reload " + TAG);
-            DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+            post();
             mLoadingView.setVisibility(VISIBLE);
             mNoDataLayout.setVisibility(GONE);
         }
@@ -141,8 +138,8 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(NotPassStatusEvent event) {
-        List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
+    public void update(PreCarbillEvent event) {
+        List<PreCarBillBean> deltaList = (List<PreCarBillBean>) event.getContent();
         CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mListView.update(deltaList, mTag);
@@ -176,17 +173,8 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
         }
     }
 
-    private void saveToDB(List<CarBillBean> deltaList) {
-        if (deltaList == null || deltaList.size() == 0) {
-            return;
-        }
-        for (CarBillBean bean : deltaList) {
-            DBDelegator.getInstance().insertCarBill(bean);
-        }
-    }
-
-    private void notifyUpdateUI(List<CarBillBean> deltaList) {
-        NotPassStatusEvent event = new NotPassStatusEvent();
+    private void notifyUpdateUI(List<PreCarBillBean> deltaList) {
+        PreCarbillEvent event = new PreCarbillEvent();
         event.setContent(deltaList);
         EventProxy.post(event);
     }
@@ -209,7 +197,7 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
         } else {
             mPullRequest = true;
             mRequestParams.curPage += 1;
-            DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
+            post();
         }
     }
 }

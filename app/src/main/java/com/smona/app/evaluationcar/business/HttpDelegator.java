@@ -7,6 +7,7 @@ import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
@@ -138,6 +139,8 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
+
+    //预评估
     public void queryCarBrand(ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBRAND);
         x.http().get(params, callback);
@@ -161,4 +164,25 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
+    public void queryPreCarbillList(CarbillParam param, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION);
+        params.addParameter("userName", param.userName);
+        params.addParameter("curPage", param.curPage);
+        params.addParameter("pageSize", param.pageSize);
+        x.http().get(params, callback);
+    }
+
+    public void submitPreCallBill(PreCarBillBean bean, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
+        params.addParameter("carBillId", bean.carBillId);
+        params.addParameter("carBrandId", bean.carBrandId);
+        params.addParameter("carSetId", bean.carSetId);
+        params.addParameter("carTypeId", bean.carTypeId);
+        params.addParameter("cityId", bean.cityId);
+        params.addParameter("carColor", bean.carColor);
+        params.addParameter("cardTime", bean.cardTime);
+        params.addParameter("mileage", bean.mileage);
+        params.addParameter("mark", bean.mark);
+        x.http().get(params, callback);
+    }
 }

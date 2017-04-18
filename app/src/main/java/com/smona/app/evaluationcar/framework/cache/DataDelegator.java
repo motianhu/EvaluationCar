@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
+import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
@@ -132,5 +133,13 @@ public class DataDelegator {
 
     public void requestUpgradeInfo(ResponseCallback<String> callback) {
         HttpDelegator.getInstance().requestUpgradeInfo(callback);
+    }
+
+    public void submitPreCallBill(PreCarBillBean bean, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().submitPreCallBill(bean, callback);
+    }
+
+    public void queryPreCarbillList(CarbillParam params, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().queryPreCarbillList(params, callback);
     }
 }

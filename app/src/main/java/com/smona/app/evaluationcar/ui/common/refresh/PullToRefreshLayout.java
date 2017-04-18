@@ -199,11 +199,9 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
         mCanPullUp = true;
     }
 
-    //modification for 终端项目Bug #15853 by liu_s begins
     protected boolean disptchSuperTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
-    //modification for 终端项目Bug #15853 by liu_s ends
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

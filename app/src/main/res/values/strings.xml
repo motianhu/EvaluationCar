@@ -162,6 +162,12 @@
     <string name="select_car_date">选择上牌时间</string>
     <string name="finish">完成</string>
     <string name="car_time">%1$s年%2$s月</string>
+    <string name="no_select_cartype">请选择车型</string>
+    <string name="no_select_color">请输入车颜色</string>
+    <string name="no_select_date">请选择上牌时间</string>
+    <string name="no_select_licheng">请输入里程</string>
+    <string name="no_select_city">请选择城市</string>
+    <string name="submit_precallbill_success">请去预评估状态里面查看进度</string>
 
     <string name="coming_soon">敬请期待...</string>
 </resources>
