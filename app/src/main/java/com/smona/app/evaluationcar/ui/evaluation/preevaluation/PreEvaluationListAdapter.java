@@ -69,10 +69,6 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         convertView.setOnClickListener(this);
         convertView.setTag(carbill);
 
-        TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
-        String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
-        textNum.setText(mContext.getString(R.string.list_item_number) + " " + carTitle);
-
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 

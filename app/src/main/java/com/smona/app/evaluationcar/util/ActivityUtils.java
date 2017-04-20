@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,13 @@ public class ActivityUtils {
 
     public static final int ACTION_GALLERY = 1;
     public static final int ACTION_CAMERA = 2;
+
+    public static final int ACTION_CAR_BRAND = 1;
+    public static final int ACTION_CAR_CITY = 2;
+    public static final String ACTION_DATA_BRAND = "data_car_brand";
+    public static final String ACTION_DATA_SET = "data_car_set";
+    public static final String ACTION_DATA_TYPE = "data_car_type";
+    public static final String ACTION_DATA_CITY = "data_city";
 
     public static void jumpBannerDetail(Context context, BannerItem banner) {
         Intent intent = new Intent();
@@ -70,5 +78,11 @@ public class ActivityUtils {
     public static void startUpService(Context context) {
         Intent intent = new Intent(context, UploadService.class);
         context.startService(intent);
+    }
+
+    public static void jumpResultActivity(Activity activity, Class clazz, int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(activity, clazz);
+        activity.startActivityForResult(intent, requestCode);
     }
 }

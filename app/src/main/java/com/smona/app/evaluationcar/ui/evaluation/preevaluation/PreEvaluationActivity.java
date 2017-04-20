@@ -1,5 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,8 +10,6 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
-import com.smona.app.evaluationcar.ui.status.auditing.AuditingLayer;
-import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import java.util.List;
 public class PreEvaluationActivity extends HeaderActivity {
 
     private ViewPager mViewPager;
+    private ResultCallback mResultCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,10 @@ public class PreEvaluationActivity extends HeaderActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) ViewUtil.inflater(this, R.layout.preevaluation_edit_layer);
+        mResultCallback = view1;
+
         PreEvaluationListLayer view2 = (PreEvaluationListLayer) ViewUtil.inflater(this, R.layout.preevaluation_list_layer);
+
 
         List<View> viewList = new ArrayList<View>();
         viewList.add(view1);
@@ -71,5 +75,15 @@ public class PreEvaluationActivity extends HeaderActivity {
         mViewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.setAdapter(pagerAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            if (mResultCallback != null) {
+                mResultCallback.onResult(requestCode, data);
+            }
+        }
     }
 }

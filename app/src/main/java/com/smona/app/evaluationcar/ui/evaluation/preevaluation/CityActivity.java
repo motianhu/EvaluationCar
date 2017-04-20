@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -13,6 +14,7 @@ import com.smona.app.evaluationcar.data.model.ResCityPage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -80,6 +82,11 @@ public class CityActivity extends HeaderActivity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                CityItem item = mCityGroupByList.get(groupPosition).childList.get(childPosition);
+                Intent intent = new Intent();
+                intent.putExtra(ActivityUtils.ACTION_DATA_CITY, item);
+                setResult(RESULT_OK, intent);
+                finish();
                 return false;
             }
         });

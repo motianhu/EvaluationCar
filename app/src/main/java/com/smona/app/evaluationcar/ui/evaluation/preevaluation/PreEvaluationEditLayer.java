@@ -1,7 +1,9 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +14,10 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.item.BrandItem;
+import com.smona.app.evaluationcar.data.item.CityItem;
+import com.smona.app.evaluationcar.data.item.SetItem;
+import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -24,7 +30,7 @@ import java.util.Calendar;
  * Created by motianhu on 4/15/17.
  */
 
-public class PreEvaluationEditLayer extends RelativeLayout {
+public class PreEvaluationEditLayer extends RelativeLayout implements ResultCallback {
     private static final String TAG = PreEvaluationEditLayer.class.getSimpleName();
 
     private TextView mCarModel;
@@ -33,6 +39,14 @@ public class PreEvaluationEditLayer extends RelativeLayout {
     private TextView mCarLicheng;
     private TextView mCarCity;
     private TextView mCarMark;
+
+
+    private BrandItem mBrandItem;
+    private SetItem mSetItem;
+    private TypeItem mTypeItem;
+
+    private CityItem mCityItem;
+
 
     public PreEvaluationEditLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,10 +78,10 @@ public class PreEvaluationEditLayer extends RelativeLayout {
                     initSelectDate();
                     break;
                 case R.id.container_cartype:
-                    ActivityUtils.jumpOnlyActivity(getContext(), CarTypeActivity.class);
+                    ActivityUtils.jumpResultActivity((Activity) getContext(), CarTypeActivity.class, ActivityUtils.ACTION_CAR_BRAND);
                     break;
                 case R.id.container_city:
-                    ActivityUtils.jumpOnlyActivity(getContext(), CityActivity.class);
+                    ActivityUtils.jumpResultActivity((Activity) getContext(), CityActivity.class, ActivityUtils.ACTION_CAR_CITY);
                     break;
                 case R.id.pre_submit:
                     onSubmit();
@@ -145,6 +159,12 @@ public class PreEvaluationEditLayer extends RelativeLayout {
         }
 
         PreCarBillBean bean = new PreCarBillBean();
+        bean.carTypeId = mTypeItem.carSetId;
+        bean.color = carColor;
+        bean.runNum = Integer.valueOf(carLicheng);
+        bean.regDate = carDate;
+        bean.cityId = mCityItem.code;
+        bean.mark = mCarMark.getText().toString();
         submitTask(bean);
         clear();
     }
@@ -175,4 +195,17 @@ public class PreEvaluationEditLayer extends RelativeLayout {
         ToastUtils.show(getContext(), R.string.submit_precallbill_success);
     }
 
+    @Override
+    public void onResult(int requestCode, Intent data) {
+        if(requestCode == ActivityUtils.ACTION_CAR_BRAND) {
+            mBrandItem = (BrandItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_BRAND);
+            mSetItem = (SetItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_SET);
+            mTypeItem = (TypeItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_TYPE);
+
+            mCarModel.setText(mBrandItem.brandName + " " + mSetItem.carSetName + " " + mTypeItem.carTypeName);
+        } else if(requestCode == ActivityUtils.ACTION_CAR_CITY) {
+            mCityItem = (CityItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_CITY);
+            mCarCity.setText(mCityItem.cityName);
+        }
+    }
 }

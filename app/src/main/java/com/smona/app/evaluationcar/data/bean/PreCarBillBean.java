@@ -5,10 +5,9 @@ package com.smona.app.evaluationcar.data.bean;
  */
 
 public class PreCarBillBean extends BaseBean {
-    public String carBillId;
-    public String carColor;
-    public String cardTime;
-    public String mileage;
+    public String color;
+    public String regDate;
+    public int runNum;
     public String carBrandName;
     public String carSetName;
     public String carTypeName;

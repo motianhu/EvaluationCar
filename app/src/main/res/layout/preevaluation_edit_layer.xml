@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tv_type_content"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -176,6 +176,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="40dp"
                 android:background="@color/white"
+                android:digits="1234567890"
+                android:inputType="phone|number"
                 android:gravity="center|start|top"
                 android:maxLength="8"
                 android:textColor="@color/black_text"
@@ -226,7 +228,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="25dp"
+                android:gravity="center_vertical|end"
                 android:hint="@string/select_car_city" />
 
             <ImageView style="@style/setting_item_arrow_style" />

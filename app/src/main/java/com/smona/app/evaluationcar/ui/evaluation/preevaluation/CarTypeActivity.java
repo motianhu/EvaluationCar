@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import com.smona.app.evaluationcar.data.event.BrandActionEvent;
 import com.smona.app.evaluationcar.data.event.SetActionEvent;
 import com.smona.app.evaluationcar.data.event.TypeActionEvent;
 import com.smona.app.evaluationcar.data.item.BrandItem;
+import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.data.model.ResBrandPage;
@@ -22,6 +24,7 @@ import com.smona.app.evaluationcar.data.model.ResTypePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -60,9 +63,8 @@ public class CarTypeActivity extends HeaderActivity {
     private DrawerLayout mCarBrandDrawer;
     private DrawerLayout mCarSetDrawer;
 
-    private String mSelectBrandId;
-    private String mSelectSetId;
-    private String mSelectTypeId;
+    private BrandItem mSelectedBrand;
+    private SetItem mSelectedSet;
 
 
     @Override
@@ -104,9 +106,8 @@ public class CarTypeActivity extends HeaderActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 mCarBrandDrawer.openDrawer(Gravity.RIGHT);
                 mCarSetDrawer.closeDrawer(Gravity.RIGHT);
-                BrandItem item = mBrandGroupByList.get(groupPosition).childList.get(childPosition);
-                mSelectBrandId = item.id;
-                querySet(item.id);
+                mSelectedBrand = mBrandGroupByList.get(groupPosition).childList.get(childPosition);
+                querySet(mSelectedBrand.id);
                 return false;
             }
         });
@@ -132,9 +133,8 @@ public class CarTypeActivity extends HeaderActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 mCarSetDrawer.openDrawer(Gravity.RIGHT);
-                SetItem item = mSetGroupByList.get(groupPosition).childList.get(childPosition);
-                mSelectSetId = item.id;
-                queryType(mSelectBrandId, mSelectSetId);
+                mSelectedSet = mSetGroupByList.get(groupPosition).childList.get(childPosition);
+                queryType(mSelectedBrand.id, mSelectedSet.id);
                 return false;
             }
         });
@@ -159,6 +159,13 @@ public class CarTypeActivity extends HeaderActivity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                TypeItem type = mTypeGroupByList.get(groupPosition).childList.get(childPosition);
+                Intent intent = new Intent();
+                intent.putExtra(ActivityUtils.ACTION_DATA_TYPE, type);
+                intent.putExtra(ActivityUtils.ACTION_DATA_BRAND, mSelectedBrand);
+                intent.putExtra(ActivityUtils.ACTION_DATA_SET, mSelectedSet);
+                setResult(RESULT_OK, intent);
+                finish();
                 return false;
             }
         });

@@ -168,6 +168,7 @@
     <string name="no_select_licheng">请输入里程</string>
     <string name="no_select_city">请选择城市</string>
     <string name="submit_precallbill_success">请去预评估状态里面查看进度</string>
+    <string name="html_title">网页浏览</string>
 
     <string name="coming_soon">敬请期待...</string>
 </resources>
