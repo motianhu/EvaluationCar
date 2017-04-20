@@ -135,8 +135,8 @@ public class DataDelegator {
         HttpDelegator.getInstance().requestUpgradeInfo(callback);
     }
 
-    public void submitPreCallBill(PreCarBillBean bean, ResponseCallback<String> callback) {
-        HttpDelegator.getInstance().submitPreCallBill(bean, callback);
+    public void submitPreCallBill(String userName, PreCarBillBean bean, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().submitPreCallBill(userName, bean, callback);
     }
 
     public void queryPreCarbillList(CarbillParam params, ResponseCallback<String> callback) {

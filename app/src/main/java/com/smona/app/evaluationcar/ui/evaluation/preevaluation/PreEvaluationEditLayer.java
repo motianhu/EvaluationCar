@@ -18,13 +18,16 @@ import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.data.item.TypeItem;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by motianhu on 4/15/17.
@@ -165,12 +168,18 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
         bean.regDate = carDate;
         bean.cityId = mCityItem.code;
         bean.mark = mCarMark.getText().toString();
-        submitTask(bean);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        bean.createTime = df.format(new Date());
+
+        UserItem item = new UserItem();
+        item.readSelf(getContext());
+        submitTask(item.mId, bean);
         clear();
     }
 
-    private void submitTask(PreCarBillBean bean) {
-        DataDelegator.getInstance().submitPreCallBill(bean, mPreCarBillCallback);
+    private void submitTask(String userName, PreCarBillBean bean) {
+        DataDelegator.getInstance().submitPreCallBill(userName, bean, mPreCarBillCallback);
     }
 
     private ResponseCallback<String> mPreCarBillCallback = new ResponseCallback<String>() {

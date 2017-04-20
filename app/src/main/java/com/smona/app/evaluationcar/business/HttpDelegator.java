@@ -172,12 +172,14 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void submitPreCallBill(PreCarBillBean bean, ResponseCallback<String> callback) {
+    public void submitPreCallBill(String userName, PreCarBillBean bean, ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
         params.addParameter("carTypeId", bean.carTypeId);
+        params.addParameter("createUser", userName);
         params.addParameter("cityId", bean.cityId);
         params.addParameter("color", bean.color);
         params.addParameter("regDate", bean.regDate);
+        params.addParameter("createTime", bean.createTime);
         params.addParameter("runNum", bean.runNum);
         params.addParameter("mark", bean.mark);
         x.http().get(params, callback);
