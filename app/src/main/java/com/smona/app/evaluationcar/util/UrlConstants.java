@@ -55,7 +55,7 @@ public class UrlConstants {
         INTEFACES.put(QUERY_APP_API_UPDATE, "/external/app/getAppApiCacheVersion.html");
 
         INTEFACES.put(QUERY_PREEVALUATION_SUBMIT, "/external/app/addPreCarBill.html");
-        INTEFACES.put(QUERY_PREEVALUATION, "/external/app/getAppBillList.html");
+        INTEFACES.put(QUERY_PREEVALUATION, "/external/app/getAppPreCarBillList.html");
         INTEFACES.put(QUERY_CARBRAND, "/external/app/getCarBrandCommonList.html");
         INTEFACES.put(QUERY_CARSET, "/external/app/getCarSetCommonList.html");
         INTEFACES.put(QUERY_CARBTYPE, "/external/app/getCarTypeCommonList.html");
