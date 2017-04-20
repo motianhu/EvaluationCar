@@ -60,7 +60,7 @@ public class UrlConstants {
         INTEFACES.put(QUERY_CARSET, "/external/app/getCarSetCommonList.html");
         INTEFACES.put(QUERY_CARBTYPE, "/external/app/getCarTypeCommonList.html");
 
-        INTEFACES.put(QUERY_CITY, "/external/app/getCarBrandCommonList.html");
+        INTEFACES.put(QUERY_CITY, "/external/app/getCityList.html");
     }
 
 

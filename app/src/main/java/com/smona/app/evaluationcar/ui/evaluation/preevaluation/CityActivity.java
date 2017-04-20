@@ -137,13 +137,13 @@ public class CityActivity extends HeaderActivity {
     private void processCityLetter() {
         HashMap<String, String> letterMap = new HashMap<>();
         boolean isExist;
-        String cityFirstName;
+        String provinceName;
         for (CityItem item : mCityList) {
-            cityFirstName = item.brandFirstName;
-            isExist = letterMap.containsKey(cityFirstName);
+            provinceName = item.provinceName;
+            isExist = letterMap.containsKey(provinceName);
             if (!isExist) {
-                letterMap.put(cityFirstName, cityFirstName);
-                mCityLetterList.add(cityFirstName);
+                letterMap.put(provinceName, provinceName);
+                mCityLetterList.add(provinceName);
             }
         }
     }
@@ -151,18 +151,18 @@ public class CityActivity extends HeaderActivity {
     private void processCityGroupBY() {
         HashMap<String, Integer> letterMap = new HashMap<>();
         Integer index;
-        String cityFirstName;
+        String provinceName;
         for (CityItem item: mCityList) {
-            cityFirstName = item.brandFirstName;
-            index = letterMap.get(cityFirstName);
+            provinceName = item.provinceName;
+            index = letterMap.get(provinceName);
             if (index == null) {
                 List<CityItem> value = new ArrayList<>();
                 value.add(item);
                 GroupCityInfo info = new GroupCityInfo();
                 info.childList = value;
-                info.letter = cityFirstName;
+                info.letter = provinceName;
                 mCityGroupByList.add(info);
-                letterMap.put(cityFirstName, mCityGroupByList.size() - 1);
+                letterMap.put(provinceName, mCityGroupByList.size() - 1);
             } else {
                 GroupCityInfo info = mCityGroupByList.get(index.intValue());
                 info.childList.add(item);

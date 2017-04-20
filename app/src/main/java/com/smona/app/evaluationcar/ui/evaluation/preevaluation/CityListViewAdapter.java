@@ -96,7 +96,7 @@ class CityListViewAdapter  extends BaseExpandableListAdapter {
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.brandName);
+        itemHolder.brandName.setText(item.cityName);
         return convertView;
     }
 

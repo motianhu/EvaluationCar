@@ -7,9 +7,8 @@ import com.smona.app.evaluationcar.data.bean.BaseBean;
  */
 
 public class CityItem extends BaseBean {
-    public String id;
-    public String brandName;
+    public String code;
     public String cityName;
-    public String brandFirstName;
-    public String cityFirstName;
+    public String parentCode;
+    public String provinceName;
 }
