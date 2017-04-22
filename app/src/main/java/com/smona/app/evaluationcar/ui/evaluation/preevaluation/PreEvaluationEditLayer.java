@@ -162,7 +162,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
         }
 
         PreCarBillBean bean = new PreCarBillBean();
-        bean.carTypeId = mTypeItem.carSetId;
+        bean.carTypeId = mTypeItem.id;
         bean.color = carColor;
         bean.runNum = Integer.valueOf(carLicheng);
         bean.regDate = carDate;

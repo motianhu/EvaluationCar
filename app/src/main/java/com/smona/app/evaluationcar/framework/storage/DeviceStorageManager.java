@@ -24,6 +24,8 @@ public class DeviceStorageManager {
     private String mMd5Path;
     private String mTempPath;
 
+    private static final String TEST_FILE = "rhinotest0123456789";
+
 
     private DeviceStorageManager() {
     }
@@ -54,7 +56,7 @@ public class DeviceStorageManager {
         success = makeFolder(mThumbnailPath);
         mTempPath = rootPath +File.separator + FolderContants.TEMP;
         success = makeFolder(mTempPath);
-        mTestEvn = new File(mPrefixPath + File.separator + "rhinotest0123456789").exists();
+        mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
     }
 
     public String getMd5Path() {

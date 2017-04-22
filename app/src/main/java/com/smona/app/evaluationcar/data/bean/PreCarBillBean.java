@@ -14,7 +14,7 @@ public class PreCarBillBean extends BaseBean {
     public String carBrandId;
     public String carSetId;
     public String carTypeId;
-    public String city;
+    public String cityName;
     public String cityId;
     public String mark;
     public String createTime;

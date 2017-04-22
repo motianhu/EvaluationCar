@@ -63,25 +63,34 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         convertView.setOnClickListener(this);
         convertView.setTag(carbill);
 
-        TextView carType = (TextView) convertView.findViewById(R.id.carType);
-        carType.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
+        View container = convertView.findViewById(R.id.carType);
+        setNameValue(container, mContext.getString(R.string.title_car_type) + ":", carbill.carBrandName + " " + carbill.carSetName + " " + carbill.carTypeName);
 
-        TextView carColor = (TextView) convertView.findViewById(R.id.carColor);
-        carColor.setText(mContext.getString(R.string.list_item_time) + " " + carbill.color);
+        container = convertView.findViewById(R.id.carColor);
+        setNameValue(container, mContext.getString(R.string.title_car_color) + ":", carbill.color);
 
-        TextView carNum = (TextView) convertView.findViewById(R.id.runNum);
-        carNum.setText(mContext.getString(R.string.list_item_time) + " " + carbill.runNum);
+        container = convertView.findViewById(R.id.runNum);
+        setNameValue(container, mContext.getString(R.string.title_car_licheng) + ":", carbill.runNum + mContext.getString(R.string.select_car_licheng_unit));
 
-        TextView textTime = (TextView) convertView.findViewById(R.id.regDate);
-        textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.regDate);
 
-        TextView city = (TextView) convertView.findViewById(R.id.city);
-        city.setText(mContext.getString(R.string.list_item_time) + " " + carbill.city);
+        container = convertView.findViewById(R.id.regDate);
+        setNameValue(container, mContext.getString(R.string.title_car_time) + ":", carbill.regDate);
 
-        TextView mark = (TextView) convertView.findViewById(R.id.mark);
-        mark.setText(mContext.getString(R.string.list_item_time) + " " + carbill.mark);
+
+        container = convertView.findViewById(R.id.city);
+        setNameValue(container, mContext.getString(R.string.title_car_city) + ":", carbill.cityName);
+
+        container = convertView.findViewById(R.id.mark);
+        setNameValue(container, mContext.getString(R.string.title_mark_1) + ":", carbill.mark);
 
         return convertView;
+    }
+
+    private void setNameValue(View parent, String name, String value) {
+        TextView tvName = (TextView) parent.findViewById(R.id.name);
+        TextView tvValue = (TextView) parent.findViewById(R.id.value);
+        tvName.setText(name);
+        tvValue.setText(value);
     }
 
     @Override
