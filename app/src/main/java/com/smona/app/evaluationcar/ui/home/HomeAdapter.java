@@ -30,13 +30,13 @@ public class HomeAdapter extends AbstractAdapter {
             convertView = ViewUtil.inflater(mContext, R.layout.home_list_item);
         }
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
-        ImageLoaderProxy.loadImage(info.imgurl, image);
+        ImageLoaderProxy.loadImage(info.imageThumb, image);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         title.setText(info.title);
         TextView time = (TextView) convertView.findViewById(R.id.time);
-        time.setText(info.time);
+        time.setText(info.createTime);
         TextView summary = (TextView) convertView.findViewById(R.id.summary);
-        summary.setText(info.summary);
+        summary.setText(info.shortContent);
         return convertView;
     }
 

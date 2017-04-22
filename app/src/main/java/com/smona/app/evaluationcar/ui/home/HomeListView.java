@@ -10,7 +10,10 @@ import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
+import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -72,12 +75,13 @@ public class HomeListView extends BaseListView {
 
             @Override
             public void onSuccess(String result) {
+                CarLog.d(TAG, "requestBanner onSuccess result=" + result);
 
             }
 
             @Override
             public void onFailed(String error) {
-
+                CarLog.d(TAG, "requestBanner onFailed error=" + error);
             }
         });
 
@@ -86,15 +90,25 @@ public class HomeListView extends BaseListView {
         DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>() {
 
             @Override
-            public void onSuccess(String result) {
-
+            public void onSuccess(String content) {
+                CarLog.d(TAG, "requestNews onSuccess content=" + content);
+                ResNewsPage pages = JsonParse.parseJson(content, ResNewsPage.class);
+                if(pages != null && pages.total > 0) {
+                    postEvent(pages.data);
+                }
             }
 
             @Override
             public void onFailed(String error) {
-
+                CarLog.d(TAG, "requestNews onFailed error=" + error);
             }
         });
+    }
+
+    private void postEvent(List<NewsItem> item) {
+        NewsEvent event = new NewsEvent();
+        event.setContent(item);
+        EventProxy.post(event);
     }
 
 }

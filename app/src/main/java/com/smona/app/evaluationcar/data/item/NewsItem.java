@@ -7,10 +7,18 @@ import com.smona.app.evaluationcar.data.bean.BaseBean;
  */
 
 public class NewsItem extends BaseBean {
-    public int newsId;
+    public int id;
+    public String classType;
+    public String recordFrom;
     public String title;
-    public String time;
-    public String summary;
-    public String url;
-    public String imgurl;
+    public String imageThumb;
+    public String previewContent;
+    public String content;
+    public String createTime;
+    public String createUser;
+    public String modifyTime;
+
+    public String modifyUser;
+    public String status;
+    public String shortContent;
 }

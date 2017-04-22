@@ -188,7 +188,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     public void update(NoticeEvent event) {
         ResNewsPage bean = (ResNewsPage) event.getContent();
         if (bean != null && bean.total > 0) {
-            mNotice.setText(bean.data.get(0).summary);
+            mNotice.setText(bean.data.get(0).shortContent);
         }
     }
 
