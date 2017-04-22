@@ -31,6 +31,11 @@ import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 public class LoginActivity extends PermissionActivity implements OnClickListener {
     protected static final String TAG = LoginActivity.class.getSimpleName();
     private LinearLayout mLoginLinearLayout; // 登录内容的容器
@@ -192,6 +197,12 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                                 String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
                                 if (normal.object != null) {
                                     CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
+                                    JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback(){
+                                        @Override
+                                        public void gotResult(int i, String s, Set<String> set) {
+                                            CarLog.d(TAG, "jpush register alias i=" + i);
+                                        }
+                                    });
                                 }
                                 runUI(normal.success);
                             }
