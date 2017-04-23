@@ -184,4 +184,16 @@ public class HttpDelegator implements IProxy {
         params.addParameter("mark", bean.mark);
         x.http().get(params, callback);
     }
+
+    public void queryPageElementLatest(ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_LATEST);
+        params.addParameter("classType", "轮播图");
+        x.http().get(params, callback);
+    }
+
+    public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_DETAIL);
+        params.addParameter("id", pageId);
+        x.http().get(params, callback);
+    }
 }

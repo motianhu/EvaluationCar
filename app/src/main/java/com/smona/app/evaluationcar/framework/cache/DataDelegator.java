@@ -142,4 +142,12 @@ public class DataDelegator {
     public void queryPreCarbillList(CarbillParam params, ResponseCallback<String> callback) {
         HttpDelegator.getInstance().queryPreCarbillList(params, callback);
     }
+
+    public void queryPageElementLatest(ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().queryPageElementLatest(callback);
+    }
+
+    public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().queryPageElementDetail(pageId, callback);
+    }
 }

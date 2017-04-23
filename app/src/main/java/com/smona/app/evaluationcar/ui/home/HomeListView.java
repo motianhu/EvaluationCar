@@ -69,13 +69,10 @@ public class HomeListView extends BaseListView {
 
 
     private void post() {
-        BannerParam param = new BannerParam();
-        param.classType = "新闻公告";
-        DataDelegator.getInstance().requestBanner(param, new ResponseCallback<String>() {
-
+        DataDelegator.getInstance().queryPageElementLatest(new ResponseCallback<String>() {
             @Override
-            public void onSuccess(String result) {
-                CarLog.d(TAG, "requestBanner onSuccess result=" + result);
+            public void onSuccess(String content) {
+                CarLog.d(TAG, "requestBanner onSuccess content=" + content);
 
             }
 
@@ -85,7 +82,7 @@ public class HomeListView extends BaseListView {
             }
         });
 
-        param = new BannerParam();
+        BannerParam param  = new BannerParam();
         param.classType = "最新资讯";
         DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>() {
 
