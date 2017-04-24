@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.model.ResNewsPage;
+import com.smona.app.evaluationcar.data.model.ResPageElementPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -73,12 +74,16 @@ public class HomeListView extends BaseListView {
             @Override
             public void onSuccess(String content) {
                 CarLog.d(TAG, "requestBanner onSuccess content=" + content);
-
+                ResPageElementPage pages = JsonParse.parseJson(content, ResPageElementPage.class);
+                if(pages != null && pages.total > 0) {
+                    postBannerEvent(pages.data);
+                }
             }
 
             @Override
             public void onFailed(String error) {
                 CarLog.d(TAG, "requestBanner onFailed error=" + error);
+
             }
         });
 
@@ -104,6 +109,12 @@ public class HomeListView extends BaseListView {
 
     private void postEvent(List<NewsItem> item) {
         NewsEvent event = new NewsEvent();
+        event.setContent(item);
+        EventProxy.post(event);
+    }
+
+    private void postBannerEvent(List<BannerItem> item) {
+        BannerEvent event = new BannerEvent();
         event.setContent(item);
         EventProxy.post(event);
     }

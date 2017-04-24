@@ -15,4 +15,6 @@ public class CacheContants {
     public static final String IMAGESEQNUM = "imageSeqNum";
 
     public static final String CARBILLBEAN = "bean_carBill";
+
+    public static final String PAGE_ELEMENT_ID = "page_element_id";
 }

@@ -232,7 +232,7 @@ public class BannerViewPager extends BaseViewPager {
         }
         if (mDataList.size() > 0) {
             BannerItem info = mDataList.get(pos);
-            String url = info.imgurl;
+            String url = info.previewMedia;
             ImageView view = (ImageView) getChildAt(index).findViewById(
                     R.id.image);
             ImageLoaderProxy.loadImage(url, view);

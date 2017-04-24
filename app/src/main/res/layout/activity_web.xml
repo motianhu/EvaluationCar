@@ -9,15 +9,25 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/welcome_bg">
+        android:background="@color/welcome_bg"
+        android:orientation="vertical">
+
         <WebView
             android:id="@+id/content_web"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+        <include
+            android:id="@+id/no_content"
+            layout="@layout/refresh_network_tip" />
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/refresh_center_loading" />
+
+    </RelativeLayout>
 
 </LinearLayout>

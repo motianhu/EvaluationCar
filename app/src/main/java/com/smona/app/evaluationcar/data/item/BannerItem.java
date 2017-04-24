@@ -7,8 +7,17 @@ import com.smona.app.evaluationcar.data.bean.BaseBean;
  */
 
 public class BannerItem extends BaseBean {
-    public int bannerId;
-    public String title;
-    public String url;
-    public String imgurl;
+    public int id;
+    public String elementType; //轮播图
+    public int sequence;
+    public String previewWord;
+    public String previewMedia;
+    public String detailContent;
+    public String description;
+    public String createTime;
+    public String modifyTime;
+    public int status;
+    public int detailContentType;
+    public String previewDetailContent;
+    public String shortContent;
 }
