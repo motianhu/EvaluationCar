@@ -4,23 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.ResponseCallback;
-import com.smona.app.evaluationcar.business.param.BannerParam;
-import com.smona.app.evaluationcar.data.event.BannerEvent;
-import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
-import com.smona.app.evaluationcar.data.model.ResNewsPage;
-import com.smona.app.evaluationcar.data.model.ResPageElementPage;
-import com.smona.app.evaluationcar.framework.cache.DataDelegator;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
-import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.base.BaseListView;
-import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -45,78 +32,11 @@ public class HomeListView extends BaseListView {
         this.setAdapter(mAdapter);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(BannerEvent event) {
-        List<BannerItem> list = (List<BannerItem>) event.getContent();
-        if (list != null) {
-            mHeader.update(list);
-        }
+    public void updateHeader(List<BannerItem> list) {
+        mHeader.update(list);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(NewsEvent event) {
-        List<NewsItem> list = (List<NewsItem>) event.getContent();
-        if (list != null) {
-            mAdapter.update(list);
-        }
+    public void updateAdapter(List<NewsItem> list) {
+        mAdapter.update(list);
     }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        CarLog.d(TAG, "onAttachedToWindow post");
-        post();
-    }
-
-
-    private void post() {
-        DataDelegator.getInstance().queryPageElementLatest(new ResponseCallback<String>() {
-            @Override
-            public void onSuccess(String content) {
-                CarLog.d(TAG, "requestBanner onSuccess content=" + content);
-                ResPageElementPage pages = JsonParse.parseJson(content, ResPageElementPage.class);
-                if(pages != null && pages.total > 0) {
-                    postBannerEvent(pages.data);
-                }
-            }
-
-            @Override
-            public void onFailed(String error) {
-                CarLog.d(TAG, "requestBanner onFailed error=" + error);
-
-            }
-        });
-
-        BannerParam param  = new BannerParam();
-        param.classType = "最新资讯";
-        DataDelegator.getInstance().requestNews(param, new ResponseCallback<String>() {
-
-            @Override
-            public void onSuccess(String content) {
-                CarLog.d(TAG, "requestNews onSuccess content=" + content);
-                ResNewsPage pages = JsonParse.parseJson(content, ResNewsPage.class);
-                if(pages != null && pages.total > 0) {
-                    postEvent(pages.data);
-                }
-            }
-
-            @Override
-            public void onFailed(String error) {
-                CarLog.d(TAG, "requestNews onFailed error=" + error);
-            }
-        });
-    }
-
-    private void postEvent(List<NewsItem> item) {
-        NewsEvent event = new NewsEvent();
-        event.setContent(item);
-        EventProxy.post(event);
-    }
-
-    private void postBannerEvent(List<BannerItem> item) {
-        BannerEvent event = new BannerEvent();
-        event.setContent(item);
-        EventProxy.post(event);
-    }
-
 }

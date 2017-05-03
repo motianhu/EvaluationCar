@@ -26,16 +26,4 @@ public abstract class BaseListView extends ListView {
     }
 
     public abstract void init();
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        EventProxy.register(this);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        EventProxy.unregister(this);
-    }
 }

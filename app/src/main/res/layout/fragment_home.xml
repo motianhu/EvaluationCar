@@ -5,8 +5,8 @@
     android:background="@color/bg_white"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/header"
+    <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="101dp"
         android:background="@drawable/home_header_bg"
@@ -17,9 +17,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="13dp"
             android:gravity="center"
             android:shadowColor="#4d4d4d"
             android:shadowDx="0"
@@ -27,36 +25,31 @@
             android:shadowRadius="2"
             android:text="@string/system_name"
             android:textColor="@color/bg_white"
-            android:textSize="16sp"
+            android:textSize="21sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/billtotal"
             android:layout_width="wrap_content"
-            android:layout_height="41dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/total_bill_bg"
-            android:gravity="center"
-            android:text="总单量: %"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="7dp"
-            android:drawableLeft="@drawable/message_box"
-            android:gravity="center"
-            android:drawablePadding="5dp"
-            android:text="编号DS2017，车辆通过初评" />
-    </RelativeLayout>
+            android:layout_marginTop="12dp"
+            android:background="@drawable/total_bill_bg"
+            android:gravity="center" />
+
+    </LinearLayout>
 
     <com.smona.app.evaluationcar.ui.home.HomeListView
         android:id="@+id/content_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center" />
+
+    <include
+        android:id="@+id/no_content"
+        layout="@layout/refresh_network_tip" />
+
+    <include
+        android:id="@+id/loading"
+        layout="@layout/refresh_center_loading" />
 
 </com.smona.app.evaluationcar.ui.home.HomeLayer>
