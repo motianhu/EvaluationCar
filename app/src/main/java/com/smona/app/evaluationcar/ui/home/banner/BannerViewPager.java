@@ -13,6 +13,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class BannerViewPager extends BaseViewPager {
                 return;
             }
             BannerItem info = mDataList.get(mCurrentPos);
-            ActivityUtils.jumpBannerDetail(getContext(), info);
+            ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_BANNER, info.id);
         }
 
     };

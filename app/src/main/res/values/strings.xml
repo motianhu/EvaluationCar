@@ -172,4 +172,8 @@
     <string name="html_title">网页浏览</string>
 
     <string name="coming_soon">敬请期待...</string>
+
+
+    <string name="html_title_banner">活动详情</string>
+    <string name="html_title_news">新闻详情</string>
 </resources>

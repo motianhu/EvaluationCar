@@ -10,6 +10,8 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.common.AbstractAdapter;
+import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -25,10 +27,16 @@ public class HomeAdapter extends AbstractAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        NewsItem info = (NewsItem) (mDatas.get(position));
+        final NewsItem info = (NewsItem) (mDatas.get(position));
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.home_list_item);
         }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.jumpWebActivity(mContext, CacheContants.TYPE_NEWS, info.id);
+            }
+        });
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ImageLoaderProxy.loadImage(info.imageThumb, image);
         TextView title = (TextView) convertView.findViewById(R.id.title);

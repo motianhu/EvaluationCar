@@ -150,4 +150,8 @@ public class DataDelegator {
     public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {
         HttpDelegator.getInstance().queryPageElementDetail(pageId, callback);
     }
+
+    public void queryNewsDetail(int newsId, ResponseCallback callback) {
+        HttpDelegator.getInstance().queryNewsDetail(newsId, callback);
+    }
 }

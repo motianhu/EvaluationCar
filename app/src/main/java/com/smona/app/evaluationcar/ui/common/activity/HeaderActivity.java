@@ -14,6 +14,8 @@ import com.smona.app.evaluationcar.util.ViewUtil;
 
 public abstract class HeaderActivity extends UserActivity {
 
+    private TextView mTitle;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +32,14 @@ public abstract class HeaderActivity extends UserActivity {
     private void initHeader() {
         HeaderListener headerListener = new HeaderListener();
         findViewById(R.id.left).setOnClickListener(headerListener);
-        TextView title = (TextView) findViewById(R.id.center);
-        title.setText(getHeaderTitle());
+        mTitle = (TextView) findViewById(R.id.center);
+        updateTitle(getHeaderTitle());
         ViewUtil.setViewVisible(findViewById(R.id.right), showDelete());
         findViewById(R.id.right).setOnClickListener(headerListener);
+    }
+
+    protected void updateTitle(int resId) {
+        mTitle.setText(resId);
     }
 
     protected void onDelete() {

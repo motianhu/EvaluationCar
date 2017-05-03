@@ -6,8 +6,10 @@ import android.webkit.WebView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
+import com.smona.app.evaluationcar.data.bean.BaseBean;
 import com.smona.app.evaluationcar.data.event.PageElementEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
+import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -30,7 +32,8 @@ public class WebActivity extends HeaderActivity {
     private View mNoContent;
     private View mLoading;
 
-    private int mPageId;
+    private int mType;
+    private int mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +50,56 @@ public class WebActivity extends HeaderActivity {
     }
 
     private void initData() {
-        mPageId = getIntent().getIntExtra(CacheContants.PAGE_ELEMENT_ID, -1);
         EventProxy.register(this);
+
+        mType = getIntent().getIntExtra(CacheContants.WEB_ACTIVITY_TYPE, -1);
+        mId = getIntent().getIntExtra(CacheContants.PAGE_ELEMENT_ID, -1);
+        CarLog.d(TAG, "type=" + mType + ", id=" + mId);
+
     }
 
     private void initViews() {
         mHtmlView = (WebView) findViewById(R.id.content_web);
         mNoContent = findViewById(R.id.no_content);
-        ViewUtil.setViewVisible(mNoContent, false);
+        mNoContent.setOnClickListener(mReloadClick);
         mLoading = findViewById(R.id.loading);
+
+        updateTitle();
+        setLoading();
+    }
+
+    private void setHasData() {
+        ViewUtil.setViewVisible(mNoContent, false);
+        ViewUtil.setViewVisible(mLoading, false);
+        ViewUtil.setViewVisible(mHtmlView, true);
+    }
+
+    private void setNoData() {
+        ViewUtil.setViewVisible(mNoContent, true);
+        ViewUtil.setViewVisible(mLoading, false);
+        ViewUtil.setViewVisible(mHtmlView, false);
+    }
+
+    private void setLoading() {
+        ViewUtil.setViewVisible(mNoContent, false);
+        ViewUtil.setViewVisible(mLoading, true);
+        ViewUtil.setViewVisible(mHtmlView, false);
+    }
+
+    private View.OnClickListener mReloadClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setLoading();
+            requestData();
+        }
+    };
+
+    private void updateTitle() {
+        if (isBanner()) {
+            updateTitle(R.string.html_title_banner);
+        } else if (isNews()) {
+            updateTitle(R.string.html_title_news);
+        }
     }
 
     @Override
@@ -79,25 +123,52 @@ public class WebActivity extends HeaderActivity {
     }
 
     private void requestData() {
-        DataDelegator.getInstance().queryPageElementDetail(mPageId, mBannerCallback);
+        if (isBanner()) {
+            DataDelegator.getInstance().queryPageElementDetail(mId, mCallback);
+        } else if (isNews()) {
+            DataDelegator.getInstance().queryNewsDetail(mId, mCallback);
+        }
     }
 
-    private ResponseCallback<String> mBannerCallback = new ResponseCallback<String>() {
+    private boolean isBanner() {
+        return CacheContants.TYPE_BANNER == mType;
+    }
+
+    private boolean isNews() {
+        return CacheContants.TYPE_NEWS == mType;
+    }
+
+    private ResponseCallback<String> mCallback = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
-            CarLog.d(TAG, "mBannerCallback onFailed error=" + error);
+            CarLog.d(TAG, "mCallback onFailed error=" + error);
             poseBanner(null);
         }
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "mBannerCallback onSuccess content=" + content);
-            BannerItem item = JsonParse.parseJson(content, BannerItem.class);
-            poseBanner(item);
+            CarLog.d(TAG, "mCallback onSuccess content=" + content);
+            if (isBanner()) {
+                parseBanner(content);
+            } else if (isNews()) {
+                parseNewsItem(content);
+            } else {
+                poseBanner(null);
+            }
         }
     };
 
-    private void poseBanner(BannerItem item) {
+    private void parseBanner(String content) {
+        BannerItem item = JsonParse.parseJson(content, BannerItem.class);
+        poseBanner(item);
+    }
+
+    private void parseNewsItem(String content) {
+        NewsItem item = JsonParse.parseJson(content, NewsItem.class);
+        poseBanner(item);
+    }
+
+    private void poseBanner(BaseBean item) {
         PageElementEvent event = new PageElementEvent();
         event.setContent(item);
         EventProxy.post(event);
@@ -105,16 +176,23 @@ public class WebActivity extends HeaderActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PageElementEvent event) {
-        BannerItem item = (BannerItem) event.getContent();
-        ViewUtil.setViewVisible(mLoading, false);
+        BaseBean item = (BaseBean) event.getContent();
+        String content = null;
+        if (item instanceof BannerItem) {
+            content = ((BannerItem) item).detailContent;
+        } else if (item instanceof NewsItem) {
+            content = ((NewsItem) item).content;
+        }
+
         if (item != null) {
-            ViewUtil.setViewVisible(mNoContent, false);
+            setHasData();
+
             String str = "<html><head><title>欢迎你</title></head><body>"
-                    + item.detailContent
+                    + content
                     + "</body></html>";
             mHtmlView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
         } else {
-            ViewUtil.setViewVisible(mNoContent, true);
+            setNoData();
         }
     }
 }

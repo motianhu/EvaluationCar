@@ -28,11 +28,10 @@ public class ActivityUtils {
     public static final String ACTION_DATA_TYPE = "data_car_type";
     public static final String ACTION_DATA_CITY = "data_city";
 
-    public static void jumpBannerDetail(Context context, BannerItem banner) {
+    public static void jumpWebActivity(Context context, int type, int id) {
         Intent intent = new Intent();
-        if (banner instanceof Parcelable) {
-            intent.putExtra("", banner);
-        }
+        intent.putExtra(CacheContants.PAGE_ELEMENT_ID, id);
+        intent.putExtra(CacheContants.WEB_ACTIVITY_TYPE, type);
         intent.setClass(context, WebActivity.class);
         context.startActivity(intent);
     }
