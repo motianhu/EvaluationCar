@@ -6,6 +6,7 @@ import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
+import com.smona.app.evaluationcar.business.param.PageParam;
 import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
@@ -153,5 +154,9 @@ public class DataDelegator {
 
     public void queryNewsDetail(int newsId, ResponseCallback callback) {
         HttpDelegator.getInstance().queryNewsDetail(newsId, callback);
+    }
+
+    public void queryMoreNews(String classType, PageParam page, ResponseCallback callback) {
+        HttpDelegator.getInstance().queryMoreNews(classType, page, callback);
     }
 }

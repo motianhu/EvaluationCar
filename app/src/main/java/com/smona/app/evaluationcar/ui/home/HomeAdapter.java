@@ -31,12 +31,9 @@ public class HomeAdapter extends AbstractAdapter {
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.home_list_item);
         }
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityUtils.jumpWebActivity(mContext, CacheContants.TYPE_NEWS, info.id);
-            }
-        });
+        convertView.setOnClickListener(this);
+        convertView.setTag(info);
+
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         ImageLoaderProxy.loadImage(info.imageThumb, image);
         TextView title = (TextView) convertView.findViewById(R.id.title);
@@ -57,6 +54,7 @@ public class HomeAdapter extends AbstractAdapter {
 
     @Override
     public void onClick(View v) {
-
+        NewsItem info = (NewsItem) v.getTag();
+        ActivityUtils.jumpWebActivity(mContext, CacheContants.TYPE_NEWS, info.id);
     }
 }

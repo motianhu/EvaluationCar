@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
+import com.smona.app.evaluationcar.business.param.PageParam;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
@@ -119,11 +120,11 @@ public class HttpDelegator implements IProxy {
     }
 
 
-    public void queryMoreNews(String classType, int curPage, int pageSize, ResponseCallback callback) {
+    public void queryMoreNews(String classType, PageParam page, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
         params.addParameter("classType", classType);
-        params.addParameter("curPage", curPage);
-        params.addParameter("pageSize", pageSize);
+        params.addParameter("curPage", page.curPage);
+        params.addParameter("pageSize", page.pageSize);
         x.http().get(params, callback);
     }
 

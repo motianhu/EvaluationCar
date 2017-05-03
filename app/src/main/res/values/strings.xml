@@ -176,4 +176,8 @@
 
     <string name="html_title_banner">活动详情</string>
     <string name="html_title_news">新闻详情</string>
+
+
+    <!--more news-->
+    <string name="more_news">所有新闻</string>
 </resources>
