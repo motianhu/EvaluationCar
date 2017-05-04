@@ -35,6 +35,8 @@ import com.smona.app.evaluationcar.util.ToastUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 /**
  * Created by motianhu on 2/28/17.
  */
@@ -63,20 +65,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
             CarLog.d(TAG, "mCallbillCountCallback onSuccess content= " + content);
             ResCountPage resCountPage = JsonParse.parseJson(content, ResCountPage.class);
             notifyUICount(resCountPage);
-        }
-    };
-
-    private ResponseCallback<String> mNoticeCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "mNoticeCallback onFailed error= " + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mNoticeCallback onSuccess content= " + content);
-            ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
-            notifyUINotice(newsPage);
         }
     };
 
@@ -166,7 +154,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
-        DataDelegator.getInstance().requestNotice(mNoticeCallback);
+        DataDelegator.getInstance().requestNotice();
         EventProxy.post(new LocalStatusSubEvent());
     }
 
@@ -197,10 +185,10 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(NoticeEvent event) {
-        ResNewsPage bean = (ResNewsPage) event.getContent();
-        if (bean != null && bean.total > 0) {
-            mNotice.setTag(bean.data.get(0));
-            mNotice.setText(Html.fromHtml(bean.data.get(0).shortContent));
+        List<NewsItem> list = (List<NewsItem>) event.getContent();
+        if (list != null && list.size() > 0) {
+            mNotice.setTag(list.get(0));
+            mNotice.setText(Html.fromHtml(list.get(0).shortContent));
         }
     }
 
@@ -212,12 +200,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     private void notifyUICount(ResCountPage page) {
         BillTotalEvent event = new BillTotalEvent();
-        event.setContent(page);
-        EventProxy.post(event);
-    }
-
-    private void notifyUINotice(ResNewsPage page) {
-        NoticeEvent event = new NoticeEvent();
         event.setContent(page);
         EventProxy.post(event);
     }

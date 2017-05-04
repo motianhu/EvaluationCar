@@ -15,7 +15,6 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import java.util.List;
@@ -25,11 +24,10 @@ import java.util.List;
  */
 
 public class DataDelegator {
-    private static final long LAST_SERVER_DEFAULT_VALUE = 0l;
-    private static final long INTERVAL = 60 * 60 * 1000; // one hour
+
 
     private volatile static DataDelegator sInstance;
-    private Context mAppContext;
+
 
     private DataDelegator() {
     }
@@ -42,18 +40,7 @@ public class DataDelegator {
     }
 
     public void init(Context appContext) {
-        mAppContext = appContext;
-    }
-
-    private boolean needReload(String key) {
-        long lastTime = getLastSuccessRequestTime(key);
-        long now = System.currentTimeMillis();
-        long diff = now - lastTime;
-        return Math.abs(diff) >= INTERVAL;
-    }
-
-    private long getLastSuccessRequestTime(String key) {
-        return (long) SPUtil.get(mAppContext, key, LAST_SERVER_DEFAULT_VALUE);
+        CacheDelegator.getInstance().init(appContext);
     }
 
     public void checkUser(Params params, ResponseCallback callback) {
@@ -74,19 +61,7 @@ public class DataDelegator {
         }
     }
 
-    public void requestNews(Params params, ResponseCallback callback) {
-        if (params instanceof BannerParam) {
-            String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
-            if (cache) {
-                CacheDelegator.getInstance().requestNews((BannerParam) params, callback);
-            } else {
-                HttpDelegator.getInstance().requestLatestNews((BannerParam) params, callback);
-            }
-        } else {
-            callback.onFailed("params not BannerParam!");
-        }
-    }
+
 
     public void uploadImage(String userName, CarImageBean bean, ResponseCallback callback) {
         HttpDelegator.getInstance().uploadImage(userName, bean, callback);
@@ -125,15 +100,7 @@ public class DataDelegator {
         }
     }
 
-    public void requestNotice(ResponseCallback<String> callback) {
-        String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-        boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
-        if (cache) {
-            CacheDelegator.getInstance().requestNotice(callback);
-        } else {
-            HttpDelegator.getInstance().requestNotice(callback);
-        }
-    }
+
 
     public ImageMetaBean requestImageMeta(String imageClass, int imageSeqNum) {
         return DBDelegator.getInstance().queryImageMeta(imageClass, imageSeqNum);
@@ -151,17 +118,68 @@ public class DataDelegator {
         HttpDelegator.getInstance().queryPreCarbillList(params, callback);
     }
 
-    public void queryPageElementLatest(ResponseCallback<String> callback) {
-        String url = UrlConstants.getInterface(UrlConstants.QUERY_PAGEELEMENT_LATEST);
-        if (needReload(url)) {
-            HttpDelegator.getInstance().queryPageElementLatest(callback);
+
+    //有缓存文件的处理方式
+    public void requestLatestNews(BannerParam params) {
+        String url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_NEWS_LATEST,
+                BannerParam.CLASSTYPE + "=" + params.classType);
+        //需要重新请求
+        if (CacheDelegator.getInstance().needReload(url)) {
+            //删除原来的缓存文件
+            CacheDelegator.getInstance().deleteCache(url);
+            //重新加载服务器数据
+            HttpDelegator.getInstance().requestLatestNews(params);
             return;
         }
+
+        //是否有缓存文件
         boolean hasCache = CacheDelegator.getInstance().checkCacheExit(url);
         if (hasCache) {
-            CacheDelegator.getInstance().queryPageElementLatest(callback);
+            CacheDelegator.getInstance().requestLatestNews(params, url);
         } else {
-            HttpDelegator.getInstance().queryPageElementLatest(callback);
+            HttpDelegator.getInstance().requestLatestNews(params);
+        }
+    }
+
+    public void requestNotice() {
+        String url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_NEWS_LATEST,
+                RequestParamConstants.CLASS_TYPE + "=" + RequestParamConstants.CLASS_TYPE_NOTICE);
+        //需要重新请求
+        if (CacheDelegator.getInstance().needReload(url)) {
+            //删除原来的缓存文件
+            CacheDelegator.getInstance().deleteCache(url);
+            //重新加载服务器数据
+            HttpDelegator.getInstance().requestNotice();
+            return;
+        }
+
+        //是否有缓存文件
+        boolean hasCache = CacheDelegator.getInstance().checkCacheExit(url);
+        if (hasCache) {
+            CacheDelegator.getInstance().requestNotice(url);
+        } else {
+            HttpDelegator.getInstance().requestNotice();
+        }
+    }
+
+
+    public void queryPageElementLatest() {
+        String url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_PAGEELEMENT_LATEST);
+        //需要重新请求
+        if (CacheDelegator.getInstance().needReload(url)) {
+            //删除原来的缓存文件
+            CacheDelegator.getInstance().deleteCache(url);
+            //重新加载服务器数据
+            HttpDelegator.getInstance().queryPageElementLatest();
+            return;
+        }
+
+        //是否有缓存文件
+        boolean hasCache = CacheDelegator.getInstance().checkCacheExit(url);
+        if (hasCache) {
+            CacheDelegator.getInstance().queryPageElementLatest(url);
+        } else {
+            HttpDelegator.getInstance().queryPageElementLatest();
         }
     }
 

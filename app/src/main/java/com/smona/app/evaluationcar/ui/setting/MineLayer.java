@@ -130,7 +130,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 //弹出对话框，退出
                 String key = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mUser.mId;
                 mUser.saveSelf(getContext(), "", "");
-                CacheDelegator.getInstance().clearOldCacheByUrl(key);
+                CacheDelegator.getInstance().deleteCache(key);
                 ActivityUtils.jumpOnlyActivity(getContext(), LoginActivity.class);
                 ((BaseActivity) getContext()).finish();
                 break;

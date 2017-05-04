@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.business;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
@@ -9,9 +10,17 @@ import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.model.ResNewsPage;
+import com.smona.app.evaluationcar.data.model.ResPageElementPage;
 import com.smona.app.evaluationcar.framework.IProxy;
+import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
+import com.smona.app.evaluationcar.framework.cache.PostEventDelegator;
+import com.smona.app.evaluationcar.framework.cache.RequestParamConstants;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
+import org.w3c.dom.Text;
 import org.xutils.x;
 
 import java.io.File;
@@ -21,6 +30,7 @@ import java.io.File;
  */
 
 public class HttpDelegator implements IProxy {
+    private static final String TAG = HttpDelegator.class.getSimpleName();
 
     private volatile static HttpDelegator sInstance;
 
@@ -38,6 +48,14 @@ public class HttpDelegator implements IProxy {
         x.Ext.init(app);
     }
 
+    public String getCacheKey(int urlCode) {
+        return getCacheKey(urlCode, "");
+    }
+
+    public String getCacheKey(int urlCode, String suffix) {
+        return UrlConstants.getInterface(urlCode) + suffix;
+    }
+
     private ReqParams createParams(int type) {
         String url = UrlConstants.getInterface(type);
         ReqParams params = new ReqParams(url);
@@ -51,10 +69,31 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void requestLatestNews(BannerParam bannerParam, ResponseCallback callback) {
+    public void requestLatestNews(final BannerParam bannerParam) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
         params.addParameter(BannerParam.CLASSTYPE, bannerParam.classType);
-        x.http().get(params, callback);
+        x.http().get(params, new ResponseCallback<String>() {
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "requestLatestNews onFailed error= " + error);
+                PostEventDelegator.getInstance().postNewsEvent(null);
+            }
+
+            @Override
+            public void onSuccess(String content) {
+                ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
+                CarLog.d(TAG, "requestLatestNews onSuccess has content " + TextUtils.isEmpty(content));
+                if (newsPage != null && newsPage.total > 0) {
+                    PostEventDelegator.getInstance().postNewsEvent(newsPage.data);
+
+                    String url = getCacheKey(UrlConstants.QUERY_NEWS_MORE, BannerParam.CLASSTYPE +"="+ bannerParam.classType);
+                    CacheDelegator.getInstance().saveLastSuccessRequestTime(url);
+                    CacheDelegator.getInstance().saveNewCacheByUrl(url, content);
+                } else {
+                    PostEventDelegator.getInstance().postNewsEvent(null);
+                }
+            }
+        });
     }
 
     public void createCarBillId(ResponseCallback callback) {
@@ -111,12 +150,33 @@ public class HttpDelegator implements IProxy {
     }
 
     //Notice
-    public void requestNotice(ResponseCallback callback) {
+    public void requestNotice() {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
-        params.addParameter("classType", "新闻公告");
+        params.addParameter(RequestParamConstants.CLASS_TYPE, RequestParamConstants.CLASS_TYPE_NOTICE);
         params.addParameter("curPage", 1);
-        params.addParameter("pageSize", 10);
-        x.http().get(params, callback);
+        params.addParameter("pageSize", 2);
+        x.http().get(params, new ResponseCallback<String>() {
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "requestNotice onFailed error= " + error);
+                PostEventDelegator.getInstance().postNoticeEvent(null);
+            }
+
+            @Override
+            public void onSuccess(String content) {
+                ResNewsPage newsPage = JsonParse.parseJson(content, ResNewsPage.class);
+                CarLog.d(TAG, "requestNotice onSuccess has content " + TextUtils.isEmpty(content));
+                if (newsPage != null && newsPage.total > 0) {
+                    PostEventDelegator.getInstance().postNoticeEvent(newsPage.data);
+                    String url = getCacheKey(UrlConstants.QUERY_NEWS_MORE,
+                            RequestParamConstants.CLASS_TYPE + "=" + RequestParamConstants.CLASS_TYPE_NOTICE);
+                    CacheDelegator.getInstance().saveLastSuccessRequestTime(url);
+                    CacheDelegator.getInstance().saveNewCacheByUrl(url, content);
+                } else {
+                    PostEventDelegator.getInstance().postNoticeEvent(null);
+                }
+            }
+        });
     }
 
 
@@ -186,10 +246,31 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryPageElementLatest(ResponseCallback<String> callback) {
+    public void queryPageElementLatest() {
         ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_LATEST);
         params.addParameter("classType", "轮播图");
-        x.http().get(params, callback);
+        x.http().get(params, new ResponseCallback<String>() {
+            @Override
+            public void onSuccess(String content) {
+                CarLog.d(TAG, "queryPageElementLatest onSuccess has content " + TextUtils.isEmpty(content));
+                ResPageElementPage pages = JsonParse.parseJson(content, ResPageElementPage.class);
+                if (pages != null && pages.total > 0) {
+                    PostEventDelegator.getInstance().postBannerEvent(pages.data);
+                    String url = getCacheKey(UrlConstants.QUERY_PAGEELEMENT_LATEST);
+                    CacheDelegator.getInstance().saveLastSuccessRequestTime(url);
+                    CacheDelegator.getInstance().saveNewCacheByUrl(url, content);
+                } else {
+                    PostEventDelegator.getInstance().postBannerEvent(null);
+                }
+            }
+
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "queryPageElementLatest onFailed error=" + error);
+                PostEventDelegator.getInstance().postBannerEvent(null);
+            }
+
+        });
     }
 
     public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {
