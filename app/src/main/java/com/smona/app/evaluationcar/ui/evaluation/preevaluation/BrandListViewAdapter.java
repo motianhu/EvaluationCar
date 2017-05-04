@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -98,7 +99,7 @@ public class BrandListViewAdapter extends BaseExpandableListAdapter {
             itemHolder = (ItemHolder) convertView.getTag();
         }
         itemHolder.brandName.setText(item.brandName);
-        ImageLoaderProxy.loadImage(item.iconUrl, itemHolder.icon);
+        ImageLoaderProxy.loadImage(HttpDelegator.getInstance().getAutoLogos(item.brandName + ".jpg"), itemHolder.icon);
         return convertView;
     }
 

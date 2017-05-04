@@ -10,5 +10,4 @@ public class BrandItem extends BaseBean {
     public String id;
     public String brandName;
     public String brandFirstName;
-    public String iconUrl;
 }

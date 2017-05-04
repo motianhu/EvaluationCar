@@ -197,4 +197,9 @@ public class HttpDelegator implements IProxy {
         params.addParameter("id", pageId);
         x.http().get(params, callback);
     }
+
+    public String getAutoLogos(String name) {
+        String url = UrlConstants.getInterface(UrlConstants.GET_AUTO_LOGOS);
+        return url + name;
+    }
 }
