@@ -13,6 +13,7 @@ import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
+import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
 import com.smona.app.evaluationcar.data.model.ResNewsPage;
@@ -26,6 +27,7 @@ import com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationActi
 import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
 import com.smona.app.evaluationcar.ui.evaluation.search.SearchActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
@@ -40,6 +42,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickListener {
     private static final String TAG = EvaluationLayer.class.getSimpleName();
 
+    private View mNoticeContainer;
     private TextView mNotice;
 
     private TextView mUnCommitTv;
@@ -94,6 +97,9 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
         findViewById(R.id.notpass).setOnClickListener(this);
         findViewById(R.id.pass).setOnClickListener(this);
 
+        findViewById(R.id.notice).setOnClickListener(this);
+
+
         mNotice = (TextView) findViewById(R.id.notice_content);
         mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
 
@@ -143,6 +149,12 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
             case R.id.queryVin:
                 ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
+            case R.id.notice:
+                NewsItem item = (NewsItem)mNotice.getTag();
+                if(item != null) {
+                    ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_NEWS, item.id);
+                }
+                break;
         }
     }
 
@@ -188,7 +200,8 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     public void update(NoticeEvent event) {
         ResNewsPage bean = (ResNewsPage) event.getContent();
         if (bean != null && bean.total > 0) {
-            mNotice.setText(bean.data.get(0).shortContent);
+            mNotice.setTag(bean.data.get(0));
+            mNotice.setText(Html.fromHtml(bean.data.get(0).shortContent));
         }
     }
 

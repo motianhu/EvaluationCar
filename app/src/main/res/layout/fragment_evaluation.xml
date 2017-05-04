@@ -157,8 +157,7 @@
             android:layout_toStartOf="@+id/notice_detail"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@string/pass" />
+            android:maxLines="1" />
     </RelativeLayout>
 
 
