@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.framework;
 import android.app.Application;
 
 import com.smona.app.evaluationcar.business.HttpDelegator;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.crashreport.CrashReportProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -29,6 +30,7 @@ public class EvaluationApp extends Application {
         PushProxy.init(this);
         ScreenInfo.getInstance().init(this);
         DBDelegator.getInstance().init(this);
+        DataDelegator.getInstance().init(this);
         HttpDelegator.getInstance().init(this);
         GenerateMaxId.getInstance().initMaxId();
         ImageModelDelegator.getInstance().init(this);

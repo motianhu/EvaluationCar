@@ -27,14 +27,6 @@ public class CacheDelegator implements IProxy {
         return sInstance;
     }
 
-    private long getLastSuccessTime() {
-        return 1;
-    }
-
-    private void putLastSuccessTime() {
-
-    }
-
     public boolean checkCacheExit(String url) {
         return FileUtils.isFileExist(getFilePathByUrl(url));
     }
@@ -62,11 +54,6 @@ public class CacheDelegator implements IProxy {
             return null;
         }
     }
-
-    private boolean isOverTime() {
-        return false;
-    }
-
 
     public void checkUser(String cacheData, ResponseCallback callback) {
         callback.onSuccess(cacheData);
@@ -97,6 +84,10 @@ public class CacheDelegator implements IProxy {
     }
 
     public void requestUpgradeInfo(ResponseCallback<String> callback) {
+
+    }
+
+    public void queryPageElementLatest(ResponseCallback<String> callback) {
 
     }
 }

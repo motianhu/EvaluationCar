@@ -1,5 +1,6 @@
 package com.smona.app.evaluationcar.framework.cache;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.business.HttpDelegator;
@@ -14,6 +15,7 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
 import java.util.List;
@@ -23,7 +25,11 @@ import java.util.List;
  */
 
 public class DataDelegator {
+    private static final long LAST_SERVER_DEFAULT_VALUE = 0l;
+    private static final long INTERVAL = 60 * 60 * 1000; // one hour
+
     private volatile static DataDelegator sInstance;
+    private Context mAppContext;
 
     private DataDelegator() {
     }
@@ -33,6 +39,21 @@ public class DataDelegator {
             sInstance = new DataDelegator();
         }
         return sInstance;
+    }
+
+    public void init(Context appContext) {
+        mAppContext = appContext;
+    }
+
+    private boolean needReload(String key) {
+        long lastTime = getLastSuccessRequestTime(key);
+        long now = System.currentTimeMillis();
+        long diff = now - lastTime;
+        return Math.abs(diff) >= INTERVAL;
+    }
+
+    private long getLastSuccessRequestTime(String key) {
+        return (long) SPUtil.get(mAppContext, key, LAST_SERVER_DEFAULT_VALUE);
     }
 
     public void checkUser(Params params, ResponseCallback callback) {
@@ -50,20 +71,6 @@ public class DataDelegator {
             HttpDelegator.getInstance().checkUser(user, callback);
         } else {
             callback.onFailed("params not UserParam!");
-        }
-    }
-
-    public void requestBanner(Params params, ResponseCallback callback) {
-        if (params instanceof BannerParam) {
-            String url = UrlConstants.getInterface(UrlConstants.QUERY_NEWS_LATEST);
-            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
-            if (cache) {
-                CacheDelegator.getInstance().requestBanner((BannerParam) params, callback);
-            } else {
-                HttpDelegator.getInstance().requestLatestNews((BannerParam) params, callback);
-            }
-        } else {
-            callback.onFailed("params not BannerParam!");
         }
     }
 
@@ -145,7 +152,17 @@ public class DataDelegator {
     }
 
     public void queryPageElementLatest(ResponseCallback<String> callback) {
-        HttpDelegator.getInstance().queryPageElementLatest(callback);
+        String url = UrlConstants.getInterface(UrlConstants.QUERY_PAGEELEMENT_LATEST);
+        if (needReload(url)) {
+            HttpDelegator.getInstance().queryPageElementLatest(callback);
+            return;
+        }
+        boolean hasCache = CacheDelegator.getInstance().checkCacheExit(url);
+        if (hasCache) {
+            CacheDelegator.getInstance().queryPageElementLatest(callback);
+        } else {
+            HttpDelegator.getInstance().queryPageElementLatest(callback);
+        }
     }
 
     public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {

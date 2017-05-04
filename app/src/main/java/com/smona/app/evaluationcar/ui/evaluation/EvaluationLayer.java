@@ -42,7 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickListener {
     private static final String TAG = EvaluationLayer.class.getSimpleName();
 
-    private View mNoticeContainer;
     private TextView mNotice;
 
     private TextView mUnCommitTv;
