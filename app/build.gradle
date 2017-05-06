@@ -52,4 +52,6 @@ dependencies {
     compile 'org.xutils:xutils:3.3.36'  //上传框架以及数据请求
 
     compile 'com.tencent.bugly:crashreport:latest.release' //报错上报
+
+    compile 'com.hyphenate:kefu-easeui-android:latest.release' //环信sdk
 }
