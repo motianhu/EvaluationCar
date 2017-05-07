@@ -54,7 +54,7 @@ public class ActivityUtils {
 
     public static void callPhone(Context context, String number) {
         Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_CALL);
+        intent.setAction(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + number));
         context.startActivity(intent);
     }

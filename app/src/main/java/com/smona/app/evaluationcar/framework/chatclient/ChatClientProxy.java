@@ -2,6 +2,8 @@ package com.smona.app.evaluationcar.framework.chatclient;
 
 import android.content.Context;
 
+import com.hyphenate.chat.ChatClient;
+import com.hyphenate.helpdesk.easeui.UIProvider;
 import com.smona.app.evaluationcar.framework.IProxy;
 
 /**
