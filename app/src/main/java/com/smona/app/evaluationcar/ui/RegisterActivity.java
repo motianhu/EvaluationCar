@@ -10,15 +10,16 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.UrlConstants;
 
 /**
  * Created by Moth on 2016/12/15.
  */
 
 public class RegisterActivity extends BaseActivity {
-    private static final String URL = "http://119.23.128.214:8080/carWeb/view/common/register.jsp";
 
     private WebView wvShow;
     private ProgressBar pbLoading;
@@ -27,7 +28,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        String url = UrlConstants.getInterface(UrlConstants.REGISTRE);
         wvShow = (WebView) findViewById(R.id.web_view);
         pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
 
@@ -71,6 +72,6 @@ public class RegisterActivity extends BaseActivity {
         webSettings.setSupportZoom(true); // 支持缩放
         webSettings.setLoadWithOverviewMode(true);
 
-        wvShow.loadUrl(URL);
+        wvShow.loadUrl(url);
     }
 }

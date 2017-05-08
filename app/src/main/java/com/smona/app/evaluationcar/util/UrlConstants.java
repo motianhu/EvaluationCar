@@ -35,6 +35,9 @@ public class UrlConstants {
     public static final int QUERY_PAGEELEMENT_LATEST = 20;
     public static final int QUERY_PAGEELEMENT_DETAIL = 21;
 
+
+    public static final int REGISTRE = 100;
+
     public static final int GET_AUTO_LOGOS = 200;
 
 
@@ -70,6 +73,7 @@ public class UrlConstants {
         INTEFACES.put(QUERY_PAGEELEMENT_DETAIL, "/external/pageelement/pageDetail.html");
 
         INTEFACES.put(GET_AUTO_LOGOS, "/external/source/autologos/");
+        INTEFACES.put(REGISTRE, "/view/common/register.jsp");
     }
 
 

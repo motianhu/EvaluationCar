@@ -2,7 +2,9 @@ package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -14,12 +16,18 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
+import com.smona.app.evaluationcar.data.model.ResBaseModel;
+import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.ui.chat.CheckChatActivity;
+import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
@@ -50,6 +58,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
 
     private CityItem mCityItem;
 
+    private ProgressDialog mProgressDialog;
 
     public PreEvaluationEditLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -179,18 +188,51 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
     }
 
     private void submitTask(String userName, PreCarBillBean bean) {
+        mProgressDialog = getmProgressDialog();
+        mProgressDialog.setMessage(getResources().getString(R.string.is_contact_customer));
+        mProgressDialog.show();
+
         DataDelegator.getInstance().submitPreCallBill(userName, bean, mPreCarBillCallback);
+    }
+
+    private ProgressDialog getmProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+
+                }
+            });
+        }
+        return mProgressDialog;
+    }
+
+    private void dissDialog(final boolean isSuccess) {
+        ((BaseActivity)getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProgressDialog.dismiss();
+                if(isSuccess) {
+                    clear();
+                }
+            }
+        });
     }
 
     private ResponseCallback<String> mPreCarBillCallback = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
             CarLog.d(TAG, "mPreCarBillCallback onFailed error=" + error);
+            dissDialog(false);
         }
 
         @Override
         public void onSuccess(String result) {
             CarLog.d(TAG, "mPreCarBillCallback onSuccess result=" + result);
+            ResBaseModel<String> model = JsonParse.parseJson(result, ResBaseModel.class);
+            dissDialog(model.success);
         }
     };
 
