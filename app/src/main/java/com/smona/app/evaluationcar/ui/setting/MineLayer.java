@@ -1,6 +1,8 @@
 package com.smona.app.evaluationcar.ui.setting;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,6 +43,8 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
     private ImageView mImage;
     private TextView mName;
     private UserInfoBean mUserBean;
+
+    private AlertDialog mUpgradeDialog;
 
     private UserItem mUser;
 
@@ -127,13 +131,38 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 ActivityUtils.callPhone(getContext(), getContext().getString(R.string.mine_telephone));
                 break;
             case R.id.setting_logout:
+
                 //弹出对话框，退出
+                showDialog();
+
+                break;
+        }
+    }
+
+    private void showDialog() {
+        Context context = getContext();
+        AlertDialog.Builder builer = new AlertDialog.Builder(context);
+        builer.setTitle(R.string.quit_title);
+        builer.setPositiveButton(R.string.upgrade_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
                 String key = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mUser.mId;
                 mUser.saveSelf(getContext(), "", "");
                 CacheDelegator.getInstance().deleteCache(key);
                 ActivityUtils.jumpOnlyActivity(getContext(), LoginActivity.class);
                 ((BaseActivity) getContext()).finish();
-                break;
+            }
+        });
+
+        closeDialog();
+        mUpgradeDialog = builer.create();
+        mUpgradeDialog.show();
+    }
+
+    private void closeDialog() {
+        if (mUpgradeDialog != null) {
+            mUpgradeDialog.dismiss();
+            mUpgradeDialog = null;
         }
     }
+
 }

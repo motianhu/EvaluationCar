@@ -124,6 +124,7 @@
 
     <string name="upgrade_desc">检查到新版本%1$s,请升级!</string>
     <string name="upgrade_title">版本升级</string>
+    <string name="quit_title">确定退出?</string>
     <string name="upgrade_ok">"确定"</string>
     <string name="upgrade_cancle">"取消"</string>
     <string name="upgrading">"检查新版本..."</string>
