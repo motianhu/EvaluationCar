@@ -3,19 +3,14 @@ package com.smona.app.evaluationcar.ui.home;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.data.event.BannerEvent;
-import com.smona.app.evaluationcar.data.event.BillTotalEvent;
 import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
-import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
-import com.smona.app.evaluationcar.data.model.ResCountPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -32,7 +27,6 @@ import java.util.List;
 public class HomeLayer extends BaseLinearLayout {
     private static final String TAG = HomeLayer.class.getSimpleName();
 
-    private TextView mTvBillTotal;
     private HomeListView mHomeList;
     private View mNoContent;
     private View mLoading;
@@ -43,10 +37,6 @@ public class HomeLayer extends BaseLinearLayout {
 
     @Override
     public void init() {
-        mTvBillTotal = (TextView) findViewById(R.id.billtotal);
-        String content = getResources().getString(R.string.home_bill_total);
-        mTvBillTotal.setText(String.format(content, 0));
-
         mHomeList = (HomeListView) findViewById(R.id.content_list);
         mNoContent = findViewById(R.id.no_content);
         mNoContent.setOnClickListener(mReloadClick);
@@ -69,20 +59,6 @@ public class HomeLayer extends BaseLinearLayout {
             requestNews();
         }
     };
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(BillTotalEvent event) {
-        ResCountPage bean = (ResCountPage) event.getContent();
-        if (bean != null && bean.total > 0) {
-            for (BillTotalItem item : bean.data) {
-                if (BillTotalItem.ALLCOUNT.equals(item.infoType)) {
-                    String content = getResources().getString(R.string.home_bill_total);
-                    mTvBillTotal.setText(String.format(content, item.countInfo));
-                    return;
-                }
-            }
-        }
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BannerEvent event) {

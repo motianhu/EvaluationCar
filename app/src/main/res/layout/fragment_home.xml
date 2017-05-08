@@ -5,38 +5,10 @@
     android:background="@color/bg_white"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/top"
+    <include
         android:layout_width="match_parent"
-        android:layout_height="101dp"
-        android:background="@drawable/home_header_bg"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:gravity="center"
-            android:shadowColor="#4d4d4d"
-            android:shadowDx="0"
-            android:shadowDy="-3"
-            android:shadowRadius="2"
-            android:text="@string/system_name"
-            android:textColor="@color/bg_white"
-            android:textSize="21sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/billtotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/total_bill_bg"
-            android:gravity="center" />
-
-    </LinearLayout>
+        android:layout_height="80dp"
+        layout="@layout/fragment_header" />
 
     <com.smona.app.evaluationcar.ui.home.HomeListView
         android:id="@+id/content_list"

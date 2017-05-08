@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -21,6 +22,7 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.ui.chat.CheckChatActivity;
 import com.smona.app.evaluationcar.ui.common.NoScrollViewPager;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 import com.smona.app.evaluationcar.ui.home.fragment.HomeFragmentPagerAdapter;
@@ -43,13 +45,12 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
     //几个代表页面的常量
     public static final int PAGE_HOME = 0;
     public static final int PAGE_EVALUATION = 1;
-    public static final int PAGE_MESSAGE = 2;
-    public static final int PAGE_LIST = 3;
-    public static final int PAGE_SETTING = 4;
+    public static final int PAGE_LIST = 2;
+    public static final int PAGE_SETTING = 3;
     private static final String TAG = HomeActivity.class.getSimpleName();
     //UI Objects
     private RadioGroup mRbGroup;
-    private RadioButton[] mRadioFunc = new RadioButton[5];
+    private RadioButton[] mRadioFunc = new RadioButton[4];
     private NoScrollViewPager mViewPager;
     private HomeFragmentPagerAdapter mFragmentAdapter;
 
@@ -89,9 +90,15 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
         mRadioFunc[0] = (RadioButton) findViewById(R.id.rb_home);
         mRadioFunc[1] = (RadioButton) findViewById(R.id.rb_evaluation);
-        mRadioFunc[2] = (RadioButton) findViewById(R.id.rb_message);
-        mRadioFunc[3] = (RadioButton) findViewById(R.id.rb_list);
-        mRadioFunc[4] = (RadioButton) findViewById(R.id.rb_setting);
+        mRadioFunc[2] = (RadioButton) findViewById(R.id.rb_list);
+        mRadioFunc[3] = (RadioButton) findViewById(R.id.rb_setting);
+
+        findViewById(R.id.kefu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.jumpOnlyActivity(HomeActivity.this, CheckChatActivity.class);
+            }
+        });
 
         changeFragment(PAGE_HOME, R.string.home_fragment_home);
     }
@@ -113,9 +120,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
                 break;
             case R.id.rb_evaluation:
                 changeFragment(PAGE_EVALUATION, R.string.home_fragment_evaluation);
-                break;
-            case R.id.rb_message:
-                changeFragment(PAGE_MESSAGE, R.string.home_fragment_message);
                 break;
             case R.id.rb_list:
                 changeFragment(PAGE_LIST, R.string.home_fragment_list);

@@ -74,7 +74,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     @Override
     public void init() {
-        findViewById(R.id.search).setOnClickListener(this);
         findViewById(R.id.queryVin).setOnClickListener(this);
         findViewById(R.id.preEvalution).setOnClickListener(this);
         findViewById(R.id.evalution).setOnClickListener(this);
@@ -112,9 +111,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.search:
-                ActivityUtils.jumpOnlyActivity(getContext(), SearchActivity.class);
-                break;
             case R.id.uncommit:
                 ((HomeActivity) getContext()).changeList(0);
                 break;
