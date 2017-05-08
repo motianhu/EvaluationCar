@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
@@ -28,7 +29,11 @@ import org.greenrobot.eventbus.ThreadMode;
 public class WebActivity extends HeaderActivity {
     private static final String TAG = WebActivity.class.getSimpleName();
 
+    private View mContainer;
     private WebView mHtmlView;
+    private TextView mTitle;
+    private TextView mTime;
+
     private View mNoContent;
     private View mLoading;
 
@@ -59,6 +64,9 @@ public class WebActivity extends HeaderActivity {
     }
 
     private void initViews() {
+        mContainer = findViewById(R.id.content_container);
+        mTitle = (TextView) findViewById(R.id.title);
+        mTime = (TextView) findViewById(R.id.time);
         mHtmlView = (WebView) findViewById(R.id.content_web);
         mNoContent = findViewById(R.id.no_content);
         mNoContent.setOnClickListener(mReloadClick);
@@ -71,19 +79,19 @@ public class WebActivity extends HeaderActivity {
     private void setHasData() {
         ViewUtil.setViewVisible(mNoContent, false);
         ViewUtil.setViewVisible(mLoading, false);
-        ViewUtil.setViewVisible(mHtmlView, true);
+        ViewUtil.setViewVisible(mContainer, true);
     }
 
     private void setNoData() {
         ViewUtil.setViewVisible(mNoContent, true);
         ViewUtil.setViewVisible(mLoading, false);
-        ViewUtil.setViewVisible(mHtmlView, false);
+        ViewUtil.setViewVisible(mContainer, false);
     }
 
     private void setLoading() {
         ViewUtil.setViewVisible(mNoContent, false);
         ViewUtil.setViewVisible(mLoading, true);
-        ViewUtil.setViewVisible(mHtmlView, false);
+        ViewUtil.setViewVisible(mContainer, false);
     }
 
     private View.OnClickListener mReloadClick = new View.OnClickListener() {
@@ -178,15 +186,22 @@ public class WebActivity extends HeaderActivity {
     public void update(PageElementEvent event) {
         BaseBean item = (BaseBean) event.getContent();
         String content = null;
+        String title = null;
+        String time = null;
         if (item instanceof BannerItem) {
+            title =((BannerItem) item).previewWord;
             content = ((BannerItem) item).detailContent;
+            time = String.format(getString(R.string.news_time), ((BannerItem) item).createTime );
         } else if (item instanceof NewsItem) {
             content = ((NewsItem) item).content;
+            title =((NewsItem) item).title;
+            time = String.format(getString(R.string.news_time), ((NewsItem) item).createTime );
         }
 
         if (item != null) {
             setHasData();
-
+            mTitle.setText(title);
+            mTime.setText(time);
             String str = "<html><head><title>欢迎你</title></head><body>"
                     + content
                     + "</body></html>";
