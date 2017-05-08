@@ -56,7 +56,8 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
         setChatFragmentListener(this);
         super.setUpView();
         //可以在此处设置titleBar(标题栏)的属性
-        titleBar.setLeftImageResource(R.drawable.em_btn_back);
+        titleBar.setBackgroundColor(getResources().getColor(R.color.camera_split_side));
+        titleBar.setLeftImageResource(R.drawable.back);
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
