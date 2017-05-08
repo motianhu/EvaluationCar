@@ -2,6 +2,7 @@ package com.smona.app.evaluationcar.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -68,6 +69,18 @@ public class WebActivity extends HeaderActivity {
         mTitle = (TextView) findViewById(R.id.title);
         mTime = (TextView) findViewById(R.id.time);
         mHtmlView = (WebView) findViewById(R.id.content_web);
+
+        WebSettings webSettings = mHtmlView.getSettings();
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setUseWideViewPort(true);//关键点
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setJavaScriptEnabled(true); // 设置支持javascript脚本
+        webSettings.setAllowFileAccess(true); // 允许访问文件
+        webSettings.setBuiltInZoomControls(true); // 设置显示缩放按钮
+        webSettings.setSupportZoom(true); // 支持缩放
+        webSettings.setLoadWithOverviewMode(true);
+
         mNoContent = findViewById(R.id.no_content);
         mNoContent.setOnClickListener(mReloadClick);
         mLoading = findViewById(R.id.loading);

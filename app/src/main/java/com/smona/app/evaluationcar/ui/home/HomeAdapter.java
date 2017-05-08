@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.home;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,7 +42,7 @@ public class HomeAdapter extends AbstractAdapter {
         TextView time = (TextView) convertView.findViewById(R.id.time);
         time.setText(info.createTime);
         TextView summary = (TextView) convertView.findViewById(R.id.summary);
-        summary.setText(info.shortContent);
+        summary.setText(Html.fromHtml(info.shortContent));
         return convertView;
     }
 

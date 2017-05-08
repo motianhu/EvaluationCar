@@ -72,6 +72,8 @@ public class HttpDelegator implements IProxy {
     public void requestLatestNews(final BannerParam bannerParam) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
         params.addParameter(BannerParam.CLASSTYPE, bannerParam.classType);
+        params.addParameter("curPage", 1);
+        params.addParameter("pageSize", 4);
         x.http().get(params, new ResponseCallback<String>() {
             @Override
             public void onFailed(String error) {
