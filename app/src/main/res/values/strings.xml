@@ -180,4 +180,10 @@
 
     <!--more news-->
     <string name="more_news">所有新闻</string>
+
+    <!--kefu -->
+    <string name="system_is_regist">系统正在自动为您注册用户...</string>
+    <string name="is_contact_customer">正在联系客服，请稍等...</string>
+    <string name="is_contact_customer_failure_seconed">联系客服失败:</string>
+    <string name="register_user_fail">注册用户失败</string>
 </resources>

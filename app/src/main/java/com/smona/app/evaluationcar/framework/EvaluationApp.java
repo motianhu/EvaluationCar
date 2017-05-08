@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.framework.crashreport.CrashReportProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -37,6 +38,7 @@ public class EvaluationApp extends Application {
         CrashReportProxy.init(this);
         DeviceStorageManager.getInstance().setContext(this);
         DeviceStorageManager.getInstance().initPath();
+        ChatClientProxy.getInstance().init(this);
     }
 
     public EvaluationProvider getWallpaperProvider() {
