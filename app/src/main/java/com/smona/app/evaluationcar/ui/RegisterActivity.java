@@ -60,11 +60,17 @@ public class RegisterActivity extends BaseActivity {
 
         });
 
+        WebSettings webSettings = wvShow.getSettings();
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setUseWideViewPort(true);//关键点
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setJavaScriptEnabled(true); // 设置支持javascript脚本
+        webSettings.setAllowFileAccess(true); // 允许访问文件
+        webSettings.setBuiltInZoomControls(true); // 设置显示缩放按钮
+        webSettings.setSupportZoom(true); // 支持缩放
+        webSettings.setLoadWithOverviewMode(true);
 
-        wvShow.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        wvShow.getSettings().setJavaScriptEnabled(true);//设置支持脚本
-        wvShow.getSettings().setBuiltInZoomControls(true);// 设置支持缩放
-        wvShow.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);// 屏幕自适应网页,如果没有这个，在低分辨率的手机上显示可能会异常
         wvShow.loadUrl(URL);
     }
 }
