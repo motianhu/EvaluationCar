@@ -84,17 +84,14 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
 
     public PassLayer(Context context) {
         super(context);
-        initRequestParams();
     }
 
     public PassLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initRequestParams();
     }
 
     public PassLayer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initRequestParams();
     }
 
     private void initRequestParams() {
@@ -111,6 +108,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void addObserver() {
         EventProxy.register(this);
+        initRequestParams();
         post();
     }
 
@@ -127,7 +125,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PassStatusEvent event) {
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
-        CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
+        CarLog.d(TAG, "update deltaList is null? " + (deltaList!=null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mPassListView.update(deltaList, mTag);
             if (mPullRequest) {

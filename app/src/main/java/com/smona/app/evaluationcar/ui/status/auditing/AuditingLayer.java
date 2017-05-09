@@ -83,17 +83,14 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
 
     public AuditingLayer(Context context) {
         super(context);
-        initRequestParams();
     }
 
     public AuditingLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initRequestParams();
     }
 
     public AuditingLayer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initRequestParams();
     }
 
     private void initRequestParams() {
@@ -110,6 +107,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void addObserver() {
         EventProxy.register(this);
+        initRequestParams();
         post();
     }
 
