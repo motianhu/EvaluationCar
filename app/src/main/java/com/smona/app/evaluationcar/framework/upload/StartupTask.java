@@ -26,16 +26,18 @@ public class StartupTask extends ActionTask {
                     mCarBillId = mCarBill.carBillId;
 
                     DBDelegator.getInstance().updateCarBill(mCarBill);
-                    nextTask(mCarBillId);
+                    nextTask(mCarBillId, true);
                 }
 
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
+                    //没单号就跳过
+                    UploadTaskExecutor.getInstance().nextTask();
                 }
             });
         } else {
-            nextTask(mCarBillId);
+            nextTask(mCarBillId, true);
         }
     }
 }

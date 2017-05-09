@@ -124,7 +124,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(AuditingStatusEvent event) {
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
-        CarLog.d(TAG, "update deltaList is null? " + (deltaList != null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
+        CarLog.d(TAG, "update deltaList is null? " + (deltaList == null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mAuditingListView.update(deltaList, mTag);
             if (mPullRequest) {

@@ -34,7 +34,6 @@ public class UserActivity extends PermissionActivity {
         if (!TextUtils.isEmpty(cacheData)) {
             ResUserModel resUser = JsonParse.parseJson(cacheData, ResUserModel.class);
             mUserBean = resUser.object;
-            CarLog.d(TAG, "initUserInfo " + mUserBean);
         }
     }
 

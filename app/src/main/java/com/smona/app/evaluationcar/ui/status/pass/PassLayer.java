@@ -52,7 +52,6 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess: " + content);
             ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {
@@ -125,7 +124,7 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PassStatusEvent event) {
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
-        CarLog.d(TAG, "update deltaList is null? " + (deltaList!=null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
+        CarLog.d(TAG, "update deltaList is null? " + (deltaList==null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mPassListView.update(deltaList, mTag);
             if (mPullRequest) {

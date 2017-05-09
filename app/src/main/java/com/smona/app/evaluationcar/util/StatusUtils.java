@@ -50,4 +50,8 @@ public class StatusUtils {
         BILL_STATUS_MAP.put(80, "评估完成");
         BILL_STATUS_MAP.put(0, "提取图片");
     }
+
+    public static boolean isNotPass(int status) {
+        return status == 23 || status == 33 || status == 43 || status == 53;
+    }
 }

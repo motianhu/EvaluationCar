@@ -15,7 +15,6 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.event.EvaActionEvent;
-import com.smona.app.evaluationcar.data.event.background.QueryCarImageSubEvent;
 import com.smona.app.evaluationcar.data.event.background.TaskSubEvent;
 import com.smona.app.evaluationcar.data.model.ResCarImagePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
@@ -460,6 +459,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         String preScalePrice = mPrice.getText().toString();
         if (TextUtils.isEmpty(preScalePrice)) {
+            ToastUtils.show(this, R.string.evaluation_input_pre_price);
+            return;
+        }
+
+        if(Double.valueOf(preScalePrice) <= 0) {
             ToastUtils.show(this, R.string.evaluation_input_pre_price);
             return;
         }

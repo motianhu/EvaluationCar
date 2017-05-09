@@ -79,14 +79,14 @@
         <activity
             android:name=".ui.evaluation.preevaluation.CarTypeActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.DrawerLayout"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.DrawerLayout" />
 
         <activity
             android:name=".ui.evaluation.preevaluation.CityActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.DrawerLayout"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.DrawerLayout" />
 
 
         <activity
@@ -115,19 +115,19 @@
 
         <activity
             android:name=".ui.chat.ChatActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".ui.chat.CheckChatActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|navigation"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
@@ -140,7 +140,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
-        <service android:name=".service.UploadService" />
+        <service
+            android:name="com.smona.app.evaluationcar.service.UploadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.smona.app.evaluationcar.service.UploadService" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="com.smona.app.evaluationcar.framework.provider.EvaluationProvider"

@@ -18,6 +18,7 @@ import com.smona.app.evaluationcar.framework.upload.StartupTask;
 import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.StatusUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,8 +79,10 @@ public class UploadService extends Service {
             CarLog.d(TAG, "startTask carbill=" + carbill);
             if (TextUtils.isEmpty(carbill.carBillId)) {
                 putTaskInSave(user.mId, carbill);
-            } else {
+            } else if(StatusUtils.isNotPass(carbill.status)) {
                 putTaskInReturn(user.mId, carbill);
+            } else {
+                putTaskInSaveFailed(user.mId, carbill);
             }
         }
     }
@@ -94,6 +97,11 @@ public class UploadService extends Service {
         generateTask(userName, carbill, images);
     }
 
+    private void putTaskInSaveFailed(String userName, CarBillBean carbill) {
+        List<CarImageBean> images = DBDelegator.getInstance().queryImages(carbill.imageId);
+        generateTaskSaveFailed(userName, carbill, images);
+    }
+
     private void generateTask(String userName, CarBillBean bean, List<CarImageBean> images) {
         StartupTask startTask = new StartupTask();
         startTask.mCarBill = bean;
@@ -103,6 +111,35 @@ public class UploadService extends Service {
         ActionTask preTask = startTask;
 
         for (CarImageBean image : images) {
+            ImageTask task = new ImageTask();
+            task.carImageBean = image;
+            task.userName = userName;
+            preTask.mNextTask = task;
+
+            preTask = task;
+        }
+
+        CompleteTask comleteTask = new CompleteTask();
+        comleteTask.carBill = bean;
+        comleteTask.userName = userName;
+
+        preTask.mNextTask = comleteTask;
+
+        UploadTaskExecutor.getInstance().pushTask(startTask);
+    }
+
+    private void generateTaskSaveFailed(String userName, CarBillBean bean, List<CarImageBean> images) {
+        StartupTask startTask = new StartupTask();
+        startTask.mCarBill = bean;
+        startTask.userName = userName;
+        startTask.mCarBillId = bean.carBillId;
+
+        ActionTask preTask = startTask;
+
+        for (CarImageBean image : images) {
+            if(TextUtils.isEmpty(image.imageThumbPath)) {
+                continue;
+            }
             ImageTask task = new ImageTask();
             task.carImageBean = image;
             task.userName = userName;

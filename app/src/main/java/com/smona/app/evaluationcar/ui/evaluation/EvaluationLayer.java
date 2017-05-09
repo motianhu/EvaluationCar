@@ -62,7 +62,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "mCallbillCountCallback onSuccess content= " + content);
             ResCountPage resCountPage = JsonParse.parseJson(content, ResCountPage.class);
             notifyUICount(resCountPage);
         }
@@ -144,7 +143,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CarLog.d(TAG, "onAttachedToWindow post");
         post();
     }
 

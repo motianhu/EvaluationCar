@@ -112,10 +112,6 @@ public class AuditingListView extends PullableListView implements
             View progress = mFootView.findViewById(R.id.loading_icon);
             TextView tip = (TextView) mFootView.findViewById(R.id.loadstate_tv);
             progress.setVisibility(View.GONE);
-            CarLog.d(TAG,
-                    "onScroll mFootView.getBottom=" + mFootView.getBottom() + " listview.getHeight="
-                            + view.getHeight() + " mFootView.getHeight="
-                            + mFootView.getHeight());
             if ((mFootView.getBottom() - +view.getHeight()) < mFootView.getHeight() / 4) {
                 tip.setText(R.string.release_to_load);
             } else {
@@ -136,10 +132,6 @@ public class AuditingListView extends PullableListView implements
                 View progress = mFootView.findViewById(R.id.loading_icon);
                 TextView tip = (TextView) mFootView.findViewById(R.id.loadstate_tv);
 
-                CarLog.d(TAG,
-                        "onScrollStateChanged mFootView.getBottom=" + mFootView.getBottom() + " listview.getHeight="
-                                + view.getHeight() + " mFootView.getHeight="
-                                + mFootView.getHeight());
                 if ((mFootView.getBottom() - +view.getHeight()) < mFootView.getHeight() / 4) {
                     tip.setText(R.string.loading);
                     progress.setVisibility(View.VISIBLE);

@@ -168,7 +168,6 @@ public class WebActivity extends HeaderActivity {
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "mCallback onSuccess content=" + content);
             if (isBanner()) {
                 parseBanner(content);
             } else if (isNews()) {

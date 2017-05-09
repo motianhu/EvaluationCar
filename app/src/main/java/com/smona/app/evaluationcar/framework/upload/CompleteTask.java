@@ -16,7 +16,9 @@ public class CompleteTask extends ActionTask {
     public CarBillBean carBill;
 
     public void startTask() {
-        if (carBill == null || carBill.preSalePrice <= 0.0) {
+        //前期如果有失败的,则不提交,同时进入下一个任务
+        if (carBill == null || carBill.preSalePrice <= 0.0 || !mSuccess) {
+            UploadTaskExecutor.getInstance().nextTask();
             return;
         } else {
             carBill.carBillId = mCarBillId;
@@ -26,14 +28,12 @@ public class CompleteTask extends ActionTask {
                     CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
                     carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
                     DBDelegator.getInstance().updateCarBill(carBill);
-                    nextTask(mCarBillId);
                     UploadTaskExecutor.getInstance().nextTask();
                 }
 
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
-                    nextTask(mCarBillId);
                     UploadTaskExecutor.getInstance().nextTask();
                 }
             });
