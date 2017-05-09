@@ -101,5 +101,6 @@ public class NotPassAdapter extends BaseAdapter implements View.OnClickListener 
 
     public void clear() {
         mDataList.clear();
+        notifyDataSetChanged();
     }
 }

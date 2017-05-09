@@ -100,5 +100,6 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
 
     public void clear() {
         mDataList.clear();
+        notifyDataSetChanged();
     }
 }
