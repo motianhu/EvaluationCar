@@ -199,7 +199,7 @@ public class CheckChatActivity extends UserActivity {
 
     public static VisitorInfo createVisitorInfo(String name) {
         VisitorInfo info = ContentFactory.createVisitorInfo(null);
-        info.name(name);
+        info.name(name).nickName(name);
         return info;
     }
 

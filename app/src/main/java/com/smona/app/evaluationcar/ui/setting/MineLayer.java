@@ -56,6 +56,7 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
     public void init() {
         mUserBean = ((UserActivity) getContext()).getUserBean();
         mImage = (ImageView) findViewById(R.id.mine_image);
+        mImage.setOnClickListener(this);
         mName = (TextView) findViewById(R.id.mine_name);
         runUI(true);
 
