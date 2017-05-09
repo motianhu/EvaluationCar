@@ -165,7 +165,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void requestImageForCarBillId() {
-        if (TextUtils.isEmpty(mCarBillId)) {
+        if (TextUtils.isEmpty(mCarBillId) || (mCarBill != null && mCarBill.status == 0)) {
             return;
         }
         HttpDelegator.getInstance().getCarbillImages(mUserBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
