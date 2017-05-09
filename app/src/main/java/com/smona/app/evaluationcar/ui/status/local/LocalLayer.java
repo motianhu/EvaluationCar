@@ -78,7 +78,12 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(LocalStatusSubEvent event) {
-        if(LocalStatusSubEvent.ADD_CARBILL.equals(event.getMessage())) {
+        if(LocalStatusSubEvent.TAG_STATISTICS_CARBILL.equals(event.getTag())) {
+            return;
+        }
+
+        CarLog.d(TAG, "LocalStatusSubEvent event.getTag()=" + event.getTag());
+        if(LocalStatusSubEvent.TAG_ADD_CARBILL.equals(event.getTag())) {
             mLocalListView.clear();
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
             mCurPage = 1;
@@ -101,6 +106,11 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(LocalStatusEvent event) {
+        if(LocalStatusEvent.TAG_STATISTICS_CARBILL.equals(event.getTag())) {
+            return;
+        }
+
+        CarLog.d(TAG, "LocalStatusEvent event.getTag()=" + event.getTag());
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
         if (deltaList != null) {
             mLocalListView.update(deltaList, mTag);

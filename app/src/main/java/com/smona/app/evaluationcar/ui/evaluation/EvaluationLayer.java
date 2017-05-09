@@ -151,7 +151,10 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice();
-        EventProxy.post(new LocalStatusSubEvent());
+
+        LocalStatusSubEvent subEvent = new LocalStatusSubEvent();
+        subEvent.setTag(LocalStatusSubEvent.TAG_STATISTICS_CARBILL);
+        EventProxy.post(subEvent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -173,6 +176,13 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     }
 
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void reloadDBData(LocalStatusSubEvent event) {
+        mLocalCount = DBDelegator.getInstance().queryLocalBillCount();
+        notifyUILocalCount();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(LocalStatusEvent event) {
         String content = getResources().getString(R.string.bill_count);
@@ -188,11 +198,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void reloadDBData(LocalStatusSubEvent event) {
-        mLocalCount = DBDelegator.getInstance().queryLocalBillCount();
-        notifyUILocalCount();
-    }
 
     private void notifyUICount(ResCountPage page) {
         BillTotalEvent event = new BillTotalEvent();
@@ -201,6 +206,8 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     }
 
     private void notifyUILocalCount() {
-        EventProxy.post(new LocalStatusEvent());
+        LocalStatusEvent statusEvent = new LocalStatusEvent();
+        statusEvent.setTag(LocalStatusEvent.TAG_STATISTICS_CARBILL);
+        EventProxy.post(statusEvent);
     }
 }

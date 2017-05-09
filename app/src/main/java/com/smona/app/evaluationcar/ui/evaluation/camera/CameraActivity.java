@@ -424,7 +424,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private void postLocalCarbill() {
         LocalStatusSubEvent local = new LocalStatusSubEvent();
         local.setContent(mCarBill);
-        local.setMessage(LocalStatusSubEvent.ADD_CARBILL);
+        local.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
         EventProxy.post(local);
     }
 

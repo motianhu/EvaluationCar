@@ -5,4 +5,5 @@ package com.smona.app.evaluationcar.data.event;
  */
 
 public class LocalStatusEvent extends StatusEvent {
+    public static final String TAG_STATISTICS_CARBILL= "statistics_carbill";
 }

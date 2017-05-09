@@ -7,7 +7,8 @@ import com.smona.app.evaluationcar.data.event.common.SubEvent;
  */
 
 public class LocalStatusSubEvent extends SubEvent {
-    public static final String ADD_CARBILL= "add_carbill";
+    public static final String TAG_ADD_CARBILL= "add_carbill";
+    public static final String TAG_STATISTICS_CARBILL= "statistics_carbill";
 
     private Object mContent;
     private String mMessage;
@@ -22,7 +23,6 @@ public class LocalStatusSubEvent extends SubEvent {
     }
 
     public String getTag() {
-
         return mTag;
     }
 

@@ -99,6 +99,7 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener, V
 
     public void clear() {
         mDataList.clear();
+        notifyDataSetChanged();
     }
 
     @Override
