@@ -165,17 +165,26 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void requestImageForCarBillId() {
-        if (TextUtils.isEmpty(mCarBillId) || (mCarBill != null && mCarBill.status == 0)) {
+        if (TextUtils.isEmpty(mCarBillId)) {
             return;
         }
+
         HttpDelegator.getInstance().getCarbillImages(mUserBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(TAG, "getCarbillImages onSuccess: " + result);
                 ResCarImagePage resp = JsonParse.parseJson(result, ResCarImagePage.class);
                 if (resp.total > 0) {
+                    CarImageBean tempBean = null;
                     for (CarImageBean bean : resp.data) {
-                        DBDelegator.getInstance().updateCarImage(bean);
+                        tempBean = DBDelegator.getInstance().queryImageClassForCarBillId(bean.carBillId, bean.imageClass, bean.imageSeqNum);
+                        if(tempBean == null) {
+                            DBDelegator.getInstance().insertCarImage(bean);
+                        } else {
+                            tempBean.imageThumbPath = bean.imageThumbPath;
+                            tempBean.imagePath = bean.imagePath;
+                            DBDelegator.getInstance().updateCarImage(tempBean);
+                        }
                     }
                     setNeedReload();
                     notifyReloadCarImage();

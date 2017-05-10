@@ -38,8 +38,12 @@ public class CarBillDao extends BaseDao<CarBillBean> {
     }
 
     @Override
-    public void deleteItem(CarBillBean itemInfo) {
-
+    public void deleteItem(CarBillBean carBill) {
+        String where = CarBillTable.CARBILLID + "=?";
+        String[] whereArgs = new String[]{
+                carBill.carBillId
+        };
+        mContentResolver.delete(mTable.mContentUriNoNotify, where, whereArgs);
     }
 
     @Override

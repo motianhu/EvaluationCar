@@ -57,7 +57,7 @@ public class UploadTaskExecutor {
             CarLog.d(TAG, "existTask pushTask " + task);
             return;
         }
-        CarLog.d(TAG, "pushTask " + task);
+        CarLog.d(TAG, "pushTask " + task + ", sRunCount: " + sRunCount);
         if (sRunCount >= MULTI_THREAD_COUNT) {
             sTasks.offer(task);
         } else {

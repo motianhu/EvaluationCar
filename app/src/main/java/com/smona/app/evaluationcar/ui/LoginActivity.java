@@ -174,8 +174,6 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
         switch (v.getId()) {
             case R.id.login_btnLogin:
                 // 启动登录
-                showLoginingDlg(); // 显示"正在登录"对话框
-
                 CarLog.d(TAG, mIdString + "  " + mPwdString + ", mUser: " + mUser);
                 if (mIdString == null || mIdString.equals("")) { // 账号为空时
                     ToastUtils.show(LoginActivity.this, R.string.login_input_account_error);
@@ -183,18 +181,21 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     ToastUtils.show(LoginActivity.this, R.string.login_input_password_error);
                 } else {// 账号和密码都不为空时
                     if (mUser != null) {
-                        closeLoginingDlg();// 关闭对话框
                         gotoStartup();
                     } else {
+                        showLoginingDlg(); // 显示"正在登录"对话框
+                        final String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
+                        CacheDelegator.getInstance().deleteCache(url);
+
                         final UserParam param = new UserParam();
                         param.userName = mIdString;
                         param.password = mPwdString;
+
                         DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
                                 ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
-                                String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
                                 if (normal.object != null) {
                                     CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
                                     JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback(){
@@ -226,7 +227,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     }
 
     private void runUI(final boolean success) {
-        this.runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 closeLoginingDlg();// 关闭对话框

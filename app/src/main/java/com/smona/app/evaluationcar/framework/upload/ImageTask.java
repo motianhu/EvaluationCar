@@ -51,6 +51,7 @@ public class ImageTask extends ActionTask {
                     if (resModel.success) {
                         carImageBean.imagePath = resModel.object;
                         carImageBean.imageThumbPath = resModel.object;
+                        carImageBean.imageUpdate = StatusUtils.IMAGE_DEFAULT;
                         DBDelegator.getInstance().updateCarImage(carImageBean);
                         nextTask(mCarBillId, mSuccess);
                     } else {

@@ -113,15 +113,15 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
         CarLog.d(TAG, "LocalStatusEvent event.getTag()=" + event.getTag());
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
         if (deltaList != null) {
-            mLocalListView.update(deltaList, mTag);
             if (mPullRequest) {
+                mLocalListView.update(deltaList, mTag);
                 if (mTag == StatusUtils.MESSAGE_REQUEST_ERROR) {
                     postLoadmoreFail();
                 } else {
                     loadmoreFinish(PullToRefreshLayout.SUCCEED);
                 }
             }
-        } else if (deltaList == null && mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
+        } else if (mTag == StatusUtils.MESSAGE_REQUEST_PAGE_LAST) {
             mLocalListView.update(deltaList, mTag);
             loadmoreFinish(PullToRefreshLayout.SUCCEED);
         } else {

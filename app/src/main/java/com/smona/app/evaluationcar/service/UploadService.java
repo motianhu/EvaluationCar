@@ -137,7 +137,8 @@ public class UploadService extends Service {
         ActionTask preTask = startTask;
 
         for (CarImageBean image : images) {
-            if(TextUtils.isEmpty(image.imageThumbPath)) {
+            CarLog.d(TAG, "image: " + image);
+            if(!TextUtils.isEmpty(image.imagePath)) {
                 continue;
             }
             ImageTask task = new ImageTask();

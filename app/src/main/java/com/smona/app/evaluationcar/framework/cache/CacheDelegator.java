@@ -93,8 +93,6 @@ public class CacheDelegator implements IProxy {
         callback.onSuccess(cacheData);
     }
 
-
-
     public void queryOperationDesc(ResponseCallback<String> callback) {
 
     }

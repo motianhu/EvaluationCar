@@ -8,7 +8,6 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.BannerParam;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.business.param.PageParam;
-import com.smona.app.evaluationcar.business.param.Params;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
@@ -43,24 +42,18 @@ public class DataDelegator {
         CacheDelegator.getInstance().init(appContext);
     }
 
-    public void checkUser(Params params, ResponseCallback callback) {
-        if (params instanceof UserParam) {
-            UserParam user = (UserParam) params;
-            String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + user.userName;
-            boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
-            if (cache) {
-                String cacheData = CacheDelegator.getInstance().loadCacheByUrl(url);
-                if (!TextUtils.isEmpty(cacheData)) {
-                    CacheDelegator.getInstance().checkUser(cacheData, callback);
-                    return;
-                }
+    public void checkUser(UserParam params, ResponseCallback callback) {
+        String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + params.userName;
+        boolean cache = CacheDelegator.getInstance().checkCacheExit(url);
+        if (cache) {
+            String cacheData = CacheDelegator.getInstance().loadCacheByUrl(url);
+            if (!TextUtils.isEmpty(cacheData)) {
+                CacheDelegator.getInstance().checkUser(cacheData, callback);
+                return;
             }
-            HttpDelegator.getInstance().checkUser(user, callback);
-        } else {
-            callback.onFailed("params not UserParam!");
         }
+        HttpDelegator.getInstance().checkUser(params, callback);
     }
-
 
 
     public void uploadImage(String userName, CarImageBean bean, ResponseCallback callback) {
@@ -99,7 +92,6 @@ public class DataDelegator {
             HttpDelegator.getInstance().queryCarbillCount(userName, callback);
         }
     }
-
 
 
     public ImageMetaBean requestImageMeta(String imageClass, int imageSeqNum) {

@@ -132,10 +132,8 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
                 ActivityUtils.callPhone(getContext(), getContext().getString(R.string.mine_telephone));
                 break;
             case R.id.setting_logout:
-
                 //弹出对话框，退出
                 showDialog();
-
                 break;
         }
     }

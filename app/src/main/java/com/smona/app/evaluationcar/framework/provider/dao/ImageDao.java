@@ -74,19 +74,11 @@ public class ImageDao extends BaseDao<CarImageBean> {
 
     @Override
     public void updateItem(CarImageBean carImage) {
-        boolean hasCarBillId = !TextUtils.isEmpty(carImage.carBillId);
-        String where =
-                (hasCarBillId ? CarImageTable.CARBILLID + "=? and " : CarImageTable.IMAGEID + "=? and ")
-                        + CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
-        String[] whereArgs = new String[]{
-                (hasCarBillId ? carImage.carBillId + "" : carImage.imageId + ""),
-                carImage.imageSeqNum + "", carImage.imageClass
-        };
+        String where = CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
+        String[] whereArgs = new String[]{carImage.imageSeqNum + "", carImage.imageClass};
         int count = mContentResolver.update(mTable.mContentUriNoNotify,
                 modelToContentValues(carImage), where, whereArgs);
-        if (count <= 0) {
-            insertItem(carImage);
-        }
+        CarLog.d(TAG, "updateItem count = " + count);
     }
 
     @Override

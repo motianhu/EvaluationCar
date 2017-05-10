@@ -184,6 +184,11 @@ public class DBDelegator {
         return list;
     }
 
+    public void deleteCarbill(CarBillBean carBill) {
+        BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
+        dao.deleteItem(carBill);
+    }
+
     //Image Meta
     public boolean insertImageMeta(ImageMetaBean bean) {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
