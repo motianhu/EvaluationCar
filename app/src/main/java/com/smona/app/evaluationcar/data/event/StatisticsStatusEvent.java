@@ -4,5 +4,5 @@ package com.smona.app.evaluationcar.data.event;
  * Created by motianhu on 3/29/17.
  */
 
-public class LocalStatusEvent extends StatusEvent {
+public class StatisticsStatusEvent extends StatusEvent {
 }

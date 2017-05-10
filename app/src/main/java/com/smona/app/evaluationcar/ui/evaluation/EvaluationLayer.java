@@ -9,14 +9,13 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
-import com.smona.app.evaluationcar.data.event.LocalStatusEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
-import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
+import com.smona.app.evaluationcar.data.event.StatisticsStatusEvent;
+import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
-import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -24,8 +23,6 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseRelativeLayout;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preview.PreviewPictureActivity;
-import com.smona.app.evaluationcar.ui.evaluation.search.SearchActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -150,9 +147,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
         DataDelegator.getInstance().requestNotice();
 
-        LocalStatusSubEvent subEvent = new LocalStatusSubEvent();
-        subEvent.setTag(LocalStatusSubEvent.TAG_STATISTICS_CARBILL);
-        EventProxy.post(subEvent);
+        EventProxy.post(new StatisticsStatusSubEvent());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -176,13 +171,13 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void reloadDBData(LocalStatusSubEvent event) {
+    public void reloadDBData(StatisticsStatusSubEvent event) {
         mLocalCount = DBDelegator.getInstance().queryLocalBillCount();
         notifyUILocalCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(LocalStatusEvent event) {
+    public void update(StatisticsStatusEvent event) {
         String content = getResources().getString(R.string.bill_count);
         mUnCommitTv.setText(String.format(content, mLocalCount));
     }
@@ -204,8 +199,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
     }
 
     private void notifyUILocalCount() {
-        LocalStatusEvent statusEvent = new LocalStatusEvent();
-        statusEvent.setTag(LocalStatusEvent.TAG_STATISTICS_CARBILL);
-        EventProxy.post(statusEvent);
+        EventProxy.post(new StatisticsStatusEvent());
     }
 }

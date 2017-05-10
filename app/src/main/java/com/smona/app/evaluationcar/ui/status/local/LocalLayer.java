@@ -78,10 +78,6 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(LocalStatusSubEvent event) {
-        if(LocalStatusSubEvent.TAG_STATISTICS_CARBILL.equals(event.getTag())) {
-            return;
-        }
-
         CarLog.d(TAG, "LocalStatusSubEvent event.getTag()=" + event.getTag());
         if(LocalStatusSubEvent.TAG_ADD_CARBILL.equals(event.getTag())) {
             mLocalListView.clear();
@@ -98,7 +94,7 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
         } else {
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
         }
-        CarLog.d(TAG, "LocalStatusSubEvent " + datas.size());
+        CarLog.d(TAG, "reloadNormal " + datas.size());
         LocalStatusEvent local = new LocalStatusEvent();
         local.setContent(datas);
         EventProxy.post(local);
@@ -106,15 +102,11 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(LocalStatusEvent event) {
-        if(LocalStatusEvent.TAG_STATISTICS_CARBILL.equals(event.getTag())) {
-            return;
-        }
-
-        CarLog.d(TAG, "LocalStatusEvent event.getTag()=" + event.getTag());
+        CarLog.d(TAG, "LocalStatusEvent event.getTag()=" + event.getTag() + "; mPullRequest=" + mPullRequest);
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
         if (deltaList != null) {
+            mLocalListView.update(deltaList, mTag);
             if (mPullRequest) {
-                mLocalListView.update(deltaList, mTag);
                 if (mTag == StatusUtils.MESSAGE_REQUEST_ERROR) {
                     postLoadmoreFail();
                 } else {

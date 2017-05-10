@@ -6,9 +6,7 @@ import com.smona.app.evaluationcar.data.event.common.SubEvent;
  * Created by Moth on 2017/3/29.
  */
 
-public class LocalStatusSubEvent extends SubEvent {
-    public static final String TAG_ADD_CARBILL= "add_carbill";
-
+public class StatisticsStatusSubEvent extends SubEvent {
     private Object mContent;
     private String mMessage;
     private String mTag;

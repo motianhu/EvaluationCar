@@ -23,6 +23,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
+import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
@@ -423,9 +424,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void postLocalCarbill() {
         LocalStatusSubEvent local = new LocalStatusSubEvent();
-        local.setContent(mCarBill);
         local.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
         EventProxy.post(local);
+
+        EventProxy.post(new StatisticsStatusSubEvent());
     }
 
     private void processImageDataInSave() {
