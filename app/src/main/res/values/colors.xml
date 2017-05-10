@@ -3,10 +3,12 @@
 
     <color name="transparent">#00000000</color>
     <!-- 透明的 -->
-    <color name="welcome_bg">#1d67b0</color>
+    <color name="welcome_bg">#FFFFFF</color>
     <color name="white">#ffffffff</color>
     <color name="white_press">#fff9f7f7</color>
     <color name="white_trans">#65ffffff</color>
+
+    <color name="chengse_trans">#e67813</color>
 
     <color name="bg_black">#000000</color>
     <color name="bg_white">#FFFFFF</color>
