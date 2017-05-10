@@ -145,7 +145,7 @@ public class DBDelegator {
 
     public CarBillBean queryLocalCarbill(int imageId) {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarBillTable.CARBILLID + " ='' and " + CarBillTable.IMAGEID + "=" + imageId;
+        String select = CarBillTable.IMAGEID + "=" + imageId;
         List<CarBillBean> list = dao.getResult(select, null, null);
         if (list != null && list.size() > 0) {
             return list.get(0);
@@ -156,7 +156,7 @@ public class DBDelegator {
 
     public int queryLocalBillCount() {
         BaseDao<CarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_CARBILL);
-        String select = CarBillTable.CARBILLID + " ='' and " + CarBillTable.IMAGEID + ">0";
+        String select = CarBillTable.BILLSTATUS + "=0";
         List<CarBillBean> list = dao.getResult(select, null, null);
         CarLog.d("DBDelegator", "queryLocalBillCount " + list.size());
         if (list != null && list.size() > 0) {
