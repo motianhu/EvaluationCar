@@ -20,7 +20,7 @@ public class CompleteTask extends ActionTask {
     public void startTask() {
         //前期如果有失败的,则不提交,同时进入下一个任务
         if (carBill == null || carBill.preSalePrice <= 0.0 || !mSuccess) {
-            CarLog.d(TAG, "onSuccess  前面有失败上传情况 mSuccess = " + mSuccess);
+            CarLog.d(TAG, "onSuccess  前面有失败上传情况 mSuccess = " + mSuccess + ", carBill=" + carBill);
             UploadTaskExecutor.getInstance().nextTask();
             return;
         } else {

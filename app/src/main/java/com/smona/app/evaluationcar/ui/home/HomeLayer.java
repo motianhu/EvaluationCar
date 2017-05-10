@@ -94,7 +94,6 @@ public class HomeLayer extends BaseLinearLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        CarLog.d(TAG, "onAttachedToWindow request");
         request();
     }
 
@@ -113,8 +112,5 @@ public class HomeLayer extends BaseLinearLayout {
     private void requestBanner() {
         DataDelegator.getInstance().queryPageElementLatest();
     }
-
-
-
 
 }
