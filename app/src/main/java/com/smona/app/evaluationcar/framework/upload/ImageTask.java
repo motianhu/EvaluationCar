@@ -24,6 +24,7 @@ public class ImageTask extends ActionTask {
                     CarLog.d(TAG, "onSuccess mCarBillId=" + mCarBillId + ", result: " + content + "; carImageBean: " + carImageBean);
                     ResNormalArray resModel = JsonParse.parseJson(content, ResNormalArray.class);
                     if (resModel.success) {
+                        //依赖ImageID更新
                         carImageBean.imagePath = resModel.object;
                         carImageBean.imageThumbPath = resModel.object;
                         carImageBean.imageUpdate = StatusUtils.IMAGE_DEFAULT;

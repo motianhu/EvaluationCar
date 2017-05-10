@@ -74,7 +74,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
     }
 
     @Override
-    public void updateItem(CarBillBean carBill) {
+    public boolean updateItem(CarBillBean carBill) {
         String where = null;
         String[] whereArgs = null;
         if (carBill.imageId > 0) {
@@ -90,7 +90,7 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         }
         int count = mContentResolver.update(mTable.mContentUriNoNotify,
                 modelToContentValues(carBill), where, whereArgs);
-        CarLog.d(TAG, "updateItem count=" + count);
+        return count > 0;
     }
 
     @Override

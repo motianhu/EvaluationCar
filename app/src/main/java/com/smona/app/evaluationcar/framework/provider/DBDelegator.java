@@ -101,9 +101,9 @@ public class DBDelegator {
         return dao.insertItem(bean);
     }
 
-    public void updateCarImage(CarImageBean carBill) {
+    public boolean updateCarImage(CarImageBean carImage) {
         BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
-        dao.updateItem(carBill);
+        return dao.updateItem(carImage);
     }
 
     public void batchUpdateCarImage(List<CarImageBean> dataList) {

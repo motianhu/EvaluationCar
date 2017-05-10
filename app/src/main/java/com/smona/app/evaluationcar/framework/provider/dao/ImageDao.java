@@ -8,7 +8,6 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBConstants;
@@ -73,12 +72,21 @@ public class ImageDao extends BaseDao<CarImageBean> {
     }
 
     @Override
-    public void updateItem(CarImageBean carImage) {
-        String where = CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
-        String[] whereArgs = new String[]{carImage.imageSeqNum + "", carImage.imageClass};
-        int count = mContentResolver.update(mTable.mContentUriNoNotify,
-                modelToContentValues(carImage), where, whereArgs);
-        CarLog.d(TAG, "updateItem count = " + count);
+    public boolean updateItem(CarImageBean carImage) {
+        boolean isSave = carImage.imageId > 0;
+        String where = null;
+        String[] whereArgs = null;
+        if (isSave) {
+            where = CarImageTable.IMAGEID + "=? and " +
+                    CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
+            whereArgs = new String[]{carImage.imageId + "", carImage.imageSeqNum + "", carImage.imageClass};
+        } else {
+            where = CarImageTable.CARBILLID + "=? and " +
+                    CarImageTable.IMAGESEQNUM + "=? and " + CarImageTable.IMAGECLASS + "=?";
+            whereArgs = new String[]{carImage.carBillId + "", carImage.imageSeqNum + "", carImage.imageClass};
+        }
+        return mContentResolver.update(mTable.mContentUriNoNotify,
+                modelToContentValues(carImage), where, whereArgs) > 0;
     }
 
     @Override

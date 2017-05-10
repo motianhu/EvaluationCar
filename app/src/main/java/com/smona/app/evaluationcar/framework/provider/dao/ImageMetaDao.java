@@ -39,11 +39,11 @@ public class ImageMetaDao extends BaseDao<ImageMetaBean> {
     }
 
     @Override
-    public void updateItem(ImageMetaBean itemInfo) {
+    public boolean updateItem(ImageMetaBean itemInfo) {
         String where = ImageMetaTable.IMAGECLASS + "=? and " + ImageMetaTable.IMAGESEQNUM + "=?";
         String[] whereArgs = new String[]{itemInfo.imageClass, itemInfo.imageSeqNum + ""};
-        mContentResolver.update(mTable.mContentUriNoNotify,
-                modelToContentValues(itemInfo), where, whereArgs);
+        return mContentResolver.update(mTable.mContentUriNoNotify,
+                modelToContentValues(itemInfo), where, whereArgs) > 0;
     }
 
     @Override

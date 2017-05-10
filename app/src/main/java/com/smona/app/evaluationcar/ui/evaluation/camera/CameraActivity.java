@@ -411,7 +411,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         if (mCarBill == null) {
             mCarBill = new CarBillBean();
-            mCarBill.carBillId = "";
+            mCarBill.carBillId = null;
             mCarBill.imageId = mImageId;
             mCarBill.createTime = DateUtils.getCurrDate();
             mCarBill.modifyTime = DateUtils.getCurrDate();
@@ -437,12 +437,17 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
     private void processImageDataInReturn() {
-        mCurCarImage.imageId = mImageId;
+        //依赖CarBillId更新
+        mCurCarImage.imageId = 0;
+        mCurCarImage.carBillId = mCarBillId;
         mCurCarImage.imageUpdate = StatusUtils.IMAGE_UPDATE;
         mCurCarImage.createTime = DateUtils.getCurrDate();
         mCurCarImage.updateTime = DateUtils.getCurrDate();
-        DBDelegator.getInstance().updateCarImage(mCurCarImage);
-        CarLog.d(TAG, "processImageDataInReturn mCurCarImage=" + mCurCarImage);
+        boolean update =  DBDelegator.getInstance().updateCarImage(mCurCarImage);
+        if(!update) {
+            DBDelegator.getInstance().insertCarImage(mCurCarImage);
+        }
+        CarLog.d(TAG, "processImageDataInReturn mCurCarImage=" + mCurCarImage + ", update=" + update);
     }
 
 

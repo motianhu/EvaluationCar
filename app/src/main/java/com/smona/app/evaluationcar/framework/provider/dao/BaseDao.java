@@ -159,7 +159,7 @@ public abstract class BaseDao<T> {
 
     public abstract void updateList(List<T> itemInfoList);
 
-    public abstract void updateItem(T itemInfo);
+    public abstract boolean updateItem(T itemInfo);
 
     public abstract T cursorToModel(Cursor cursor);
 

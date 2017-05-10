@@ -35,6 +35,9 @@ public class CompleteTask extends ActionTask {
                         LocalStatusSubEvent event = new LocalStatusSubEvent();
                         event.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
                         EventProxy.post(event);
+                    } else {
+                        carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
+                        DBDelegator.getInstance().updateCarBill(carBill);
                     }
                     UploadTaskExecutor.getInstance().nextTask();
                 }

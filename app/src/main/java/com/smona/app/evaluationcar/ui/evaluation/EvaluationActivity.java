@@ -179,8 +179,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                     for (CarImageBean bean : resp.data) {
                         tempBean = DBDelegator.getInstance().queryImageClassForCarBillId(bean.carBillId, bean.imageClass, bean.imageSeqNum);
                         if(tempBean == null) {
+                            //依赖CarBillId更新
                             DBDelegator.getInstance().insertCarImage(bean);
                         } else {
+                            //依赖ImageID更新:可能是return的单,可能是save的单
                             tempBean.imageThumbPath = bean.imageThumbPath;
                             tempBean.imagePath = bean.imagePath;
                             DBDelegator.getInstance().updateCarImage(tempBean);
@@ -523,6 +525,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         CarBillBean carBillBean = DBDelegator.getInstance().queryCarBill(mCarBillId);
         carBillBean.preSalePrice = bean.preSalePrice;
         carBillBean.mark = bean.mark;
+        carBillBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
         DBDelegator.getInstance().updateCarBill(carBillBean);
 
         ActivityUtils.startUpService(this);
