@@ -3,6 +3,7 @@ package com.smona.app.evaluationcar.framework.upload;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
+import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -35,6 +36,7 @@ public class CompleteTask extends ActionTask {
                         LocalStatusSubEvent event = new LocalStatusSubEvent();
                         event.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
                         EventProxy.post(event);
+                        EventProxy.post(new StatisticsStatusSubEvent());
                     } else {
                         carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
                         DBDelegator.getInstance().updateCarBill(carBill);

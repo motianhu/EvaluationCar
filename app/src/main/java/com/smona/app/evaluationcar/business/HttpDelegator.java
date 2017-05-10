@@ -115,7 +115,7 @@ public class HttpDelegator implements IProxy {
     public void uploadImage(String createUser, CarImageBean bean, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
         params.addParameter("createUser", createUser);
-        params.addParameter("clientName", "Android");
+        params.addParameter("clientName", "android");
         params.addParameter("carBillId", bean.carBillId);
         params.addParameter("imageSeqNum", bean.imageSeqNum);
         params.addParameter("imageClass", bean.imageClass);
@@ -127,6 +127,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.SUBMIT_CARBILL);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBill.carBillId);
+        params.addParameter("clientName", "android");
         params.addParameter("preSalePrice", carBill.preSalePrice);
         params.addParameter("mark", carBill.mark);
         x.http().get(params, callback);
@@ -242,6 +243,7 @@ public class HttpDelegator implements IProxy {
         params.addParameter("cityId", bean.cityId);
         params.addParameter("color", bean.color);
         params.addParameter("regDate", bean.regDate);
+        params.addParameter("clientName", "android");
         params.addParameter("createTime", bean.createTime);
         params.addParameter("runNum", bean.runNum);
         params.addParameter("mark", bean.mark);
