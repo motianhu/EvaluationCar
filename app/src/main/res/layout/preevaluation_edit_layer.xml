@@ -34,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
-                android:textColor="@color/black_text"
-                android:text="@string/title_car_type" />
+                android:text="@string/title_car_type"
+                android:textColor="@color/black_text" />
 
 
             <TextView
@@ -45,7 +45,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
-                android:hint="@string/select_car_model" />
+                android:ellipsize="marquee"
+                android:textSize="12sp"
+                android:gravity="end"
+                android:hint="@string/select_car_model"
+                android:lines="1"
+                android:textColor="@color/black_text" />
 
             <ImageView style="@style/setting_item_arrow_style" />
         </RelativeLayout>
@@ -75,9 +80,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black_text"
                 android:layout_marginStart="50dp"
-                android:text="@string/title_car_color" />
+                android:text="@string/title_car_color"
+                android:textColor="@color/black_text" />
 
 
             <EditText
@@ -88,11 +93,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="25dp"
                 android:background="@color/white"
-                android:gravity="center|start|top"
+                android:gravity="center|end|top"
+                android:textSize="12sp"
                 android:hint="@string/select_car_color"
                 android:maxLength="8"
-                android:textColor="@color/black_text"
-                android:textSize="16sp" />
+                android:textColor="@color/black_text" />
 
         </RelativeLayout>
 
@@ -120,8 +125,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
-                android:textColor="@color/black_text"
-                android:text="@string/title_car_time" />
+                android:text="@string/title_car_time"
+                android:textColor="@color/black_text" />
 
 
             <TextView
@@ -131,9 +136,10 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="25dp"
-                android:textAlignment="textEnd"
-                android:textColor="@color/black_text"
-                android:hint="@string/select_car_time" />
+                android:gravity="end"
+                android:textSize="12sp"
+                android:hint="@string/select_car_time"
+                android:textColor="@color/black_text" />
 
             <ImageView style="@style/setting_item_arrow_style" />
         </RelativeLayout>
@@ -146,9 +152,9 @@
         <RelativeLayout
             android:id="@+id/container_licheng"
             android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_height="60dp">
+            android:focusableInTouchMode="true">
 
             <ImageView
                 android:id="@+id/iv_licheng"
@@ -164,8 +170,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
-                android:textColor="@color/black_text"
-                android:text="@string/title_car_licheng" />
+                android:text="@string/title_car_licheng"
+                android:textColor="@color/black_text" />
 
 
             <EditText
@@ -177,12 +183,12 @@
                 android:layout_marginEnd="40dp"
                 android:background="@color/white"
                 android:digits="1234567890"
+                android:gravity="end"
+                android:textSize="12sp"
+                android:hint="@string/select_car_licheng"
                 android:inputType="phone|number"
-                android:gravity="center|start|top"
                 android:maxLength="8"
-                android:textColor="@color/black_text"
-                android:textSize="16sp"
-                android:hint="@string/select_car_licheng" />
+                android:textColor="@color/black_text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -190,6 +196,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
+                android:textColor="@color/black_text"
                 android:hint="@string/select_car_licheng_unit"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -218,8 +225,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="50dp"
-                android:textColor="@color/black_text"
-                android:text="@string/title_car_city" />
+                android:text="@string/title_car_city"
+                android:textColor="@color/black_text" />
 
 
             <TextView
@@ -230,7 +237,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="25dp"
                 android:gravity="center_vertical|end"
-                android:hint="@string/select_car_city" />
+                android:textSize="12sp"
+                android:hint="@string/select_car_city"
+                android:textColor="@color/black_text" />
 
             <ImageView style="@style/setting_item_arrow_style" />
 
@@ -256,8 +265,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="50dp"
-                android:textColor="@color/black_text"
-                android:text="@string/title_mark" />
+                android:text="@string/title_mark"
+                android:textColor="@color/black_text" />
 
             <EditText
                 android:id="@+id/tv_car_mark"
@@ -268,8 +277,8 @@
                 android:background="@color/white"
                 android:gravity="center|start|top"
                 android:maxLength="8"
-                android:textColor="@color/black_text"
-                android:textSize="16.0sp" />
+                android:textSize="12sp"
+                android:textColor="@color/black_text" />
 
         </LinearLayout>
 
