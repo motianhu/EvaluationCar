@@ -53,7 +53,8 @@ public class PreEvaluationActivity extends HeaderActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) ViewUtil.inflater(this, R.layout.preevaluation_edit_layer);
+        View scrollView = ViewUtil.inflater(this, R.layout.preevaluation_edit_layer);
+        PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) scrollView.findViewById(R.id.preEditor);
         mResultCallback = view1;
 
         PreEvaluationListLayer view2 = (PreEvaluationListLayer) ViewUtil.inflater(this, R.layout.preevaluation_list_layer);

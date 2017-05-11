@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationEditLayer xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationEditLayer
+        android:id="@+id/preEditor"
     android:layout_height="match_parent"
+        android:layout_width="match_parent"
     android:background="@color/setting_bg"
     android:descendantFocusability="beforeDescendants"
     android:gravity="center_horizontal">
@@ -300,3 +305,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 </com.smona.app.evaluationcar.ui.evaluation.preevaluation.PreEvaluationEditLayer>
+</ScrollView>

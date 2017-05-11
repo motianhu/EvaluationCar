@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpDelegator;
@@ -62,6 +64,9 @@ public class CarTypeActivity extends HeaderActivity {
 
     private DrawerLayout mCarBrandDrawer;
     private DrawerLayout mCarSetDrawer;
+
+    private ListView mLettersListView;
+    private IndexLetterAdapter mLettersAdapter;
 
     private BrandItem mSelectedBrand;
     private SetItem mSelectedSet;
@@ -172,6 +177,20 @@ public class CarTypeActivity extends HeaderActivity {
         mTypeAdapter = new TypeListViewAdapter(this);
         mTypeAdapter.setGroupList(mTypeLetterList, mTypeGroupByList);
         mTypeListView.setAdapter(mTypeAdapter);
+
+
+
+        /*******字母表**********/
+        mLettersListView = (ListView)findViewById(R.id.indexLetter);
+        mLettersAdapter = new IndexLetterAdapter(this);
+        mLettersAdapter.setLettes(mBrandLetterList);
+        mLettersListView.setAdapter(mLettersAdapter);
+        mLettersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mBrandListView.setSelectedGroup(position);
+            }
+        });
     }
 
     @Override
@@ -269,6 +288,7 @@ public class CarTypeActivity extends HeaderActivity {
     public void actionMainEvent(BrandActionEvent actionEvent) {
         CarLog.d(TAG, "actionMainEvent BrandActionEvent");
         mBrandAdapter.notifyDataSetChanged();
+        mLettersAdapter.notifyDataSetChanged();
         for (int i = 0; i < mBrandAdapter.getGroupCount(); i++) {
             mBrandListView.expandGroup(i);
         }
