@@ -10,6 +10,7 @@
         android:layout_height="50dp" />
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -47,5 +48,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <include
+        android:id="@+id/no_content"
+        layout="@layout/refresh_network_tip" />
 
+    <include
+        android:id="@+id/loading"
+        layout="@layout/refresh_center_loading" />
 </LinearLayout>
