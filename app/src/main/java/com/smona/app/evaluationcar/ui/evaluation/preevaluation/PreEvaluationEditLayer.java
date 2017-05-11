@@ -119,7 +119,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
 
         final NumberPicker year = (NumberPicker) view.findViewById(R.id.selecYear);
         year.setMaxValue(mYear);
-        year.setMinValue(mYear - 6);
+        year.setMinValue(mYear - 4);
         year.setFocusable(false);
         year.setFocusableInTouchMode(false);
         year.setWrapSelectorWheel(true);

@@ -90,11 +90,6 @@
 
 
         <activity
-            android:name=".ui.evaluation.preevaluation.TimePickerActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".ui.evaluation.camera.CameraActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
