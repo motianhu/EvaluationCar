@@ -273,12 +273,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mNote = (EditText) findViewById(R.id.et_remark);
 
         //设置定位按钮事件及初始化定位
-        findViewById(R.id.rb_car_models).setOnClickListener(this);
-        findViewById(R.id.rb_certificates).setOnClickListener(this);
-        findViewById(R.id.rb_appended).setOnClickListener(this);
-        findViewById(R.id.rb_editor).setOnClickListener(this);
+        findViewById(R.id.rb_car_license).setOnClickListener(this);
+        findViewById(R.id.rb_car_body).setOnClickListener(this);
+        findViewById(R.id.rb_car_frame).setOnClickListener(this);
+        findViewById(R.id.rb_vehicle_interior).setOnClickListener(this);
+        findViewById(R.id.rb_supplement).setOnClickListener(this);
 
-        findViewById(R.id.rb_car_models).performClick();
+        findViewById(R.id.rb_car_license).performClick();
 
         //保存及提交
         findViewById(R.id.btn_save).setOnClickListener(this);
@@ -581,17 +582,20 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.rb_car_models:
+            case R.id.rb_car_license:
                 mScrollView.smoothScrollTo(0, mClassRegistrationTitle.getTop());
                 return;
-            case R.id.rb_certificates:
+            case R.id.rb_car_body:
+                mScrollView.smoothScrollTo(0, mClassCarBodyTitle.getTop());
+                return;
+            case R.id.rb_car_frame:
                 mScrollView.smoothScrollTo(0, mClassCarFrameTitle.getTop());
                 return;
-            case R.id.rb_appended:
+            case R.id.rb_vehicle_interior:
                 mScrollView.smoothScrollTo(0, mClassVehicleInteriorTitle.getTop());
                 return;
-            case R.id.rb_editor:
-                mScrollView.smoothScrollTo(0, mInputGroup.getTop());
+            case R.id.rb_supplement:
+                mScrollView.smoothScrollTo(0, mClassDifferenceSupplementTitle.getTop());
                 return;
             case R.id.btn_save:
                 onSave();

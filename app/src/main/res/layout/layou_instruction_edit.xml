@@ -14,35 +14,43 @@
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/rb_car_models"
+            android:id="@+id/rb_car_license"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/transparent"
-            android:button="@drawable/icon_car_default" />
+            android:button="@drawable/car_license" />
 
         <RadioButton
-            android:id="@+id/rb_certificates"
+            android:id="@+id/rb_car_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/transparent"
-            android:button="@drawable/icon_certificate_default" />
+            android:button="@drawable/car_body" />
 
         <RadioButton
-            android:id="@+id/rb_appended"
+            android:id="@+id/rb_car_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/transparent"
-            android:button="@drawable/icon_add_default" />
+            android:button="@drawable/car_frame" />
 
         <RadioButton
-            android:id="@+id/rb_editor"
+            android:id="@+id/rb_vehicle_interior"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@color/transparent"
-            android:button="@drawable/icon_information_default" />
+            android:button="@drawable/vehicle_interior" />
+
+        <RadioButton
+            android:id="@+id/rb_supplement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@color/transparent"
+            android:button="@drawable/supplement" />
     </RadioGroup>
 </LinearLayout>
