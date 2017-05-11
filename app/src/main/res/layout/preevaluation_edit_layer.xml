@@ -87,7 +87,7 @@
 
             <EditText
                 android:id="@+id/tv_car_color"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -131,7 +131,7 @@
 
             <TextView
                 android:id="@+id/tv_timecontent"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -176,7 +176,7 @@
 
             <EditText
                 android:id="@+id/tv_car_licheng"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -231,7 +231,7 @@
 
             <TextView
                 android:id="@+id/tv_car_city"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -261,9 +261,9 @@
 
             <TextView
                 android:id="@+id/tv_mark"
+                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="50dp"
                 android:text="@string/title_mark"
                 android:textColor="@color/black_text" />
