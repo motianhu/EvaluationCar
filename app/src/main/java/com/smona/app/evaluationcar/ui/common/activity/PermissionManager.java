@@ -37,8 +37,9 @@ public class PermissionManager {
         }
     }
 
-    public void processPermission(final Activity activity, int requestCode) {
+    public void processPermission(final Activity activity, int requestCode, PermissionOk callback) {
         if (AndroidSdkUtil.sdkLessThan23()) {
+            callback.onPermissionOk();
             return;
         }
         boolean checkPhonePermission = PermissionManager.getsInstance()
@@ -61,10 +62,16 @@ public class PermissionManager {
             Intent intent = new Intent();
             intent.setClass(activity, PermissionSettingActivity.class);
             activity.startActivityForResult(intent, requestCode);
+        } else {
+            callback.onPermissionOk();
         }
     }
 
     public interface IPermissionsResultCallback {
         void onRequestPermissionsResult(int var1, String[] var2, int[] var3);
+    }
+
+    public interface PermissionOk {
+        void onPermissionOk();
     }
 }

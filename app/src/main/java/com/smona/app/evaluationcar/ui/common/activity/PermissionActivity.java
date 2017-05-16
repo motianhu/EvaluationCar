@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.smona.app.evaluationcar.util.CarLog;
 
-public abstract class PermissionActivity extends BaseActivity {
+public abstract class PermissionActivity extends BaseActivity implements PermissionManager.PermissionOk {
     private static final String TAG = PermissionActivity.class.getSimpleName();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public abstract class PermissionActivity extends BaseActivity {
 
     private void initPermission() {
         PermissionManager.getsInstance().processPermission(this,
-                PermissionConstants.PERMISSION_REQUEST_CODE);
+                PermissionConstants.PERMISSION_REQUEST_CODE, this);
     }
 
     @Override
@@ -25,11 +25,15 @@ public abstract class PermissionActivity extends BaseActivity {
                 + ";resultCode: " + resultCode);
         if (requestCode == PermissionConstants.PERMISSION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
+                onPermissionOk();
             } else {
                 finish();
             }
         }
+    }
+
+    public void onPermissionOk() {
+
     }
 
 }

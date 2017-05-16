@@ -36,7 +36,7 @@ public class FileUtils {
     public static StringBuilder readFile(String filePath, String charsetName) {
         File file = new File(filePath);
         StringBuilder fileContent = new StringBuilder("");
-        if (file == null || !file.isFile()) {
+        if (!file.isFile()) {
             return null;
         }
 
@@ -55,16 +55,17 @@ public class FileUtils {
             reader.close();
             return fileContent;
         } catch (IOException e) {
-            throw new RuntimeException("IOException occurred. ", e);
+            e.printStackTrace();
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("IOException occurred. ", e);
+                    e.printStackTrace();
                 }
             }
         }
+        return null;
     }
 
     public static boolean writeFile(String filePath, String content,

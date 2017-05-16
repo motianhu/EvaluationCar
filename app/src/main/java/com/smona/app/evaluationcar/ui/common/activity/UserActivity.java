@@ -30,10 +30,14 @@ public class UserActivity extends PermissionActivity {
         UserItem item = new UserItem();
         item.readSelf(this);
         String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + item.mId;
-        String cacheData = CacheDelegator.getInstance().loadCacheByUrl(url);
-        if (!TextUtils.isEmpty(cacheData)) {
-            ResUserModel resUser = JsonParse.parseJson(cacheData, ResUserModel.class);
-            mUserBean = resUser.object;
+        try {
+            String cacheData = CacheDelegator.getInstance().loadCacheByUrl(url);
+            if (!TextUtils.isEmpty(cacheData)) {
+                ResUserModel resUser = JsonParse.parseJson(cacheData, ResUserModel.class);
+                mUserBean = resUser.object;
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
         }
     }
 

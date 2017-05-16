@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hyphenate.chat.ChatClient;
+import com.hyphenate.chat.ChatManager;
 import com.hyphenate.chat.Message;
 import com.hyphenate.helpdesk.callback.Callback;
 import com.hyphenate.helpdesk.easeui.Notifier;
@@ -17,6 +18,10 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.framework.IProxy;
 import com.smona.app.evaluationcar.ui.chat.ChatActivity;
 import com.smona.app.evaluationcar.util.CarLog;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 /**
  * Created by Moth on 2017/5/6.
@@ -48,7 +53,7 @@ public class ChatClientProxy implements IProxy {
         }
         // Kefu EaseUI的初始化
         UIProvider.getInstance().init(context);
-        if (ChatClient.getInstance().init(context, options)){
+        if (ChatClient.getInstance().init(context, options)) {
 
             //设为调试模式，打成正式包时，最好设为false，以免消耗额外的资源
             ChatClient.getInstance().setDebugMode(true);
@@ -74,7 +79,7 @@ public class ChatClientProxy implements IProxy {
                 } else {
                     //此处设置当前登录用户的头像，
                     if (userAvatarView != null) {
-                        userAvatarView.setImageResource(R.drawable.ease_default_avatar);
+                        userAvatarView.setImageResource(R.mipmap.ic_launcher);
                     }
                 }
             }
@@ -125,8 +130,7 @@ public class ChatClientProxy implements IProxy {
     }
 
 
-
-    public void createChatAccount(final String account, final  String userPwd) {
+    public void createChatAccount(final String account, final String userPwd) {
         ChatClient.getInstance().createAccount(account, userPwd, new Callback() {
             @Override
             public void onSuccess() {
@@ -151,6 +155,7 @@ public class ChatClientProxy implements IProxy {
             @Override
             public void onSuccess() {
                 CarLog.d(TAG, "createAccount success!");
+                addMessageListener();
             }
 
             @Override
@@ -163,5 +168,46 @@ public class ChatClientProxy implements IProxy {
 
             }
         });
+    }
+
+    public void addMessageListener() {
+        ChatClient.getInstance().chatManager().addMessageListener(new ChatManager.MessageListener() {
+            @Override
+            public void onMessage(List<Message> list) {
+                //收到普通消息
+            }
+
+            @Override
+            public void onCmdMessage(List<Message> list) {
+                //收到命令消息，命令消息不存数据库，一般用来作为系统通知，例如留言评论更新，
+                //会话被客服接入，被转接，被关闭提醒
+            }
+
+            @Override
+            public void onMessageStatusUpdate() {
+                //消息的状态修改，一般可以用来刷新列表，显示最新的状态
+
+            }
+
+            @Override
+            public void onMessageSent() {
+                //发送消息后，会调用，可以在此刷新列表，显示最新的消息
+            }
+        });
+    }
+
+    public String getRandomAccount(){
+        String val = "";
+        Random random = new Random();
+        for(int i = 0; i < 15; i++){
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num"; //输出字母还是数字
+            if("char".equalsIgnoreCase(charOrNum)){// 字符串
+                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; //取得大写字母还是小写字母
+                val += (char) (choice + random.nextInt(26));
+            }else if("num".equalsIgnoreCase(charOrNum)){// 数字
+                val += String.valueOf(random.nextInt(10));
+            }
+        }
+        return val.toLowerCase(Locale.getDefault());
     }
 }

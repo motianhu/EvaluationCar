@@ -18,6 +18,7 @@ import com.hyphenate.helpdesk.model.QueueIdentityInfo;
 import com.hyphenate.helpdesk.model.VisitorInfo;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.UserItem;
+import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 
 import java.util.Locale;
@@ -68,7 +69,7 @@ public class CheckChatActivity extends UserActivity {
 
     private void createRandomAccountThenLoginChatServer() {
         // 自动生成账号,此处每次都随机生成一个账号,为了演示.正式应从自己服务器获取账号
-        final String account = getRandomAccount();
+        final String account = ChatClientProxy.getInstance().getRandomAccount();
         final String userPwd = "123456";
         mProgressDialog = getmProgressDialog();
         mProgressDialog.setMessage(getString(R.string.system_is_regist));
@@ -147,6 +148,7 @@ public class CheckChatActivity extends UserActivity {
                 if (!mIsProgressShow) {
                     return;
                 }
+                ChatClientProxy.getInstance().addMessageListener();
                 toChatActivity();
             }
 
@@ -210,20 +212,5 @@ public class CheckChatActivity extends UserActivity {
         QueueIdentityInfo info = ContentFactory.createQueueIdentityInfo(null);
         info.queueName(queueName);
         return info;
-    }
-
-    private String getRandomAccount(){
-        String val = "";
-        Random random = new Random();
-        for(int i = 0; i < 15; i++){
-            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num"; //输出字母还是数字
-            if("char".equalsIgnoreCase(charOrNum)){// 字符串
-                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; //取得大写字母还是小写字母
-                val += (char) (choice + random.nextInt(26));
-            }else if("num".equalsIgnoreCase(charOrNum)){// 数字
-                val += String.valueOf(random.nextInt(10));
-            }
-        }
-        return val.toLowerCase(Locale.getDefault());
     }
 }

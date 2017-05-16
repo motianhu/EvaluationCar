@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.framework.cache;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.BannerParam;
@@ -24,7 +25,7 @@ public class CacheDelegator implements IProxy {
     private static final long LAST_SERVER_DEFAULT_VALUE = 0l;
     private static final long INTERVAL = 60 * 60 * 1000; // one hour
 
-    private static volatile  CacheDelegator sInstance;
+    private static volatile CacheDelegator sInstance;
     private Context mAppContext;
 
     private CacheDelegator() {
@@ -83,7 +84,8 @@ public class CacheDelegator implements IProxy {
 
     public String loadCacheByUrl(String url) {
         if (checkCacheExit(url)) {
-            return FileUtils.readFile(getFilePathByUrl(url), CHARSET).toString();
+            StringBuilder result = FileUtils.readFile(getFilePathByUrl(url), CHARSET);
+            return TextUtils.isEmpty(result) ? null : result.toString();
         } else {
             return null;
         }

@@ -27,6 +27,9 @@ public class StartupActivity extends UserActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
+    }
+
+    public void onPermissionOk() {
         mMainHandler.sendEmptyMessageDelayed(0, 3000);
     }
 }

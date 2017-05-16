@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.hyphenate.chat.ChatClient;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.UserParam;
@@ -25,6 +26,7 @@ import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUserModel;
 import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
+import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -51,20 +53,24 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         initUser();
-        prepareSkip();
+        super.onCreate(savedInstanceState);
+        if(mUser == null) {
+            prepareSkip();
+        }
+    }
+
+    public void onPermissionOk() {
+        if(mUser != null) {
+            gotoStartup();
+        }
     }
 
     private void prepareSkip() {
-        if (mUser != null) {
-            gotoStartup();
-        } else {
-            setContentView(R.layout.activity_login);
-            initView();
-            setListener();
-            initAnim();
-        }
+        setContentView(R.layout.activity_login);
+        initView();
+        setListener();
+        initAnim();
     }
 
     private void initAnim() {
@@ -198,12 +204,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
                                 if (normal.object != null) {
                                     CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
-                                    JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback(){
-                                        @Override
-                                        public void gotResult(int i, String s, Set<String> set) {
-                                            CarLog.d(TAG, "jpush register alias i=" + i);
-                                        }
-                                    });
+                                    registerThirdFunc();
                                 }
                                 runUI(normal.success);
                             }
@@ -256,4 +257,24 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     }
 
 
+    private void registerThirdFunc() {
+        //register jpush
+        JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback(){
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                CarLog.d(TAG, "jpush register alias i=" + i);
+            }
+        });
+
+        //register huanxin kefu
+        //可以检测是否已经登录过环信，如果登录过则环信SDK会自动登录，不需要再次调用登录操作
+        if(ChatClient.getInstance().isLoggedInBefore()) {
+
+        } else {
+            // 自动生成账号,此处每次都随机生成一个账号,为了演示.正式应从自己服务器获取账号
+            final String account = ChatClientProxy.getInstance().getRandomAccount();
+            final String userPwd = "123456";
+            ChatClientProxy.getInstance().createChatAccount(account, userPwd);
+        }
+    }
 }
