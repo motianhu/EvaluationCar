@@ -9,14 +9,14 @@ public abstract class ActionTask {
     public String mCarBillId;
     public String userName;
     public ActionTask mNextTask;
-    public boolean mSuccess;
+    public String mMessage;
 
     public abstract void startTask();
 
-    protected void nextTask(String carBillId, boolean success) {
+    protected void nextTask(String carBillId, String msg) {
         //单号和是否成功传递给下一个任务
         if (mNextTask != null) {
-            mNextTask.mSuccess = success;
+            mNextTask.mMessage = msg;
             mNextTask.mCarBillId = carBillId;
             mNextTask.startTask();
         }

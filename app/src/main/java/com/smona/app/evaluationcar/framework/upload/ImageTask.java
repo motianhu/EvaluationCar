@@ -15,7 +15,7 @@ public class ImageTask extends ActionTask {
 
     public void startTask() {
         if (carImageBean == null) {
-            nextTask(mCarBillId, mSuccess);
+            nextTask(mCarBillId, mMessage);
         } else if (carImageBean.imageUpdate == StatusUtils.IMAGE_UPDATE) {
             carImageBean.carBillId = mCarBillId;
             DataDelegator.getInstance().uploadImage(userName, carImageBean, new ResponseCallback<String>() {
@@ -29,16 +29,16 @@ public class ImageTask extends ActionTask {
                         carImageBean.imageThumbPath = resModel.object;
                         carImageBean.imageUpdate = StatusUtils.IMAGE_DEFAULT;
                         DBDelegator.getInstance().updateCarImage(carImageBean);
-                        nextTask(mCarBillId, mSuccess);
+                        nextTask(mCarBillId, mMessage);
                     } else {
-                        nextTask(mCarBillId, false);
+                        nextTask(mCarBillId, carImageBean.imageClass + "-" + carImageBean.imageSeqNum + ";");
                     }
                 }
 
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
-                    nextTask(mCarBillId, false);
+                    nextTask(mCarBillId, error + ";");
                 }
             });
         } else {
@@ -54,16 +54,16 @@ public class ImageTask extends ActionTask {
                         carImageBean.imageThumbPath = resModel.object;
                         carImageBean.imageUpdate = StatusUtils.IMAGE_DEFAULT;
                         DBDelegator.getInstance().updateCarImage(carImageBean);
-                        nextTask(mCarBillId, mSuccess);
+                        nextTask(mCarBillId, mMessage);
                     } else {
-                        nextTask(mCarBillId, false);
+                        nextTask(mCarBillId, carImageBean.imageClass + "-" + carImageBean.imageSeqNum + ";");
                     }
                 }
 
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
-                    nextTask(mCarBillId, false);
+                    nextTask(mCarBillId, error + ";");
                 }
             });
         }

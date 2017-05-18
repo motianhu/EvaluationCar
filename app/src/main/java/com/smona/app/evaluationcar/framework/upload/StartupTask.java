@@ -26,7 +26,7 @@ public class StartupTask extends ActionTask {
                     mCarBillId = mCarBill.carBillId;
 
                     DBDelegator.getInstance().updateCarBill(mCarBill);
-                    nextTask(mCarBillId, true);
+                    nextTask(mCarBillId, null);
                 }
 
                 @Override
@@ -37,7 +37,7 @@ public class StartupTask extends ActionTask {
                 }
             });
         } else {
-            nextTask(mCarBillId, true);
+            nextTask(mCarBillId, null);
         }
     }
 }

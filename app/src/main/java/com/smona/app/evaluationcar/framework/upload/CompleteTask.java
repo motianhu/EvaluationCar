@@ -1,7 +1,11 @@
 package com.smona.app.evaluationcar.framework.upload;
 
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.event.ToastEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
 import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
@@ -20,10 +24,12 @@ public class CompleteTask extends ActionTask {
 
     public void startTask() {
         //前期如果有失败的,则不提交,同时进入下一个任务
-        if (carBill == null || carBill.preSalePrice <= 0.0 || !mSuccess) {
-            CarLog.d(TAG, "onSuccess  前面有失败上传情况 mSuccess = " + mSuccess + ", carBill=" + carBill);
+        if (carBill == null || carBill.preSalePrice <= 0.0 || !TextUtils.isEmpty(mMessage)) {
+            String error = "上传失败,具体原因是: " + mMessage + " 没上传成功!";
+            CarLog.d(TAG, "onSuccess  上传失败,具体原因是: " + error + " 没上传成功, carBill=" + carBill);
+            postMessage(error);
+
             UploadTaskExecutor.getInstance().nextTask();
-            return;
         } else {
             carBill.carBillId = mCarBillId;
             DataDelegator.getInstance().submitCarBill(userName, carBill, new ResponseCallback<String>() {
@@ -47,10 +53,18 @@ public class CompleteTask extends ActionTask {
                 @Override
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
+                    postMessage(error);
+
                     UploadTaskExecutor.getInstance().nextTask();
                 }
             });
         }
 
+    }
+
+    private  void postMessage(String error) {
+        ToastEvent event = new ToastEvent();
+        event.message = error;
+        EventProxy.post(event);
     }
 }
