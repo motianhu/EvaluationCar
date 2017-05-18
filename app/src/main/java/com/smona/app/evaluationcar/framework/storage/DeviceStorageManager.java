@@ -49,13 +49,13 @@ public class DeviceStorageManager {
     public void initPath() {
         mPrefixPath = Environment.getExternalStorageDirectory().getAbsolutePath();
         String rootPath = mPrefixPath + File.separator + FolderContants.ROOT;
-        makeFolder(rootPath);
+        makeFolder(rootPath + File.separator);
         mMd5Path = rootPath + File.separator + FolderContants.MD5CACHE;
-        boolean success = makeFolder(mMd5Path);
+        boolean success = makeFolder(mMd5Path  + File.separator);
         mThumbnailPath = rootPath + File.separator + FolderContants.THUMBNAIL;
-        success = makeFolder(mThumbnailPath);
+        success = makeFolder(mThumbnailPath  + File.separator);
         mTempPath = rootPath +File.separator + FolderContants.TEMP;
-        success = makeFolder(mTempPath);
+        success = makeFolder(mTempPath + File.separator);
         //mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
     }
 
