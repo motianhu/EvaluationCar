@@ -143,7 +143,7 @@ public class ImageModelAdapter extends BaseAdapter {
             picUrl = "file://" + bean.imageLocalUrl;
         }
         if (!TextUtils.isEmpty(picUrl)) {
-            ImageLoaderProxy.loadImage(picUrl, image);
+            ImageLoaderProxy.loadCornerImage(picUrl, image);
         } else {
             image.setImageBitmap(null);
         }

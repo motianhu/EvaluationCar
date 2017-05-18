@@ -26,6 +26,10 @@ public class ImageLoaderProxy implements IProxy {
         ImageLoaderManager.getInstance().loadImageWaterMark(url, image);
     }
 
+    public static void loadCornerImage(String url, ImageView image) {
+        ImageLoaderManager.getInstance().loadCornerImage(url, image);
+    }
+
     public static void loadUrl(String url) {
         ImageLoaderManager.getInstance().loadUrl(url);
     }

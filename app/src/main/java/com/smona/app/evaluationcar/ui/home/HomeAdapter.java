@@ -36,7 +36,7 @@ public class HomeAdapter extends AbstractAdapter {
         convertView.setTag(info);
 
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
-        ImageLoaderProxy.loadImage(info.imageThumb, image);
+        ImageLoaderProxy.loadCornerImage(info.imageThumb, image);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         title.setText(info.title);
         TextView time = (TextView) convertView.findViewById(R.id.time);
