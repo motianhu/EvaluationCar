@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.framework.upload;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.smona.app.evaluationcar.util.CarLog;
 
@@ -46,6 +47,17 @@ public class UploadTaskExecutor {
         while (it.hasNext()) {
             ActionTask action = it.next();
             if (action.isSelf(task)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUploading(String carBillId) {
+        Iterator<ActionTask> it = sTasks.iterator();
+        while (it.hasNext()) {
+            ActionTask action = it.next();
+            if (!TextUtils.isEmpty(action.mCarBillId) && action.mCarBillId.equals(carBillId)) {
                 return true;
             }
         }

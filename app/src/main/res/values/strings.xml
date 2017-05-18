@@ -188,4 +188,6 @@
     <string name="is_contact_customer">正在联系客服，请稍等...</string>
     <string name="is_contact_customer_failure_seconed">联系客服失败:</string>
     <string name="register_user_fail">注册用户失败</string>
+
+    <string name="uploading_no_action">正在上传中,不能修改</string>
 </resources>

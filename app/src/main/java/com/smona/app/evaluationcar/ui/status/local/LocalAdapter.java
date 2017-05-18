@@ -12,10 +12,12 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.framework.upload.UploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -89,7 +91,13 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener, V
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
-            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, EvaluationActivity.class);
+            if (info.uploadStatus == StatusUtils.BILL_UPLOAD_STATUS_UPLOADING &&
+                    !TextUtils.isEmpty(info.carBillId) &&
+                    UploadTaskExecutor.getInstance().isUploading(info.carBillId)) {
+                ToastUtils.show(mContext, R.string.uploading_no_action);
+            } else {
+                ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, EvaluationActivity.class);
+            }
         }
     }
 
