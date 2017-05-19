@@ -23,6 +23,39 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/reason"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/view_space_vertical"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/view_space_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/evaluation_title_image_size"
+                    android:layout_height="@dimen/evaluation_title_image_size"
+                    android:src="@drawable/icon_circle" />
+
+                <TextView
+                    android:id="@+id/reason_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/evaluation_title_image_margin_left"
+                    android:text="@string/reason_webview"
+                    android:textColor="@color/black_text"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/reason_webview"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
                 android:id="@+id/class_registration_layer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

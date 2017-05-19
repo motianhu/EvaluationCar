@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
@@ -30,6 +31,7 @@ import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -44,6 +46,8 @@ import java.util.List;
 public class EvaluationActivity extends HeaderActivity implements View.OnClickListener {
     private static final String TAG = EvaluationActivity.class.getSimpleName();
     private BaseScrollView mScrollView;
+    private View mReasonContainer;
+    private WebView mReasonWebView;
 
     //登记证
     private View mClassRegistrationTitle;
@@ -216,6 +220,21 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mScrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         mScrollView.setFocusable(true);
         mScrollView.setFocusableInTouchMode(true);
+
+        //退回原因
+        mReasonContainer = findViewById(R.id.reason);
+        mReasonWebView = (WebView) findViewById(R.id.reason_webview);
+        if(statusIsReturn()) {
+            ViewUtil.setViewVisible(mReasonContainer, true);
+            ViewUtil.setViewVisible(mReasonWebView, true);
+            String reason =  "<html><head><title>欢迎你</title></head><body>"
+                    + mCarBill.applyAllOpinion
+                    + "</body></html>";
+            mReasonWebView.loadDataWithBaseURL(null, reason, "text/html", "utf-8", null);
+        } else {
+            ViewUtil.setViewVisible(mReasonContainer, false);
+            ViewUtil.setViewVisible(mReasonWebView, false);
+        }
 
         //登记证
         mClassRegistrationTitle = findViewById(R.id.class_registration_layer);

@@ -54,6 +54,7 @@
     <string name="evalution_submit_tips">%1$s的%2$s没有拍照，请拍照</string>
 
 
+    <string name="reason_webview">退回原因</string>
     <string name="class_registration">登记证</string>
     <string name="class_driving_license">行驶证</string>
     <string name="class_vehicle_nameplate">车辆铭牌</string>
