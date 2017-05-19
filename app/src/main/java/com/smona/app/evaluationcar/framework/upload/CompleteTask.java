@@ -8,8 +8,10 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.event.ToastEvent;
 import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
 import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
+import com.smona.app.evaluationcar.data.model.ResBaseModel;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -36,16 +38,22 @@ public class CompleteTask extends ActionTask {
                 @Override
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
-                    carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
-                    if(carBill.status == 0) {
-                        DBDelegator.getInstance().deleteCarbill(carBill);
-                        LocalStatusSubEvent event = new LocalStatusSubEvent();
-                        event.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
-                        EventProxy.post(event);
-                        EventProxy.post(new StatisticsStatusSubEvent());
-                    } else {
+                    ResBaseModel<String> resBaseModel = JsonParse.parseJson(result, ResBaseModel.class);
+                    if(resBaseModel.success) {
                         carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
-                        DBDelegator.getInstance().updateCarBill(carBill);
+                        if (carBill.status == 0) {
+                            DBDelegator.getInstance().deleteCarbill(carBill);
+                            LocalStatusSubEvent event = new LocalStatusSubEvent();
+                            event.setTag(LocalStatusSubEvent.TAG_ADD_CARBILL);
+                            EventProxy.post(event);
+                            EventProxy.post(new StatisticsStatusSubEvent());
+                        } else {
+                            carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
+                            DBDelegator.getInstance().updateCarBill(carBill);
+                        }
+                        postMessage("单号" + mCarBillId + "上传成功!");
+                    } else {
+                        postMessage("单号" + mCarBillId + "上传失败!具体原因:" + resBaseModel.message);
                     }
                     UploadTaskExecutor.getInstance().nextTask();
                 }
