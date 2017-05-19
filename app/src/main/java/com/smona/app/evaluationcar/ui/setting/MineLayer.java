@@ -28,6 +28,7 @@ import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
+import com.smona.app.evaluationcar.util.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -68,6 +69,8 @@ public class MineLayer extends BaseLinearLayout implements View.OnClickListener 
 
         mUser = new UserItem();
         mUser.readSelf(getContext());
+
+        ((TextView)findViewById(R.id.version)).setText(Utils.getVersion(getContext()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

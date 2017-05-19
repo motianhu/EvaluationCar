@@ -10,6 +10,13 @@
         android:layout_height="180dp"
         android:background="@color/setting_image">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/version"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content" />
+
         <ImageView
             android:id="@+id/mine_image"
             android:layout_width="80dp"
