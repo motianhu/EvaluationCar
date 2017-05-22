@@ -48,12 +48,4 @@
                 android:gravity="center_vertical" />
         </LinearLayout>
     </LinearLayout>
-
-    <include
-        android:id="@+id/no_content"
-        layout="@layout/refresh_network_tip" />
-
-    <include
-        android:id="@+id/loading"
-        layout="@layout/refresh_center_loading" />
 </LinearLayout>

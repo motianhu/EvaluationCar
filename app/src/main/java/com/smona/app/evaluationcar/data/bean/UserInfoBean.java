@@ -18,4 +18,8 @@ public class UserInfoBean extends BaseBean {
                 + ",superCompanyName=" + superCompanyName + ", userChineseName=" + userChineseName
                 + ", companyName=" + companyName + ", userLoginName=" + userLoginName;
     }
+
+    public boolean isXianfeng() {
+        return userSuperCompany == 9 || userCompany == 9;
+    }
 }

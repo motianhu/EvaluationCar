@@ -5,9 +5,17 @@ package com.smona.app.evaluationcar.util;
  */
 
 public class CacheContants {
+    //login
     public static final String LOGIN_USERNAME = "login_userName";
     public static final String LOGIN_PASSWORD = "login_password";
 
+    public static final String LOGIN_USERID = "login_userId";
+    public static final String LOGIN_USERCOMPANY = "login_userCompany";
+    public static final String LOGIN_USERSUPERCOMPONAY = "login_userSuperCompany";
+    public static final String LOGIN_USERCHINESENAME = "login_userChineseName";
+    public static final String LOGIN_COMPANYNAME = "companyName";
+
+    //bill
     public static final String BILL_STATUS = "billStatus";
     public static final String CARBILLID = "carBillId";
     public static final String IMAGEID = "imageId";

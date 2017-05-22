@@ -173,7 +173,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
 
-        HttpDelegator.getInstance().getCarbillImages(mUserBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
+        HttpDelegator.getInstance().getCarbillImages(mUserItem.userBean.userLoginName, mCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 CarLog.d(TAG, "getCarbillImages onSuccess: " + result);

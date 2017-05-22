@@ -22,6 +22,7 @@ import com.hyphenate.chat.ChatClient;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.UserParam;
+import com.smona.app.evaluationcar.data.bean.UserInfoBean;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUserModel;
 import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
@@ -190,9 +191,6 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                         gotoStartup();
                     } else {
                         showLoginingDlg(); // 显示"正在登录"对话框
-                        final String url = UrlConstants.getInterface(UrlConstants.CHECK_USER) + "?userName=" + mIdString;
-                        CacheDelegator.getInstance().deleteCache(url);
-
                         final UserParam param = new UserParam();
                         param.userName = mIdString;
                         param.password = mPwdString;
@@ -202,17 +200,16 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                             public void onSuccess(String result) {
                                 ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
                                 CarLog.d(TAG, "onSuccess normal: " + normal);
-                                if (normal.object != null) {
-                                    CacheDelegator.getInstance().saveNewCacheByUrl(url, result);
+                                if (normal.success) {
                                     registerThirdFunc();
                                 }
-                                runUI(normal.success);
+                                runUI(normal);
                             }
 
                             @Override
                             public void onFailed(String error) {
                                 CarLog.d(TAG, "onError ex: " + error);
-                                runUI(false);
+                                runUI(null);
                             }
                         });
                     }
@@ -227,14 +224,15 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     }
 
-    private void runUI(final boolean success) {
+    private void runUI(final  ResUserModel model) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 closeLoginingDlg();// 关闭对话框
-                if (success) {
+                if (model != null && model.success) {
                     mUser = new UserItem();
                     mUser.saveSelf(LoginActivity.this, mIdString, mPwdString);
+                    mUser.saveUserProp(LoginActivity.this, model.object);
                     gotoStartup();
                 } else {
                     ToastUtils.show(LoginActivity.this, R.string.login_error);

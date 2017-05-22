@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
@@ -28,6 +29,7 @@ import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
+import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -70,9 +72,47 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     @Override
     public void init() {
-        findViewById(R.id.queryVin).setOnClickListener(this);
-        findViewById(R.id.preEvalution).setOnClickListener(this);
-        findViewById(R.id.evalution).setOnClickListener(this);
+        UserItem userItem = new UserItem();
+        userItem.readSelf(getContext());
+        userItem.readUserProp(getContext());
+
+        View vin = findViewById(R.id.queryVin);
+        vin.setOnClickListener(this);
+
+        View preEva = findViewById(R.id.preEvalution);
+        preEva.setOnClickListener(this);
+
+
+        View eva = findViewById(R.id.evalution);
+        eva.setOnClickListener(this);
+
+        LinearLayout line = (LinearLayout) findViewById(R.id.evalution_container);
+
+        if(userItem.userBean.isXianfeng()) {
+            ViewUtil.setViewVisible(preEva, true);
+            line.setWeightSum(3);
+
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)vin.getLayoutParams();
+            param.weight = 1;
+
+            param = (LinearLayout.LayoutParams)preEva.getLayoutParams();
+            param.weight = 1;
+
+            param = (LinearLayout.LayoutParams)eva.getLayoutParams();
+            param.weight = 1;
+        } else {
+            ViewUtil.setViewVisible(preEva, false);
+
+            line.setWeightSum(2);
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)vin.getLayoutParams();
+            param.weight = 1;
+
+            param = (LinearLayout.LayoutParams)eva.getLayoutParams();
+            param.weight = 1;
+        }
+
+
+
 
         findViewById(R.id.uncommit).setOnClickListener(this);
         findViewById(R.id.auditing).setOnClickListener(this);

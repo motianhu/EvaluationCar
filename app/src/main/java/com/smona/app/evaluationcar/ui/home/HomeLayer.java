@@ -12,7 +12,6 @@ import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
-import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
