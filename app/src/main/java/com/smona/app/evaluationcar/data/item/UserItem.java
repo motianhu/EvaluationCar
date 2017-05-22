@@ -3,7 +3,7 @@ package com.smona.app.evaluationcar.data.item;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.smona.app.evaluationcar.util.AESUtils;
+import com.smona.app.evaluationcar.util.Base64Utils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.SPUtil;
@@ -17,8 +17,8 @@ public class UserItem {
 
     public void saveSelf(Context context, String id, String pwd) {
         try {
-            String userName = AESUtils.encrypt(masterPassword, id);
-            String password = AESUtils.encrypt(masterPassword, pwd);
+            String userName = Base64Utils.encrypt(id);
+            String password = Base64Utils.encrypt(pwd);
             CarLog.d(TAG, "saveSelf userName=" + userName + ", password=" + password);
             SPUtil.put(context, CacheContants.LOGIN_USERNAME, userName);
             SPUtil.put(context, CacheContants.LOGIN_PASSWORD, password);
@@ -37,8 +37,8 @@ public class UserItem {
             return false;
         }
         try {
-            mId = AESUtils.decrypt(masterPassword, userName);
-            mPwd = AESUtils.decrypt(masterPassword, password);
+            mId = Base64Utils.decrypt(userName);
+            mPwd = Base64Utils.decrypt(password);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
