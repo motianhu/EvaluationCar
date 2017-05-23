@@ -9,7 +9,10 @@ import android.view.View;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.list.PreevaluationListActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.PreEvaluationQuickLayer;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
+import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class PreEvaluationActivity extends HeaderActivity {
 
     @Override
     protected boolean showDelete() {
-        return false;
+        return true;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class PreEvaluationActivity extends HeaderActivity {
         PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) scrollView.findViewById(R.id.preEditor);
         mResultCallback = view1;
 
-        PreEvaluationListLayer view2 = (PreEvaluationListLayer) ViewUtil.inflater(this, R.layout.preevaluation_list_layer);
+        PreEvaluationQuickLayer view2 = (PreEvaluationQuickLayer) ViewUtil.inflater(this, R.layout.preevaluation_quick_layer);
 
 
         List<View> viewList = new ArrayList<View>();
@@ -66,7 +69,7 @@ public class PreEvaluationActivity extends HeaderActivity {
 
         List<String> titleList = new ArrayList<String>();
         titleList.add(this.getResources().getString(R.string.evalution_pre));
-        titleList.add(this.getResources().getString(R.string.evalution_pre_status));
+        titleList.add(this.getResources().getString(R.string.evalution_pre_quick));
 
         StatusPagerAdapter pagerAdapter = new StatusPagerAdapter(titleList, viewList);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -76,6 +79,10 @@ public class PreEvaluationActivity extends HeaderActivity {
         mViewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.setAdapter(pagerAdapter);
+    }
+
+    public void onDelete() {
+        ActivityUtils.jumpOnlyActivity(this, PreevaluationListActivity.class);
     }
 
     @Override
