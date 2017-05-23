@@ -139,7 +139,11 @@
     <string name="mine_telephone">"0755-86962135"</string>
 
     <string name="evalution_pre_status">预评估状态</string>
+    <string name="evalution_pre_normal">常规预评估</string>
     <string name="evalution_pre_quick">快速预评估</string>
+    <string name="evalution_pre_status_notpass">驳回</string>
+    <string name="evalution_pre_status_pass">进度列表</string>
+
     <string name="evalution_car_type">车型</string>
     <string name="evaluation_car_set">车系</string>
     <string name="evaluation_car_brand">品牌</string>

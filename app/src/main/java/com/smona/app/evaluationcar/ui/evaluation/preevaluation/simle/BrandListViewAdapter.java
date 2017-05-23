@@ -1,7 +1,6 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -9,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.item.SetItem;
+import com.smona.app.evaluationcar.business.HttpDelegator;
+import com.smona.app.evaluationcar.data.item.BrandItem;
+import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -18,17 +19,17 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class SetListViewAdapter extends BaseExpandableListAdapter {
+public class BrandListViewAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;
-    private List<GroupSetInfo> mItemsList;
+    private List<GroupBrandInfo> mItemsList;
 
-    public SetListViewAdapter(Context context) {
+    public BrandListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setGroupList(List<String> groupList, List<GroupSetInfo> itemsList) {
+    public void setGroupList(List<String> groupList, List<GroupBrandInfo> itemsList) {
         this.mGroupList = groupList;
         mItemsList = itemsList;
     }
@@ -80,25 +81,25 @@ public class SetListViewAdapter extends BaseExpandableListAdapter {
             groupHolder = (GroupHolder) convertView.getTag();
         }
 
-        String letter = TextUtils.isEmpty(mGroupList.get(groupPosition)) ? "#" : mGroupList.get(groupPosition);
-        groupHolder.letter.setText(letter);
+        groupHolder.letter.setText(mGroupList.get(groupPosition));
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        SetItem item = mItemsList.get(groupPosition).childList.get(childPosition);
+        BrandItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
-            convertView = ViewUtil.inflater(context, R.layout.expendlist_set_item);
+            convertView = ViewUtil.inflater(context, R.layout.expendlist_brand_item);
             itemHolder = new ItemHolder();
-            itemHolder.brandName = (TextView) convertView.findViewById(R.id.setName);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.brandName);
             itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.carSetName);
+        itemHolder.brandName.setText(item.brandName);
+        ImageLoaderProxy.loadImage(HttpDelegator.getInstance().getAutoLogos(item.brandName + ".jpg"), itemHolder.icon);
         return convertView;
     }
 
@@ -107,15 +108,6 @@ public class SetListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-}
-
-class GroupHolder {
-    TextView letter;
-}
-
-class ItemHolder {
-    ImageView icon;
-    TextView brandName;
 }
 
 

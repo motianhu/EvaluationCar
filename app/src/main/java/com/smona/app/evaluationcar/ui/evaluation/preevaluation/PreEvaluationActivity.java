@@ -9,8 +9,10 @@ import android.view.View;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.list.PreevaluationListActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.PreEvaluationQuickLayer;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.NormalPreEvaluationLayer;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.NormalPreevaluationActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.ResultCallback;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
@@ -22,9 +24,6 @@ import java.util.List;
  * Created by Moth on 2017/3/6.
  */
 public class PreEvaluationActivity extends HeaderActivity {
-
-    private ViewPager mViewPager;
-    private ResultCallback mResultCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class PreEvaluationActivity extends HeaderActivity {
 
     @Override
     protected boolean showDelete() {
-        return true;
+        return false;
     }
 
     @Override
@@ -53,45 +52,41 @@ public class PreEvaluationActivity extends HeaderActivity {
     }
 
     private void initViews() {
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        View scrollView = ViewUtil.inflater(this, R.layout.preevaluation_edit_layer);
-        PreEvaluationEditLayer view1 = (PreEvaluationEditLayer) scrollView.findViewById(R.id.preEditor);
-        mResultCallback = view1;
-
-        PreEvaluationQuickLayer view2 = (PreEvaluationQuickLayer) ViewUtil.inflater(this, R.layout.preevaluation_quick_layer);
-
+        View pass = ViewUtil.inflater(this, R.layout.preevaluation_pass_list_layer);
+        View notpass = ViewUtil.inflater(this, R.layout.preevaluation_notpass_list_layer);
 
         List<View> viewList = new ArrayList<View>();
-        viewList.add(view1);
-        viewList.add(view2);
+        viewList.add(pass);
+        viewList.add(notpass);
 
         List<String> titleList = new ArrayList<String>();
-        titleList.add(this.getResources().getString(R.string.evalution_pre));
-        titleList.add(this.getResources().getString(R.string.evalution_pre_quick));
+        titleList.add(this.getResources().getString(R.string.evalution_pre_status_notpass));
+        titleList.add(this.getResources().getString(R.string.evalution_pre_status_pass));
 
         StatusPagerAdapter pagerAdapter = new StatusPagerAdapter(titleList, viewList);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.addTab(tabLayout.newTab().setText(titleList.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(titleList.get(1)));
 
-        mViewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setAdapter(pagerAdapter);
-    }
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setAdapter(pagerAdapter);
 
-    public void onDelete() {
-        ActivityUtils.jumpOnlyActivity(this, PreevaluationListActivity.class);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            if (mResultCallback != null) {
-                mResultCallback.onResult(requestCode, data);
+        findViewById(R.id.normal_preeva).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.jumpOnlyActivity(PreEvaluationActivity.this, NormalPreevaluationActivity.class);
             }
-        }
+        });
+
+        findViewById(R.id.quick_preeva).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityUtils.jumpOnlyActivity(PreEvaluationActivity.this, QuickPreevaluationActivity.class);
+            }
+        });
     }
 }

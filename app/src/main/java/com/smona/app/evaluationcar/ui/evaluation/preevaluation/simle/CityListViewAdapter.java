@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.content.Context;
 import android.view.View;
@@ -8,28 +8,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.item.BrandItem;
-import com.smona.app.evaluationcar.data.item.TypeItem;
-import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
 
 /**
- * Created by motianhu on 4/15/17.
+ * Created by Moth on 2017/4/16.
  */
 
-public class TypeListViewAdapter extends BaseExpandableListAdapter {
+class CityListViewAdapter  extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;
-    private List<GroupTypeInfo> mItemsList;
+    private List<GroupCityInfo> mItemsList;
 
-    public TypeListViewAdapter(Context context) {
+    public CityListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setGroupList(List<String> groupList, List<GroupTypeInfo> itemsList) {
+    public void setGroupList(List<String> groupList, List<GroupCityInfo> itemsList) {
         this.mGroupList = groupList;
         mItemsList = itemsList;
     }
@@ -87,18 +85,18 @@ public class TypeListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        TypeItem item = mItemsList.get(groupPosition).childList.get(childPosition);
+        CityItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
-            convertView = ViewUtil.inflater(context, R.layout.expendlist_type_item);
+            convertView = ViewUtil.inflater(context, R.layout.expendlist_city_item);
             itemHolder = new ItemHolder();
-            itemHolder.brandName = (TextView) convertView.findViewById(R.id.typeName);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.cityName);
             itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.carTypeName);
+        itemHolder.brandName.setText(item.cityName);
         return convertView;
     }
 
@@ -108,5 +106,3 @@ public class TypeListViewAdapter extends BaseExpandableListAdapter {
     }
 
 }
-
-

@@ -10,7 +10,8 @@
         android:layout_height="50dp" />
 
     <include
-        layout="@layout/preevaluation_list_layer"
+        android:id="@+id/preeva_quick"
+        layout="@layout/preevaluation_quick_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

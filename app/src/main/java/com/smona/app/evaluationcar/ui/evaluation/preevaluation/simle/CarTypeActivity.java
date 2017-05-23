@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,7 +17,6 @@ import com.smona.app.evaluationcar.data.event.BrandActionEvent;
 import com.smona.app.evaluationcar.data.event.SetActionEvent;
 import com.smona.app.evaluationcar.data.event.TypeActionEvent;
 import com.smona.app.evaluationcar.data.item.BrandItem;
-import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.data.model.ResBrandPage;

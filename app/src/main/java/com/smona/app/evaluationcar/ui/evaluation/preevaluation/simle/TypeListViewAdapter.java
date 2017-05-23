@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.content.Context;
 import android.view.View;
@@ -8,9 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.HttpDelegator;
-import com.smona.app.evaluationcar.data.item.BrandItem;
-import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
@@ -19,17 +17,17 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class BrandListViewAdapter extends BaseExpandableListAdapter {
+public class TypeListViewAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;
-    private List<GroupBrandInfo> mItemsList;
+    private List<GroupTypeInfo> mItemsList;
 
-    public BrandListViewAdapter(Context context) {
+    public TypeListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setGroupList(List<String> groupList, List<GroupBrandInfo> itemsList) {
+    public void setGroupList(List<String> groupList, List<GroupTypeInfo> itemsList) {
         this.mGroupList = groupList;
         mItemsList = itemsList;
     }
@@ -87,19 +85,18 @@ public class BrandListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        BrandItem item = mItemsList.get(groupPosition).childList.get(childPosition);
+        TypeItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
-            convertView = ViewUtil.inflater(context, R.layout.expendlist_brand_item);
+            convertView = ViewUtil.inflater(context, R.layout.expendlist_type_item);
             itemHolder = new ItemHolder();
-            itemHolder.brandName = (TextView) convertView.findViewById(R.id.brandName);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.typeName);
             itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.brandName);
-        ImageLoaderProxy.loadImage(HttpDelegator.getInstance().getAutoLogos(item.brandName + ".jpg"), itemHolder.icon);
+        itemHolder.brandName.setText(item.carTypeName);
         return convertView;
     }
 

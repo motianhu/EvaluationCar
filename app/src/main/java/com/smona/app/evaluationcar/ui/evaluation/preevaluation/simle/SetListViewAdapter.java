@@ -1,6 +1,7 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -8,26 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.item.CityItem;
+import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
 
 /**
- * Created by Moth on 2017/4/16.
+ * Created by motianhu on 4/15/17.
  */
 
-class CityListViewAdapter  extends BaseExpandableListAdapter {
+public class SetListViewAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;
-    private List<GroupCityInfo> mItemsList;
+    private List<GroupSetInfo> mItemsList;
 
-    public CityListViewAdapter(Context context) {
+    public SetListViewAdapter(Context context) {
         this.context = context;
     }
 
-    public void setGroupList(List<String> groupList, List<GroupCityInfo> itemsList) {
+    public void setGroupList(List<String> groupList, List<GroupSetInfo> itemsList) {
         this.mGroupList = groupList;
         mItemsList = itemsList;
     }
@@ -79,24 +80,25 @@ class CityListViewAdapter  extends BaseExpandableListAdapter {
             groupHolder = (GroupHolder) convertView.getTag();
         }
 
-        groupHolder.letter.setText(mGroupList.get(groupPosition));
+        String letter = TextUtils.isEmpty(mGroupList.get(groupPosition)) ? "#" : mGroupList.get(groupPosition);
+        groupHolder.letter.setText(letter);
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        CityItem item = mItemsList.get(groupPosition).childList.get(childPosition);
+        SetItem item = mItemsList.get(groupPosition).childList.get(childPosition);
         ItemHolder itemHolder = null;
         if (convertView == null) {
-            convertView = ViewUtil.inflater(context, R.layout.expendlist_city_item);
+            convertView = ViewUtil.inflater(context, R.layout.expendlist_set_item);
             itemHolder = new ItemHolder();
-            itemHolder.brandName = (TextView) convertView.findViewById(R.id.cityName);
+            itemHolder.brandName = (TextView) convertView.findViewById(R.id.setName);
             itemHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(itemHolder);
         } else {
             itemHolder = (ItemHolder) convertView.getTag();
         }
-        itemHolder.brandName.setText(item.cityName);
+        itemHolder.brandName.setText(item.carSetName);
         return convertView;
     }
 
@@ -106,3 +108,14 @@ class CityListViewAdapter  extends BaseExpandableListAdapter {
     }
 
 }
+
+class GroupHolder {
+    TextView letter;
+}
+
+class ItemHolder {
+    ImageView icon;
+    TextView brandName;
+}
+
+

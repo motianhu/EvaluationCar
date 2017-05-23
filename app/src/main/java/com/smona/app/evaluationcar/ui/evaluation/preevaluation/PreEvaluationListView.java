@@ -9,7 +9,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
 import com.smona.app.evaluationcar.ui.status.RequestFace;

@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,17 +16,14 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
-import com.smona.app.evaluationcar.data.event.BannerEvent;
 import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.data.item.CityItem;
 import com.smona.app.evaluationcar.data.item.SetItem;
 import com.smona.app.evaluationcar.data.item.TypeItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResBaseModel;
-import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
-import com.smona.app.evaluationcar.ui.chat.CheckChatActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -41,8 +38,8 @@ import java.util.Date;
  * Created by motianhu on 4/15/17.
  */
 
-public class PreEvaluationEditLayer extends RelativeLayout implements ResultCallback {
-    private static final String TAG = PreEvaluationEditLayer.class.getSimpleName();
+public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCallback {
+    private static final String TAG = NormalPreEvaluationLayer.class.getSimpleName();
 
     private TextView mCarModel;
     private TextView mCarDate;
@@ -60,7 +57,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
 
     private ProgressDialog mProgressDialog;
 
-    public PreEvaluationEditLayer(Context context, AttributeSet attrs) {
+    public NormalPreEvaluationLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -78,6 +75,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
         findViewById(R.id.container_cartime).setOnClickListener(mOnClickListener);
         findViewById(R.id.container_city).setOnClickListener(mOnClickListener);
         findViewById(R.id.pre_submit).setOnClickListener(mOnClickListener);
+        findViewById(R.id.btn_delete).setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -97,6 +95,9 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
                     break;
                 case R.id.pre_submit:
                     onSubmit();
+                    break;
+                case R.id.btn_delete:
+                    clear();
                     break;
             }
 
@@ -216,6 +217,7 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
                 mProgressDialog.dismiss();
                 if(isSuccess) {
                     clear();
+                    ToastUtils.show(getContext(), R.string.submit_precallbill_success);
                 }
             }
         });
@@ -243,7 +245,6 @@ public class PreEvaluationEditLayer extends RelativeLayout implements ResultCall
         mCarLicheng.setText("");
         mCarCity.setText("");
         mCarMark.setText("");
-        ToastUtils.show(getContext(), R.string.submit_precallbill_success);
     }
 
     @Override

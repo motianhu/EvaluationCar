@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
-import com.smona.app.evaluationcar.ui.evaluation.ImageModelAdapter;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -20,8 +19,8 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class PreEvaluationQuickLayer extends RelativeLayout {
-    private static final String TAG = PreEvaluationQuickLayer.class.getSimpleName();
+public class QuickPreEvaluationLayer extends RelativeLayout {
+    private static final String TAG = QuickPreEvaluationLayer.class.getSimpleName();
 
     private View mRease;
     private WebView mReaseWebView;
@@ -34,7 +33,7 @@ public class PreEvaluationQuickLayer extends RelativeLayout {
     private QuickImageModelAdapter mSupplementAdapter;
     private List<CarImageBean> mSupplementData;
 
-    public PreEvaluationQuickLayer(Context context, AttributeSet attrs) {
+    public QuickPreEvaluationLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -72,15 +71,13 @@ public class PreEvaluationQuickLayer extends RelativeLayout {
         bean.imageSeqNum = index + 1;
         mBaseData.add(bean);
 
+        //中控台含排挡杆
         bean = new CarImageBean();
-        index = 1;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_Registration);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_Registration, index);
+        index = 2;
+        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_VehicleInterior);
+        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_VehicleInterior, index);
         bean.imageSeqNum = index + 1;
         mBaseData.add(bean);
-
-
-        mSupplementData = new ArrayList<CarImageBean>();
 
         //车左前45度
         bean = new CarImageBean();
@@ -88,13 +85,24 @@ public class PreEvaluationQuickLayer extends RelativeLayout {
         bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarBody);
         bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_CarBody, index);
         bean.imageSeqNum = index + 1;
+        mBaseData.add(bean);
+
+
+        mSupplementData = new ArrayList<CarImageBean>();
+
+        //行驶证
+        bean = new CarImageBean();
+        index = 0;
+        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_DrivingLicense);
+        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_DrivingLicense, index);
+        bean.imageSeqNum = index + 1;
         mSupplementData.add(bean);
 
-        //中控台含排挡杆
+        //左前门
         bean = new CarImageBean();
-        index = 2;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_VehicleInterior);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_VehicleInterior, index);
+        index = 5;
+        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarFrame);
+        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_CarFrame, index);
         bean.imageSeqNum = index + 1;
         mSupplementData.add(bean);
     }

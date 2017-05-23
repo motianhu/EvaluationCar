@@ -1,6 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation.list;
-
-import android.os.Bundle;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
@@ -9,10 +7,10 @@ import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
  * Created by motianhu on 5/23/17.
  */
 
-public class PreevaluationListActivity extends HeaderActivity {
+public class QuickPreevaluationActivity extends HeaderActivity {
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_preevaluation_list;
+        return R.layout.activity_preevaluation_quick;
     }
 
     @Override

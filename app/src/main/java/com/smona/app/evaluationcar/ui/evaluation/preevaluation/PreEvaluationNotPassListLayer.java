@@ -29,7 +29,7 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class PreEvaluationListLayer extends PullToRefreshLayout implements RequestFace {
+public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implements RequestFace {
 
    private static final int PAGE_SIZE = 10;
 
@@ -44,17 +44,17 @@ public class PreEvaluationListLayer extends PullToRefreshLayout implements Reque
 
     private CarbillParam mRequestParams = new CarbillParam();
 
-    public PreEvaluationListLayer(Context context) {
+    public PreEvaluationNotPassListLayer(Context context) {
         super(context);
         initRequestParams();
     }
 
-    public PreEvaluationListLayer(Context context, AttributeSet attrs) {
+    public PreEvaluationNotPassListLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         initRequestParams();
     }
 
-    public PreEvaluationListLayer(Context context, AttributeSet attrs, int defStyle) {
+    public PreEvaluationNotPassListLayer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initRequestParams();
     }
