@@ -20,6 +20,6 @@ public class QuickPreevaluationActivity extends HeaderActivity {
 
     @Override
     protected int getHeaderTitle() {
-        return R.string.evalution_pre_status;
+        return R.string.evalution_pre_quick;
     }
 }
