@@ -68,6 +68,14 @@ public class ActivityUtils {
         contet.startActivity(intent);
     }
 
+    public static void jumpQuickCameraActivity(Context contet, int type, int index, Class clazz) {
+        Intent intent = new Intent();
+        intent.setClass(contet, clazz);
+        SPUtil.put(contet, CacheContants.QUICK_IMAGE_TYPE, type);
+        SPUtil.put(contet, CacheContants.QUICK_IMAGE_TYPE_INDEX, index);
+        contet.startActivity(intent);
+    }
+
     public static void jumpOnlyActivity(Context context, Class clazz) {
         Intent intent = new Intent();
         intent.setClass(context, clazz);

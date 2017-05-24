@@ -48,12 +48,12 @@ public class QuickPreEvaluationLayer extends RelativeLayout {
 
         //基础照片
         mBaseGrid = (LimitGridView) findViewById(R.id.class_base);
-        mBaseAdapter = new QuickImageModelAdapter(getContext());
+        mBaseAdapter = new QuickImageModelAdapter(getContext(), ImageModelDelegator.QUICK_BASE);
         mBaseGrid.setAdapter(mBaseAdapter);
 
         //补充照片
         mSupplementGrid = (LimitGridView) findViewById(R.id.class_supplement);
-        mSupplementAdapter = new QuickImageModelAdapter(getContext());
+        mSupplementAdapter = new QuickImageModelAdapter(getContext(), ImageModelDelegator.QUICK_SUPPLEMENT);
         mSupplementGrid.setAdapter(mSupplementAdapter);
 
         initImageList();
@@ -61,50 +61,11 @@ public class QuickPreEvaluationLayer extends RelativeLayout {
     }
 
     private void initImageList() {
-        mBaseData = new ArrayList<CarImageBean>();
-        int index = 0;
+        mBaseData = new ArrayList<>();
+        mBaseData.addAll(ImageModelDelegator.getInstance().getQuickBaseModel(ImageModelDelegator.QUICK_BASE));
 
-        //登记证书首页
-        CarImageBean bean = new CarImageBean();
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_Registration);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_Registration, index);
-        bean.imageSeqNum = index + 1;
-        mBaseData.add(bean);
-
-        //中控台含排挡杆
-        bean = new CarImageBean();
-        index = 2;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_VehicleInterior);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_VehicleInterior, index);
-        bean.imageSeqNum = index + 1;
-        mBaseData.add(bean);
-
-        //车左前45度
-        bean = new CarImageBean();
-        index = 0;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarBody);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_CarBody, index);
-        bean.imageSeqNum = index + 1;
-        mBaseData.add(bean);
-
-
-        mSupplementData = new ArrayList<CarImageBean>();
-
-        //行驶证
-        bean = new CarImageBean();
-        index = 0;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_DrivingLicense);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_DrivingLicense, index);
-        bean.imageSeqNum = index + 1;
-        mSupplementData.add(bean);
-
-        //左前门
-        bean = new CarImageBean();
-        index = 5;
-        bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarFrame);
-        bean.displayName = ImageModelDelegator.getInstance().getDisplayName(ImageModelDelegator.IMAGE_CarFrame, index);
-        bean.imageSeqNum = index + 1;
-        mSupplementData.add(bean);
+        mSupplementData = new ArrayList<>();
+        mSupplementData.addAll(ImageModelDelegator.getInstance().getQuickBaseModel(ImageModelDelegator.QUICK_SUPPLEMENT));
     }
 
     private void updateImageViews() {

@@ -26,6 +26,11 @@ public class ImageModelDelegator {
     public static final int IMAGE_VehicleInterior = 5;
     public static final int IMAGE_DifferenceSupplement = 6;
     public static final int IMAGE_OriginalCarInsurancet = 7;
+
+    //quick pre evaluation
+    public static final int QUICK_BASE = 0;
+    public static final int QUICK_SUPPLEMENT = 1;
+
     private volatile static ImageModelDelegator sInstance;
     private String[] mImageClass = null;
     private List<String>[] mImageClassItems = null;
@@ -154,5 +159,55 @@ public class ImageModelDelegator {
             return null;
         }
         return mImageClassItems[type].get(seqNum);
+    }
+
+
+    //quick pre evaluation
+    public List<CarImageBean> getQuickBaseModel(int type) {
+        List<CarImageBean> defaultList = new ArrayList<>();
+        int index = 0;
+        CarImageBean bean = null;
+        if(type == QUICK_BASE) {
+            //登记证书首页
+            bean = new CarImageBean();
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_Registration);
+            bean.displayName = ImageModelDelegator.getInstance().getDisplayName(IMAGE_Registration, index);
+            bean.imageSeqNum = index + 1;
+            defaultList.add(bean);
+
+            //中控台含排挡杆
+            bean = new CarImageBean();
+            index = 2;
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_VehicleInterior);
+            bean.displayName = ImageModelDelegator.getInstance().getDisplayName(IMAGE_VehicleInterior, index);
+            bean.imageSeqNum = index + 1;
+            defaultList.add(bean);
+
+
+            //车左前45度
+            bean = new CarImageBean();
+            index = 0;
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_CarBody);
+            bean.displayName = ImageModelDelegator.getInstance().getDisplayName(IMAGE_CarBody, index);
+            bean.imageSeqNum = index + 1;
+            defaultList.add(bean);
+        } else {
+            //行驶证
+            bean = new CarImageBean();
+            index = 0;
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_DrivingLicense);
+            bean.displayName = ImageModelDelegator.getInstance().getDisplayName(IMAGE_DrivingLicense, index);
+            bean.imageSeqNum = index + 1;
+            defaultList.add(bean);
+
+            //左前门
+            bean = new CarImageBean();
+            index = 5;
+            bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_CarFrame);
+            bean.displayName = ImageModelDelegator.getInstance().getDisplayName(IMAGE_CarFrame, index);
+            bean.imageSeqNum = index + 1;
+            defaultList.add(bean);
+        }
+        return defaultList;
     }
 }

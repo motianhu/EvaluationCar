@@ -35,9 +35,11 @@ public class QuickImageModelAdapter extends BaseAdapter {
     private int mImageWidth;
 
     private boolean mNeedReload = true;
+    private int mType = -1;
 
-    public QuickImageModelAdapter(Context context) {
+    public QuickImageModelAdapter(Context context, int type) {
         mContext = context;
+        mType = type;
         int i = ScreenInfo.getInstance().getScreenWidth();
         int j = context.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
         mImageWidth = ((i - j * 3) / 2);
@@ -101,7 +103,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
             public void onClick(View v) {
                 CarLog.d(TAG, "bean: " + bean);
                 setNeedReload(true);
-                ActivityUtils.jumpCameraActivity(mContext, bean, QuickCameraActivity.class);
+                ActivityUtils.jumpQuickCameraActivity(mContext, mType, position, QuickCameraActivity.class);
             }
         });
 

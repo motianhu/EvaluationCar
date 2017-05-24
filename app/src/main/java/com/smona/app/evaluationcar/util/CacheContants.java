@@ -25,6 +25,9 @@ public class CacheContants {
     public static final String CARBILLBEAN = "bean_carBill";
 
 
+    //quick bill
+    public static final String QUICK_IMAGE_TYPE = "quick_image_type";
+    public static final String QUICK_IMAGE_TYPE_INDEX = "quick_image_type_index";
 
     //web activity
     public static final int TYPE_BANNER = 1;
