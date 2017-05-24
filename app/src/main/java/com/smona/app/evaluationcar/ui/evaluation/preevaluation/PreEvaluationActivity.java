@@ -1,7 +1,5 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,9 +8,7 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.NormalPreEvaluationLayer;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.NormalPreevaluationActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle.ResultCallback;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple.NormalPreevaluationActivity;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;

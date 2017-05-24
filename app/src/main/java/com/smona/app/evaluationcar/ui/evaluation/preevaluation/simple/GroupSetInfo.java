@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple;
 
 import com.smona.app.evaluationcar.data.item.SetItem;
 

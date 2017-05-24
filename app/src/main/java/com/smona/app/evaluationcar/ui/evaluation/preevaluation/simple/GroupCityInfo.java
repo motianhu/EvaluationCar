@@ -1,6 +1,5 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple;
 
-import com.smona.app.evaluationcar.data.item.BrandItem;
 import com.smona.app.evaluationcar.data.item.CityItem;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple;
 
 import android.content.Intent;
 import android.os.Bundle;

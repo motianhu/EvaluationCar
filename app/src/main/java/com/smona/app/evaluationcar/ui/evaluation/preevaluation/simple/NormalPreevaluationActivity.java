@@ -1,10 +1,9 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simle;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
