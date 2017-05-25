@@ -13,7 +13,9 @@ public class UploadTaskExecutor {
 
     private static final int MULTI_THREAD_COUNT = 2;
 
-    private LinkedList<ActionTask> sTasks = new LinkedList<ActionTask>();
+    private LinkedList<ActionTask> mWattingTasks = new LinkedList<ActionTask>();
+    private LinkedList<ActionTask> mRunningTasks = new LinkedList<ActionTask>();
+
     private int sRunCount = 0;
     private static UploadTaskExecutor sInstance;
 
@@ -27,23 +29,24 @@ public class UploadTaskExecutor {
         return sInstance;
     }
 
-    public void init(){}
+    public void init() {
+    }
 
     private Handler sHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            ActionTask waitTask = sTasks.poll();
+            ActionTask waitTask = mWattingTasks.poll();
             if (null != waitTask) {
-                waitTask.startTask();
+                startTask(waitTask);
             } else {
                 sRunCount--;
             }
-            CarLog.d(TAG, "sRunCount:" + sRunCount + "  sTasks.size():" + sTasks.size());
+            CarLog.d(TAG, "sRunCount:" + sRunCount + "  mWattingTasks.size():" + mWattingTasks.size());
         }
     };
 
 
-    private boolean existTask(ActionTask task) {
-        Iterator<ActionTask> it = sTasks.iterator();
+    private boolean existWaitingTasks(ActionTask task) {
+        Iterator<ActionTask> it = mWattingTasks.iterator();
         while (it.hasNext()) {
             ActionTask action = it.next();
             if (action.isSelf(task)) {
@@ -54,7 +57,7 @@ public class UploadTaskExecutor {
     }
 
     public boolean isUploading(String carBillId) {
-        Iterator<ActionTask> it = sTasks.iterator();
+        Iterator<ActionTask> it = mWattingTasks.iterator();
         while (it.hasNext()) {
             ActionTask action = it.next();
             if (!TextUtils.isEmpty(action.mCarBillId) && action.mCarBillId.equals(carBillId)) {
@@ -65,21 +68,58 @@ public class UploadTaskExecutor {
     }
 
     public void pushTask(ActionTask task) {
-        if (existTask(task)) {
-            CarLog.d(TAG, "existTask pushTask " + task);
+        if (existWaitingTasks(task)) {
+            CarLog.d(TAG, "existWaitingTasks pushTask [" + task.mImageId + "," + task.mCarBillId + "]");
             return;
         }
-        CarLog.d(TAG, "pushTask " + task + ", sRunCount: " + sRunCount);
+
+        if (existRunningTask(task)) {
+            CarLog.d(TAG, "existRunningTask pushTask [" + task.mImageId + "," + task.mCarBillId + "]");
+            return;
+        }
+
+        CarLog.d(TAG, "pushTask [" + task.mImageId + "," + task.mCarBillId + "]" + ", sRunCount: " + sRunCount);
         if (sRunCount >= MULTI_THREAD_COUNT) {
-            sTasks.offer(task);
+            mWattingTasks.offer(task);
         } else {
-            task.startTask();
+            startTask(task);
             sRunCount++;
         }
     }
 
-    public void nextTask() {
+    private void startTask(ActionTask task) {
+        task.startTask();
+        mRunningTasks.push(task);
+    }
+
+    public void nextTask(int curImageId, String curCarBillId) {
+        removeRunningTask(curImageId, curCarBillId);
         sHandler.sendEmptyMessage(0);
+    }
+
+    private void removeRunningTask(int curImageId, String curCarBillId) {
+        for (ActionTask task : mRunningTasks) {
+            //有CarbillId
+            if (!TextUtils.isEmpty(curCarBillId) && task.mCarBillId.equals(curCarBillId)) {
+                mRunningTasks.remove(task);
+                break;
+            } else if ((curImageId > 0) && (task.mImageId == curImageId)) {
+                mRunningTasks.remove(task);
+                break;
+            }
+        }
+    }
+
+    private boolean existRunningTask(ActionTask task) {
+        for (ActionTask action : mRunningTasks) {
+            //有CarbillId
+            if (!TextUtils.isEmpty(task.mCarBillId) && task.mCarBillId.equals(action.mCarBillId)) {
+                return true;
+            } else if ((task.mImageId > 0) && (task.mImageId == action.mImageId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

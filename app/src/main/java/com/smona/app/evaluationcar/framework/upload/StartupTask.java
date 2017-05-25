@@ -33,7 +33,7 @@ public class StartupTask extends ActionTask {
                 public void onFailed(String error) {
                     CarLog.d(TAG, "onError ex: " + error);
                     //没单号就跳过
-                    UploadTaskExecutor.getInstance().nextTask();
+                    UploadTaskExecutor.getInstance().nextTask(mImageId, null);
                 }
             });
         } else {
