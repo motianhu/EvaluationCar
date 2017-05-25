@@ -31,7 +31,7 @@ public class CompleteTask extends ActionTask {
             CarLog.d(TAG, "onSuccess  上传失败,具体原因是: " + error + " 没上传成功, carBill=" + carBill);
             postMessage(error);
 
-            UploadTaskExecutor.getInstance().nextTask();
+            UploadTaskExecutor.getInstance().nextTask(0, mCarBillId);
         } else {
             carBill.carBillId = mCarBillId;
             DataDelegator.getInstance().submitCarBill(userName, carBill, new ResponseCallback<String>() {
@@ -55,7 +55,7 @@ public class CompleteTask extends ActionTask {
                     } else {
                         postMessage("单号" + mCarBillId + "上传失败!具体原因:" + resBaseModel.message);
                     }
-                    UploadTaskExecutor.getInstance().nextTask();
+                    UploadTaskExecutor.getInstance().nextTask(0, mCarBillId);
                 }
 
                 @Override
@@ -63,7 +63,7 @@ public class CompleteTask extends ActionTask {
                     CarLog.d(TAG, "onError ex: " + error);
                     postMessage(error);
 
-                    UploadTaskExecutor.getInstance().nextTask();
+                    UploadTaskExecutor.getInstance().nextTask(0, mCarBillId);
                 }
             });
         }
