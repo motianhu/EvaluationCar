@@ -48,7 +48,6 @@ public class IndexLetterAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         String letter = mLetters.get(position);
         ViewHolder viewHolder;
-        CarLog.d("", "getView" + letter);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.letter_item);
             viewHolder = new ViewHolder();

@@ -99,7 +99,7 @@ public class BrandListViewAdapter extends BaseExpandableListAdapter {
             itemHolder = (ItemHolder) convertView.getTag();
         }
         itemHolder.brandName.setText(item.brandName);
-        ImageLoaderProxy.loadImage(HttpDelegator.getInstance().getAutoLogos(item.brandName + ".jpg"), itemHolder.icon);
+        ImageLoaderProxy.loadCornerImage(HttpDelegator.getInstance().getAutoLogos(item.brandName + ".jpg"), itemHolder.icon);
         return convertView;
     }
 

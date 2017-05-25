@@ -14,7 +14,7 @@ import java.io.File;
 
 public class DeviceStorageManager {
     private static final String TAG = DeviceStorageManager.class.getSimpleName();
-    private boolean mTestEvn = true;
+    private boolean mTestEvn = false;
 
     private volatile static DeviceStorageManager sInstance;
     private Context mAppContext;
@@ -24,7 +24,7 @@ public class DeviceStorageManager {
     private String mMd5Path;
     private String mTempPath;
 
-    private static final String TEST_FILE = "rhinotest0123456789";
+    private static final String TEST_FILE = "zhixintest0123456789";
 
 
     private DeviceStorageManager() {
@@ -56,7 +56,7 @@ public class DeviceStorageManager {
         success = makeFolder(mThumbnailPath  + File.separator);
         mTempPath = rootPath +File.separator + FolderContants.TEMP;
         success = makeFolder(mTempPath + File.separator);
-        //mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
+        mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
     }
 
     public String getMd5Path() {
