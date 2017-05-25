@@ -165,6 +165,10 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
             CarBillBean temp = DBDelegator.getInstance().queryCarBill(bean.carBillId);
             if(temp == null) {
                 DBDelegator.getInstance().insertCarBill(bean);
+            } else {
+                bean.imageId = temp.imageId;
+                bean.uploadStatus = temp.uploadStatus;
+                DBDelegator.getInstance().updateCarBill(bean);
             }
         }
     }
