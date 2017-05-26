@@ -465,12 +465,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
         if (mCarBill != null) {
-            if(!TextUtils.isEmpty(mPrice.getText().toString())) {
+            if(TextUtils.isEmpty(mPrice.getText().toString())) {
+                mCarBill.preSalePrice = 0;
+            } else {
                 mCarBill.preSalePrice = Double.valueOf(mPrice.getText().toString());
             }
-            if(!TextUtils.isEmpty(mNote.getText().toString())) {
-                mCarBill.mark = mNote.getText().toString();
-            }
+            mCarBill.mark = mNote.getText().toString();
             mCarBill.leaseTerm = getLeaseTerm();
             DBDelegator.getInstance().updateCarBill(mCarBill);
         }
