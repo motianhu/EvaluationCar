@@ -135,7 +135,7 @@ public class EvaluationProvider extends ContentProvider {
 
     class DatabaseHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "evaluation.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 2;
 
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -154,6 +154,12 @@ public class EvaluationProvider extends ContentProvider {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             CarLog.d(TAG, "DatabaseHelper onUpgrade oldVersion=" + oldVersion + "; newVersion=" + newVersion);
+            if(oldVersion == 1) {
+                String carbills = CarBillTable.getInstance().dropTableSql();
+                db.execSQL(carbills);
+                carbills = CarBillTable.getInstance().createTableSql();
+                db.execSQL(carbills);
+            }
         }
 
 

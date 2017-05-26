@@ -106,6 +106,8 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         item.applyAllOpinion = getString(cursor, CarBillTable.APPLYALLOPINION);
         item.imageId = getInt(cursor, CarBillTable.IMAGEID);
         item.uploadStatus = getInt(cursor, CarBillTable.UPLOADStATUS);
+        //2.0
+        item.leaseTerm = getInt(cursor, CarBillTable.LEASETERM);
         return item;
     }
 
@@ -123,6 +125,8 @@ public class CarBillDao extends BaseDao<CarBillBean> {
         values.put(CarBillTable.APPLYALLOPINION, item.applyAllOpinion);
         values.put(CarBillTable.IMAGEID, item.imageId);
         values.put(CarBillTable.UPLOADStATUS, item.uploadStatus);
+        //2.0
+        values.put(CarBillTable.LEASETERM, item.leaseTerm);
         return values;
     }
 }

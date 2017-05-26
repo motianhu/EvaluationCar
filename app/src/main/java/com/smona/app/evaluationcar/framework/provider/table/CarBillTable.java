@@ -19,6 +19,8 @@ public class CarBillTable extends BaseTable {
     public static final String LOCALSORT = "localSort";
     public static final String IMAGEID = "imageId";
     public static final String UPLOADStATUS = "uploadStatus";
+    //2.0
+    public static final String LEASETERM = "leaseTerm";
 
     private static volatile CarBillTable sInstance = null;
 
@@ -53,7 +55,8 @@ public class CarBillTable extends BaseTable {
                 + EVALUATEPRICE + " DOUBLE, "
                 + LOCALSORT + " INTEGER default 0, "
                 + UPLOADStATUS + " INTEGER default 0, "
-                + PRESALEPRICE + " DOUBLE "
+                + PRESALEPRICE + " DOUBLE ,"
+                + LEASETERM + " INTEGER default 0 "
                 + ")";
     }
 

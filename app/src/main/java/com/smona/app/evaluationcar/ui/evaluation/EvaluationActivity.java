@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpDelegator;
@@ -101,6 +102,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private EditText mPrice;
     private EditText mNote;
+
+    private RadioGroup mLeaseTerm;
 
     private String mAddPicStr;
     private int mCurStatus = StatusUtils.BILL_STATUS_NONE;
@@ -291,6 +294,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mPrice = (EditText) findViewById(R.id.et_price);
         mNote = (EditText) findViewById(R.id.et_remark);
 
+        //lease term
+        View leaseTermGroup = findViewById(R.id.group_lease_term);
+        ViewUtil.setViewVisible(leaseTermGroup, mUserItem.userBean.isGuanghui());
+        mLeaseTerm = (RadioGroup) findViewById(R.id.rg_lease_term);
+
         //设置定位按钮事件及初始化定位
         findViewById(R.id.rb_car_license).setOnClickListener(this);
         findViewById(R.id.rb_car_body).setOnClickListener(this);
@@ -305,8 +313,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         findViewById(R.id.btn_submit).setOnClickListener(this);
 
         if (mCarBill != null) {
+            mLeaseTerm.check(getResIdForLeaseTerm(mCarBill.leaseTerm));
             mPrice.setText(mCarBill.preSalePrice + "");
             mNote.setText(mCarBill.mark);
+        } else {
+            mLeaseTerm.check(getResIdForLeaseTerm(0));
         }
     }
 
@@ -454,8 +465,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
         if (mCarBill != null) {
-            mCarBill.preSalePrice = Double.valueOf(mPrice.getText().toString());
-            mCarBill.mark = mNote.getText().toString();
+            if(!TextUtils.isEmpty(mPrice.getText().toString())) {
+                mCarBill.preSalePrice = Double.valueOf(mPrice.getText().toString());
+            }
+            if(!TextUtils.isEmpty(mNote.getText().toString())) {
+                mCarBill.mark = mNote.getText().toString();
+            }
+            mCarBill.leaseTerm = getLeaseTerm();
             DBDelegator.getInstance().updateCarBill(mCarBill);
         }
         finish();
@@ -509,12 +525,41 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         bean.preSalePrice = Double.valueOf(preScalePrice);
         bean.mark = mark;
         bean.imageId = mImageId;
+        bean.leaseTerm = getLeaseTerm();
 
         //send background post
         TaskSubEvent event = new TaskSubEvent();
         event.obj = bean;
         event.action = TaskSubEvent.ACTION_TASK;
         EventProxy.post(event);
+    }
+
+    private int getLeaseTerm() {
+        int resId = mLeaseTerm.getCheckedRadioButtonId();
+        switch(resId) {
+            case R.id.leaseTerm12:
+                return 12;
+            case R.id.leaseTerm24:
+                return 24;
+            case R.id.leaseTerm36:
+                return 36;
+            default:
+                return 0;
+        }
+    }
+
+
+    private int getResIdForLeaseTerm(int leaseTerm) {
+        switch (leaseTerm) {
+            case 12:
+                return R.id.leaseTerm12;
+            case 24:
+                return R.id.leaseTerm24;
+            case 36:
+                return R.id.leaseTerm36;
+            default:
+                return R.id.leaseTerm0;
+        }
     }
 
     private boolean isTakePhoto() {

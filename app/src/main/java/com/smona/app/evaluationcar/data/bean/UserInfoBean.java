@@ -22,4 +22,8 @@ public class UserInfoBean extends BaseBean {
     public boolean isXianfeng() {
         return userSuperCompany == 9 || userCompany == 9;
     }
+
+    public boolean isGuanghui() {
+        return userSuperCompany == 8 || userCompany == 8;
+    }
 }
