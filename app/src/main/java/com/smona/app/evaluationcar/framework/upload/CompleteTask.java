@@ -1,7 +1,6 @@
 package com.smona.app.evaluationcar.framework.upload;
 
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
@@ -39,7 +38,7 @@ public class CompleteTask extends ActionTask {
                 public void onSuccess(String result) {
                     CarLog.d(TAG, "onSuccess result: " + result + ", carBill: " + carBill);
                     ResBaseModel<String> resBaseModel = JsonParse.parseJson(result, ResBaseModel.class);
-                    if(resBaseModel.success) {
+                    if (resBaseModel.success) {
                         carBill.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
                         if (carBill.status == 0) {
                             DBDelegator.getInstance().deleteCarbill(carBill);
@@ -70,7 +69,7 @@ public class CompleteTask extends ActionTask {
 
     }
 
-    private  void postMessage(String error) {
+    private void postMessage(String error) {
         ToastEvent event = new ToastEvent();
         event.message = error;
         EventProxy.post(event);

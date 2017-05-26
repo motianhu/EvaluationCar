@@ -40,6 +40,31 @@ public class WebActivity extends HeaderActivity {
 
     private int mType;
     private int mId;
+    private ResponseCallback<String> mCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mCallback onFailed error=" + error);
+            poseBanner(null);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            if (isBanner()) {
+                parseBanner(content);
+            } else if (isNews()) {
+                parseNewsItem(content);
+            } else {
+                poseBanner(null);
+            }
+        }
+    };
+    private View.OnClickListener mReloadClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setLoading();
+            requestData();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,14 +132,6 @@ public class WebActivity extends HeaderActivity {
         ViewUtil.setViewVisible(mContainer, false);
     }
 
-    private View.OnClickListener mReloadClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            setLoading();
-            requestData();
-        }
-    };
-
     private void updateTitle() {
         if (isBanner()) {
             updateTitle(R.string.html_title_banner);
@@ -159,25 +176,6 @@ public class WebActivity extends HeaderActivity {
         return CacheContants.TYPE_NEWS == mType;
     }
 
-    private ResponseCallback<String> mCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "mCallback onFailed error=" + error);
-            poseBanner(null);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            if (isBanner()) {
-                parseBanner(content);
-            } else if (isNews()) {
-                parseNewsItem(content);
-            } else {
-                poseBanner(null);
-            }
-        }
-    };
-
     private void parseBanner(String content) {
         BannerItem item = JsonParse.parseJson(content, BannerItem.class);
         poseBanner(item);
@@ -201,13 +199,13 @@ public class WebActivity extends HeaderActivity {
         String title = null;
         String time = null;
         if (item instanceof BannerItem) {
-            title =((BannerItem) item).previewWord;
+            title = ((BannerItem) item).previewWord;
             content = ((BannerItem) item).detailContent;
-            time = String.format(getString(R.string.news_time), ((BannerItem) item).createTime );
+            time = String.format(getString(R.string.news_time), ((BannerItem) item).createTime);
         } else if (item instanceof NewsItem) {
             content = ((NewsItem) item).content;
-            title =((NewsItem) item).title;
-            time = String.format(getString(R.string.news_time), ((NewsItem) item).createTime );
+            title = ((NewsItem) item).title;
+            time = String.format(getString(R.string.news_time), ((NewsItem) item).createTime);
         }
 
         if (item != null) {

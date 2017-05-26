@@ -3,8 +3,6 @@ package com.smona.app.evaluationcar.framework;
 import android.app.Application;
 
 import com.smona.app.evaluationcar.business.HttpDelegator;
-import com.smona.app.evaluationcar.data.event.EvaActionEvent;
-import com.smona.app.evaluationcar.data.event.MessageEvent;
 import com.smona.app.evaluationcar.data.event.ToastEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;

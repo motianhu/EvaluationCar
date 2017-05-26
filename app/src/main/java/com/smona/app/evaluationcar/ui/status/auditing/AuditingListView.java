@@ -12,7 +12,6 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
-import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 

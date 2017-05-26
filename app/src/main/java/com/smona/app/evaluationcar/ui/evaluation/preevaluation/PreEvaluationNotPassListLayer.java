@@ -31,7 +31,7 @@ import java.util.List;
 
 public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implements RequestFace {
 
-   private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
     private PreEvaluationListView mListView = null;
     private View mNoDataLayout = null;
@@ -43,6 +43,46 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
     private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
 
     private CarbillParam mRequestParams = new CarbillParam();
+    private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
+            CarLog.d(TAG, "error: " + error);
+            PreCarbillEvent event = new PreCarbillEvent();
+            event.setContent(null);
+            EventProxy.post(event);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "onSuccess: " + content);
+            ResPreCarBillPage pages = JsonParse.parseJson(content, ResPreCarBillPage.class);
+            int total = mRequestParams.curPage * mRequestParams.pageSize;
+            if (pages.total <= total) {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                notifyUpdateUI(pages.data);
+            } else {
+                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+                notifyUpdateUI(pages.data);
+            }
+        }
+    };
+    private OnClickListener mReloadClickListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
+            post();
+            mLoadingView.setVisibility(VISIBLE);
+            mNoDataLayout.setVisibility(GONE);
+        }
+    };
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loadmoreFinish(PullToRefreshLayout.LAST);
+        }
+    };
 
     public PreEvaluationNotPassListLayer(Context context) {
         super(context);
@@ -89,47 +129,6 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
     private void post() {
         DataDelegator.getInstance().queryPreCarbillList(mRequestParams, mResonponseCallBack);
     }
-
-    private ResponseCallback<String> mResonponseCallBack = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
-            CarLog.d(TAG, "error: " + error);
-            PreCarbillEvent event = new PreCarbillEvent();
-            event.setContent(null);
-            EventProxy.post(event);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess: " + content);
-            ResPreCarBillPage pages = JsonParse.parseJson(content, ResPreCarBillPage.class);
-            int total = mRequestParams.curPage * mRequestParams.pageSize;
-            if (pages.total <= total) {
-                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
-                notifyUpdateUI(pages.data);
-            } else {
-                mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
-                notifyUpdateUI(pages.data);
-            }
-        }
-    };
-    private OnClickListener mReloadClickListener = new OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            CarLog.d(TAG, "mReloadClickListener reload " + TAG);
-            post();
-            mLoadingView.setVisibility(VISIBLE);
-            mNoDataLayout.setVisibility(GONE);
-        }
-    };
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            loadmoreFinish(PullToRefreshLayout.LAST);
-        }
-    };
 
     @Override
     public void deleteObserver() {

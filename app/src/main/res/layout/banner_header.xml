@@ -15,8 +15,8 @@
         android:id="@+id/moreNews"
         android:layout_width="match_parent"
         android:layout_height="31dp"
-        android:paddingEnd="10dp"
         android:background="@color/home_news_more_bg"
+        android:paddingEnd="10dp"
         android:paddingStart="10dp">
 
         <TextView

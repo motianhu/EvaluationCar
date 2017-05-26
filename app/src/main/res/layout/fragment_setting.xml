@@ -11,28 +11,28 @@
         android:background="@color/setting_image">
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/version"
-            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_height="wrap_content" />
+            android:layout_alignParentTop="true" />
 
         <ImageView
             android:id="@+id/mine_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:scaleType="centerInside"
             android:background="@drawable/circle_shape"
+            android:scaleType="centerInside"
             android:src="@drawable/mine_logo" />
 
         <TextView
             android:id="@+id/mine_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_below="@+id/mine_image"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:textColor="@color/text_topbar"
             android:textSize="18sp" />

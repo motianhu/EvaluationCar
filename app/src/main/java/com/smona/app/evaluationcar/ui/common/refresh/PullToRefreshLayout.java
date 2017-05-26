@@ -29,14 +29,6 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
     protected View mLoadmoreView;
     protected View mLoadingView;
     protected TextView mLoadStateTextView;
-    protected Runnable mRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            changeState(DONE);
-            post(mUpdateRunnable);
-        }
-    };
     private float mDownY, mLastY;
     private float mPullDownY = 0;
     private float mPullUpY = 0;
@@ -90,6 +82,14 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
             if (!removed) {
                 postDelayed(mUpdateRunnable, 5);
             }
+        }
+    };
+    protected Runnable mRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            changeState(DONE);
+            post(mUpdateRunnable);
         }
     };
     private float mRadio = 2;

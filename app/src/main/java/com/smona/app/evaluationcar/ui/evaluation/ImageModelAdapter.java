@@ -44,7 +44,7 @@ public class ImageModelAdapter extends BaseAdapter {
     }
 
     public void update(List<CarImageBean> datas) {
-        if(!isNeedReload()) {
+        if (!isNeedReload()) {
             return;
         }
         if (datas == null) {

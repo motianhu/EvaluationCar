@@ -167,7 +167,7 @@ public class ImageModelDelegator {
         List<CarImageBean> defaultList = new ArrayList<>();
         int index = 0;
         CarImageBean bean = null;
-        if(type == QUICK_BASE) {
+        if (type == QUICK_BASE) {
             //登记证书首页
             bean = new CarImageBean();
             bean.imageClass = ImageModelDelegator.getInstance().getImageClassForType(IMAGE_Registration);

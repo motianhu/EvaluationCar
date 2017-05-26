@@ -124,7 +124,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(NotPassStatusEvent event) {
         List<CarBillBean> deltaList = (List<CarBillBean>) event.getContent();
-        CarLog.d(TAG, "update deltaList is null? " + (deltaList==null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
+        CarLog.d(TAG, "update deltaList is null? " + (deltaList == null) + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mNotPassListView.update(deltaList, mTag);
             if (mPullRequest) {
@@ -163,7 +163,7 @@ public class NotPassLayer extends PullToRefreshLayout implements RequestFace {
         }
         for (CarBillBean bean : deltaList) {
             CarBillBean temp = DBDelegator.getInstance().queryCarBill(bean.carBillId);
-            if(temp == null) {
+            if (temp == null) {
                 DBDelegator.getInstance().insertCarBill(bean);
             } else {
                 bean.imageId = temp.imageId;

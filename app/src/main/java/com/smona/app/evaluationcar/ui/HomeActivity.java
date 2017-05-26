@@ -58,6 +58,61 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
     private AlertDialog mUpgradeDialog;
     private ProgressDialog mUpgradeProcess;
     private boolean mShowToast;
+    private ResponseCallback<String> mImageMetaCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            ResImageMetaArray imageMetas = JsonParse.parseJson(content, ResImageMetaArray.class);
+            if (imageMetas.data != null && imageMetas.data.size() > 0) {
+                for (ImageMetaBean bean : imageMetas.data) {
+                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
+                    if (success) {
+                        continue;
+                    }
+                    DBDelegator.getInstance().updateImageMeta(bean);
+                    ImageLoaderProxy.loadUrl(bean.imageDesc);
+                    ImageLoaderProxy.loadUrl(bean.waterMark);
+                }
+            }
+        }
+    };
+    private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            ResUpgradeApi newBaseApi = JsonParse.parseJson(content, ResUpgradeApi.class);
+            CarLog.d(TAG, "mUpgradeCallback onSuccess result=" + content);
+            if (newBaseApi != null) {
+                if (UpgradeUtils.compareVersion(newBaseApi.versionName, Utils.getVersion(HomeActivity.this))) {
+                    UpgradeEvent upgradeEvent = new UpgradeEvent();
+                    upgradeEvent.mResBaseApi = newBaseApi;
+                    upgradeEvent.action = UpgradeEvent.DIALOG;
+                    EventProxy.post(upgradeEvent);
+                } else {
+                    UpgradeEvent upgradeEvent = new UpgradeEvent();
+                    upgradeEvent.action = UpgradeEvent.TOAST;
+                    EventProxy.post(upgradeEvent);
+                }
+            }
+        }
+    };
+    private DialogInterface.OnKeyListener mOnKeyListener = new DialogInterface.OnKeyListener() {
+        @Override
+        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,60 +195,11 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         mRadioFunc[pageHome].setChecked(true);
     }
 
-    private ResponseCallback<String> mImageMetaCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            ResImageMetaArray imageMetas = JsonParse.parseJson(content, ResImageMetaArray.class);
-            if (imageMetas.data != null && imageMetas.data.size() > 0) {
-                for (ImageMetaBean bean : imageMetas.data) {
-                    boolean success = DBDelegator.getInstance().insertImageMeta(bean);
-                    if (success) {
-                        continue;
-                    }
-                    DBDelegator.getInstance().updateImageMeta(bean);
-                    ImageLoaderProxy.loadUrl(bean.imageDesc);
-                    ImageLoaderProxy.loadUrl(bean.waterMark);
-                }
-            }
-        }
-    };
-
-
     /*************升级*********/
     public void requestUpgradeInfo(boolean showToast) {
         mShowToast = showToast;
         DataDelegator.getInstance().requestUpgradeInfo(mUpgradeCallback);
     }
-
-    private ResponseCallback<String> mUpgradeCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            ResUpgradeApi newBaseApi = JsonParse.parseJson(content, ResUpgradeApi.class);
-            CarLog.d(TAG, "mUpgradeCallback onSuccess result=" + content);
-            if (newBaseApi != null) {
-                if (UpgradeUtils.compareVersion(newBaseApi.versionName, Utils.getVersion(HomeActivity.this))) {
-                    UpgradeEvent upgradeEvent = new UpgradeEvent();
-                    upgradeEvent.mResBaseApi = newBaseApi;
-                    upgradeEvent.action = UpgradeEvent.DIALOG;
-                    EventProxy.post(upgradeEvent);
-                } else {
-                    UpgradeEvent upgradeEvent = new UpgradeEvent();
-                    upgradeEvent.action = UpgradeEvent.TOAST;
-                    EventProxy.post(upgradeEvent);
-                }
-            }
-        }
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(UpgradeEvent event) {
@@ -264,17 +270,6 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
         closeDialog();
         closeProgress();
     }
-
-    private DialogInterface.OnKeyListener mOnKeyListener = new DialogInterface.OnKeyListener() {
-        @Override
-        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                return true;
-            }
-            return false;
-        }
-    };
-
 
     private void closeDialog() {
         if (mUpgradeDialog != null) {

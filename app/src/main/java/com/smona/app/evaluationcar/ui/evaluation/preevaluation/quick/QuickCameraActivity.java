@@ -22,12 +22,8 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.data.event.background.LocalStatusSubEvent;
-import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
-import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
-import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.camera.BitmapUtils;
@@ -36,9 +32,7 @@ import com.smona.app.evaluationcar.ui.evaluation.camera.CameraUtil;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
-import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
-import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.Utils;
@@ -183,7 +177,7 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void refreshNext() {
-        mNumPhoto.setText((mCurrentIndex +1) + "/" + mCarImageList.size());
+        mNumPhoto.setText((mCurrentIndex + 1) + "/" + mCarImageList.size());
         loadWaterAndDes();
     }
 
@@ -311,7 +305,7 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void changeNextCarImage() {
-        if ((mCurrentIndex +1) < mCarImageList.size()) {
+        if ((mCurrentIndex + 1) < mCarImageList.size()) {
             mCurrentIndex += 1;
             mCurCarImage = mCarImageList.get(mCurrentIndex);
             mDescription.setText(mCurCarImage.displayName);

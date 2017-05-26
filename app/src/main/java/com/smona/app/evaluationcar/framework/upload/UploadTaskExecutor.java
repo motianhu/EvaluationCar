@@ -12,12 +12,21 @@ public class UploadTaskExecutor {
     private static final String TAG = UploadTaskExecutor.class.getSimpleName();
 
     private static final int MULTI_THREAD_COUNT = 2;
-
+    private static UploadTaskExecutor sInstance;
     private LinkedList<ActionTask> mWattingTasks = new LinkedList<ActionTask>();
     private LinkedList<ActionTask> mRunningTasks = new LinkedList<ActionTask>();
-
     private int sRunCount = 0;
-    private static UploadTaskExecutor sInstance;
+    private Handler sHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            ActionTask waitTask = mWattingTasks.poll();
+            if (null != waitTask) {
+                startTask(waitTask);
+            } else {
+                sRunCount--;
+            }
+            CarLog.d(TAG, "sRunCount:" + sRunCount + "  mWattingTasks.size():" + mWattingTasks.size());
+        }
+    };
 
     private UploadTaskExecutor() {
     }
@@ -31,19 +40,6 @@ public class UploadTaskExecutor {
 
     public void init() {
     }
-
-    private Handler sHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            ActionTask waitTask = mWattingTasks.poll();
-            if (null != waitTask) {
-                startTask(waitTask);
-            } else {
-                sRunCount--;
-            }
-            CarLog.d(TAG, "sRunCount:" + sRunCount + "  mWattingTasks.size():" + mWattingTasks.size());
-        }
-    };
-
 
     private boolean existWaitingTasks(ActionTask task) {
         Iterator<ActionTask> it = mWattingTasks.iterator();

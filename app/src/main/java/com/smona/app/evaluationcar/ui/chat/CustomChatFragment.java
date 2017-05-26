@@ -16,16 +16,7 @@ import com.smona.app.evaluationcar.R;
 
 public class CustomChatFragment extends ChatFragment implements ChatFragment.EaseChatFragmentListener {
 
-    //避免和基类定义的常量可能发生冲突,常量从11开始定义
-    private static final int ITEM_MAP = 11;
-    private static final int ITEM_SHORTCUT = 12;
-    private static final int ITEM_VIDEO = 13;
-
-    private static final int REQUEST_CODE_SELECT_MAP = 11;
-    private static final int REQUEST_CODE_SHORTCUT = 12;
-
     public static final int REQUEST_CODE_CONTEXT_MENU = 13;
-
     //message type 需要从1开始
     public static final int MESSAGE_TYPE_SENT_MAP = 1;
     public static final int MESSAGE_TYPE_RECV_MAP = 2;
@@ -37,7 +28,12 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
     public static final int MESSAGE_TYPE_RECV_TRACK = 8;
     public static final int MESSAGE_TYPE_SENT_FORM = 9;
     public static final int MESSAGE_TYPE_RECV_FORM = 10;
-
+    //避免和基类定义的常量可能发生冲突,常量从11开始定义
+    private static final int ITEM_MAP = 11;
+    private static final int ITEM_SHORTCUT = 12;
+    private static final int ITEM_VIDEO = 13;
+    private static final int REQUEST_CODE_SELECT_MAP = 11;
+    private static final int REQUEST_CODE_SHORTCUT = 12;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +57,7 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
         titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getActivity().finish();
+                getActivity().finish();
             }
         });
     }
@@ -102,11 +98,11 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
         messageList.refreshSelectLast();
     }
 
-    public boolean checkFormChatRow(Message message){
-        if (message.getStringAttribute("type", null) != null){
+    public boolean checkFormChatRow(Message message) {
+        if (message.getStringAttribute("type", null) != null) {
             try {
                 String type = message.getStringAttribute("type");
-                if (type.equals("html/form")){
+                if (type.equals("html/form")) {
                     return true;
                 }
             } catch (HyphenateException e) {
@@ -134,16 +130,16 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
         @Override
         public int getCustomChatRowType(Message message) {
             //此处内部有用到,必须写否则可能会出现错位
-            if (message.getType() == Message.Type.LOCATION){
+            if (message.getType() == Message.Type.LOCATION) {
                 return message.direct() == Message.Direct.RECEIVE ? MESSAGE_TYPE_RECV_MAP : MESSAGE_TYPE_SENT_MAP;
-            }else if (message.getType() == Message.Type.TXT){
-                if (MessageHelper.getEvalRequest(message) != null){
+            } else if (message.getType() == Message.Type.TXT) {
+                if (MessageHelper.getEvalRequest(message) != null) {
                     return message.direct() == Message.Direct.RECEIVE ? MESSAGE_TYPE_RECV_EVAL : MESSAGE_TYPE_SENT_EVAL;
-                }else if (MessageHelper.getOrderInfo(message) != null){
+                } else if (MessageHelper.getOrderInfo(message) != null) {
                     return message.direct() == Message.Direct.RECEIVE ? MESSAGE_TYPE_RECV_ORDER : MESSAGE_TYPE_SENT_ORDER;
-                }else if (MessageHelper.getVisitorTrack(message) != null){
+                } else if (MessageHelper.getVisitorTrack(message) != null) {
                     return message.direct() == Message.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TRACK : MESSAGE_TYPE_SENT_TRACK;
-                }else if (checkFormChatRow(message)){
+                } else if (checkFormChatRow(message)) {
                     return message.direct() == Message.Direct.RECEIVE ? MESSAGE_TYPE_RECV_FORM : MESSAGE_TYPE_SENT_FORM;
                 }
             }
@@ -156,7 +152,6 @@ public class CustomChatFragment extends ChatFragment implements ChatFragment.Eas
             return null;
         }
     }
-
 
 
 }

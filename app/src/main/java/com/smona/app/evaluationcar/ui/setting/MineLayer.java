@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +14,6 @@ import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.LoginActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
-import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
@@ -62,7 +60,7 @@ public class MineLayer extends LinearLayout implements View.OnClickListener {
         findViewById(R.id.setting_phone).setOnClickListener(this);
         findViewById(R.id.setting_logout).setOnClickListener(this);
 
-        ((TextView)findViewById(R.id.version)).setText(Utils.getVersion(getContext()));
+        ((TextView) findViewById(R.id.version)).setText(Utils.getVersion(getContext()));
     }
 
     @Override

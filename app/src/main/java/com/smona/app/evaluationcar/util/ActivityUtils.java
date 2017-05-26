@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Parcelable;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
-import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.service.UploadService;
 import com.smona.app.evaluationcar.ui.WebActivity;
 

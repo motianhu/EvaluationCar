@@ -29,13 +29,33 @@ import java.util.List;
  */
 
 public class CityActivity extends HeaderActivity {
-    private static  final String TAG = CityActivity.class.getSimpleName();
+    private static final String TAG = CityActivity.class.getSimpleName();
 
     private ExpandableListView mCityListView;
     private CityListViewAdapter mCityAdapter;
     private List<CityItem> mCityList = new ArrayList<>();
     private List<String> mCityLetterList = new ArrayList<>();
     private List<GroupCityInfo> mCityGroupByList = new ArrayList<>();
+    private ResponseCallback<String> mCityCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mCityCallback onSuccess content=" + content);
+            ResCityPage typePage = JsonParse.parseJson(content, ResCityPage.class);
+            clearType();
+            if (typePage.data != null && typePage.data.size() > 0) {
+                mCityList.addAll(typePage.data);
+                processCityLetter();
+                processCityGroupBY();
+
+                EventProxy.post(new CityActionEvent());
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -95,32 +115,9 @@ public class CityActivity extends HeaderActivity {
         mCityListView.setAdapter(mCityAdapter);
     }
 
-
     private void queryCity() {
         HttpDelegator.getInstance().queryCity(mCityCallback);
     }
-
-
-    private ResponseCallback<String> mCityCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mCityCallback onSuccess content=" + content);
-            ResCityPage typePage = JsonParse.parseJson(content, ResCityPage.class);
-            clearType();
-            if (typePage.data != null && typePage.data.size() > 0) {
-                mCityList.addAll(typePage.data);
-                processCityLetter();
-                processCityGroupBY();
-
-                EventProxy.post(new CityActionEvent());
-            }
-        }
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void actionMainEvent(CityActionEvent actionEvent) {
@@ -159,7 +156,7 @@ public class CityActivity extends HeaderActivity {
         HashMap<String, Integer> letterMap = new HashMap<>();
         Integer index;
         String provinceName;
-        for (CityItem item: mCityList) {
+        for (CityItem item : mCityList) {
             provinceName = item.provinceName;
             index = letterMap.get(provinceName);
             if (index == null) {

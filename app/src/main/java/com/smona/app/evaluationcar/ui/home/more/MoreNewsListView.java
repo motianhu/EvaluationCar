@@ -48,7 +48,7 @@ public class MoreNewsListView extends PullableListView implements
     }
 
     public MoreNewsListView(Context context, AttributeSet attrs,
-                         int defStyle) {
+                            int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }

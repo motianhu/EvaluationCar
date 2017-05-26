@@ -39,6 +39,7 @@ public class BitmapUtils {
     public static final int Config_720P = 2;// 1280*720
     public static final int Config_1080P = 3;// 1920*1080
     public static final int Config_2K = 4;// 2560*1440
+
     private BitmapUtils() {
     }
 

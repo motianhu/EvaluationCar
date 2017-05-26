@@ -5,7 +5,6 @@ import com.smona.app.evaluationcar.data.event.NewsEvent;
 import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
-import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 
 import java.util.List;
@@ -17,7 +16,8 @@ import java.util.List;
 public class PostEventDelegator {
     private volatile static PostEventDelegator sInstance = null;
 
-    private PostEventDelegator(){}
+    private PostEventDelegator() {
+    }
 
     public static PostEventDelegator getInstance() {
         if (sInstance == null) {

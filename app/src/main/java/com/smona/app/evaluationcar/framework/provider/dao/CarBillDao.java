@@ -11,7 +11,6 @@ import android.os.RemoteException;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.framework.provider.DBConstants;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
-import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
 import java.util.List;

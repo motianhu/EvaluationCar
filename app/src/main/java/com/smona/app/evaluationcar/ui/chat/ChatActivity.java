@@ -13,8 +13,8 @@ import com.smona.app.evaluationcar.R;
  */
 
 public class ChatActivity extends BaseChatActivity {
-    private ChatFragment chatFragment;
     String toChatUsername;
+    private ChatFragment chatFragment;
 
     @Override
     protected void onCreate(Bundle arg0) {

@@ -79,7 +79,7 @@ public class UploadService extends Service {
             CarLog.d(TAG, "startTask carbill=" + carbill);
             if (TextUtils.isEmpty(carbill.carBillId)) {
                 putTaskInSave(user.mId, carbill);
-            } else if(StatusUtils.isNotPass(carbill.status)) {
+            } else if (StatusUtils.isNotPass(carbill.status)) {
                 putTaskInReturn(user.mId, carbill);
             } else {
                 putTaskInSaveFailed(user.mId, carbill);
@@ -138,7 +138,7 @@ public class UploadService extends Service {
 
         for (CarImageBean image : images) {
             CarLog.d(TAG, "image: " + image);
-            if(!TextUtils.isEmpty(image.imagePath)) {
+            if (!TextUtils.isEmpty(image.imagePath)) {
                 continue;
             }
             ImageTask task = new ImageTask();

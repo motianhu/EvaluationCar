@@ -43,7 +43,7 @@ public class StatusActivity extends HeaderActivity {
         textValue.setText(status);
         textValue.setTextColor(getResources().getColor(R.color.red));
 
-        if("评估完成".equals(status) || "高评通过".equals(status)) {
+        if ("评估完成".equals(status) || "高评通过".equals(status)) {
             parent = findViewById(R.id.billprice);
             ViewUtil.setViewVisible(parent, true);
             textKey = (TextView) parent.findViewById(R.id.key);

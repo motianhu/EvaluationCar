@@ -159,7 +159,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         if (!TextUtils.isEmpty(mCarBillId)) {
             mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
-        } else if(statusIsSave()) {
+        } else if (statusIsSave()) {
             mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
     }
@@ -182,7 +182,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
                     CarImageBean tempBean = null;
                     for (CarImageBean bean : resp.data) {
                         tempBean = DBDelegator.getInstance().queryImageClassForCarBillId(bean.carBillId, bean.imageClass, bean.imageSeqNum);
-                        if(tempBean == null) {
+                        if (tempBean == null) {
                             //依赖CarBillId更新
                             DBDelegator.getInstance().insertCarImage(bean);
                         } else {
@@ -224,10 +224,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         //退回原因
         mReasonContainer = findViewById(R.id.reason);
         mReasonWebView = (WebView) findViewById(R.id.reason_webview);
-        if(statusIsReturn()) {
+        if (statusIsReturn()) {
             ViewUtil.setViewVisible(mReasonContainer, true);
             ViewUtil.setViewVisible(mReasonWebView, true);
-            String reason =  "<html><head><title>欢迎你</title></head><body>"
+            String reason = "<html><head><title>欢迎你</title></head><body>"
                     + mCarBill.applyAllOpinion
                     + "</body></html>";
             mReasonWebView.loadDataWithBaseURL(null, reason, "text/html", "utf-8", null);
@@ -351,7 +351,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     public void actionSubEvent(TaskSubEvent event) {
         int action = event.action;
         CarLog.d(TAG, "actionSubEvent action= " + action);
-        if(action == TaskSubEvent.ACTION_TASK) {
+        if (action == TaskSubEvent.ACTION_TASK) {
             CarBillBean bean = (CarBillBean) event.obj;
             if (statusIsReturn()) {
                 startTarkForReturn(bean);
@@ -371,7 +371,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     public void actionMainEvent(EvaActionEvent actionEvent) {
         int action = actionEvent.action;
         CarLog.d(TAG, "actionMainEvent action " + action);
-        if(action == EvaActionEvent.REFRESH) {
+        if (action == EvaActionEvent.REFRESH) {
             updateImageViews();
         } else {
             runFinish();
@@ -450,10 +450,10 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private void onSave() {
         if (!TextUtils.isEmpty(mCarBillId)) {
             mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
-        } else if(statusIsSave()) {
+        } else if (statusIsSave()) {
             mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
-        if(mCarBill != null) {
+        if (mCarBill != null) {
             mCarBill.preSalePrice = Double.valueOf(mPrice.getText().toString());
             mCarBill.mark = mNote.getText().toString();
             DBDelegator.getInstance().updateCarBill(mCarBill);
@@ -494,7 +494,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
 
-        if(Double.valueOf(preScalePrice) <= 0) {
+        if (Double.valueOf(preScalePrice) <= 0) {
             ToastUtils.show(this, R.string.evaluation_input_pre_price);
             return;
         }
@@ -564,7 +564,6 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         ActivityUtils.startUpService(this);
     }
-
 
 
     @Override

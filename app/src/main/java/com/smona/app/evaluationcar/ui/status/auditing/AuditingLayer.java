@@ -163,7 +163,7 @@ public class AuditingLayer extends PullToRefreshLayout implements RequestFace {
         }
         for (CarBillBean bean : deltaList) {
             CarBillBean temp = DBDelegator.getInstance().queryCarBill(bean.carBillId);
-            if(temp == null) {
+            if (temp == null) {
                 DBDelegator.getInstance().insertCarBill(bean);
             } else {
                 bean.imageId = temp.imageId;

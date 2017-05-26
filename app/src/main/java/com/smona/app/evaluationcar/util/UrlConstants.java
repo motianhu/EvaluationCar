@@ -41,7 +41,7 @@ public class UrlConstants {
     public static final int GET_AUTO_LOGOS = 200;
 
 
-    private static final String DOMAIN = "http://119.23.21.133";
+    private static final String DOMAIN = "http://112.74.65.110";
     private static final String DOMAIN_TEST = "http://119.23.128.214";
     private static final String PORT = "8080";
     private static final String PROJECT = "carWeb";

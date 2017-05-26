@@ -1,6 +1,5 @@
 package com.smona.app.evaluationcar.data.model;
 
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 
 /**

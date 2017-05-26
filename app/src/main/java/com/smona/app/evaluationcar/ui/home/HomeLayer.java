@@ -29,6 +29,14 @@ public class HomeLayer extends BaseLinearLayout {
     private HomeListView mHomeList;
     private View mNoContent;
     private View mLoading;
+    private OnClickListener mReloadClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setLoading();
+            requestBanner();
+            requestNews();
+        }
+    };
 
     public HomeLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,15 +57,6 @@ public class HomeLayer extends BaseLinearLayout {
         ViewUtil.setViewVisible(mLoading, true);
         ViewUtil.setViewVisible(mNoContent, false);
     }
-
-    private OnClickListener mReloadClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            setLoading();
-            requestBanner();
-            requestNews();
-        }
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(BannerEvent event) {

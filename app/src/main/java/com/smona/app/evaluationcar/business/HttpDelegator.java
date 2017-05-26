@@ -20,7 +20,6 @@ import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
-import org.w3c.dom.Text;
 import org.xutils.x;
 
 import java.io.File;
@@ -88,7 +87,7 @@ public class HttpDelegator implements IProxy {
                 if (newsPage != null && newsPage.total > 0) {
                     PostEventDelegator.getInstance().postNewsEvent(newsPage.data);
 
-                    String url = getCacheKey(UrlConstants.QUERY_NEWS_MORE, BannerParam.CLASSTYPE +"="+ bannerParam.classType);
+                    String url = getCacheKey(UrlConstants.QUERY_NEWS_MORE, BannerParam.CLASSTYPE + "=" + bannerParam.classType);
                     CacheDelegator.getInstance().saveLastSuccessRequestTime(url);
                     CacheDelegator.getInstance().saveNewCacheByUrl(url, content);
                 } else {

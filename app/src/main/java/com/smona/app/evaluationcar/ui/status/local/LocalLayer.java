@@ -79,7 +79,7 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(LocalStatusSubEvent event) {
         CarLog.d(TAG, "LocalStatusSubEvent event.getTag()=" + event.getTag());
-        if(LocalStatusSubEvent.TAG_ADD_CARBILL.equals(event.getTag())) {
+        if (LocalStatusSubEvent.TAG_ADD_CARBILL.equals(event.getTag())) {
             mLocalListView.clear();
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
             mCurPage = 1;

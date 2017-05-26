@@ -3,14 +3,12 @@ package com.smona.app.evaluationcar.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.UrlConstants;

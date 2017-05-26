@@ -360,7 +360,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }
 
 
-
     private void takeNextPicture() {
         setPreviewRunning(false);
         changePreview();
@@ -445,8 +444,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mCurCarImage.imageUpdate = StatusUtils.IMAGE_UPDATE;
         mCurCarImage.createTime = DateUtils.getCurrDate();
         mCurCarImage.updateTime = DateUtils.getCurrDate();
-        boolean update =  DBDelegator.getInstance().updateCarImage(mCurCarImage);
-        if(!update) {
+        boolean update = DBDelegator.getInstance().updateCarImage(mCurCarImage);
+        if (!update) {
             DBDelegator.getInstance().insertCarImage(mCurCarImage);
         }
         CarLog.d(TAG, "processImageDataInReturn mCurCarImage=" + mCurCarImage + ", update=" + update);

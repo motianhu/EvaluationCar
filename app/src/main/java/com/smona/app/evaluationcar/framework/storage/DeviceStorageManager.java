@@ -14,17 +14,15 @@ import java.io.File;
 
 public class DeviceStorageManager {
     private static final String TAG = DeviceStorageManager.class.getSimpleName();
-    private boolean mTestEvn = true;
-
+    private static final String TEST_FILE = "zhixintest0123456789";
     private volatile static DeviceStorageManager sInstance;
+    private boolean mTestEvn = false;
     private Context mAppContext;
     private String mAppCachePath;
     private String mPrefixPath;
     private String mThumbnailPath;
     private String mMd5Path;
     private String mTempPath;
-
-    private static final String TEST_FILE = "rhinotest0123456789";
 
 
     private DeviceStorageManager() {
@@ -51,12 +49,12 @@ public class DeviceStorageManager {
         String rootPath = mPrefixPath + File.separator + FolderContants.ROOT;
         makeFolder(rootPath + File.separator);
         mMd5Path = rootPath + File.separator + FolderContants.MD5CACHE;
-        boolean success = makeFolder(mMd5Path  + File.separator);
+        boolean success = makeFolder(mMd5Path + File.separator);
         mThumbnailPath = rootPath + File.separator + FolderContants.THUMBNAIL;
-        success = makeFolder(mThumbnailPath  + File.separator);
-        mTempPath = rootPath +File.separator + FolderContants.TEMP;
+        success = makeFolder(mThumbnailPath + File.separator);
+        mTempPath = rootPath + File.separator + FolderContants.TEMP;
         success = makeFolder(mTempPath + File.separator);
-        //mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
+        mTestEvn = new File(mPrefixPath + File.separator + TEST_FILE).exists();
     }
 
     public String getMd5Path() {

@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Moth on 2017/4/16.
  */
 
-class CityListViewAdapter  extends BaseExpandableListAdapter {
+class CityListViewAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> mGroupList;

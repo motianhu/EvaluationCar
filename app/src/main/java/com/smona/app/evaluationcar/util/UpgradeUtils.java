@@ -20,12 +20,10 @@ import java.net.URL;
  */
 
 public class UpgradeUtils {
-    private static final String TAG = UpgradeUtils.class.getSimpleName();
-
     public static final String UPGRADE = "upgrade_service";
     public static final int UPGRADE_NORMAL = 0;
     public static final int UPGRADE_SETTING = 1;
-
+    private static final String TAG = UpgradeUtils.class.getSimpleName();
 
     public static File downloadApk(String path, ProgressDialog pd) {
         //如果相等的话表示当前的sdcard挂载在手机上并且是可用的

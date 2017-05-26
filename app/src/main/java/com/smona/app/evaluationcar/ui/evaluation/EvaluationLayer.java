@@ -88,30 +88,28 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
         LinearLayout line = (LinearLayout) findViewById(R.id.evalution_container);
 
-        if(userItem.userBean.isXianfeng()) {
+        if (userItem.userBean.isXianfeng()) {
             ViewUtil.setViewVisible(preEva, true);
             line.setWeightSum(3);
 
-            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)vin.getLayoutParams();
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) vin.getLayoutParams();
             param.weight = 1;
 
-            param = (LinearLayout.LayoutParams)preEva.getLayoutParams();
+            param = (LinearLayout.LayoutParams) preEva.getLayoutParams();
             param.weight = 1;
 
-            param = (LinearLayout.LayoutParams)eva.getLayoutParams();
+            param = (LinearLayout.LayoutParams) eva.getLayoutParams();
             param.weight = 1;
         } else {
             ViewUtil.setViewVisible(preEva, false);
 
             line.setWeightSum(2);
-            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)vin.getLayoutParams();
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) vin.getLayoutParams();
             param.weight = 1;
 
-            param = (LinearLayout.LayoutParams)eva.getLayoutParams();
+            param = (LinearLayout.LayoutParams) eva.getLayoutParams();
             param.weight = 1;
         }
-
-
 
 
         findViewById(R.id.uncommit).setOnClickListener(this);
@@ -169,8 +167,8 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
             case R.id.notice:
-                NewsItem item = (NewsItem)mNotice.getTag();
-                if(item != null) {
+                NewsItem item = (NewsItem) mNotice.getTag();
+                if (item != null) {
                     ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_NEWS, item.id);
                 }
                 break;

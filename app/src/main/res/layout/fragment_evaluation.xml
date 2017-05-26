@@ -7,9 +7,9 @@
 
     <include
         android:id="@+id/top"
+        layout="@layout/fragment_header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        layout="@layout/fragment_header" />
+        android:layout_height="80dp" />
 
     <LinearLayout
         android:id="@+id/status"

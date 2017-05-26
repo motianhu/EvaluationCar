@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <include
+        layout="@layout/fragment_header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        layout="@layout/fragment_header" />
+        android:layout_height="80dp" />
 
     <com.smona.app.evaluationcar.ui.home.HomeListView
         android:id="@+id/content_list"

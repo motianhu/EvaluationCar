@@ -2,9 +2,6 @@ package com.smona.app.evaluationcar.util;
 
 import java.io.ByteArrayOutputStream;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 /**
  * Created by motianhu on 5/22/17.
  */

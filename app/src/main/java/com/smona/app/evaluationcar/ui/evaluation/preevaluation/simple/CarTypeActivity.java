@@ -69,7 +69,66 @@ public class CarTypeActivity extends HeaderActivity {
 
     private BrandItem mSelectedBrand;
     private SetItem mSelectedSet;
+    private ResponseCallback<String> mBrandCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
 
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mBrandCallback onSuccess content=" + content);
+            ResBrandPage brandPage = JsonParse.parseJson(content, ResBrandPage.class);
+            clear();
+            if (brandPage.data != null && brandPage.data.size() > 0) {
+                mBrandList.addAll(brandPage.data);
+                processLetter();
+                processGroupBy();
+
+                EventProxy.post(new BrandActionEvent());
+            }
+        }
+    };
+    private ResponseCallback<String> mSetCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mSetCallback onSuccess content=" + content);
+            ResSetPage setPage = JsonParse.parseJson(content, ResSetPage.class);
+            clearSet();
+            if (setPage.data != null && setPage.data.size() > 0) {
+                mSetList.addAll(setPage.data);
+                processSetLetter();
+                processSetGroupBY();
+
+                EventProxy.post(new SetActionEvent());
+            }
+        }
+    };
+    private ResponseCallback<String> mTypeCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "onFailed error=" + error);
+        }
+
+        @Override
+        public void onSuccess(String content) {
+            CarLog.d(TAG, "mTypeCallback onSuccess content=" + content);
+            ResTypePage typePage = JsonParse.parseJson(content, ResTypePage.class);
+            clearType();
+            if (typePage.data != null && typePage.data.size() > 0) {
+                mTypeList.addAll(typePage.data);
+                processTypeLetter();
+                processTypeGroupBY();
+
+                EventProxy.post(new TypeActionEvent());
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +145,10 @@ public class CarTypeActivity extends HeaderActivity {
     }
 
     private void initViews() {
-        mCarBrandDrawer = (DrawerLayout)findViewById(R.id.drawerCarBrand);
+        mCarBrandDrawer = (DrawerLayout) findViewById(R.id.drawerCarBrand);
         mCarBrandDrawer.setScrimColor(Color.TRANSPARENT);
 
-        mCarSetDrawer = (DrawerLayout)findViewById(R.id.drawerCarSet);
+        mCarSetDrawer = (DrawerLayout) findViewById(R.id.drawerCarSet);
         mCarSetDrawer.setScrimColor(Color.TRANSPARENT);
 
         /********车品牌************/
@@ -178,9 +237,8 @@ public class CarTypeActivity extends HeaderActivity {
         mTypeListView.setAdapter(mTypeAdapter);
 
 
-
         /*******字母表**********/
-        mLettersListView = (ListView)findViewById(R.id.indexLetter);
+        mLettersListView = (ListView) findViewById(R.id.indexLetter);
         mLettersAdapter = new IndexLetterAdapter(this);
         mLettersAdapter.setLettes(mBrandLetterList);
         mLettersListView.setAdapter(mLettersAdapter);
@@ -207,7 +265,6 @@ public class CarTypeActivity extends HeaderActivity {
         return R.string.evalution_car_type;
     }
 
-
     private void queryBrand() {
         HttpDelegator.getInstance().queryCarBrand(mBrandCallback);
     }
@@ -219,69 +276,6 @@ public class CarTypeActivity extends HeaderActivity {
     private void queryType(String brandId, String setId) {
         HttpDelegator.getInstance().queryCarType(brandId, setId, mTypeCallback);
     }
-
-    private ResponseCallback<String> mBrandCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mBrandCallback onSuccess content=" + content);
-            ResBrandPage brandPage = JsonParse.parseJson(content, ResBrandPage.class);
-            clear();
-            if (brandPage.data != null && brandPage.data.size() > 0) {
-                mBrandList.addAll(brandPage.data);
-                processLetter();
-                processGroupBy();
-
-                EventProxy.post(new BrandActionEvent());
-            }
-        }
-    };
-
-    private ResponseCallback<String> mSetCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mSetCallback onSuccess content=" + content);
-            ResSetPage setPage = JsonParse.parseJson(content, ResSetPage.class);
-            clearSet();
-            if (setPage.data != null && setPage.data.size() > 0) {
-                mSetList.addAll(setPage.data);
-                processSetLetter();
-                processSetGroupBY();
-
-                EventProxy.post(new SetActionEvent());
-            }
-        }
-    };
-
-    private ResponseCallback<String> mTypeCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "onFailed error=" + error);
-        }
-
-        @Override
-        public void onSuccess(String content) {
-            CarLog.d(TAG, "mTypeCallback onSuccess content=" + content);
-            ResTypePage typePage = JsonParse.parseJson(content, ResTypePage.class);
-            clearType();
-            if (typePage.data != null && typePage.data.size() > 0) {
-                mTypeList.addAll(typePage.data);
-                processTypeLetter();
-                processTypeGroupBY();
-
-                EventProxy.post(new TypeActionEvent());
-            }
-        }
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void actionMainEvent(BrandActionEvent actionEvent) {
@@ -384,6 +378,7 @@ public class CarTypeActivity extends HeaderActivity {
             }
         }
     }
+
     private void processSetGroupBY() {
         HashMap<String, Integer> letterMap = new HashMap<>();
         Integer index;

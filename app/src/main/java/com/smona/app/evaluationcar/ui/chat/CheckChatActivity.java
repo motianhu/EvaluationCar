@@ -21,9 +21,6 @@ import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.ui.common.activity.UserActivity;
 
-import java.util.Locale;
-import java.util.Random;
-
 /**
  * Created by motianhu on 5/8/17.
  */
@@ -35,6 +32,21 @@ public class CheckChatActivity extends UserActivity {
     private boolean mIsProgressShow;
     private ProgressDialog mProgressDialog;
     private UserItem mUserItem;
+
+    public static VisitorInfo createVisitorInfo(String name) {
+        VisitorInfo info = ContentFactory.createVisitorInfo(null);
+        info.name(name).nickName(name);
+        return info;
+    }
+
+    public static QueueIdentityInfo createQueueIdentity(String queueName) {
+        if (TextUtils.isEmpty(queueName)) {
+            return null;
+        }
+        QueueIdentityInfo info = ContentFactory.createQueueIdentityInfo(null);
+        info.queueName(queueName);
+        return info;
+    }
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -65,7 +77,6 @@ public class CheckChatActivity extends UserActivity {
         super.onPause();
         UIProvider.getInstance().popActivity(this);
     }
-
 
     private void createRandomAccountThenLoginChatServer() {
         // 自动生成账号,此处每次都随机生成一个账号,为了演示.正式应从自己服务器获取账号
@@ -197,20 +208,5 @@ public class CheckChatActivity extends UserActivity {
 
             }
         });
-    }
-
-    public static VisitorInfo createVisitorInfo(String name) {
-        VisitorInfo info = ContentFactory.createVisitorInfo(null);
-        info.name(name).nickName(name);
-        return info;
-    }
-
-    public static QueueIdentityInfo createQueueIdentity(String queueName) {
-        if (TextUtils.isEmpty(queueName)) {
-            return null;
-        }
-        QueueIdentityInfo info = ContentFactory.createQueueIdentityInfo(null);
-        info.queueName(queueName);
-        return info;
     }
 }

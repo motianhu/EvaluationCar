@@ -22,17 +22,14 @@ import com.hyphenate.chat.ChatClient;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.UserParam;
-import com.smona.app.evaluationcar.data.bean.UserInfoBean;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUserModel;
-import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
-import com.smona.app.evaluationcar.util.UrlConstants;
 
 import java.util.Set;
 
@@ -56,13 +53,13 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         initUser();
         super.onCreate(savedInstanceState);
-        if(mUser == null) {
+        if (mUser == null) {
             prepareSkip();
         }
     }
 
     public void onPermissionOk() {
-        if(mUser != null) {
+        if (mUser != null) {
             gotoStartup();
         }
     }
@@ -224,7 +221,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     }
 
-    private void runUI(final  ResUserModel model) {
+    private void runUI(final ResUserModel model) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -257,7 +254,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     private void registerThirdFunc() {
         //register jpush
-        JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback(){
+        JPushInterface.setAlias(LoginActivity.this, mIdString, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
                 CarLog.d(TAG, "jpush register alias i=" + i);
@@ -266,7 +263,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
         //register huanxin kefu
         //可以检测是否已经登录过环信，如果登录过则环信SDK会自动登录，不需要再次调用登录操作
-        if(ChatClient.getInstance().isLoggedInBefore()) {
+        if (ChatClient.getInstance().isLoggedInBefore()) {
 
         } else {
             // 自动生成账号,此处每次都随机生成一个账号,为了演示.正式应从自己服务器获取账号

@@ -56,28 +56,20 @@ public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCa
     private CityItem mCityItem;
 
     private ProgressDialog mProgressDialog;
+    private ResponseCallback<String> mPreCarBillCallback = new ResponseCallback<String>() {
+        @Override
+        public void onFailed(String error) {
+            CarLog.d(TAG, "mPreCarBillCallback onFailed error=" + error);
+            dissDialog(false);
+        }
 
-    public NormalPreEvaluationLayer(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mCarModel = (TextView) findViewById(R.id.tv_type_content);
-        mCarDate = (TextView) findViewById(R.id.tv_timecontent);
-        mCarColor = (TextView) findViewById(R.id.tv_car_color);
-        mCarLicheng = (TextView) findViewById(R.id.tv_car_licheng);
-        mCarCity = (TextView) findViewById(R.id.tv_car_city);
-        mCarMark = (TextView) findViewById(R.id.tv_car_mark);
-
-        findViewById(R.id.container_cartype).setOnClickListener(mOnClickListener);
-        findViewById(R.id.container_cartime).setOnClickListener(mOnClickListener);
-        findViewById(R.id.container_city).setOnClickListener(mOnClickListener);
-        findViewById(R.id.pre_submit).setOnClickListener(mOnClickListener);
-        findViewById(R.id.btn_delete).setOnClickListener(mOnClickListener);
-    }
-
+        @Override
+        public void onSuccess(String result) {
+            CarLog.d(TAG, "mPreCarBillCallback onSuccess result=" + result);
+            ResBaseModel<String> model = JsonParse.parseJson(result, ResBaseModel.class);
+            dissDialog(model.success);
+        }
+    };
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
@@ -103,6 +95,27 @@ public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCa
 
         }
     };
+
+    public NormalPreEvaluationLayer(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mCarModel = (TextView) findViewById(R.id.tv_type_content);
+        mCarDate = (TextView) findViewById(R.id.tv_timecontent);
+        mCarColor = (TextView) findViewById(R.id.tv_car_color);
+        mCarLicheng = (TextView) findViewById(R.id.tv_car_licheng);
+        mCarCity = (TextView) findViewById(R.id.tv_car_city);
+        mCarMark = (TextView) findViewById(R.id.tv_car_mark);
+
+        findViewById(R.id.container_cartype).setOnClickListener(mOnClickListener);
+        findViewById(R.id.container_cartime).setOnClickListener(mOnClickListener);
+        findViewById(R.id.container_city).setOnClickListener(mOnClickListener);
+        findViewById(R.id.pre_submit).setOnClickListener(mOnClickListener);
+        findViewById(R.id.btn_delete).setOnClickListener(mOnClickListener);
+    }
 
     private void initSelectDate() {
         View view = ViewUtil.inflater(getContext(), R.layout.activity_timepicker);
@@ -146,27 +159,27 @@ public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCa
 
     private void onSubmit() {
         String carType = mCarModel.getText().toString();
-        if(TextUtils.isEmpty(carType)) {
+        if (TextUtils.isEmpty(carType)) {
             ToastUtils.show(getContext(), R.string.no_select_cartype);
             return;
         }
         String carColor = mCarColor.getText().toString();
-        if(TextUtils.isEmpty(carColor)) {
+        if (TextUtils.isEmpty(carColor)) {
             ToastUtils.show(getContext(), R.string.no_select_color);
             return;
         }
         String carDate = mCarDate.getText().toString();
-        if(TextUtils.isEmpty(carDate)) {
+        if (TextUtils.isEmpty(carDate)) {
             ToastUtils.show(getContext(), R.string.no_select_date);
             return;
         }
         String carLicheng = mCarLicheng.getText().toString();
-        if(TextUtils.isEmpty(carLicheng)) {
+        if (TextUtils.isEmpty(carLicheng)) {
             ToastUtils.show(getContext(), R.string.no_select_licheng);
             return;
         }
         String carCity = mCarCity.getText().toString();
-        if(TextUtils.isEmpty(carCity)) {
+        if (TextUtils.isEmpty(carCity)) {
             ToastUtils.show(getContext(), R.string.no_select_city);
             return;
         }
@@ -211,32 +224,17 @@ public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCa
     }
 
     private void dissDialog(final boolean isSuccess) {
-        ((BaseActivity)getContext()).runOnUiThread(new Runnable() {
+        ((BaseActivity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mProgressDialog.dismiss();
-                if(isSuccess) {
+                if (isSuccess) {
                     clear();
                     ToastUtils.show(getContext(), R.string.submit_precallbill_success);
                 }
             }
         });
     }
-
-    private ResponseCallback<String> mPreCarBillCallback = new ResponseCallback<String>() {
-        @Override
-        public void onFailed(String error) {
-            CarLog.d(TAG, "mPreCarBillCallback onFailed error=" + error);
-            dissDialog(false);
-        }
-
-        @Override
-        public void onSuccess(String result) {
-            CarLog.d(TAG, "mPreCarBillCallback onSuccess result=" + result);
-            ResBaseModel<String> model = JsonParse.parseJson(result, ResBaseModel.class);
-            dissDialog(model.success);
-        }
-    };
 
     private void clear() {
         mCarModel.setText("");
@@ -249,13 +247,13 @@ public class NormalPreEvaluationLayer extends RelativeLayout implements ResultCa
 
     @Override
     public void onResult(int requestCode, Intent data) {
-        if(requestCode == ActivityUtils.ACTION_CAR_BRAND) {
+        if (requestCode == ActivityUtils.ACTION_CAR_BRAND) {
             mBrandItem = (BrandItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_BRAND);
             mSetItem = (SetItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_SET);
             mTypeItem = (TypeItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_TYPE);
 
             mCarModel.setText(mBrandItem.brandName + " " + mSetItem.carSetName + " " + mTypeItem.carTypeName);
-        } else if(requestCode == ActivityUtils.ACTION_CAR_CITY) {
+        } else if (requestCode == ActivityUtils.ACTION_CAR_CITY) {
             mCityItem = (CityItem) data.getSerializableExtra(ActivityUtils.ACTION_DATA_CITY);
             mCarCity.setText(mCityItem.cityName);
         }
