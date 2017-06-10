@@ -591,6 +591,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         carBillBean.preSalePrice = bean.preSalePrice;
         carBillBean.mark = bean.mark;
         carBillBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
+        carBillBean.leaseTerm = bean.leaseTerm;
         DBDelegator.getInstance().updateCarBill(carBillBean);
 
         ActivityUtils.startUpService(this);
@@ -603,6 +604,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         localBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
         localBean.preSalePrice = bean.preSalePrice;
         localBean.mark = bean.mark;
+        localBean.leaseTerm = bean.leaseTerm;
         DBDelegator.getInstance().updateCarBill(localBean);
 
         CarLog.d(TAG, "startTarkForSave localBean=" + localBean);

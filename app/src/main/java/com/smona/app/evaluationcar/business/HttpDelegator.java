@@ -129,6 +129,7 @@ public class HttpDelegator implements IProxy {
         params.addParameter("clientName", "android");
         params.addParameter("preSalePrice", carBill.preSalePrice);
         params.addParameter("mark", carBill.mark);
+        params.addParameter("leaseTerm", carBill.leaseTerm);
         x.http().get(params, callback);
     }
 
