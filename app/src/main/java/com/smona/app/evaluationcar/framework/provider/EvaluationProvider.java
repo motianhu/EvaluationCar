@@ -15,6 +15,7 @@ import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
 import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
+import com.smona.app.evaluationcar.framework.provider.table.QuickPreCarBillTable;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class EvaluationProvider extends ContentProvider {
     private static final int CODE_CARBILL = CODE_BASE + 1;
     private static final int CODE_CARIMAGE = CODE_BASE + 2;
     private static final int CODE_IMAGEMETA = CODE_BASE + 3;
+    private static final int CODE_QUICKPRECARBILL = CODE_BASE + 4;
     private static final UriMatcher URI_MATCH = new UriMatcher(
             UriMatcher.NO_MATCH);
     private static HashMap<Integer, String> TABLE_MATCH = new HashMap<Integer, String>();
@@ -42,10 +44,13 @@ public class EvaluationProvider extends ContentProvider {
                 CarImageTable.TABLE_NAME, CODE_CARIMAGE);
         URI_MATCH.addURI(DBConstants.AUTHORITY,
                 ImageMetaTable.TABLE_NAME, CODE_IMAGEMETA);
+        URI_MATCH.addURI(DBConstants.AUTHORITY,
+                QuickPreCarBillTable.TABLE_NAME, CODE_QUICKPRECARBILL);
 
         TABLE_MATCH.put(CODE_CARBILL, CarBillTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_CARIMAGE, CarImageTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
+        TABLE_MATCH.put(CODE_QUICKPRECARBILL, QuickPreCarBillTable.TABLE_NAME);
     }
 
     private DatabaseHelper mDataHelper;
@@ -135,7 +140,7 @@ public class EvaluationProvider extends ContentProvider {
 
     class DatabaseHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "evaluation.db";
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
 
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -159,6 +164,9 @@ public class EvaluationProvider extends ContentProvider {
                 db.execSQL(carbills);
                 carbills = CarBillTable.getInstance().createTableSql();
                 db.execSQL(carbills);
+            } else if(oldVersion == 2) {
+                String quickprecarbills = QuickPreCarBillTable.getInstance().createTableSql();
+                db.execSQL(quickprecarbills);
             }
         }
 
@@ -168,10 +176,12 @@ public class EvaluationProvider extends ContentProvider {
             String carbills = CarBillTable.getInstance().createTableSql();
             String carimage = CarImageTable.getInstance().createTableSql();
             String imagemeta = ImageMetaTable.getInstance().createTableSql();
+            String quickprecarbills = QuickPreCarBillTable.getInstance().createTableSql();
 
             sqlList.add(carbills);
             sqlList.add(carimage);
             sqlList.add(imagemeta);
+            sqlList.add(quickprecarbills);
             return sqlList;
         }
     }
