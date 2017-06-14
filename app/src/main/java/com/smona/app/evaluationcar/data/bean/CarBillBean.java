@@ -20,7 +20,7 @@ public class CarBillBean extends BaseBean {
     public int uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
     //2.0
     public int leaseTerm = 0; //between 0,12,24,36
-    public double residualPrice;
+    public int residualPrice;
 
     public String toString() {
         return "carBillId=" + carBillId + ",status=" + status +
