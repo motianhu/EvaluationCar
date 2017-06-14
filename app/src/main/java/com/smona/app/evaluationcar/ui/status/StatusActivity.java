@@ -49,8 +49,28 @@ public class StatusActivity extends HeaderActivity {
             textKey = (TextView) parent.findViewById(R.id.key);
             textValue = (TextView) parent.findViewById(R.id.value);
             textKey.setText(R.string.list_item_price);
-            textValue.setText(bean.evaluatePrice + "");
+            textValue.setText(bean.evaluatePrice + "元");
             textValue.setTextColor(getResources().getColor(R.color.green));
+
+            if(bean.leaseTerm != 0) {
+                //租赁周期
+                parent = findViewById(R.id.leaseTerm);
+                ViewUtil.setViewVisible(parent, true);
+                textKey = (TextView) parent.findViewById(R.id.key);
+                textValue = (TextView) parent.findViewById(R.id.value);
+                textKey.setText(R.string.list_item_leaseTerm);
+                textValue.setText(bean.leaseTerm + "月");
+                textValue.setTextColor(getResources().getColor(R.color.green));
+
+                //残值价格
+                parent = findViewById(R.id.residualPrice);
+                ViewUtil.setViewVisible(parent, true);
+                textKey = (TextView) parent.findViewById(R.id.key);
+                textValue = (TextView) parent.findViewById(R.id.value);
+                textKey.setText(R.string.list_item_residualPrice);
+                textValue.setText(bean.residualPrice + "元");
+                textValue.setTextColor(getResources().getColor(R.color.green));
+            }
         }
 
         parent = findViewById(R.id.billtime);
