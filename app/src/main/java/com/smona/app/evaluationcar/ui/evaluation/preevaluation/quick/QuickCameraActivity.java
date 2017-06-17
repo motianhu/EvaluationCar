@@ -19,11 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
+import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
-import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.camera.BitmapUtils;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
@@ -31,7 +32,9 @@ import com.smona.app.evaluationcar.ui.evaluation.camera.CameraUtil;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.Utils;
@@ -39,7 +42,6 @@ import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +49,7 @@ import java.util.List;
  */
 
 public class QuickCameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener {
-    private static final String TAG = CameraActivity.class.getSimpleName();
+    private static final String TAG = QuickCameraActivity.class.getSimpleName();
 
     private Camera mCamera;
     private SurfaceView mSurfaceView;
@@ -91,6 +93,8 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     private String mBitmapPath;
     private Bitmap mBitmap;
 
+    private int mStatus;
+    private int mImageId;
     private int mQuickType;
     private int mCurrentIndex;
     private QuickPreCarImageBean mCurCarImage;
@@ -116,12 +120,49 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void initStatus() {
-        //mQuickType = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE, ImageModelDelegator.QUICK_BASE);
+        mStatus = (int) SPUtil.get(this, CacheContants.QUICK_BILL_STATUS, StatusUtils.BILL_STATUS_NONE);
+        mImageId = (int) SPUtil.get(this, CacheContants.QUICK_IMAGEID, 0);
+        mCarBillId = (String) SPUtil.get(this, CacheContants.QUICK_CARBILLID, "");
+
+        mQuickType = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE, QuickImageModelDelegator.QUICK_BASE);
         mCurrentIndex = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE_INDEX, 0);
-        mCarImageList = new ArrayList<>();
-        //mCarImageList.addAll(ImageModelDelegator.getInstance().getQuickBaseModel(mQuickType));
+
+        CarLog.d(TAG, "initStatus mQuickType=" + mQuickType + ", mCurrentIndex=" + mCurrentIndex + ", mStatus=" + mStatus + ", mImageId=" + mImageId);
+
+        if (statusIsNone()) {
+            initCarImageForNone();
+        } else if (statusIsSave()) {
+            initCarImageForSave();
+        } else {
+            initCarImageForReturn();
+        }
         mCurCarImage = mCarImageList.get(mCurrentIndex);
-        CarLog.d(TAG, "initStatus mQuickType=" + mQuickType + ", mCurrentIndex=" + mCurrentIndex);
+
+        CarLog.d(TAG, "initStatus mCarImageList=" + mCarImageList.size());
+        CarLog.d(TAG, "initStatus mCarBill=" + mCarBill);
+        CarLog.d(TAG, "initStatus mCurCarImage=" + mCurCarImage);
+    }
+
+    private boolean statusIsNone() {
+        return mStatus == StatusUtils.BILL_STATUS_NONE;
+    }
+
+    private boolean statusIsSave() {
+        return mStatus == StatusUtils.BILL_STATUS_SAVE;
+    }
+
+    private void initCarImageForNone() {
+        mCarImageList = QuickImageModelDelegator.getInstance().getSaveModel(mQuickType, mImageId);
+    }
+
+    private void initCarImageForSave() {
+        mCarBill = DBDelegator.getInstance().queryLocalQuickPreCarbill(mImageId);
+        mCarImageList = QuickImageModelDelegator.getInstance().getSaveModel(mQuickType, mImageId);
+    }
+
+    private void initCarImageForReturn() {
+        mCarBill = DBDelegator.getInstance().queryQuickPreCarBill(mCarBillId);
+        mCarImageList = QuickImageModelDelegator.getInstance().getHttpModel(mQuickType, mCarBillId);
     }
 
     private void initOther() {
@@ -299,7 +340,14 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void processImageData() {
-        processImageDataInNone();
+        mCurCarImage.imageLocalUrl = mBitmapPath;
+        if (statusIsNone()) {
+            processImageDataInNone();
+        } else if (statusIsSave()) {
+            processImageDataInSave();
+        } else {
+            processImageDataInReturn();
+        }
         changeNextCarImage();
     }
 
@@ -312,8 +360,51 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void processImageDataInNone() {
-        mCurCarImage.imageLocalUrl = mBitmapPath;
+        if (mImageId <= 0) {
+            mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
+            SPUtil.put(this, CacheContants.IMAGEID, mImageId);
+            SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
+        }
+
+        mCurCarImage.imageId = mImageId;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+
+        DBDelegator.getInstance().insertQuickPreCarImage(mCurCarImage);
+
+        if (mCarBill == null) {
+            mCarBill = new QuickPreCarBillBean();
+            mCarBill.carBillId = null;
+            mCarBill.imageId = mImageId;
+            mCarBill.createTime = DateUtils.getCurrDate();
+            mCarBill.modifyTime = DateUtils.getCurrDate();
+            boolean success = DBDelegator.getInstance().insertQuickPreCarBill(mCarBill);
+            CarLog.d(TAG, "processImageDataInNone success " + success + ", mCarBill=" + mCarBill);
+        }
     }
+
+    private void processImageDataInSave() {
+        mCurCarImage.imageId = mImageId;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+        boolean success = DBDelegator.getInstance().insertQuickPreCarImage(mCurCarImage);
+        CarLog.d(TAG, "processImageDataInSave success " + success + ", mCurCarImage=" + mCurCarImage);
+    }
+
+    private void processImageDataInReturn() {
+        //依赖CarBillId更新
+        mCurCarImage.imageId = 0;
+        mCurCarImage.carBillId = mCarBillId;
+        mCurCarImage.imageUpdate = StatusUtils.IMAGE_UPDATE;
+        mCurCarImage.createTime = DateUtils.getCurrDate();
+        mCurCarImage.updateTime = DateUtils.getCurrDate();
+        boolean update = DBDelegator.getInstance().updateQuickPreCarImage(mCurCarImage);
+        if (!update) {
+            DBDelegator.getInstance().insertQuickPreCarImage(mCurCarImage);
+        }
+        CarLog.d(TAG, "processImageDataInReturn mCurCarImage=" + mCurCarImage + ", update=" + update);
+    }
+
 
     private void onCamera() {
         if (mPreViewRunning) {

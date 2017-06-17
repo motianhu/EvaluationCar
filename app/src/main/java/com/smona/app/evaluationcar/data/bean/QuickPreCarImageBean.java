@@ -6,7 +6,6 @@ package com.smona.app.evaluationcar.data.bean;
 
 public class QuickPreCarImageBean extends BaseBean {
     public int imageId;
-    public String quickPreCarBillId;
     public String carBillId;
     public String imageClass; //分类名称
     public String displayName; //图片名称
@@ -19,7 +18,7 @@ public class QuickPreCarImageBean extends BaseBean {
     public String updateTime;
 
     public String toString() {
-        return "imageId=" + imageId + ",quickPreCarBillId=" + quickPreCarBillId + ", carBillId=" + carBillId + ", imageClass=" + imageClass + ",displayName=" +
+        return "imageId=" + imageId + ", carBillId=" + carBillId + ", imageClass=" + imageClass + ",displayName=" +
                 displayName + ", imageSeqNum=" + imageSeqNum + ", imageLocalUrl= " + imageLocalUrl + ", imageUpdate=" + imageUpdate
                 + ", imagePath=" + imagePath;
     }

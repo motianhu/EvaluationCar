@@ -7,7 +7,6 @@ import com.smona.app.evaluationcar.util.StatusUtils;
  */
 
 public class QuickPreCarBillBean extends BaseBean {
-    public String quickPreCarBillId;
     public String carBillId;
     public int status;
     public int imageId;

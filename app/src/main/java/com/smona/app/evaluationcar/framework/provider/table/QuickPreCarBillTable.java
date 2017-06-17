@@ -7,7 +7,6 @@ package com.smona.app.evaluationcar.framework.provider.table;
 public class QuickPreCarBillTable extends BaseTable {
     public static final String TABLE_NAME = "quickPreCarBill";
 
-    public static final String QUICKPRECARBILLID = "quickPreCarBillId";
     public static final String CARBILLID = "carBillId";
     public static final String CREATETIME = "createTime";
     public static final String MODIFYTIME = "modifyTime";
@@ -45,7 +44,6 @@ public class QuickPreCarBillTable extends BaseTable {
                 + CREATETIME + " TIMESTAMP NOT NULL default (datetime('now', 'localtime')), "
                 + MODIFYTIME + " TIMESTAMP NOT NULL default (datetime('now', 'localtime')), "
                 + BILLSTATUS + " INTEGER, "
-                + QUICKPRECARBILLID + " TEXT, "
                 + MARK + " TEXT, "
                 + THUMBUrl + " TEXT, "
                 + IMAGEID + " INTEGER, "

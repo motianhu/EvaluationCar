@@ -5,10 +5,9 @@ package com.smona.app.evaluationcar.framework.provider.table;
  */
 
 public class QuickPreCarImageTable extends BaseTable {
-    public static final String TABLE_NAME = "carimage";
+    public static final String TABLE_NAME = "quickprecarimage";
 
     public static final String IMAGEID = "imageId";
-    public static final String QUICKPRECARBILLID = "quickPreCarBillId"; //对应单据ID
     public static final String CARBILLID = "carBillId"; //对应单据ID
     public static final String IMAGESEQNUM = "imageSeqNum"; //汽车图片当前序号/wechat
     public static final String IMAGECLASS = "imageClass"; //图片分类/wechat

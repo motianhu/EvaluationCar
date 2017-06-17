@@ -11,6 +11,7 @@ import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreeva
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple.NormalPreevaluationActivity;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class PreEvaluationActivity extends HeaderActivity {
         findViewById(R.id.quick_preeva).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.jumpOnlyActivity(PreEvaluationActivity.this, QuickPreevaluationActivity.class);
+                ActivityUtils.jumpQuickPreEvaluation(PreEvaluationActivity.this, StatusUtils.BILL_STATUS_NONE, "", 0, QuickPreevaluationActivity.class);
             }
         });
     }

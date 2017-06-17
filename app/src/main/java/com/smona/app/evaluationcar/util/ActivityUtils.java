@@ -90,4 +90,14 @@ public class ActivityUtils {
         intent.setClass(activity, clazz);
         activity.startActivityForResult(intent, requestCode);
     }
+
+    public static void jumpQuickPreEvaluation(Context context, int billStatus, String carBillId, int imageId, Class clazz) {
+        Intent intent = new Intent();
+        SPUtil.put(context, CacheContants.QUICK_BILL_STATUS, billStatus);
+        SPUtil.put(context, CacheContants.QUICK_CARBILLID, carBillId);
+        SPUtil.put(context, CacheContants.QUICK_IMAGEID, imageId);
+        intent.setClass(context, clazz);
+        context.startActivity(intent);
+    }
+
 }

@@ -247,6 +247,11 @@ public class DBDelegator {
         }
     }
 
+    public boolean insertQuickPreCarBill(QuickPreCarBillBean bean) {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
+        return dao.insertItem(bean);
+    }
+
     public void updatePreCarBill(QuickPreCarBillBean carBill) {
         BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
         dao.updateItem(carBill);

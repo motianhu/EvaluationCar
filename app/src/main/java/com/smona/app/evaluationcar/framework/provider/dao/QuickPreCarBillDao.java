@@ -105,7 +105,6 @@ public class QuickPreCarBillDao extends BaseDao<QuickPreCarBillBean> {
     @Override
     public ContentValues modelToContentValues(QuickPreCarBillBean item) {
         ContentValues values = new ContentValues();
-        values.put(QuickPreCarBillTable.QUICKPRECARBILLID, item.quickPreCarBillId);
         values.put(QuickPreCarBillTable.CARBILLID, item.carBillId);
         values.put(QuickPreCarBillTable.BILLSTATUS, item.status);
         values.put(QuickPreCarBillTable.CREATETIME, item.createTime);
