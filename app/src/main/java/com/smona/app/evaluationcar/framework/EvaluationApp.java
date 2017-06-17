@@ -10,11 +10,11 @@ import com.smona.app.evaluationcar.framework.crashreport.CrashReportProxy;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
-import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
 import com.smona.app.evaluationcar.framework.provider.GenerateMaxId;
 import com.smona.app.evaluationcar.framework.push.PushProxy;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickImageModelDelegator;
 import com.smona.app.evaluationcar.util.ScreenInfo;
 import com.smona.app.evaluationcar.util.ToastUtils;
 
@@ -28,7 +28,6 @@ import java.lang.ref.WeakReference;
  */
 
 public class EvaluationApp extends Application {
-    private WeakReference<EvaluationProvider> mProvider;
 
     @Override
     public void onCreate() {
@@ -41,6 +40,7 @@ public class EvaluationApp extends Application {
         HttpDelegator.getInstance().init(this);
         GenerateMaxId.getInstance().initMaxId();
         ImageModelDelegator.getInstance().init(this);
+        QuickImageModelDelegator.getInstance().init(this);
         CrashReportProxy.init(this);
         DeviceStorageManager.getInstance().setContext(this);
         DeviceStorageManager.getInstance().initPath();
@@ -51,13 +51,5 @@ public class EvaluationApp extends Application {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void actionMainEvent(ToastEvent event) {
         ToastUtils.show(this, event.message);
-    }
-
-    public EvaluationProvider getWallpaperProvider() {
-        return mProvider.get();
-    }
-
-    public void setWallpaperProvider(EvaluationProvider provider) {
-        mProvider = new WeakReference<EvaluationProvider>(provider);
     }
 }

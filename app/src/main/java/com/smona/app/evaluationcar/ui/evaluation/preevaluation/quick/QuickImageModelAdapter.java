@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -29,7 +29,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
 
     private static final String TAG = QuickImageModelAdapter.class.getSimpleName();
 
-    private List<CarImageBean> mDatas = new ArrayList<CarImageBean>();
+    private List<QuickPreCarImageBean> mDatas = new ArrayList<QuickPreCarImageBean>();
     private Context mContext;
     private int mImageWidth;
 
@@ -44,7 +44,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
         mImageWidth = ((i - j * 3) / 2);
     }
 
-    public void update(List<CarImageBean> datas) {
+    public void update(List<QuickPreCarImageBean> datas) {
         if (!isNeedReload()) {
             return;
         }
@@ -83,7 +83,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final CarImageBean bean = mDatas.get(position);
+        final QuickPreCarImageBean bean = mDatas.get(position);
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext, R.layout.evaluation_image_item);
@@ -125,7 +125,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private boolean processImage(CarImageBean bean, ImageView image) {
+    private boolean processImage(QuickPreCarImageBean bean, ImageView image) {
         ViewGroup.LayoutParams localLayoutParams = image.getLayoutParams();
         localLayoutParams.width = mImageWidth;
         localLayoutParams.height = (3 * mImageWidth / 4);
@@ -146,7 +146,7 @@ public class QuickImageModelAdapter extends BaseAdapter {
         return !TextUtils.isEmpty(picUrl);
     }
 
-    public CarImageBean checkPhoto() {
+    public QuickPreCarImageBean checkPhoto() {
         for (int i = 0; i < mDatas.size() - 1; i++) {
             if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl) && TextUtils.isEmpty(mDatas.get(i).imagePath)) {
                 return mDatas.get(i);

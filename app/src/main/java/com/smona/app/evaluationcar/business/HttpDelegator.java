@@ -287,4 +287,12 @@ public class HttpDelegator implements IProxy {
         String url = UrlConstants.getInterface(UrlConstants.GET_AUTO_LOGOS);
         return url + name;
     }
+
+    //quick pre evaluation
+    public void getQuickPreCarbillImages(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
 }

@@ -19,13 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
-import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
-import com.smona.app.evaluationcar.ui.evaluation.ImageModelDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.camera.BitmapUtils;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraUtil;
@@ -94,11 +93,11 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
 
     private int mQuickType;
     private int mCurrentIndex;
-    private CarImageBean mCurCarImage;
-    private List<CarImageBean> mCarImageList;
+    private QuickPreCarImageBean mCurCarImage;
+    private List<QuickPreCarImageBean> mCarImageList;
 
     private String mCarBillId;
-    private CarBillBean mCarBill;
+    private QuickPreCarBillBean mCarBill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +116,10 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void initStatus() {
-        mQuickType = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE, ImageModelDelegator.QUICK_BASE);
+        //mQuickType = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE, ImageModelDelegator.QUICK_BASE);
         mCurrentIndex = (int) SPUtil.get(this, CacheContants.QUICK_IMAGE_TYPE_INDEX, 0);
         mCarImageList = new ArrayList<>();
-        mCarImageList.addAll(ImageModelDelegator.getInstance().getQuickBaseModel(mQuickType));
+        //mCarImageList.addAll(ImageModelDelegator.getInstance().getQuickBaseModel(mQuickType));
         mCurCarImage = mCarImageList.get(mCurrentIndex);
         CarLog.d(TAG, "initStatus mQuickType=" + mQuickType + ", mCurrentIndex=" + mCurrentIndex);
     }

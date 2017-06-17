@@ -11,11 +11,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.framework.provider.table.CarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.CarImageTable;
 import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
 import com.smona.app.evaluationcar.framework.provider.table.QuickPreCarBillTable;
+import com.smona.app.evaluationcar.framework.provider.table.QuickPreCarImageTable;
 import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
@@ -59,8 +59,6 @@ public class EvaluationProvider extends ContentProvider {
     public boolean onCreate() {
         CarLog.d(TAG, "onCreate");
         mDataHelper = new DatabaseHelper(getContext());
-        ((EvaluationApp) (getContext().getApplicationContext()))
-                .setWallpaperProvider(this);
         return true;
     }
 
@@ -167,6 +165,8 @@ public class EvaluationProvider extends ContentProvider {
             } else if(oldVersion == 2) {
                 String quickprecarbills = QuickPreCarBillTable.getInstance().createTableSql();
                 db.execSQL(quickprecarbills);
+                String quickprecarimage = QuickPreCarImageTable.getInstance().createTableSql();
+                db.execSQL(quickprecarimage);
             }
         }
 
@@ -177,11 +177,13 @@ public class EvaluationProvider extends ContentProvider {
             String carimage = CarImageTable.getInstance().createTableSql();
             String imagemeta = ImageMetaTable.getInstance().createTableSql();
             String quickprecarbills = QuickPreCarBillTable.getInstance().createTableSql();
+            String quickprecarimage = QuickPreCarImageTable.getInstance().createTableSql();
 
             sqlList.add(carbills);
             sqlList.add(carimage);
             sqlList.add(imagemeta);
             sqlList.add(quickprecarbills);
+            sqlList.add(quickprecarimage);
             return sqlList;
         }
     }

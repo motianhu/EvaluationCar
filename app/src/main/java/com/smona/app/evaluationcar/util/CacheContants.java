@@ -26,6 +26,11 @@ public class CacheContants {
 
 
     //quick bill
+    public static final String QUICK_BILL_STATUS = "quick_billStatus";
+    public static final String QUICK_CARBILLID = "quick_carBillId";
+    public static final String QUICK_IMAGEID = "quick_imageId";
+    public static final String QUICK_IMAGECLASS = "quick_imageClass";
+    public static final String QUICK_IMAGESEQNUM = "quick_imageSeqNum";
     public static final String QUICK_IMAGE_TYPE = "quick_image_type";
     public static final String QUICK_IMAGE_TYPE_INDEX = "quick_image_type_index";
 
