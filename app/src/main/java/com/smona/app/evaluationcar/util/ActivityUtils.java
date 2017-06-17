@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
+import com.smona.app.evaluationcar.service.QuickUploadService;
 import com.smona.app.evaluationcar.service.UploadService;
 import com.smona.app.evaluationcar.ui.WebActivity;
 
@@ -82,6 +83,11 @@ public class ActivityUtils {
 
     public static void startUpService(Context context) {
         Intent intent = new Intent(context, UploadService.class);
+        context.startService(intent);
+    }
+
+    public static void startQuickUpService(Context context) {
+        Intent intent = new Intent(context, QuickUploadService.class);
         context.startService(intent);
     }
 

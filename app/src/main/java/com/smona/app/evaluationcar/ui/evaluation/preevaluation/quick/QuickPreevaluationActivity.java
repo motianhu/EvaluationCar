@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.HttpDelegator;
@@ -15,7 +16,6 @@ import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.data.event.EvaActionEvent;
 import com.smona.app.evaluationcar.data.event.background.TaskSubEvent;
-import com.smona.app.evaluationcar.data.model.ResCarImagePage;
 import com.smona.app.evaluationcar.data.model.ResQuickPreCarImagePage;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
@@ -41,7 +41,7 @@ import java.util.List;
  * Created by motianhu on 5/23/17.
  */
 
-public class QuickPreevaluationActivity extends HeaderActivity {
+public class QuickPreevaluationActivity extends HeaderActivity implements View.OnClickListener {
 
     private static final String TAG = QuickPreevaluationActivity.class.getSimpleName();
 
@@ -60,6 +60,8 @@ public class QuickPreevaluationActivity extends HeaderActivity {
     private String mQuickPreCarBillId = null;
     private QuickPreCarBillBean mPreQuickPreCarBillBean;
     private int mImageId = 0;
+
+    private EditText mMark;
 
     @Override
     protected int getLayoutId() {
@@ -160,6 +162,14 @@ public class QuickPreevaluationActivity extends HeaderActivity {
         mSupplementGrid = (LimitGridView) findViewById(R.id.class_supplement);
         mSupplementAdapter = new QuickImageModelAdapter(this, QuickImageModelDelegator.QUICK_SUPPLEMENT);
         mSupplementGrid.setAdapter(mSupplementAdapter);
+
+        findViewById(R.id.btn_delete).setOnClickListener(this);
+        findViewById(R.id.btn_submit).setOnClickListener(this);
+
+        mMark = (EditText) findViewById(R.id.et_remark);
+        if (mPreQuickPreCarBillBean != null) {
+            mMark.setText(mPreQuickPreCarBillBean.mark);
+        }
     }
 
     private void initImageList() {
@@ -267,12 +277,11 @@ public class QuickPreevaluationActivity extends HeaderActivity {
 
     public void startTarkForReturn(QuickPreCarBillBean bean) {
         QuickPreCarBillBean carBillBean = DBDelegator.getInstance().queryQuickPreCarBill(mQuickPreCarBillId);
-        carBillBean.preSalePrice = bean.preSalePrice;
         carBillBean.mark = bean.mark;
         carBillBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
         DBDelegator.getInstance().updatePreCarBill(carBillBean);
 
-        ActivityUtils.startUpService(this);
+        ActivityUtils.startQuickUpService(this);
     }
 
     public void startTarkForSave(QuickPreCarBillBean bean) {
@@ -280,12 +289,11 @@ public class QuickPreevaluationActivity extends HeaderActivity {
         localBean.createTime = TextUtils.isEmpty(localBean.createTime) ? DateUtils.getCurrDate() : localBean.createTime;
         localBean.modifyTime = DateUtils.getCurrDate();
         localBean.uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
-        localBean.preSalePrice = bean.preSalePrice;
         localBean.mark = bean.mark;
         DBDelegator.getInstance().updatePreCarBill(localBean);
 
         CarLog.d(TAG, "startTarkForSave localBean=" + localBean);
-        ActivityUtils.startUpService(this);
+        ActivityUtils.startQuickUpService(this);
     }
 
     private boolean statusIsNone() {
@@ -310,5 +318,69 @@ public class QuickPreevaluationActivity extends HeaderActivity {
     private void runFinish() {
         ToastUtils.show(this, R.string.evaluation_submit_tips);
         finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        CarLog.d(TAG, "onClick v " + v);
+        switch (id) {
+            case R.id.btn_submit:
+                onSubmit();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void onSubmit() {
+        if (statusIsReturn()) {
+            submitReturn();
+        } else {
+            submitNone();
+        }
+    }
+
+    private void submitReturn() {
+        if (!isTakePhoto()) {
+            return;
+        }
+        postEvent();
+    }
+
+    private boolean isTakePhoto() {
+        return checkPhoto(mBaseAdapter) &&
+                checkPhoto(mSupplementAdapter);
+    }
+
+    private boolean checkPhoto(QuickImageModelAdapter adapter) {
+        QuickPreCarImageBean bean = adapter.checkPhoto();
+        if (bean != null) {
+            String tip = String.format(getString(R.string.evalution_submit_tips), bean.imageClass, bean.displayName);
+            ToastUtils.show(this, tip);
+            return false;
+        }
+        return true;
+    }
+
+    private void submitNone() {
+        if (!isTakePhoto()) {
+            return;
+        }
+        postEvent();
+    }
+
+    private void postEvent() {
+        String mark = mMark.getText().toString();
+        QuickPreCarBillBean bean = new QuickPreCarBillBean();
+        bean.carBillId = mQuickPreCarBillId;
+        bean.mark = mark;
+        bean.imageId = mImageId;
+
+        //send background post
+        TaskSubEvent event = new TaskSubEvent();
+        event.obj = bean;
+        event.action = TaskSubEvent.ACTION_TASK;
+        EventProxy.post(event);
     }
 }

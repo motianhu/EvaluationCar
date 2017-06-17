@@ -126,6 +126,7 @@ public class HomeActivity extends UserActivity implements RadioGroup.OnCheckedCh
 
     private void startUploadService() {
         ActivityUtils.startUpService(this);
+        ActivityUtils.startQuickUpService(this);
     }
 
     @Override

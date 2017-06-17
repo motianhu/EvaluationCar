@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.util.CarLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,10 +103,8 @@ public class QuickImageModelDelegator {
                 tempCar = defaultList.get(i);
                 if (tempCar.imageClass.equals(saveCar.imageClass) &&
                         (tempCar.imageSeqNum == saveCar.imageSeqNum)) {
-                    defaultList.remove(i);
                     removeCar = defaultList.remove(i);
                     saveCar.displayName = removeCar.displayName;
-                    defaultList.add(i, saveCar);
                     defaultList.add(i, saveCar);
                     break;
                 }
@@ -134,6 +133,7 @@ public class QuickImageModelDelegator {
         if (imageId > 0) {
             saveList = DBDelegator.getInstance().queryPreQuickImages(imageId);
         }
+        CarLog.d("getSaveModel", imageId + "; saveList; " + saveList);
         composeModel(saveList, defaultList);
         return defaultList;
     }

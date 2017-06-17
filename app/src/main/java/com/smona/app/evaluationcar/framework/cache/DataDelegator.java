@@ -13,6 +13,8 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.util.UrlConstants;
 
@@ -185,5 +187,14 @@ public class DataDelegator {
 
     public void queryMoreNews(String classType, PageParam page, ResponseCallback callback) {
         HttpDelegator.getInstance().queryMoreNews(classType, page, callback);
+    }
+
+    //quick preevaluation
+    public void uploadQuickPreImage(String userName, QuickPreCarImageBean bean, ResponseCallback callback) {
+        HttpDelegator.getInstance().uploadQuickPreImage(userName, bean, callback);
+    }
+
+    public void submitQuickPreCallBill(String userName, QuickPreCarBillBean bean, ResponseCallback<String> callback) {
+        HttpDelegator.getInstance().submitQuickPreCallBill(userName, bean, callback);
     }
 }

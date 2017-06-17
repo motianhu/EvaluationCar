@@ -153,6 +153,7 @@
             android:screenOrientation="portrait" />
 
         <service android:name=".service.UploadService" />
+        <service android:name=".service.QuickUploadService" />
 
         <provider
             android:name="com.smona.app.evaluationcar.framework.provider.EvaluationProvider"

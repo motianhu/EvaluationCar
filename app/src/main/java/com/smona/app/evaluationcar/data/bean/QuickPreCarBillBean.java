@@ -16,4 +16,10 @@ public class QuickPreCarBillBean extends BaseBean {
     public String imageThumbPath;
     public double preSalePrice;
     public int uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
+
+    public String toString() {
+        return "carBillId=" + carBillId + ",status=" + status +
+                ",imageThumbPath=" + imageThumbPath + ",imageId=" + imageId +
+                ",preSalePrice=" + preSalePrice + ",uploadStatus=" + uploadStatus;
+    }
 }

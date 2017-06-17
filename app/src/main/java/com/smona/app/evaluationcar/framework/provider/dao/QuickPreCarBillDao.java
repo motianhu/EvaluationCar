@@ -78,10 +78,17 @@ public class QuickPreCarBillDao extends BaseDao<QuickPreCarBillBean> {
     public boolean updateItem(QuickPreCarBillBean carBill) {
         String where = null;
         String[] whereArgs = null;
-        where = QuickPreCarBillTable.CARBILLID + "=?";
-        whereArgs = new String[]{
-                carBill.carBillId
-        };
+        if (carBill.imageId > 0) {
+            where = QuickPreCarBillTable.IMAGEID + "=?";
+            whereArgs = new String[]{
+                    carBill.imageId + ""
+            };
+        } else {
+            where = QuickPreCarBillTable.CARBILLID + "=?";
+            whereArgs = new String[]{
+                    carBill.carBillId
+            };
+        }
         int count = mContentResolver.update(mTable.mContentUriNoNotify,
                 modelToContentValues(carBill), where, whereArgs);
         return count > 0;

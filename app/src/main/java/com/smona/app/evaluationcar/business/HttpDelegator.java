@@ -10,6 +10,8 @@ import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNewsPage;
 import com.smona.app.evaluationcar.data.model.ResPageElementPage;
 import com.smona.app.evaluationcar.framework.IProxy;
@@ -247,6 +249,17 @@ public class HttpDelegator implements IProxy {
         params.addParameter("createTime", bean.createTime);
         params.addParameter("runNum", bean.runNum);
         params.addParameter("mark", bean.mark);
+        params.addParameter("carBillType", bean.carBillType);
+        x.http().get(params, callback);
+    }
+
+    public void submitQuickPreCallBill(String userName, QuickPreCarBillBean bean, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
+        params.addParameter("createUser", userName);
+        params.addParameter("clientName", "android");
+        params.addParameter("createTime", bean.createTime);
+        params.addParameter("mark", bean.mark);
+        params.addParameter("carBillType", "routine");
         x.http().get(params, callback);
     }
 
@@ -294,5 +307,16 @@ public class HttpDelegator implements IProxy {
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);
+    }
+
+    public void uploadQuickPreImage(String createUser, QuickPreCarImageBean bean, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
+        params.addParameter("createUser", createUser);
+        params.addParameter("clientName", "android");
+        params.addParameter("carBillId", bean.carBillId);
+        params.addParameter("imageSeqNum", bean.imageSeqNum);
+        params.addParameter("imageClass", bean.imageClass);
+        params.addBodyParameter("image", new File(bean.imageLocalUrl));
+        x.http().post(params, callback);
     }
 }

@@ -295,4 +295,29 @@ public class DBDelegator {
         }
         return null;
     }
+
+    public void deleteQuickPreCarbill(QuickPreCarBillBean carBill) {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
+        dao.deleteItem(carBill);
+    }
+
+    public void updateQuickPreCarBill(QuickPreCarBillBean carBill) {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
+        dao.updateItem(carBill);
+    }
+
+    public List<QuickPreCarBillBean> queryQuickPreCarBillInUpload() {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
+        String where = QuickPreCarBillTable.UPLOADStATUS + "=" + StatusUtils.BILL_UPLOAD_STATUS_UPLOADING;
+        String orderBy = QuickPreCarBillTable.MODIFYTIME + " desc ";
+        List<QuickPreCarBillBean> list = dao.getResult(where, null, orderBy);
+        return list;
+    }
+
+    public List<QuickPreCarImageBean> queryQuickPreUpdateImages(String carBillId) {
+        BaseDao<QuickPreCarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKIMAGE);
+        String select = QuickPreCarImageTable.CARBILLID + " =? and " + QuickPreCarImageTable.IMAGEUPDATE + " =? ";
+        List<QuickPreCarImageBean> list = dao.getResult(select, new String[]{carBillId, StatusUtils.IMAGE_UPDATE + ""}, QuickPreCarImageTable.IMAGESEQNUM + " asc ");
+        return list;
+    }
 }
