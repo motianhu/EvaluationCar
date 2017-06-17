@@ -110,11 +110,6 @@ public class DBDelegator {
         return dao.updateItem(carImage);
     }
 
-    public void batchUpdateCarImage(List<CarImageBean> dataList) {
-        BaseDao<CarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGE);
-        dao.updateList(dataList);
-    }
-
     //ImageMeta
     public ImageMetaBean queryImageMeta(String imageClass, int imageSeqNum) {
         BaseDao<ImageMetaBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_IMAGEMETA);
@@ -225,6 +220,16 @@ public class DBDelegator {
     }
 
     //quick preevaluation
+    //AUTO MAX ID
+    public int getQuickDBMaxId() {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKIMAGE);
+        List<QuickPreCarBillBean> list = dao.getResult(null, null, " imageId desc ");
+        if (list != null && list.size() > 1) {
+            return list.get(0).imageId;
+        }
+        return 0;
+    }
+
     public QuickPreCarBillBean queryQuickPreCarBill(String quickPreCarBillId) {
         BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
         String where = QuickPreCarBillTable.CARBILLID + "=?";

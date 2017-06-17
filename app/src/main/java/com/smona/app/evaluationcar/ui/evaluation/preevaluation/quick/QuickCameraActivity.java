@@ -27,7 +27,6 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.evaluation.camera.BitmapUtils;
-import com.smona.app.evaluationcar.ui.evaluation.camera.CameraActivity;
 import com.smona.app.evaluationcar.ui.evaluation.camera.CameraUtil;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
@@ -361,9 +360,9 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
 
     private void processImageDataInNone() {
         if (mImageId <= 0) {
-            mImageId = DBDelegator.getInstance().getDBMaxId() + 1;
-            SPUtil.put(this, CacheContants.IMAGEID, mImageId);
-            SPUtil.put(this, CacheContants.BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
+            mImageId = DBDelegator.getInstance().getQuickDBMaxId() + 1;
+            SPUtil.put(this, CacheContants.QUICK_IMAGEID, mImageId);
+            SPUtil.put(this, CacheContants.QUICK_BILL_STATUS, StatusUtils.BILL_STATUS_SAVE);
         }
 
         mCurCarImage.imageId = mImageId;
