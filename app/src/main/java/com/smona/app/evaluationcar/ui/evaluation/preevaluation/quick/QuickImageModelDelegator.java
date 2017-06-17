@@ -96,13 +96,16 @@ public class QuickImageModelDelegator {
 
     private void composeModel(List<QuickPreCarImageBean> saveList, List<QuickPreCarImageBean> defaultList) {
         int size = defaultList.size();
-        QuickPreCarImageBean tempCar;
+        QuickPreCarImageBean tempCar,removeCar;
         for (QuickPreCarImageBean saveCar : saveList) {
             for (int i = 0; i < size; i++) {
                 tempCar = defaultList.get(i);
                 if (tempCar.imageClass.equals(saveCar.imageClass) &&
                         (tempCar.imageSeqNum == saveCar.imageSeqNum)) {
                     defaultList.remove(i);
+                    removeCar = defaultList.remove(i);
+                    saveCar.displayName = removeCar.displayName;
+                    defaultList.add(i, saveCar);
                     defaultList.add(i, saveCar);
                     break;
                 }
@@ -112,10 +115,6 @@ public class QuickImageModelDelegator {
 
     public String getImageClassForType(int type) {
         return mImageClass[type];
-    }
-
-    public int getTypeForImageClass(String imageClass) {
-        return mImageClassMap.get(imageClass);
     }
 
     public String getDisplayName(int type, int seqNum) {

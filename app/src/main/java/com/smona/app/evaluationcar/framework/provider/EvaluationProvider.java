@@ -33,6 +33,7 @@ public class EvaluationProvider extends ContentProvider {
     private static final int CODE_CARIMAGE = CODE_BASE + 2;
     private static final int CODE_IMAGEMETA = CODE_BASE + 3;
     private static final int CODE_QUICKPRECARBILL = CODE_BASE + 4;
+    private static final int CODE_QUICKPREIMAGE = CODE_BASE + 5;
     private static final UriMatcher URI_MATCH = new UriMatcher(
             UriMatcher.NO_MATCH);
     private static HashMap<Integer, String> TABLE_MATCH = new HashMap<Integer, String>();
@@ -46,11 +47,14 @@ public class EvaluationProvider extends ContentProvider {
                 ImageMetaTable.TABLE_NAME, CODE_IMAGEMETA);
         URI_MATCH.addURI(DBConstants.AUTHORITY,
                 QuickPreCarBillTable.TABLE_NAME, CODE_QUICKPRECARBILL);
+        URI_MATCH.addURI(DBConstants.AUTHORITY,
+                QuickPreCarImageTable.TABLE_NAME, CODE_QUICKPREIMAGE);
 
         TABLE_MATCH.put(CODE_CARBILL, CarBillTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_CARIMAGE, CarImageTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_IMAGEMETA, ImageMetaTable.TABLE_NAME);
         TABLE_MATCH.put(CODE_QUICKPRECARBILL, QuickPreCarBillTable.TABLE_NAME);
+        TABLE_MATCH.put(CODE_QUICKPREIMAGE, QuickPreCarImageTable.TABLE_NAME);
     }
 
     private DatabaseHelper mDataHelper;

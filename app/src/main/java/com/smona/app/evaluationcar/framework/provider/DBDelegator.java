@@ -222,8 +222,8 @@ public class DBDelegator {
     //quick preevaluation
     //AUTO MAX ID
     public int getQuickDBMaxId() {
-        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKIMAGE);
-        List<QuickPreCarBillBean> list = dao.getResult(null, null, " imageId desc ");
+        BaseDao<QuickPreCarImageBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKIMAGE);
+        List<QuickPreCarImageBean> list = dao.getResult(null, null, " imageId desc ");
         if (list != null && list.size() > 1) {
             return list.get(0).imageId;
         }
