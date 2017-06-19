@@ -310,7 +310,7 @@ public class HttpDelegator implements IProxy {
     }
 
     public void uploadQuickPreImage(String createUser, QuickPreCarImageBean bean, ResponseCallback callback) {
-        ReqParams params = createParams(UrlConstants.UPLOAD_IMAGE);
+        ReqParams params = createParams(UrlConstants.SUBMIT_QUICKPREEVALUATION_IMAGE);
         params.addParameter("createUser", createUser);
         params.addParameter("clientName", "android");
         params.addParameter("carBillId", bean.carBillId);

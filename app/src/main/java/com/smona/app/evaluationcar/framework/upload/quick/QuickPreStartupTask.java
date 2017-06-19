@@ -5,6 +5,10 @@ import android.text.TextUtils;
 import com.smona.app.evaluationcar.business.HttpDelegator;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
+import com.smona.app.evaluationcar.data.model.ResBaseArray;
+import com.smona.app.evaluationcar.data.model.ResBaseModel;
+import com.smona.app.evaluationcar.data.model.ResNormalArray;
+import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.framework.upload.ActionTask;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -21,13 +25,17 @@ public class QuickPreStartupTask extends ActionTask {
         if (TextUtils.isEmpty(mCarBillId)) {
             HttpDelegator.getInstance().submitQuickPreCallBill(userName, mCarBill, new ResponseCallback<String>() {
                 @Override
-                public void onSuccess(String result) {
-                    CarLog.d(TAG, "onSuccess result: " + result);
-                    mCarBill.carBillId = result.substring(1, result.length() - 1);
-                    mCarBillId = mCarBill.carBillId;
-
-                    DBDelegator.getInstance().updateQuickPreCarBill(mCarBill);
-                    nextTask(mCarBillId, null);
+                public void onSuccess(String content) {
+                    CarLog.d(TAG, "onSuccess result: " + content);
+                    ResBaseModel resModel = JsonParse.parseJson(content, ResBaseModel.class);
+                    if (resModel.success) {
+                        mCarBill.carBillId = (String)(resModel.object + "");
+                        mCarBillId = mCarBill.carBillId;
+                        DBDelegator.getInstance().updateQuickPreCarBill(mCarBill);
+                        nextTask(mCarBillId, null);
+                    } else {
+                        QuickUploadTaskExecutor.getInstance().nextTask(mImageId, null);
+                    }
                 }
 
                 @Override
