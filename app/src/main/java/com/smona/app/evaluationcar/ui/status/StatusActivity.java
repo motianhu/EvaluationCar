@@ -1,9 +1,12 @@
 package com.smona.app.evaluationcar.ui.status;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
@@ -11,6 +14,7 @@ import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.StatusUtils;
+import com.smona.app.evaluationcar.util.Utils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 /**
@@ -82,12 +86,16 @@ public class StatusActivity extends HeaderActivity {
         textValue = (TextView) findViewById(R.id.mark);
         textValue.setText(bean.mark);
 
+        String bodyHTML = bean.applyAllOpinion;
         WebView webView = (WebView) findViewById(R.id.note);
-        String str = "<html><head><title>欢迎你</title></head><body>"
-                + bean.applyAllOpinion
-                + "</body></html>";
-
-        webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setDefaultTextEncodingName("utf-8");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        } else {
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        }
+        webView.loadData(Utils.getHtmlData(bodyHTML), "text/html; charset=utf-8", "utf-8");
     }
 
     @Override

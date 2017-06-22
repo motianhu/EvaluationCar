@@ -2,12 +2,15 @@ package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
@@ -32,6 +35,7 @@ import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
+import com.smona.app.evaluationcar.util.Utils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -230,10 +234,15 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         if (statusIsReturn()) {
             ViewUtil.setViewVisible(mReasonContainer, true);
             ViewUtil.setViewVisible(mReasonWebView, true);
-            String reason = "<html><head><title>欢迎你</title></head><body>"
-                    + mCarBill.applyAllOpinion
-                    + "</body></html>";
-            mReasonWebView.loadDataWithBaseURL(null, reason, "text/html", "utf-8", null);
+            String bodyHTML = mCarBill.applyAllOpinion;
+            mReasonWebView.setWebViewClient(new WebViewClient());
+            mReasonWebView.getSettings().setDefaultTextEncodingName("utf-8");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mReasonWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            } else {
+                mReasonWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            }
+            mReasonWebView.loadData(Utils.getHtmlData(bodyHTML), "text/html; charset=utf-8", "utf-8");
         } else {
             ViewUtil.setViewVisible(mReasonContainer, false);
             ViewUtil.setViewVisible(mReasonWebView, false);
