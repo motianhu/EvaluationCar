@@ -35,11 +35,12 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpEvaluation(Context context, int billStatus, String carBillId, int imageId, Class clazz) {
+    public static void jumpEvaluation(Context context, int billStatus, String carBillId, int imageId, boolean isResidual, Class clazz) {
         Intent intent = new Intent();
         SPUtil.put(context, CacheContants.BILL_STATUS, billStatus);
         SPUtil.put(context, CacheContants.CARBILLID, carBillId);
         SPUtil.put(context, CacheContants.IMAGEID, imageId);
+        SPUtil.put(context, CacheContants.ISResidualEVALUATION, isResidual);
         intent.setClass(context, clazz);
         context.startActivity(intent);
     }

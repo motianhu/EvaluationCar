@@ -21,6 +21,7 @@ public class CacheContants {
     public static final String IMAGEID = "imageId";
     public static final String IMAGECLASS = "imageClass";
     public static final String IMAGESEQNUM = "imageSeqNum";
+    public static final String ISResidualEVALUATION = "isResidualEvaluation";
 
     public static final String CARBILLBEAN = "bean_carBill";
 

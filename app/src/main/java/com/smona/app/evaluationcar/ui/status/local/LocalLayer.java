@@ -38,7 +38,7 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
 
         @Override
         public void onClick(View v) {
-            ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
+            ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, false, EvaluationActivity.class);
         }
     };
     private Runnable mRunnable = new Runnable() {

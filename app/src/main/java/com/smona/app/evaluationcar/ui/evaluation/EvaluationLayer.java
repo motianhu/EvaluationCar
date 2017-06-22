@@ -72,9 +72,9 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     @Override
     public void init() {
-        UserItem userItem = new UserItem();
-        userItem.readSelf(getContext());
-        userItem.readUserProp(getContext());
+        mUser = new UserItem();
+        mUser.readSelf(getContext());
+        mUser.readUserProp(getContext());
 
         View vin = findViewById(R.id.queryVin);
         vin.setOnClickListener(this);
@@ -88,7 +88,7 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
         LinearLayout line = (LinearLayout) findViewById(R.id.evalution_container);
 
-        if (userItem.userBean.isXianfeng()) {
+        if (mUser.userBean.isXianfeng()) {
             ViewUtil.setViewVisible(preEva, true);
             line.setWeightSum(3);
 
@@ -100,7 +100,20 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
             param = (LinearLayout.LayoutParams) eva.getLayoutParams();
             param.weight = 1;
-        } else {
+        } else if(mUser.userBean.isGuanghui()) {
+            ViewUtil.setViewVisible(preEva, true);
+            line.setWeightSum(3);
+
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams) vin.getLayoutParams();
+            param.weight = 1;
+
+            param = (LinearLayout.LayoutParams) preEva.getLayoutParams();
+            ((TextView)preEva).setText(R.string.evalution_residual);
+            param.weight = 1;
+
+            param = (LinearLayout.LayoutParams) eva.getLayoutParams();
+            param.weight = 1;
+        }else {
             ViewUtil.setViewVisible(preEva, false);
 
             line.setWeightSum(2);
@@ -136,9 +149,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
         mPassTv = (TextView) findViewById(R.id.tv_pass);
         mPassTv.setText(String.format(content, 0));
-
-        mUser = new UserItem();
-        mUser.readSelf(getContext());
     }
 
     @Override
@@ -158,10 +168,14 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ((HomeActivity) getContext()).changeList(3);
                 break;
             case R.id.preEvalution:
-                ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
+                if(mUser.userBean.isXianfeng()) {
+                    ActivityUtils.jumpOnlyActivity(getContext(), PreEvaluationActivity.class);
+                } else if(mUser.userBean.isGuanghui()) {
+                    ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, true, EvaluationActivity.class);
+                }
                 break;
             case R.id.evalution:
-                ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(getContext(), StatusUtils.BILL_STATUS_NONE, "", 0, false, EvaluationActivity.class);
                 break;
             case R.id.queryVin:
                 ToastUtils.show(getContext(), R.string.coming_soon);

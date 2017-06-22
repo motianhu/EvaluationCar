@@ -91,7 +91,7 @@ public class NotPassAdapter extends BaseAdapter implements View.OnClickListener 
         Object tag = v.getTag();
         if (tag instanceof CarBillBean) {
             CarBillBean info = (CarBillBean) tag;
-            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, EvaluationActivity.class);
+            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, info.carBillId, info.imageId, info.leaseTerm != 0, EvaluationActivity.class);
         }
     }
 

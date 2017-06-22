@@ -96,7 +96,7 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener, V
                     UploadTaskExecutor.getInstance().isUploading(info.carBillId)) {
                 ToastUtils.show(mContext, R.string.uploading_no_action);
             } else {
-                ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, EvaluationActivity.class);
+                ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, info.leaseTerm != 0, EvaluationActivity.class);
             }
         }
     }

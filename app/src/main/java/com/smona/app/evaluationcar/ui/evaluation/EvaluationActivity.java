@@ -118,6 +118,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     private String mCarBillId = null;
     private CarBillBean mCarBill = null;
 
+    //is residual
+    private boolean mIsResidual = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,6 +176,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void initOther() {
         mAddPicStr = getString(R.string.add_picture);
+        mIsResidual = (boolean) SPUtil.get(this, CacheContants.ISResidualEVALUATION, false);
     }
 
     private void requestImageForCarBillId() {
@@ -305,7 +309,7 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         //lease term
         View leaseTermGroup = findViewById(R.id.group_lease_term);
-        ViewUtil.setViewVisible(leaseTermGroup, mUserItem.userBean.isGuanghui());
+        ViewUtil.setViewVisible(leaseTermGroup, mUserItem.userBean.isGuanghui() && mIsResidual);
         mLeaseTerm = (RadioGroup) findViewById(R.id.rg_lease_term);
 
         //设置定位按钮事件及初始化定位
