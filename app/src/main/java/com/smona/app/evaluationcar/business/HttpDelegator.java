@@ -231,10 +231,12 @@ public class HttpDelegator implements IProxy {
     }
 
     public void queryPreCarbillList(CarbillParam param, ResponseCallback<String> callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION);
+        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_LIST);
         params.addParameter("userName", param.userName);
         params.addParameter("curPage", param.curPage);
         params.addParameter("pageSize", param.pageSize);
+        params.addParameter("status", param.status);
+        params.addParameter("carBillType", param.type);
         x.http().get(params, callback);
     }
 
@@ -304,6 +306,13 @@ public class HttpDelegator implements IProxy {
     //quick pre evaluation
     public void getQuickPreCarbillImages(String userName, String carBillId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
+
+    public void getPreCarBillDetail(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_DETAIL);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);

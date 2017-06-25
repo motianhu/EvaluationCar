@@ -54,4 +54,14 @@ public class StatusUtils {
     public static boolean isNotPass(int status) {
         return status == 23 || status == 33 || status == 43 || status == 53;
     }
+
+
+    //prevaluation
+    public static final HashMap<Integer, String> PREBILL_STATUS_MAP = new HashMap<Integer, String>();
+    static {
+        BILL_STATUS_MAP.put(-1, "驳回");
+        BILL_STATUS_MAP.put(0, "审核中");
+        BILL_STATUS_MAP.put(1, "通过");
+        BILL_STATUS_MAP.put(2, "已推送");
+    }
 }

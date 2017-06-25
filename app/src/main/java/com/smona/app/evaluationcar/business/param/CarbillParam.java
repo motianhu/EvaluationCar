@@ -14,6 +14,7 @@ public class CarbillParam extends Params {
     public String status;
     public int curPage;
     public int pageSize;
+    public String type;
 
     public String toString() {
         return "userName=" + userName + ",status=" + status + ",curPage=" + curPage + ",pageSize=" + pageSize;

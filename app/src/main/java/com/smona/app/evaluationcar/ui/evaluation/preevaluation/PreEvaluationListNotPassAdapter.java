@@ -22,14 +22,14 @@ import java.util.List;
  * Created by motianhu on 4/7/17.
  */
 
-public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClickListener {
-    private static final String TAG = PreEvaluationListAdapter.class.getSimpleName();
+public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View.OnClickListener {
+    private static final String TAG = PreEvaluationListNotPassAdapter.class.getSimpleName();
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
     private List<PreCarBillBean> mDataList = new ArrayList<>();
 
-    public PreEvaluationListAdapter(Context context) {
+    public PreEvaluationListNotPassAdapter(Context context) {
         mContext = context;
     }
 
@@ -61,7 +61,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         PreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
-                    R.layout.status_list_preevalution_item);
+                    R.layout.status_list_preevalution_notpass_item);
         }
 
         convertView.setOnClickListener(this);
@@ -76,6 +76,9 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
+
+        TextView notPassTime = (TextView) convertView.findViewById(R.id.carNotPassTime);
+        notPassTime.setText(mContext.getString(R.string.list_item_notpass_time) + " " + carbill.modifyTime);
         return convertView;
     }
 

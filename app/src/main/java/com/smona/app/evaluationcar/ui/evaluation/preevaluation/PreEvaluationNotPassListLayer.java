@@ -33,7 +33,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
 
     private static final int PAGE_SIZE = 10;
 
-    private PreEvaluationListView mListView = null;
+    private PreEvaluationNotPassListView mListView = null;
     private View mNoDataLayout = null;
     private View mLoadingView = null;
     private View mHeadView;
@@ -102,7 +102,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mListView = (PreEvaluationListView) findViewById(R.id.local_listview);
+        mListView = (PreEvaluationNotPassListView) findViewById(R.id.local_listview);
         mListView.setOnRequestFace(this);
         mNoDataLayout = findViewById(R.id.no_content_layout);
         mLoadingView = findViewById(R.id.loading);
@@ -117,6 +117,8 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = PAGE_SIZE;
+            mRequestParams.status = "-1";
+            mRequestParams.type = "routine";
         }
     }
 
