@@ -35,6 +35,8 @@ import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +109,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         textStatus.setText(mContext.getString(R.string.status_bill_progress) + " " + StatusUtils.PREBILL_STATUS_MAP.get(carbill.status));
 
         View changeCarBill = convertView.findViewById(R.id.btnSubmitCarbill);
-        ViewUtil.setViewVisible(changeCarBill, StatusUtils.isPrePass(carbill.status));
+        ViewUtil.setViewVisible(changeCarBill, StatusUtils.isPrePass(carbill.status) && TextUtils.isEmpty(carbill.normalCarBillId));
         changeCarBill.setOnClickListener(this);
         changeCarBill.setTag(carbill);
 
@@ -189,7 +191,6 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         public void onSuccess(String content) {
             CarLog.d(TAG, "mGetCarBillCallback onSuccess: " + content);
             CarBillBean bean = JsonParse.parseJson(content, CarBillBean.class);
-            bean.carBillId = bean.normalCarBillId;
             closeDialog();
             saveToDB(bean);
             ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, bean.carBillId, bean.imageId, bean.leaseTerm != 0, EvaluationActivity.class);

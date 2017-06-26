@@ -84,6 +84,7 @@ public class UrlConstants {
         INTEFACES.put(QUERY_QUICKPREEVALUATION_DETAIL, "/external/app/getAppDetailPreCarBill.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_REPORT, "/external/app/getPreCarBillReport.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_POST, "/external/app/postPreCarBill2Normal.html");
+        INTEFACES.put(QUERY_QUICKPREEVALUATION_IMAGE, "/external/app/getAppPreBillImageList.html");
 
         INTEFACES.put(QUERY_CARBILL, "/external/app/getAppDetailCarBill.html");
 
