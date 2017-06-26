@@ -10,7 +10,7 @@ public class CarLog {
     private static final String TAG = "CarLog";
 
     public static void d(Object clazz, Object msg) {
-        Log.d(TAG, clazz + ": " + msg);
+        Log.e(TAG, clazz + ": " + msg);
     }
 
     public static void i(Object clazz, Object msg) {

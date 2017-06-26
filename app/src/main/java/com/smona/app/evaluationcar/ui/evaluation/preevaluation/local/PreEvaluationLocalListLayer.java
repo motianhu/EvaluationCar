@@ -15,7 +15,6 @@ import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
-import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -30,7 +29,7 @@ import java.util.List;
  */
 
 public class PreEvaluationLocalListLayer extends PullToRefreshLayout implements RequestFace {
-    private static final String TAG = LocalLayer.class.getSimpleName();
+    private static final String TAG = PreEvaluationLocalListLayer.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
     private PreEvaluationLocalListView mLocalListView = null;
     private View mNoDataLayout = null;
@@ -84,7 +83,7 @@ public class PreEvaluationLocalListLayer extends PullToRefreshLayout implements 
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void reloadDBData(PreLocalStatusSubEvent event) {
-        CarLog.d(TAG, "LocalStatusSubEvent event.getTag()=" + event.getTag());
+        CarLog.d(TAG, "PreLocalStatusSubEvent event.getTag()=" + event.getTag());
         if (PreLocalStatusSubEvent.TAG_ADD_CARBILL.equals(event.getTag())) {
             mLocalListView.clear();
             mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -108,7 +107,7 @@ public class PreEvaluationLocalListLayer extends PullToRefreshLayout implements 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PreLocalStatusEvent event) {
-        CarLog.d(TAG, "LocalStatusEvent event.getTag()=" + event.getTag() + "; mPullRequest=" + mPullRequest);
+        CarLog.d(TAG, "PreLocalStatusEvent event.getTag()=" + event.getTag() + "; mPullRequest=" + mPullRequest);
         List<QuickPreCarBillBean> deltaList = (List<QuickPreCarBillBean>) event.getContent();
         if (deltaList != null) {
             mLocalListView.update(deltaList, mTag);

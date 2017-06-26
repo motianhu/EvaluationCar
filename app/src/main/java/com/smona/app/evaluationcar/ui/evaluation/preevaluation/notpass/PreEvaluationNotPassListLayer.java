@@ -31,7 +31,7 @@ import java.util.List;
  */
 
 public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implements RequestFace {
-    public static final String TAG = PullToRefreshLayout.class.getSimpleName();
+    public static final String TAG = PreEvaluationNotPassListLayer.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
 
     private PreEvaluationNotPassListView mListView = null;

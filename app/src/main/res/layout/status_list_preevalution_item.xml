@@ -15,7 +15,7 @@
         android:id="@+id/status_list_item_arrow"
         style="@style/setting_item_arrow_style" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
@@ -29,7 +29,16 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="14sp" />
-    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSubmitCarbill"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:textSize="14sp"
+            android:text="@string/submit_evaluation"/>
+    </RelativeLayout>
 
 
 

@@ -40,7 +40,9 @@ public class UrlConstants {
     public static final int QUERY_QUICKPREEVALUATION_DETAIL = 24;
     public static final int QUERY_QUICKPREEVALUATION_REPORT = 25;
     public static final int QUERY_QUICKPREEVALUATION_IMAGE = 26;
+    public static final int QUERY_QUICKPREEVALUATION_POST = 27;
 
+    public static final int QUERY_CARBILL = 27;
 
     public static final int REGISTRE = 100;
 
@@ -82,7 +84,9 @@ public class UrlConstants {
         INTEFACES.put(SUBMIT_QUICKPREEVALUATION_IMAGE, "/external/app/addAppPreCarImage.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_DETAIL, "/external/app/getAppDetailPreCarBill.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_REPORT, "/external/app/getPreCarBillReport.html");
-        INTEFACES.put(QUERY_QUICKPREEVALUATION_IMAGE, "/external/app/getAppPreBillImageList.html");
+        INTEFACES.put(QUERY_QUICKPREEVALUATION_POST, "/external/app/postPreCarBill2Normal.html");
+
+        INTEFACES.put(QUERY_CARBILL, "/external/app/getAppDetailPreCarBill.html");
 
         INTEFACES.put(GET_AUTO_LOGOS, "/external/source/autologos/");
         INTEFACES.put(REGISTRE, "/view/common/register.jsp");

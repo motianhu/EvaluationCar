@@ -7,7 +7,6 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
-import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
@@ -32,7 +31,7 @@ import java.util.List;
  */
 
 public class PreEvaluationPassListLayer extends PullToRefreshLayout implements RequestFace {
-
+    private static final String TAG = PreEvaluationPassListLayer.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
 
     private PreEvaluationListView mListView = null;

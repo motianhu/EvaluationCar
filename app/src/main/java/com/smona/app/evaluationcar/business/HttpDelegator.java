@@ -153,6 +153,13 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
+    public void queryCarBillForId(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_CARBILL);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
+
     //Notice
     public void requestNotice() {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
@@ -229,26 +236,6 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void queryPreCarbillList(CarbillParam param, ResponseCallback<String> callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_LIST);
-        params.addParameter("userName", param.userName);
-        params.addParameter("curPage", param.curPage);
-        params.addParameter("pageSize", param.pageSize);
-        params.addParameter("status", param.status);
-        params.addParameter("carBillType", param.type);
-        x.http().get(params, callback);
-    }
-
-    public void submitQuickPreCallBill(String userName, QuickPreCarBillBean bean, ResponseCallback<String> callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
-        params.addParameter("createUser", userName);
-        params.addParameter("clientName", "android");
-        params.addParameter("createTime", bean.createTime);
-        params.addParameter("mark", bean.mark);
-        params.addParameter("carBillType", "routine");
-        x.http().get(params, callback);
-    }
-
     public void queryPageElementLatest() {
         ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_LATEST);
         params.addParameter("classType", "轮播图");
@@ -288,10 +275,23 @@ public class HttpDelegator implements IProxy {
     }
 
     //quick pre evaluation
-    public void getQuickPreCarbillImages(String userName, String carBillId, ResponseCallback callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
-        params.addParameter("userName", userName);
-        params.addParameter("carBillId", carBillId);
+    public void queryPreCarbillList(CarbillParam param, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_LIST);
+        params.addParameter("userName", param.userName);
+        params.addParameter("curPage", param.curPage);
+        params.addParameter("pageSize", param.pageSize);
+        params.addParameter("status", param.status);
+        params.addParameter("carBillType", param.type);
+        x.http().get(params, callback);
+    }
+
+    public void submitQuickPreCallBill(String userName, QuickPreCarBillBean bean, ResponseCallback<String> callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
+        params.addParameter("createUser", userName);
+        params.addParameter("clientName", "android");
+        params.addParameter("createTime", bean.createTime);
+        params.addParameter("mark", bean.mark);
+        params.addParameter("carBillType", "routine");
         x.http().get(params, callback);
     }
 
@@ -320,5 +320,10 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-
+    public void submitChangeCarBil(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_POST);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
 }

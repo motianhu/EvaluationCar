@@ -178,6 +178,10 @@
     <string name="html_title_news">新闻详情</string>
     <string name="html_title_report">报告详情</string>
 
+    <string name="submit_evaluation">提交正式评估</string>
+    <string name="submit_evaluation_title">提交正式评估</string>
+    <string name="submit_evaluation_waiting">正在提交正式评估中，请稍后</string>
+    <string name="submit_evaluation_failed">提交正式评估失败！</string>
 
     <!--more news-->
     <string name="more_news">所有新闻</string>
