@@ -181,10 +181,10 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
         if (TextUtils.isEmpty(mQuickPreCarBillId)) {
             return;
         }
-        HttpDelegator.getInstance().getQuickPreCarbillImages(mUserItem.mId, mQuickPreCarBillId, new ResponseCallback<String>() {
+        HttpDelegator.getInstance().getQuickPreImage(mUserItem.mId, mQuickPreCarBillId, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                CarLog.d(TAG, "getCarbillImages onSuccess: " + result);
+                CarLog.d(TAG, "getQuickPreImage onSuccess: " + result);
                 ResQuickPreCarImagePage resp = JsonParse.parseJson(result, ResQuickPreCarImagePage.class);
                 if (resp.total > 0) {
                     QuickPreCarImageBean tempBean = null;

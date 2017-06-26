@@ -312,4 +312,13 @@ public class HttpDelegator implements IProxy {
         params.addBodyParameter("image", new File(bean.imageLocalUrl));
         x.http().post(params, callback);
     }
+
+    public void getQuickPreImage(String userName, String carBillId, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_IMAGE);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        x.http().get(params, callback);
+    }
+
+
 }

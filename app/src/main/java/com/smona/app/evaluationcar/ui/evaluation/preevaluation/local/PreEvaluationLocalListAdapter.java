@@ -66,7 +66,7 @@ public class PreEvaluationLocalListAdapter extends BaseAdapter implements View.O
         QuickPreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
-                    R.layout.status_list_local_item);
+                    R.layout.status_list_preevalution_local_item);
         }
 
         convertView.setOnClickListener(this);
