@@ -7,13 +7,16 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.event.PreCarbillNotPassEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResPreCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
@@ -60,6 +63,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
             } else {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -140,7 +144,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PreCarbillNotPassEvent event) {
-        List<PreCarBillBean> deltaList = (List<PreCarBillBean>) event.getContent();
+        List<QuickPreCarBillBean> deltaList = (List<QuickPreCarBillBean>) event.getContent();
         CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mListView.update(deltaList, mTag);
@@ -174,7 +178,23 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
         }
     }
 
-    private void notifyUpdateUI(List<PreCarBillBean> deltaList) {
+    private void saveToDB(List<QuickPreCarBillBean> deltaList) {
+        if (deltaList == null || deltaList.size() == 0) {
+            return;
+        }
+        for (QuickPreCarBillBean bean : deltaList) {
+            QuickPreCarBillBean temp = DBDelegator.getInstance().queryQuickPreCarBill(bean.carBillId);
+            if (temp == null) {
+                DBDelegator.getInstance().insertQuickPreCarBill(bean);
+            } else {
+                bean.imageId = temp.imageId;
+                bean.uploadStatus = temp.uploadStatus;
+                DBDelegator.getInstance().updateQuickPreCarBill(bean);
+            }
+        }
+    }
+
+    private void notifyUpdateUI(List<QuickPreCarBillBean> deltaList) {
         PreCarbillNotPassEvent event = new PreCarbillNotPassEvent();
         event.setContent(deltaList);
         EventProxy.post(event);

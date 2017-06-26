@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
@@ -30,7 +30,7 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
-    private List<PreCarBillBean> mDataList = new ArrayList<>();
+    private List<QuickPreCarBillBean> mDataList = new ArrayList<>();
 
     public PreEvaluationListNotPassAdapter(Context context) {
         mContext = context;
@@ -61,7 +61,7 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        PreCarBillBean carbill = mDataList.get(position);
+        QuickPreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
                     R.layout.status_list_preevalution_notpass_item);
@@ -95,8 +95,8 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if (tag instanceof PreCarBillBean) {
-            PreCarBillBean info = (PreCarBillBean) tag;
+        if (tag instanceof QuickPreCarBillBean) {
+            QuickPreCarBillBean info = (QuickPreCarBillBean) tag;
             ActivityUtils.jumpQuickPreEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, info.carBillId, 0, QuickPreevaluationActivity.class);
         }
     }

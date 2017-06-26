@@ -7,7 +7,7 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResPreCarBillPage;
@@ -140,7 +140,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void update(PreCarbillEvent event) {
-        List<PreCarBillBean> deltaList = (List<PreCarBillBean>) event.getContent();
+        List<QuickPreCarBillBean> deltaList = (List<QuickPreCarBillBean>) event.getContent();
         CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
             mListView.update(deltaList, mTag);
@@ -174,7 +174,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
         }
     }
 
-    private void notifyUpdateUI(List<PreCarBillBean> deltaList) {
+    private void notifyUpdateUI(List<QuickPreCarBillBean> deltaList) {
         PreCarbillEvent event = new PreCarbillEvent();
         event.setContent(deltaList);
         EventProxy.post(event);

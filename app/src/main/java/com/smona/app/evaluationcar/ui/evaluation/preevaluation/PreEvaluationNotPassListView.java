@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -62,7 +63,7 @@ public class PreEvaluationNotPassListView extends PullableListView implements
         mFootView = ViewUtil.inflater(context, R.layout.refresh_foot_load);
     }
 
-    public void update(List<PreCarBillBean> deltaList, int tag) {
+    public void update(List<QuickPreCarBillBean> deltaList, int tag) {
         mListAdapter.update(deltaList);
         mListPullLoading = false;
         mTag = tag;

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
+import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -29,7 +29,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
-    private List<PreCarBillBean> mDataList = new ArrayList<>();
+    private List<QuickPreCarBillBean> mDataList = new ArrayList<>();
 
     public PreEvaluationListAdapter(Context context) {
         mContext = context;
@@ -60,7 +60,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        PreCarBillBean carbill = mDataList.get(position);
+        QuickPreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
                     R.layout.status_list_preevalution_item);
@@ -88,8 +88,8 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-        if (tag instanceof PreCarBillBean) {
-            PreCarBillBean info = (PreCarBillBean) tag;
+        if (tag instanceof QuickPreCarBillBean) {
+            QuickPreCarBillBean info = (QuickPreCarBillBean) tag;
             if(StatusUtils.isPrePass(info.status)) {
                 ActivityUtils.jumpReportWebActivity(mContext, info.carBillId);
             }
