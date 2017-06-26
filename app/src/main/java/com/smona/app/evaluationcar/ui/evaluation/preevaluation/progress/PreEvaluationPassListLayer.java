@@ -7,6 +7,7 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
+import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
@@ -14,6 +15,7 @@ import com.smona.app.evaluationcar.data.model.ResQuickPreCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
@@ -60,6 +62,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
             } else {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -171,6 +174,22 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
             mNoDataLayout.setVisibility(GONE);
             mFootView.setVisibility(VISIBLE);
             mHeadView.setVisibility(VISIBLE);
+        }
+    }
+
+    private void saveToDB(List<QuickPreCarBillBean> deltaList) {
+        if (deltaList == null || deltaList.size() == 0) {
+            return;
+        }
+        for (QuickPreCarBillBean bean : deltaList) {
+            QuickPreCarBillBean temp = DBDelegator.getInstance().queryQuickPreCarBill(bean.carBillId);
+            if (temp == null) {
+                DBDelegator.getInstance().insertQuickPreCarBill(bean);
+            } else {
+                bean.imageId = temp.imageId;
+                bean.uploadStatus = temp.uploadStatus;
+                DBDelegator.getInstance().updatePreCarBill(bean);
+            }
         }
     }
 
