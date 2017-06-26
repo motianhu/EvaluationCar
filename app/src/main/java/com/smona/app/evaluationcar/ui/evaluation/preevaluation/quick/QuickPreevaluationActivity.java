@@ -231,7 +231,7 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
         CarLog.d(TAG, "actionSubEvent action= " + action);
         if (action == TaskSubEvent.ACTION_TASK) {
             QuickPreCarBillBean bean = (QuickPreCarBillBean) event.obj;
-            if (statusIsNone()) {
+            if (statusIsReturn()) {
                 startTarkForReturn(bean);
             } else {
                 startTarkForSave(bean);
