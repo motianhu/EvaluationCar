@@ -6,5 +6,5 @@ import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
  * Created by motianhu on 4/7/17.
  */
 
-public class ResPreCarBillPage extends ResBasePage<QuickPreCarBillBean> {
+public class ResQuickPreCarBillPage extends ResBasePage<QuickPreCarBillBean> {
 }

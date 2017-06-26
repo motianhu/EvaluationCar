@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.local;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -12,10 +12,12 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.framework.upload.quick.QuickUploadTaskExecutor;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
-import com.smona.app.evaluationcar.util.UrlConstants;
+import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -25,14 +27,14 @@ import java.util.List;
  * Created by motianhu on 4/7/17.
  */
 
-public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View.OnClickListener {
-    private static final String TAG = PreEvaluationListNotPassAdapter.class.getSimpleName();
+public class PreEvaluationLocalListAdapter extends BaseAdapter implements View.OnClickListener, View.OnLongClickListener {
+    private static final String TAG = PreEvaluationLocalListAdapter.class.getSimpleName();
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
-    private List<QuickPreCarBillBean> mDataList = new ArrayList<>();
+    private List<QuickPreCarBillBean> mDataList = new ArrayList<QuickPreCarBillBean>();
 
-    public PreEvaluationListNotPassAdapter(Context context) {
+    public PreEvaluationLocalListAdapter(Context context) {
         mContext = context;
     }
 
@@ -64,14 +66,15 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
         QuickPreCarBillBean carbill = mDataList.get(position);
         if (convertView == null) {
             convertView = ViewUtil.inflater(mContext,
-                    R.layout.status_list_preevalution_notpass_item);
+                    R.layout.status_list_local_item);
         }
 
         convertView.setOnClickListener(this);
+        convertView.setOnLongClickListener(this);
         convertView.setTag(carbill);
 
         ImageView carImage = (ImageView) convertView.findViewById(R.id.carImage);
-        ImageLoaderProxy.loadCornerImage(UrlConstants.getProjectInterface() + carbill.imageThumbPath, carImage);
+        ImageLoaderProxy.loadCornerImage(carbill.imageThumbPath, carImage);
 
         TextView textNum = (TextView) convertView.findViewById(R.id.carNum);
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
@@ -80,16 +83,7 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 
-        TextView notPassTime = (TextView) convertView.findViewById(R.id.carNotPassTime);
-        notPassTime.setText(mContext.getString(R.string.list_item_notpass_time) + " " + carbill.modifyTime);
         return convertView;
-    }
-
-    private void setNameValue(View parent, String name, String value) {
-        TextView tvName = (TextView) parent.findViewById(R.id.name);
-        TextView tvValue = (TextView) parent.findViewById(R.id.value);
-        tvName.setText(name);
-        tvValue.setText(value);
     }
 
     @Override
@@ -97,7 +91,13 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
         Object tag = v.getTag();
         if (tag instanceof QuickPreCarBillBean) {
             QuickPreCarBillBean info = (QuickPreCarBillBean) tag;
-            ActivityUtils.jumpQuickPreEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, info.carBillId, 0, QuickPreevaluationActivity.class);
+            if (info.uploadStatus == StatusUtils.BILL_UPLOAD_STATUS_UPLOADING &&
+                    !TextUtils.isEmpty(info.carBillId) &&
+                    QuickUploadTaskExecutor.getInstance().isUploading(info.carBillId)) {
+                ToastUtils.show(mContext, R.string.uploading_no_action);
+            } else {
+                ActivityUtils.jumpQuickPreEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, 0, QuickPreevaluationActivity.class);
+            }
         }
     }
 
@@ -107,5 +107,12 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
 
     public void clear() {
         mDataList.clear();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        CarLog.d(TAG, "TAG " + v);
+        return false;
     }
 }

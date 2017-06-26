@@ -8,7 +8,6 @@ import android.view.View;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
-import com.smona.app.evaluationcar.ui.evaluation.preevaluation.simple.NormalPreevaluationActivity;
 import com.smona.app.evaluationcar.ui.status.StatusPagerAdapter;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -52,14 +51,17 @@ public class PreEvaluationActivity extends HeaderActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
+        View local = ViewUtil.inflater(this, R.layout.preevaluation_local_list_layer);
         View pass = ViewUtil.inflater(this, R.layout.preevaluation_pass_list_layer);
         View notpass = ViewUtil.inflater(this, R.layout.preevaluation_notpass_list_layer);
 
         List<View> viewList = new ArrayList<View>();
+        viewList.add(local);
         viewList.add(pass);
         viewList.add(notpass);
 
         List<String> titleList = new ArrayList<String>();
+        titleList.add(this.getResources().getString(R.string.evalution_pre_status_local));
         titleList.add(this.getResources().getString(R.string.evalution_pre_status_pass));
         titleList.add(this.getResources().getString(R.string.evalution_pre_status_notpass));
 
@@ -75,7 +77,6 @@ public class PreEvaluationActivity extends HeaderActivity {
         findViewById(R.id.normal_preeva).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtils.jumpOnlyActivity(PreEvaluationActivity.this, NormalPreevaluationActivity.class);
             }
         });
 

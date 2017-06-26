@@ -133,6 +133,7 @@
     <string name="evalution_pre_quick">快速预评估</string>
     <string name="evalution_pre_status_notpass">驳回</string>
     <string name="evalution_pre_status_pass">进度列表</string>
+    <string name="evalution_pre_status_local">未提交</string>
 
     <string name="evalution_car_type">车型</string>
 

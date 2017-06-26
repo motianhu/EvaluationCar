@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.progress;
 
 
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
 import com.smona.app.evaluationcar.ui.status.RequestFace;

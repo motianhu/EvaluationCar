@@ -5,7 +5,6 @@ import android.content.Context;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.data.bean.ImageMetaBean;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.framework.provider.dao.BaseDao;
@@ -201,10 +200,10 @@ public class DBDelegator {
 
 
     //Upload Task
-    public List<PreCarBillBean> queryUploadTask(String carBillId) {
-        BaseDao<PreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
+    public List<QuickPreCarBillBean> queryUploadTask(String carBillId) {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_UPLOADTASK);
         String select = CarImageTable.CARBILLID + "=" + carBillId;
-        List<PreCarBillBean> list = dao.getResult(select, null, null);
+        List<QuickPreCarBillBean> list = dao.getResult(select, null, null);
         return list;
     }
 
@@ -243,13 +242,21 @@ public class DBDelegator {
 
     public QuickPreCarBillBean queryLocalQuickPreCarbill(int imageId) {
         BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
-        String select = CarBillTable.IMAGEID + "=" + imageId;
+        String select = QuickPreCarBillTable.IMAGEID + "=" + imageId;
         List<QuickPreCarBillBean> list = dao.getResult(select, null, null);
         if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
             return null;
         }
+    }
+
+    public List<QuickPreCarBillBean> queryLocalQuickPreCarbill(int curPage, int pageSize) {
+        BaseDao<QuickPreCarBillBean> dao = DaoFactory.buildDaoEntry(mAppContext, DaoFactory.TYPE_QUICKPRECARBILL);
+        String select = QuickPreCarBillTable.BILLSTATUS + " =0 and " + CarBillTable.IMAGEID + " >0";
+        String order = QuickPreCarBillTable.CREATETIME + " desc limit " + (curPage - 1) * pageSize + "," + pageSize;
+        List<QuickPreCarBillBean> list = dao.getResult(select, null, order);
+        return list;
     }
 
     public boolean insertQuickPreCarBill(QuickPreCarBillBean bean) {

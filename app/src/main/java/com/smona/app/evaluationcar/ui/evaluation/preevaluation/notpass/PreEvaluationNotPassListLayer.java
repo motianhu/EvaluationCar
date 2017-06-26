@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.notpass;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,12 +8,13 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
-import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
+import com.smona.app.evaluationcar.data.event.PreCarbillNotPassEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
-import com.smona.app.evaluationcar.data.model.ResPreCarBillPage;
+import com.smona.app.evaluationcar.data.model.ResQuickPreCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
@@ -29,11 +30,11 @@ import java.util.List;
  * Created by motianhu on 4/15/17.
  */
 
-public class PreEvaluationPassListLayer extends PullToRefreshLayout implements RequestFace {
-
+public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implements RequestFace {
+    public static final String TAG = PullToRefreshLayout.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
 
-    private PreEvaluationListView mListView = null;
+    private PreEvaluationNotPassListView mListView = null;
     private View mNoDataLayout = null;
     private View mLoadingView = null;
     private View mHeadView;
@@ -48,7 +49,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
         public void onFailed(String error) {
             mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
             CarLog.d(TAG, "error: " + error);
-            PreCarbillEvent event = new PreCarbillEvent();
+            PreCarbillNotPassEvent event = new PreCarbillNotPassEvent();
             event.setContent(null);
             EventProxy.post(event);
         }
@@ -56,10 +57,11 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
         @Override
         public void onSuccess(String content) {
             CarLog.d(TAG, "onSuccess: " + content);
-            ResPreCarBillPage pages = JsonParse.parseJson(content, ResPreCarBillPage.class);
+            ResQuickPreCarBillPage pages = JsonParse.parseJson(content, ResQuickPreCarBillPage.class);
             int total = mRequestParams.curPage * mRequestParams.pageSize;
             if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
+                saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
             } else {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -84,17 +86,17 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
         }
     };
 
-    public PreEvaluationPassListLayer(Context context) {
+    public PreEvaluationNotPassListLayer(Context context) {
         super(context);
         initRequestParams();
     }
 
-    public PreEvaluationPassListLayer(Context context, AttributeSet attrs) {
+    public PreEvaluationNotPassListLayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         initRequestParams();
     }
 
-    public PreEvaluationPassListLayer(Context context, AttributeSet attrs, int defStyle) {
+    public PreEvaluationNotPassListLayer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initRequestParams();
     }
@@ -102,7 +104,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mListView = (PreEvaluationListView) findViewById(R.id.local_listview);
+        mListView = (PreEvaluationNotPassListView) findViewById(R.id.local_listview);
         mListView.setOnRequestFace(this);
         mNoDataLayout = findViewById(R.id.no_content_layout);
         mLoadingView = findViewById(R.id.loading);
@@ -117,7 +119,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = PAGE_SIZE;
-            mRequestParams.status = "0,1,2";
+            mRequestParams.status = "-1";
             mRequestParams.type = "routine";
         }
     }
@@ -139,7 +141,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(PreCarbillEvent event) {
+    public void update(PreCarbillNotPassEvent event) {
         List<QuickPreCarBillBean> deltaList = (List<QuickPreCarBillBean>) event.getContent();
         CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
@@ -174,8 +176,24 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
         }
     }
 
+    private void saveToDB(List<QuickPreCarBillBean> deltaList) {
+        if (deltaList == null || deltaList.size() == 0) {
+            return;
+        }
+        for (QuickPreCarBillBean bean : deltaList) {
+            QuickPreCarBillBean temp = DBDelegator.getInstance().queryQuickPreCarBill(bean.carBillId);
+            if (temp == null) {
+                DBDelegator.getInstance().insertQuickPreCarBill(bean);
+            } else {
+                bean.imageId = temp.imageId;
+                bean.uploadStatus = temp.uploadStatus;
+                DBDelegator.getInstance().updateQuickPreCarBill(bean);
+            }
+        }
+    }
+
     private void notifyUpdateUI(List<QuickPreCarBillBean> deltaList) {
-        PreCarbillEvent event = new PreCarbillEvent();
+        PreCarbillNotPassEvent event = new PreCarbillNotPassEvent();
         event.setContent(deltaList);
         EventProxy.post(event);
     }

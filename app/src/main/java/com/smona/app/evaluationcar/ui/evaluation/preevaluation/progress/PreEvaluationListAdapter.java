@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.progress;
 
 import android.content.Context;
 import android.text.TextUtils;

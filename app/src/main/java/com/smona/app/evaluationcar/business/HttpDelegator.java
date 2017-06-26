@@ -9,7 +9,6 @@ import com.smona.app.evaluationcar.business.param.PageParam;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
 import com.smona.app.evaluationcar.data.bean.CarImageBean;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.data.model.ResNewsPage;
@@ -237,21 +236,6 @@ public class HttpDelegator implements IProxy {
         params.addParameter("pageSize", param.pageSize);
         params.addParameter("status", param.status);
         params.addParameter("carBillType", param.type);
-        x.http().get(params, callback);
-    }
-
-    public void submitPreCallBill(String userName, PreCarBillBean bean, ResponseCallback<String> callback) {
-        ReqParams params = createParams(UrlConstants.QUERY_PREEVALUATION_SUBMIT);
-        params.addParameter("carTypeId", bean.carTypeId);
-        params.addParameter("createUser", userName);
-        params.addParameter("cityId", bean.cityId);
-        params.addParameter("color", bean.color);
-        params.addParameter("regDate", bean.regDate);
-        params.addParameter("clientName", "android");
-        params.addParameter("createTime", bean.createTime);
-        params.addParameter("runNum", bean.runNum);
-        params.addParameter("mark", bean.mark);
-        params.addParameter("carBillType", bean.carBillType);
         x.http().get(params, callback);
     }
 

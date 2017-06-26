@@ -1,4 +1,4 @@
-package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
+package com.smona.app.evaluationcar.ui.evaluation.preevaluation.local;
 
 
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
-import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.ui.common.refresh.PullableListView;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
@@ -18,11 +17,11 @@ import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.List;
 
-public class PreEvaluationNotPassListView extends PullableListView implements
+public class PreEvaluationLocalListView extends PullableListView implements
         OnScrollListener {
 
-    private static final String TAG = PreEvaluationNotPassListView.class.getSimpleName();
-    private PreEvaluationListNotPassAdapter mListAdapter = null;
+    private static final String TAG = PreEvaluationLocalListView.class.getSimpleName();
+    private PreEvaluationLocalListAdapter mListAdapter = null;
     private int mLastItem;
     private int mCurrentFirstVisibleIndex = 0;
     private int mCurrentVisibleCount = 0;
@@ -36,18 +35,18 @@ public class PreEvaluationNotPassListView extends PullableListView implements
     private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
     private RequestFace mRequestFace;
 
-    public PreEvaluationNotPassListView(Context context) {
+    public PreEvaluationLocalListView(Context context) {
         super(context);
         init(context);
     }
 
-    public PreEvaluationNotPassListView(Context context, AttributeSet attrs) {
+    public PreEvaluationLocalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public PreEvaluationNotPassListView(Context context, AttributeSet attrs,
-                                        int defStyle) {
+    public PreEvaluationLocalListView(Context context, AttributeSet attrs,
+                                      int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -57,7 +56,7 @@ public class PreEvaluationNotPassListView extends PullableListView implements
     }
 
     private void init(Context context) {
-        mListAdapter = new PreEvaluationListNotPassAdapter(context);
+        mListAdapter = new PreEvaluationLocalListAdapter(context);
         setOnScrollListener(this);
         setAdapter(mListAdapter);
         mFootView = ViewUtil.inflater(context, R.layout.refresh_foot_load);
