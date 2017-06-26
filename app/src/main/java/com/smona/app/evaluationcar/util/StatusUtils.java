@@ -59,9 +59,13 @@ public class StatusUtils {
     //prevaluation
     public static final HashMap<Integer, String> PREBILL_STATUS_MAP = new HashMap<Integer, String>();
     static {
-        BILL_STATUS_MAP.put(-1, "驳回");
-        BILL_STATUS_MAP.put(0, "审核中");
-        BILL_STATUS_MAP.put(1, "通过");
-        BILL_STATUS_MAP.put(2, "已推送");
+        PREBILL_STATUS_MAP.put(-1, "驳回");
+        PREBILL_STATUS_MAP.put(0, "审核中");
+        PREBILL_STATUS_MAP.put(1, "通过");
+        PREBILL_STATUS_MAP.put(2, "已推送");
+    }
+
+    public static boolean isPrePass(int status) {
+        return status == 1 || status == 2;
     }
 }

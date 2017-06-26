@@ -197,4 +197,8 @@ public class DataDelegator {
     public void submitQuickPreCallBill(String userName, QuickPreCarBillBean bean, ResponseCallback<String> callback) {
         HttpDelegator.getInstance().submitQuickPreCallBill(userName, bean, callback);
     }
+
+    public void getPreCarBillDetail(String userName, String carBillId, ResponseCallback callback) {
+        HttpDelegator.getInstance().getPreCarBillDetail(userName, carBillId, callback);
+    }
 }

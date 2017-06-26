@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.data.bean.CarImageBean;
 import com.smona.app.evaluationcar.service.QuickUploadService;
 import com.smona.app.evaluationcar.service.UploadService;
 import com.smona.app.evaluationcar.ui.WebActivity;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.ReportWebActivity;
 
 /**
  * Created by motianhu on 2/27/17.
@@ -104,6 +105,13 @@ public class ActivityUtils {
         SPUtil.put(context, CacheContants.QUICK_CARBILLID, carBillId);
         SPUtil.put(context, CacheContants.QUICK_IMAGEID, imageId);
         intent.setClass(context, clazz);
+        context.startActivity(intent);
+    }
+
+    public static void jumpReportWebActivity(Context context, String id) {
+        Intent intent = new Intent();
+        intent.putExtra(CacheContants.WEB_ACTIVITY_TYPE, id);
+        intent.setClass(context, ReportWebActivity.class);
         context.startActivity(intent);
     }
 

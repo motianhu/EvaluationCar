@@ -24,6 +24,7 @@
             android:drawableTop="@drawable/carquery"
             android:gravity="center_horizontal"
             android:text="@string/evalution_pre_normal"
+            android:visibility="gone"
             android:textSize="14sp" />
 
         <TextView

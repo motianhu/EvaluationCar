@@ -101,6 +101,7 @@
     <string name="status_apply_all_opinion">全部意见:</string>
 
     <string name="evaluation_submit_tips">正在后台上传,稍后请到审核中查看！</string>
+    <string name="preevaluation_submit_tips">正在后台上传,稍后请到进度列表中查看！</string>
 
 
     <string name="search_title">搜&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;索</string>
@@ -174,6 +175,7 @@
 
     <string name="html_title_banner">活动详情</string>
     <string name="html_title_news">新闻详情</string>
+    <string name="html_title_report">报告详情</string>
 
 
     <!--more news-->

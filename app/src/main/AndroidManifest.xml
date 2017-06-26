@@ -64,6 +64,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.evaluation.preevaluation.ReportWebActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".ui.home.more.MoreNewsActivity"

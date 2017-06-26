@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick.QuickPreevaluationActivity;
+import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -92,7 +95,10 @@ public class PreEvaluationListNotPassAdapter extends BaseAdapter implements View
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-
+        if (tag instanceof PreCarBillBean) {
+            PreCarBillBean info = (PreCarBillBean) tag;
+            ActivityUtils.jumpQuickPreEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, info.carBillId, 0, QuickPreevaluationActivity.class);
+        }
     }
 
     protected void setScrollState(int state) {

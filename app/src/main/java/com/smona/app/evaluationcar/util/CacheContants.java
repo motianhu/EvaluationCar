@@ -40,4 +40,6 @@ public class CacheContants {
     public static final int TYPE_NEWS = 2;
     public static final String WEB_ACTIVITY_TYPE = "web_activity_content_type";
     public static final String PAGE_ELEMENT_ID = "page_element_id";
+
+    public static final String WEB_PRE_REPORT = "web_pre_report";
 }

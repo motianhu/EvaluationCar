@@ -38,10 +38,17 @@
         android:paddingBottom="5dp">
 
         <TextView
-            android:id="@+id/carTime"
+            android:id="@+id/carStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/carTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="12sp" />
     </LinearLayout>
 

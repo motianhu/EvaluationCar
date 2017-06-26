@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
+import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
@@ -76,20 +78,22 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
-        return convertView;
-    }
 
-    private void setNameValue(View parent, String name, String value) {
-        TextView tvName = (TextView) parent.findViewById(R.id.name);
-        TextView tvValue = (TextView) parent.findViewById(R.id.value);
-        tvName.setText(name);
-        tvValue.setText(value);
+        TextView textStatus = (TextView) convertView.findViewById(R.id.carStatus);
+        textStatus.setText(mContext.getString(R.string.status_bill_progress) + " " + StatusUtils.PREBILL_STATUS_MAP.get(carbill.status));
+
+        return convertView;
     }
 
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
-
+        if (tag instanceof PreCarBillBean) {
+            PreCarBillBean info = (PreCarBillBean) tag;
+            if(StatusUtils.isPrePass(info.status)) {
+                ActivityUtils.jumpReportWebActivity(mContext, info.carBillId);
+            }
+        }
     }
 
     protected void setScrollState(int state) {

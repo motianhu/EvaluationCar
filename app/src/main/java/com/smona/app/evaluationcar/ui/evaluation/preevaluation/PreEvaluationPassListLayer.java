@@ -117,7 +117,7 @@ public class PreEvaluationPassListLayer extends PullToRefreshLayout implements R
             mRequestParams.userName = user.mId;
             mRequestParams.curPage = 1;
             mRequestParams.pageSize = PAGE_SIZE;
-            mRequestParams.status = "0,1";
+            mRequestParams.status = "0,1,2";
             mRequestParams.type = "routine";
         }
     }

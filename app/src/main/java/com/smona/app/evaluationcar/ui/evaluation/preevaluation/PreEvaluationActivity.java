@@ -60,8 +60,8 @@ public class PreEvaluationActivity extends HeaderActivity {
         viewList.add(notpass);
 
         List<String> titleList = new ArrayList<String>();
-        titleList.add(this.getResources().getString(R.string.evalution_pre_status_notpass));
         titleList.add(this.getResources().getString(R.string.evalution_pre_status_pass));
+        titleList.add(this.getResources().getString(R.string.evalution_pre_status_notpass));
 
         StatusPagerAdapter pagerAdapter = new StatusPagerAdapter(titleList, viewList);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);

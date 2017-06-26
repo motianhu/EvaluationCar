@@ -316,7 +316,7 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
     }
 
     private void runFinish() {
-        ToastUtils.show(this, R.string.evaluation_submit_tips);
+        ToastUtils.show(this, R.string.preevaluation_submit_tips);
         finish();
     }
 

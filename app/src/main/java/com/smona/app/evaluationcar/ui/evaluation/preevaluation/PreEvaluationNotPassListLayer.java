@@ -8,7 +8,7 @@ import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.CarbillParam;
 import com.smona.app.evaluationcar.data.bean.PreCarBillBean;
-import com.smona.app.evaluationcar.data.event.PreCarbillEvent;
+import com.smona.app.evaluationcar.data.event.PreCarbillNotPassEvent;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResPreCarBillPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 
 public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implements RequestFace {
-
+    public static final String TAG = PullToRefreshLayout.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
 
     private PreEvaluationNotPassListView mListView = null;
@@ -48,7 +48,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
         public void onFailed(String error) {
             mTag = StatusUtils.MESSAGE_REQUEST_ERROR;
             CarLog.d(TAG, "error: " + error);
-            PreCarbillEvent event = new PreCarbillEvent();
+            PreCarbillNotPassEvent event = new PreCarbillNotPassEvent();
             event.setContent(null);
             EventProxy.post(event);
         }
@@ -139,7 +139,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(PreCarbillEvent event) {
+    public void update(PreCarbillNotPassEvent event) {
         List<PreCarBillBean> deltaList = (List<PreCarBillBean>) event.getContent();
         CarLog.d(TAG, "update " + deltaList + ", mPullRequest: " + mPullRequest + ", mTag: " + mTag);
         if (deltaList != null) {
@@ -175,7 +175,7 @@ public class PreEvaluationNotPassListLayer extends PullToRefreshLayout implement
     }
 
     private void notifyUpdateUI(List<PreCarBillBean> deltaList) {
-        PreCarbillEvent event = new PreCarbillEvent();
+        PreCarbillNotPassEvent event = new PreCarbillNotPassEvent();
         event.setContent(deltaList);
         EventProxy.post(event);
     }
