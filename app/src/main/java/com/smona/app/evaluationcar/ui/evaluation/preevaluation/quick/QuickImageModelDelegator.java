@@ -162,7 +162,7 @@ public class QuickImageModelDelegator {
             index = 2;
             bean.imageClass = getImageClassForType(IMAGE_VehicleInterior);
             bean.displayName = getDisplayName(IMAGE_VehicleInterior, index);
-            bean.imageSeqNum = index + 1;
+            bean.imageSeqNum = index;
             defaultList.add(bean);
 
 
@@ -171,7 +171,7 @@ public class QuickImageModelDelegator {
             index = 0;
             bean.imageClass = getImageClassForType(IMAGE_CarBody);
             bean.displayName = getDisplayName(IMAGE_CarBody, index);
-            bean.imageSeqNum = index + 1;
+            bean.imageSeqNum = index;
             defaultList.add(bean);
         } else {
             //行驶证
@@ -179,7 +179,7 @@ public class QuickImageModelDelegator {
             index = 0;
             bean.imageClass = getImageClassForType(IMAGE_DrivingLicense);
             bean.displayName = getDisplayName(IMAGE_DrivingLicense, index);
-            bean.imageSeqNum = index + 1;
+            bean.imageSeqNum = index;
             defaultList.add(bean);
 
             //左前门
@@ -187,7 +187,7 @@ public class QuickImageModelDelegator {
             index = 5;
             bean.imageClass = getImageClassForType(IMAGE_CarFrame);
             bean.displayName = getDisplayName(IMAGE_CarFrame, index);
-            bean.imageSeqNum = index + 1;
+            bean.imageSeqNum = index;
             defaultList.add(bean);
         }
         return defaultList;

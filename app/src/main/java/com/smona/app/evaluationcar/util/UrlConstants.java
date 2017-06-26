@@ -41,8 +41,7 @@ public class UrlConstants {
     public static final int QUERY_QUICKPREEVALUATION_REPORT = 25;
     public static final int QUERY_QUICKPREEVALUATION_IMAGE = 26;
     public static final int QUERY_QUICKPREEVALUATION_POST = 27;
-
-    public static final int QUERY_CARBILL = 27;
+    public static final int QUERY_CARBILL = 28;
 
     public static final int REGISTRE = 100;
 

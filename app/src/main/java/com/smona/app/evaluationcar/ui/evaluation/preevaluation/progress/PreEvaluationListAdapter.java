@@ -159,14 +159,14 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
     private ResponseCallback<String> mChangeCarBillCallBack = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
-            CarLog.d(TAG, "error: " + error);
+            CarLog.d(TAG, "mChangeCarBillCallBack onFailed error: " + error);
             closeDialog();
             ToastUtils.show(mContext, R.string.submit_evaluation_failed);
         }
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess: " + content);
+            CarLog.d(TAG, "mChangeCarBillCallBack onSuccess: " + content);
             ResBaseModel resModel = JsonParse.parseJson(content, ResBaseModel.class);
             if(resModel.success) {
                 HttpDelegator.getInstance().queryCarBillForId(mUserItem.mId, (String)resModel.object, mGetCarBillCallback);
@@ -180,22 +180,19 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
     private ResponseCallback<String> mGetCarBillCallback = new ResponseCallback<String>() {
         @Override
         public void onFailed(String error) {
-            CarLog.d(TAG, "error: " + error);
+            CarLog.d(TAG, "mGetCarBillCallback onFailed error: " + error);
+            closeDialog();
             ToastUtils.show(mContext, R.string.submit_evaluation_failed);
         }
 
         @Override
         public void onSuccess(String content) {
-            CarLog.d(TAG, "onSuccess: " + content);
-            ResCarBillModel resModel = JsonParse.parseJson(content, ResCarBillModel.class);
-            if(resModel.success) {
-                CarBillBean bean = (CarBillBean)(resModel.object);
-                saveToDB(bean);
-                ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, bean.carBillId, bean.imageId, bean.leaseTerm != 0, EvaluationActivity.class);
-            } else {
-                closeDialog();
-                ToastUtils.show(mContext, R.string.submit_evaluation_failed);
-            }
+            CarLog.d(TAG, "mGetCarBillCallback onSuccess: " + content);
+            CarBillBean bean = JsonParse.parseJson(content, CarBillBean.class);
+            bean.carBillId = bean.normalCarBillId;
+            closeDialog();
+            saveToDB(bean);
+            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, bean.carBillId, bean.imageId, bean.leaseTerm != 0, EvaluationActivity.class);
         }
     };
 

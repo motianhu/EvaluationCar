@@ -21,6 +21,8 @@ public class CarBillBean extends BaseBean {
     //2.0
     public int leaseTerm = 0; //between 0,12,24,36
     public int residualPrice;
+    //2.1
+    public String normalCarBillId;
 
     public String toString() {
         return "carBillId=" + carBillId + ",status=" + status +
