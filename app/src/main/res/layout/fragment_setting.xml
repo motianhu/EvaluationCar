@@ -90,6 +90,7 @@
 
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/setting_phone"
         style="@style/setting_item_style">
 
