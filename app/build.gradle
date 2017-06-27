@@ -8,8 +8,8 @@ android {
         applicationId "com.smona.app.evaluationcar"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 20170617
-        versionName "3.6.17"
+        versionCode 20170627
+        versionName "3.6.27"
 
 
         ndk {

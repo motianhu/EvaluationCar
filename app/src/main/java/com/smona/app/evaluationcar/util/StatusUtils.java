@@ -68,4 +68,8 @@ public class StatusUtils {
     public static boolean isPrePass(int status) {
         return status == 1 || status == 2;
     }
+
+    public static boolean isPreNotPass(int status) {
+        return status == -1;
+    }
 }

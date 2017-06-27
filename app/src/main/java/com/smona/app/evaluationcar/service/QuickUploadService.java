@@ -79,7 +79,7 @@ public class QuickUploadService extends Service {
             CarLog.d(TAG, "startTask carbill=" + carbill);
             if (TextUtils.isEmpty(carbill.carBillId)) {
                 putTaskInSave(user.mId, carbill);
-            } else if (StatusUtils.isNotPass(carbill.status)) {
+            } else if (StatusUtils.isPreNotPass(carbill.status)) {
                 putTaskInReturn(user.mId, carbill);
             } else {
                 putTaskInSaveFailed(user.mId, carbill);

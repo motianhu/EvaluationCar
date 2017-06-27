@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.framework.cache.CacheDelegator;
+import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
 import com.smona.app.evaluationcar.ui.HomeActivity;
 import com.smona.app.evaluationcar.ui.LoginActivity;
 import com.smona.app.evaluationcar.ui.common.activity.BaseActivity;
@@ -60,7 +61,11 @@ public class MineLayer extends LinearLayout implements View.OnClickListener {
         findViewById(R.id.setting_phone).setOnClickListener(this);
         findViewById(R.id.setting_logout).setOnClickListener(this);
 
-        ((TextView) findViewById(R.id.version)).setText(Utils.getVersion(getContext()));
+        String version = Utils.getVersion(getContext());
+        if(DeviceStorageManager.getInstance().isTestEvn()) {
+            version ="testevn: " + version;
+        }
+        ((TextView) findViewById(R.id.version)).setText(version);
     }
 
     @Override
