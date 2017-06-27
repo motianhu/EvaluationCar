@@ -17,6 +17,7 @@ public class QuickPreCarBillBean extends BaseBean {
     public double preSalePrice;
     public int uploadStatus = StatusUtils.BILL_UPLOAD_STATUS_NONE;
     public String normalCarBillId;
+    public String applyAllOpinion;
 
     public String toString() {
         return "carBillId=" + carBillId + ",status=" + status +

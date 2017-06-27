@@ -2,11 +2,15 @@ package com.smona.app.evaluationcar.ui.evaluation.preevaluation.quick;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 
 import com.smona.app.evaluationcar.R;
@@ -16,7 +20,9 @@ import com.smona.app.evaluationcar.data.bean.QuickPreCarBillBean;
 import com.smona.app.evaluationcar.data.bean.QuickPreCarImageBean;
 import com.smona.app.evaluationcar.data.event.EvaActionEvent;
 import com.smona.app.evaluationcar.data.event.background.TaskSubEvent;
+import com.smona.app.evaluationcar.data.model.ResQuickPreCarBillPage;
 import com.smona.app.evaluationcar.data.model.ResQuickPreCarImagePage;
+import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
@@ -29,6 +35,7 @@ import com.smona.app.evaluationcar.util.DateUtils;
 import com.smona.app.evaluationcar.util.SPUtil;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
+import com.smona.app.evaluationcar.util.Utils;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -150,8 +157,7 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
         //驳回原因
         mRease = findViewById(R.id.reason);
         mReaseWebView = (WebView) findViewById(R.id.reason_webview);
-        ViewUtil.setViewVisible(mRease, false);
-        ViewUtil.setViewVisible(mReaseWebView, false);
+        refreshReasonView(mPreQuickPreCarBillBean);
 
         //基础照片
         mBaseGrid = (LimitGridView) findViewById(R.id.class_base);
@@ -169,6 +175,25 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
         mMark = (EditText) findViewById(R.id.et_remark);
         if (mPreQuickPreCarBillBean != null) {
             mMark.setText(mPreQuickPreCarBillBean.mark);
+        }
+    }
+
+    private void refreshReasonView(QuickPreCarBillBean bean) {
+        if (statusIsReturn()) {
+            ViewUtil.setViewVisible(mRease, true);
+            ViewUtil.setViewVisible(mReaseWebView, true);
+            String bodyHTML = bean.applyAllOpinion;
+            mReaseWebView.setWebViewClient(new WebViewClient());
+            mReaseWebView.getSettings().setDefaultTextEncodingName("utf-8");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                mReaseWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            } else {
+                mReaseWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            }
+            mReaseWebView.loadData(Utils.getHtmlData(bodyHTML), "text/html; charset=utf-8", "utf-8");
+        } else {
+            ViewUtil.setViewVisible(mRease, false);
+            ViewUtil.setViewVisible(mReaseWebView, false);
         }
     }
 
@@ -201,6 +226,21 @@ public class QuickPreevaluationActivity extends HeaderActivity implements View.O
                         }
                     }
                     notifyReloadCarImage();
+                }
+            }
+
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "onError ex: " + error);
+            }
+        });
+        DataDelegator.getInstance().getPreCarBillDetail(mUserItem.mId, mQuickPreCarBillId, new ResponseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CarLog.d(TAG, "getQuickPreImage onSuccess: " + result);
+                QuickPreCarBillBean resp = JsonParse.parseJson(result, QuickPreCarBillBean.class);
+                if (resp != null) {
+                    refreshReasonView(resp);
                 }
             }
 
