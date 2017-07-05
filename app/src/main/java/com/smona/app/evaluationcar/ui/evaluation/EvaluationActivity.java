@@ -309,7 +309,8 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         //lease term
         View leaseTermGroup = findViewById(R.id.group_lease_term);
-        ViewUtil.setViewVisible(leaseTermGroup, mUserItem.userBean.isGuanghui() && mIsResidual);
+        boolean isResidual = isResidual();
+        ViewUtil.setViewVisible(leaseTermGroup, isResidual);
         mLeaseTerm = (RadioGroup) findViewById(R.id.rg_lease_term);
 
         //设置定位按钮事件及初始化定位
@@ -325,12 +326,14 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         findViewById(R.id.btn_save).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
 
-        if (mCarBill != null) {
-            mLeaseTerm.check(getResIdForLeaseTerm(mCarBill.leaseTerm));
-            mPrice.setText(mCarBill.preSalePrice + "");
-            mNote.setText(mCarBill.mark);
-        } else {
-            mLeaseTerm.check(getResIdForLeaseTerm(0));
+        if (mCarBill == null) {
+            return;
+        }
+        mPrice.setText(mCarBill.preSalePrice + "");
+        mNote.setText(mCarBill.mark);
+
+        if(isResidual && (mCarBill.leaseTerm > 0)) {
+           mLeaseTerm.check(getResIdForLeaseTerm(mCarBill.leaseTerm));
         }
     }
 
@@ -356,6 +359,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mClassOriginalCarInsurancetAdapter.update(mClassOriginalCarInsurancetList);
     }
 
+    private boolean isResidual() {
+        return mUserItem.userBean.isGuanghui() && mIsResidual;
+    }
 
     private void notifyReloadCarImage() {
         TaskSubEvent event = new TaskSubEvent();
@@ -509,6 +515,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             return;
         }
 
+        if(isResidual() && getLeaseTerm() < 1) {
+            ToastUtils.show(this, R.string.please_select_evaluation_select_date);
+            return;
+        }
+
         postEvent(preScalePrice);
     }
 
@@ -525,6 +536,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
         if (Double.valueOf(preScalePrice) <= 0) {
             ToastUtils.show(this, R.string.evaluation_input_pre_price);
+            return;
+        }
+
+        if(isResidual() && getLeaseTerm() < 1) {
+            ToastUtils.show(this, R.string.please_select_evaluation_select_date);
             return;
         }
 
@@ -564,14 +580,12 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private int getResIdForLeaseTerm(int leaseTerm) {
         switch (leaseTerm) {
-            case 12:
-                return R.id.leaseTerm12;
             case 24:
                 return R.id.leaseTerm24;
             case 36:
                 return R.id.leaseTerm36;
             default:
-                return R.id.leaseTerm0;
+                return R.id.leaseTerm12;
         }
     }
 

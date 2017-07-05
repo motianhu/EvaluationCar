@@ -112,6 +112,7 @@
     <string name="login_input_password_error">请输入密码</string>
     <string name="login_error">登录失败</string>
     <string name="evaluation_input_pre_price">请输入预售价格</string>
+    <string name="please_select_evaluation_select_date">请选择一个租赁期限!</string>
     <string name="camera_busy_now">其他应用正在使用相机,请先关闭!</string>
 
     <string name="upgrade_desc">检查到新版本%1$s,请升级!</string>

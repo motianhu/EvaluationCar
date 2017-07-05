@@ -129,7 +129,7 @@
                 android:layout_marginStart="5dip"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_lease_term"
-                android:text="租赁期限(非残值租赁产品就选无租期)"
+                android:text="租赁期限"
                 android:textColor="@color/black_text"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -144,14 +144,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/view_space_vertical"
             android:orientation="horizontal"
-            android:weightSum="4">
-
-            <RadioButton
-                android:id="@+id/leaseTerm0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="无租期" />
+            android:weightSum="3">
 
             <RadioButton
                 android:id="@+id/leaseTerm12"
