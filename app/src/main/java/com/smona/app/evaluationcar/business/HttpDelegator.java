@@ -320,7 +320,7 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void submitChangeCarBil(String userName, String carBillId, ResponseCallback callback) {
+    public void submitChangeCarBill(String userName, String carBillId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_POST);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);

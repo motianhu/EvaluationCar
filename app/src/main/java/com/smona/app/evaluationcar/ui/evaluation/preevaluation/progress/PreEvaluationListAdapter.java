@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
+import com.smona.app.evaluationcar.ui.status.StatusActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -28,12 +30,8 @@ import com.smona.app.evaluationcar.util.ToastUtils;
 import com.smona.app.evaluationcar.util.UrlConstants;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by motianhu on 4/7/17.
@@ -95,14 +93,24 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
         textNum.setText(mContext.getString(R.string.list_item_number) + " " + carTitle);
 
+        boolean hasNormalNum = StatusUtils.isPrePass(carbill.status) && !TextUtils.isEmpty(carbill.normalCarBillId);
+
+        //正式评估单号
+        TextView normalNum = (TextView) convertView.findViewById(R.id.normalNum);
+        String normalNumTitle = hasNormalNum ? carbill.normalCarBillId : mContext.getString(R.string.no_carbillid);
+        normalNum.setText(mContext.getString(R.string.list_item_normal_number) + " " + normalNumTitle);
+        ViewUtil.setViewVisible(normalNum, hasNormalNum);
+
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 
         TextView textStatus = (TextView) convertView.findViewById(R.id.carStatus);
         textStatus.setText(mContext.getString(R.string.status_bill_progress) + " " + StatusUtils.PREBILL_STATUS_MAP.get(carbill.status));
 
-        View changeCarBill = convertView.findViewById(R.id.btnSubmitCarbill);
-        ViewUtil.setViewVisible(changeCarBill, StatusUtils.isPrePass(carbill.status) && TextUtils.isEmpty(carbill.normalCarBillId));
+        Button changeCarBill = (Button) convertView.findViewById(R.id.btnSubmitCarbill);
+        ViewUtil.setViewVisible(changeCarBill, StatusUtils.isPrePass(carbill.status));
+        changeCarBill.setText(hasNormalNum ? R.string.show_evaluation : R.string.submit_evaluation);
+        changeCarBill.setTextColor(hasNormalNum ? mContext.getResources().getColor(R.color.chengse) : mContext.getResources().getColor(R.color.green));
         changeCarBill.setOnClickListener(this);
         changeCarBill.setTag(carbill);
 
@@ -113,18 +121,23 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
     public void onClick(View v) {
         Object tag = v.getTag();
         int id = v.getId();
-        if(id == R.id.btnSubmitCarbill) {
-            ToastUtils.show(mContext,R.string.submit_evaluation_waiting);
-            onClickChange(((QuickPreCarBillBean)tag).carBillId);
-            return;
-        }
-
         if (tag instanceof QuickPreCarBillBean) {
             QuickPreCarBillBean info = (QuickPreCarBillBean) tag;
-            if(StatusUtils.isPrePass(info.status)) {
+            if (id == R.id.btnSubmitCarbill) {
+                String normalCarBillId = info.normalCarBillId;
+                if (TextUtils.isEmpty(normalCarBillId)) {
+                    onChangeToNormalEvaluation(((QuickPreCarBillBean) tag).carBillId);
+                } else {
+                    onJumpToNormalEvaluation(normalCarBillId);
+                }
+                return;
+            }
+
+            if (StatusUtils.isPrePass(info.status)) {
                 ActivityUtils.jumpReportWebActivity(mContext, info.carBillId);
             }
         }
+
     }
 
     protected void setScrollState(int state) {
@@ -138,10 +151,17 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
 
     //
     private ProgressDialog mProgressDiag;
-    private void onClickChange(String carBillId) {
+
+    private void onChangeToNormalEvaluation(String carBillId) {
         closeDialog();
         mProgressDiag = ProgressDialog.show(mContext, mContext.getString(R.string.submit_evaluation_title), mContext.getString(R.string.submit_evaluation_waiting));
-        HttpDelegator.getInstance().submitChangeCarBil(mUserItem.mId, carBillId, mChangeCarBillCallBack);
+        HttpDelegator.getInstance().submitChangeCarBill(mUserItem.mId, carBillId, mChangeCarBillCallBack);
+    }
+
+    private void onJumpToNormalEvaluation(String normalCarBillId) {
+        closeDialog();
+        mProgressDiag = ProgressDialog.show(mContext, mContext.getString(R.string.submit_evaluation_title), mContext.getString(R.string.show_evaluation_waiting));
+        HttpDelegator.getInstance().queryCarBillForId(mUserItem.mId, normalCarBillId, mGetCarBillCallback);
     }
 
     private void closeDialog() {
@@ -163,8 +183,8 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
         public void onSuccess(String content) {
             CarLog.d(TAG, "mChangeCarBillCallBack onSuccess: " + content);
             ResBaseModel resModel = JsonParse.parseJson(content, ResBaseModel.class);
-            if(resModel.success) {
-                HttpDelegator.getInstance().queryCarBillForId(mUserItem.mId, (String)resModel.object, mGetCarBillCallback);
+            if (resModel.success) {
+                HttpDelegator.getInstance().queryCarBillForId(mUserItem.mId, (String) resModel.object, mGetCarBillCallback);
             } else {
                 closeDialog();
                 ToastUtils.show(mContext, R.string.submit_evaluation_failed);
@@ -186,7 +206,11 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
             CarBillBean bean = JsonParse.parseJson(content, CarBillBean.class);
             closeDialog();
             saveToDB(bean);
-            ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, bean.carBillId, bean.imageId, bean.leaseTerm != 0, EvaluationActivity.class);
+            if (StatusUtils.isNotPass(bean.status)) {
+                ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_RETURN, bean.carBillId, bean.imageId, bean.leaseTerm != 0, EvaluationActivity.class);
+            } else {
+                ActivityUtils.jumpStatus(mContext, bean, StatusActivity.class);
+            }
         }
     };
 

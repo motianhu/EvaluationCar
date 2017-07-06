@@ -15,14 +15,15 @@
         android:id="@+id/status_list_item_arrow"
         style="@style/setting_item_arrow_style" />
 
+
     <RelativeLayout
+        android:id="@+id/topContainer"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/carImage"
-        android:layout_toStartOf="@+id/status_list_item_arrow"
-        android:layout_height="wrap_content">
+        android:layout_toStartOf="@+id/status_list_item_arrow">
+
         <TextView
             android:id="@+id/carNum"
             android:layout_width="wrap_content"
@@ -30,42 +31,51 @@
             android:textColor="#000000"
             android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/btnSubmitCarbill"
-            android:layout_alignParentEnd="true"
+        <TextView
+            android:id="@+id/normalNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:textSize="14sp"
-            android:text="@string/submit_evaluation"/>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/chengse"
+            android:textSize="10sp" />
     </RelativeLayout>
 
-
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/carTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@+id/carImage"
         android:layout_toStartOf="@+id/status_list_item_arrow"
-        android:orientation="vertical"
-        android:paddingBottom="5dp">
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/carImage"
+        android:layout_toStartOf="@+id/status_list_item_arrow">
 
         <TextView
             android:id="@+id/carStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_centerVertical="true"
             android:textColor="@color/red"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/carTime"
+        <Button
+            android:id="@+id/btnSubmitCarbill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="@string/submit_evaluation"
+            android:textColor="@color/green"
             android:textSize="12sp" />
-    </LinearLayout>
-
+    </RelativeLayout>
 
 </RelativeLayout>
