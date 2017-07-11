@@ -129,12 +129,9 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
         findViewById(R.id.auditing).setOnClickListener(this);
         findViewById(R.id.notpass).setOnClickListener(this);
         findViewById(R.id.pass).setOnClickListener(this);
+        findViewById(R.id.rules).setOnClickListener(this);
+        findViewById(R.id.photos).setOnClickListener(this);
 
-        findViewById(R.id.notice).setOnClickListener(this);
-
-
-        mNotice = (TextView) findViewById(R.id.notice_content);
-        mNotice.setText(Html.fromHtml(getContext().getString(R.string.notice_content)));
 
         String content = getResources().getString(R.string.home_bill_total);
 
@@ -180,11 +177,11 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
             case R.id.queryVin:
                 ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
-            case R.id.notice:
-                NewsItem item = (NewsItem) mNotice.getTag();
-                if (item != null) {
-                    ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_NEWS, item.id);
-                }
+            case R.id.photos:
+                ToastUtils.show(getContext(), "rules");
+                break;
+            case R.id.rules:
+                ToastUtils.show(getContext(), "photos");
                 break;
         }
     }
@@ -197,8 +194,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
 
     private void post() {
         DataDelegator.getInstance().requestCarbillCount(mUser.mId, mCallbillCountCallback);
-        DataDelegator.getInstance().requestNotice();
-
         EventProxy.post(new StatisticsStatusSubEvent());
     }
 
@@ -233,16 +228,6 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
         String content = getResources().getString(R.string.bill_count);
         mUnCommitTv.setText(String.format(content, mLocalCount));
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void update(NoticeEvent event) {
-        List<NewsItem> list = (List<NewsItem>) event.getContent();
-        if (list != null && list.size() > 0) {
-            mNotice.setTag(list.get(0));
-            mNotice.setText(Html.fromHtml(list.get(0).shortContent));
-        }
-    }
-
 
     private void notifyUICount(ResCountPage page) {
         BillTotalEvent event = new BillTotalEvent();

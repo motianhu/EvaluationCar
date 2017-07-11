@@ -95,45 +95,39 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/notice"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@+id/status"
         android:layout_marginTop="10dp"
-        android:background="@color/bg_white"
+        android:background="@color/bg_gray"
         android:orientation="horizontal"
         android:paddingEnd="10dp"
+        android:weightSum="2"
         android:paddingStart="10dp">
 
-        <ImageView
-            android:id="@+id/notice_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/notice" />
-
         <TextView
-            android:id="@+id/notice_detail"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:text="@string/notice_detail"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/notice_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/notice_img"
-            android:layout_toStartOf="@+id/notice_detail"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1" />
-    </RelativeLayout>
+            android:id="@+id/rules"
+            android:background="@drawable/corner_shape"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/evalution_rules"
+            android:layout_marginEnd="5dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/photos"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginStart="5dp"
+            android:text="@string/evalution_takephone"
+            android:background="@drawable/corner_shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 
     <LinearLayout
