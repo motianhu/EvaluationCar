@@ -91,7 +91,7 @@
     <string name="load_fail">网络异常</string>
     <string name="pullup_to_load">上拉加载更多</string>
     <string name="release_to_load">释放立即加载</string>
-    <string name="network_irregular">网络迷路了,点击重新加载</string>
+    <string name="no_data_online">没有数据</string>
     <string name="no_data_tips">亲,你没有本地评估单,点击去评估</string>
     <string name="no_network">没有网络,请检查网络</string>
     <string name="loading">加载中</string>

@@ -12,6 +12,7 @@ import com.smona.app.evaluationcar.data.item.BannerItem;
 import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.ui.common.base.BaseLinearLayout;
+import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +47,6 @@ public class HomeLayer extends BaseLinearLayout {
     public void init() {
         mHomeList = (HomeListView) findViewById(R.id.content_list);
         mNoContent = findViewById(R.id.no_content);
-        mNoContent.setOnClickListener(mReloadClick);
         mLoading = findViewById(R.id.loading);
 
         setLoading();
@@ -81,6 +81,7 @@ public class HomeLayer extends BaseLinearLayout {
         ViewUtil.setViewVisible(mLoading, false);
         ViewUtil.setViewVisible(mHomeList, false);
         ViewUtil.setViewVisible(mNoContent, true);
+        NetworkTipUtil.showNetworkTip(this, mReloadClick);
     }
 
     private void setHasData() {
