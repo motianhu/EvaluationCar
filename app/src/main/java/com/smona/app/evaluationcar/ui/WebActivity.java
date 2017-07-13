@@ -53,6 +53,8 @@ public class WebActivity extends HeaderActivity {
                 parseBanner(content);
             } else if (isNews()) {
                 parseNewsItem(content);
+            } else if (isRules()) {
+                parseRules(content);
             } else {
                 poseBanner(null);
             }
@@ -137,6 +139,8 @@ public class WebActivity extends HeaderActivity {
             updateTitle(R.string.html_title_banner);
         } else if (isNews()) {
             updateTitle(R.string.html_title_news);
+        } else if (isRules()) {
+            updateTitle(R.string.evalution_rules);
         }
     }
 
@@ -165,6 +169,8 @@ public class WebActivity extends HeaderActivity {
             DataDelegator.getInstance().queryPageElementDetail(mId, mCallback);
         } else if (isNews()) {
             DataDelegator.getInstance().queryNewsDetail(mId, mCallback);
+        } else if(isRules()) {
+            DataDelegator.getInstance().queryPageElementDetail(mId, mCallback);
         }
     }
 
@@ -174,6 +180,10 @@ public class WebActivity extends HeaderActivity {
 
     private boolean isNews() {
         return CacheContants.TYPE_NEWS == mType;
+    }
+
+    private boolean isRules() {
+        return CacheContants.TYPE_RULES == mType;
     }
 
     private void parseBanner(String content) {
@@ -190,6 +200,11 @@ public class WebActivity extends HeaderActivity {
         PageElementEvent event = new PageElementEvent();
         event.setContent(item);
         EventProxy.post(event);
+    }
+
+    private void parseRules(String content) {
+        BannerItem item = JsonParse.parseJson(content, BannerItem.class);
+        poseBanner(item);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

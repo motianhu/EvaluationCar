@@ -1,7 +1,6 @@
 package com.smona.app.evaluationcar.ui.evaluation;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,11 +9,9 @@ import android.widget.TextView;
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.data.event.BillTotalEvent;
-import com.smona.app.evaluationcar.data.event.NoticeEvent;
 import com.smona.app.evaluationcar.data.event.StatisticsStatusEvent;
 import com.smona.app.evaluationcar.data.event.background.StatisticsStatusSubEvent;
 import com.smona.app.evaluationcar.data.item.BillTotalItem;
-import com.smona.app.evaluationcar.data.item.NewsItem;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResCountPage;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
@@ -33,8 +30,6 @@ import com.smona.app.evaluationcar.util.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 /**
  * Created by motianhu on 2/28/17.
@@ -178,10 +173,10 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
             case R.id.photos:
-                ToastUtils.show(getContext(), "rules");
+                ActivityUtils.jumpReportWebActivity(getContext(), CacheContants.TYPE_TAKEPHOTO, "5");
                 break;
             case R.id.rules:
-                ToastUtils.show(getContext(), "photos");
+                ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_RULES, mUser.userBean.isGuanghui() ? 3 : 4);
                 break;
         }
     }

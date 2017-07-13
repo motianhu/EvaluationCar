@@ -38,8 +38,12 @@ public class CacheContants {
     //web activity
     public static final int TYPE_BANNER = 1;
     public static final int TYPE_NEWS = 2;
+    public static final int TYPE_RULES = 3;
     public static final String WEB_ACTIVITY_TYPE = "web_activity_content_type";
     public static final String PAGE_ELEMENT_ID = "page_element_id";
 
-    public static final String WEB_PRE_REPORT = "web_pre_report";
+    //direct web
+    public static final String DIRECT_WEB_TYPE = "direct_web_type";
+    public static final int TYPE_REPORT = 1;
+    public static final int TYPE_TAKEPHOTO = 2;
 }

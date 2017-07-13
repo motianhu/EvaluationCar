@@ -66,6 +66,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.CHECK_USER);
         params.addParameter(UserParam.USERNAME, userParam.userName);
         params.addParameter(UserParam.PASSWORD, userParam.password);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -73,6 +74,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_LATEST);
         params.addParameter(BannerParam.CLASSTYPE, bannerParam.classType);
         params.addParameter("curPage", 1);
+        params.addParameter("clientName", "android");
         params.addParameter("pageSize", 4);
         x.http().get(params, new ResponseCallback<String>() {
             @Override
@@ -100,6 +102,7 @@ public class HttpDelegator implements IProxy {
 
     public void createCarBillId(ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.CREATE_CARBILLID);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -109,6 +112,7 @@ public class HttpDelegator implements IProxy {
         params.addParameter(CarbillParam.STATUS, param.status);
         params.addParameter(CarbillParam.CURPAGE, param.curPage);
         params.addParameter(CarbillParam.PAGESIZE, param.pageSize);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -139,6 +143,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_IMAGE);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -150,6 +155,7 @@ public class HttpDelegator implements IProxy {
     public void queryCarbillCount(String userName, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL_COUNT);
         params.addParameter("userName", userName);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -157,6 +163,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -165,6 +172,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
         params.addParameter(RequestParamConstants.CLASS_TYPE, RequestParamConstants.CLASS_TYPE_NOTICE);
         params.addParameter("curPage", 1);
+        params.addParameter("clientName", "android");
         params.addParameter("pageSize", 2);
         x.http().get(params, new ResponseCallback<String>() {
             @Override
@@ -195,6 +203,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_MORE);
         params.addParameter("classType", classType);
         params.addParameter("curPage", page.curPage);
+        params.addParameter("clientName", "android");
         params.addParameter("pageSize", page.pageSize);
         x.http().get(params, callback);
     }
@@ -202,6 +211,7 @@ public class HttpDelegator implements IProxy {
     public void queryNewsDetail(int newsId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_NEWS_DETAIL);
         params.addParameter("newsId", newsId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -215,30 +225,35 @@ public class HttpDelegator implements IProxy {
     //预评估
     public void queryCarBrand(ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBRAND);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
     public void queryCarSet(String carBrandId, ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARSET);
         params.addParameter("carBrandId", carBrandId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
     public void queryCarType(String carBrandId, String carSetId, ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBTYPE);
         params.addParameter("carBrandId", carBrandId);
+        params.addParameter("clientName", "android");
         params.addParameter("carSetId", carSetId);
         x.http().get(params, callback);
     }
 
     public void queryCity(ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CITY);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
     public void queryPageElementLatest() {
         ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_LATEST);
         params.addParameter("classType", "轮播图");
+        params.addParameter("clientName", "android");
         x.http().get(params, new ResponseCallback<String>() {
             @Override
             public void onSuccess(String content) {
@@ -266,6 +281,7 @@ public class HttpDelegator implements IProxy {
     public void queryPageElementDetail(int pageId, ResponseCallback<String> callback) {
         ReqParams params = createParams(UrlConstants.QUERY_PAGEELEMENT_DETAIL);
         params.addParameter("id", pageId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -282,6 +298,7 @@ public class HttpDelegator implements IProxy {
         params.addParameter("pageSize", param.pageSize);
         params.addParameter("status", param.status);
         params.addParameter("carBillType", param.type);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -298,6 +315,7 @@ public class HttpDelegator implements IProxy {
     public void getPreCarBillDetail(String userName, String carBillId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_DETAIL);
         params.addParameter("userName", userName);
+        params.addParameter("clientName", "android");
         params.addParameter("carBillId", carBillId);
         x.http().get(params, callback);
     }
@@ -317,6 +335,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_IMAGE);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 
@@ -324,6 +343,7 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_POST);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
+        params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }
 }

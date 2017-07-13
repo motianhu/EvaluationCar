@@ -24,6 +24,7 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
 import com.smona.app.evaluationcar.ui.status.StatusActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
+import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
 import com.smona.app.evaluationcar.util.ToastUtils;
@@ -134,7 +135,7 @@ public class PreEvaluationListAdapter extends BaseAdapter implements View.OnClic
             }
 
             if (StatusUtils.isPrePass(info.status)) {
-                ActivityUtils.jumpReportWebActivity(mContext, info.carBillId);
+                ActivityUtils.jumpReportWebActivity(mContext, CacheContants.TYPE_REPORT, info.carBillId);
             }
         }
 

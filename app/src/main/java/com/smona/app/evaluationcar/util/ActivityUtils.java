@@ -21,17 +21,10 @@ public class ActivityUtils {
     public static final int ACTION_GALLERY = 1;
     public static final int ACTION_CAMERA = 2;
 
-    public static final int ACTION_CAR_BRAND = 1;
-    public static final int ACTION_CAR_CITY = 2;
-    public static final String ACTION_DATA_BRAND = "data_car_brand";
-    public static final String ACTION_DATA_SET = "data_car_set";
-    public static final String ACTION_DATA_TYPE = "data_car_type";
-    public static final String ACTION_DATA_CITY = "data_city";
-
     public static void jumpWebActivity(Context context, int type, int id) {
         Intent intent = new Intent();
-        intent.putExtra(CacheContants.PAGE_ELEMENT_ID, id);
         intent.putExtra(CacheContants.WEB_ACTIVITY_TYPE, type);
+        intent.putExtra(CacheContants.PAGE_ELEMENT_ID, id);
         intent.setClass(context, WebActivity.class);
         context.startActivity(intent);
     }
@@ -108,8 +101,9 @@ public class ActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void jumpReportWebActivity(Context context, String id) {
+    public static void jumpReportWebActivity(Context context,int type, String id) {
         Intent intent = new Intent();
+        intent.putExtra(CacheContants.DIRECT_WEB_TYPE, type);
         intent.putExtra(CacheContants.WEB_ACTIVITY_TYPE, id);
         intent.setClass(context, ReportWebActivity.class);
         context.startActivity(intent);

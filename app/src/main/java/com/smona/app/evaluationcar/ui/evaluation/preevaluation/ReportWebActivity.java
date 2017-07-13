@@ -1,6 +1,7 @@
 package com.smona.app.evaluationcar.ui.evaluation.preevaluation;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -19,6 +20,7 @@ public class ReportWebActivity extends HeaderActivity {
     private static final String TAG = ReportWebActivity.class.getSimpleName();
 
     private WebView mHtmlView;
+    private int mType = -1;
     private String mCarBillId;
 
     @Override
@@ -26,6 +28,7 @@ public class ReportWebActivity extends HeaderActivity {
         super.onCreate(savedInstanceState);
         initData();
         initViews();
+        updateTitle();
         requestData();
     }
 
@@ -35,9 +38,21 @@ public class ReportWebActivity extends HeaderActivity {
     }
 
     private void initData() {
-        mCarBillId = getIntent().getStringExtra(CacheContants.WEB_ACTIVITY_TYPE);
+        mType = getIntent().getIntExtra(CacheContants.DIRECT_WEB_TYPE, -1);
+        if(isReport()) {
+            mCarBillId = getIntent().getStringExtra(CacheContants.WEB_ACTIVITY_TYPE);
+        } else if(isTakePhotos()) {
+            mCarBillId = getIntent().getStringExtra(CacheContants.WEB_ACTIVITY_TYPE);
+        }
         CarLog.d(TAG, "mCarBillId=" + mCarBillId);
+    }
 
+    private boolean isReport() {
+        return CacheContants.TYPE_REPORT == mType;
+    }
+
+    private boolean isTakePhotos() {
+        return CacheContants.TYPE_TAKEPHOTO == mType;
     }
 
     private void initViews() {
@@ -69,8 +84,24 @@ public class ReportWebActivity extends HeaderActivity {
         return R.string.html_title_report;
     }
 
+    private void updateTitle() {
+        if (isReport()) {
+            updateTitle(R.string.html_title_report);
+        } else if (isTakePhotos()) {
+            updateTitle(R.string.evalution_takephone);
+        }
+    }
+
     private void requestData() {
-        String url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_QUICKPREEVALUATION_REPORT, "?carBillId=" + mCarBillId + "&userName=" + mUserItem.mId);
+        String url = null;
+        if(isReport()) {
+            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_QUICKPREEVALUATION_REPORT, "?carBillId=" + mCarBillId + "&userName=" + mUserItem.mId);
+        }else if(isTakePhotos()) {
+            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.GET_TAKE_PHOTOS, "?id=" + mCarBillId);
+        }
+        if(TextUtils.isEmpty(url)) {
+            return;
+        }
         mHtmlView.loadUrl(url);
     }
 }

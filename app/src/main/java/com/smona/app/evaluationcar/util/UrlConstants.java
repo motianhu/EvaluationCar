@@ -46,6 +46,7 @@ public class UrlConstants {
     public static final int REGISTRE = 100;
 
     public static final int GET_AUTO_LOGOS = 200;
+    public static final int GET_TAKE_PHOTOS = 201;
 
 
     private static final String DOMAIN = "http://112.74.65.110";
@@ -89,6 +90,7 @@ public class UrlConstants {
         INTEFACES.put(QUERY_CARBILL, "/external/app/getAppDetailCarBill.html");
 
         INTEFACES.put(GET_AUTO_LOGOS, "/external/source/autologos/");
+        INTEFACES.put(GET_TAKE_PHOTOS, "/external/app/getAppPageElement.html");
         INTEFACES.put(REGISTRE, "/view/common/register.jsp");
     }
 
