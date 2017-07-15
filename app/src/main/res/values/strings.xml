@@ -202,4 +202,9 @@
 
     <string name="uploading_no_action">正在上传中,不能修改</string>
     <string name="jump_to_evaluation">正在加载，请稍候</string>
+
+    <string name="status_process">状态:</string>
+    <string name="uploading_status">正在上传</string>
+    <string name="waiting_status">排队中</string>
+    <string name="saving_status">已保存</string>
 </resources>

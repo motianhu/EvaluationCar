@@ -52,11 +52,25 @@ public class UploadTaskExecutor {
         return false;
     }
 
-    public boolean isUploading(String carBillId) {
+    public boolean isWaittingTask(int imageId, String carBillId) {
         Iterator<ActionTask> it = mWattingTasks.iterator();
         while (it.hasNext()) {
             ActionTask action = it.next();
             if (!TextUtils.isEmpty(action.mCarBillId) && action.mCarBillId.equals(carBillId)) {
+                return true;
+            } else if ((imageId > 0) && (imageId == action.mImageId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRunningTask(int imageId, String carBillId) {
+        for (ActionTask action : mRunningTasks) {
+            //有CarbillId
+            if (!TextUtils.isEmpty(carBillId) && carBillId.equals(action.mCarBillId)) {
+                return true;
+            } else if ((imageId > 0) && (imageId == action.mImageId)) {
                 return true;
             }
         }

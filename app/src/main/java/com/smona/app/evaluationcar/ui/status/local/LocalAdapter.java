@@ -80,6 +80,17 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener, V
         String carTitle = TextUtils.isEmpty(carbill.carBillId) ? mContext.getString(R.string.no_carbillid) : carbill.carBillId;
         textNum.setText(mContext.getString(R.string.list_item_number) + " " + carTitle);
 
+        TextView uploadStatus = (TextView) convertView.findViewById(R.id.uploadstatus);
+        String upload = mContext.getString(R.string.saving_status);
+        boolean isRunning = UploadTaskExecutor.getInstance().isRunningTask(carbill.imageId, carbill.carBillId);
+        boolean isWaiting = UploadTaskExecutor.getInstance().isWaittingTask(carbill.imageId, carbill.carBillId);
+        if(isRunning) {
+            upload = mContext.getString(R.string.uploading_status);
+        } else if(isWaiting) {
+            upload = mContext.getString(R.string.waiting_status);
+        }
+        uploadStatus.setText(mContext.getString(R.string.status_process) + " " + upload);
+
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
 
@@ -93,7 +104,7 @@ public class LocalAdapter extends BaseAdapter implements View.OnClickListener, V
             CarBillBean info = (CarBillBean) tag;
             if (info.uploadStatus == StatusUtils.BILL_UPLOAD_STATUS_UPLOADING &&
                     !TextUtils.isEmpty(info.carBillId) &&
-                    UploadTaskExecutor.getInstance().isUploading(info.carBillId)) {
+                    UploadTaskExecutor.getInstance().isWaittingTask(info.imageId, info.carBillId)) {
                 ToastUtils.show(mContext, R.string.uploading_no_action);
             } else {
                 ActivityUtils.jumpEvaluation(mContext, StatusUtils.BILL_STATUS_SAVE, info.carBillId, info.imageId, info.leaseTerm != 0, EvaluationActivity.class);

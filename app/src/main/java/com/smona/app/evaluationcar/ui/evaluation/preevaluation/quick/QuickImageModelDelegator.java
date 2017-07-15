@@ -154,7 +154,7 @@ public class QuickImageModelDelegator {
             bean = new QuickPreCarImageBean();
             bean.imageClass = getImageClassForType(IMAGE_Registration);
             bean.displayName = getDisplayName(IMAGE_Registration, index);
-            bean.imageSeqNum = index + 1;
+            bean.imageSeqNum = index;
             defaultList.add(bean);
 
             //中控台含排挡杆
