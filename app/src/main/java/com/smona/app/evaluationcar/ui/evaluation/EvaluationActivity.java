@@ -165,13 +165,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
 
     private void initCarBill() {
         mCarBillId = (String) SPUtil.get(this, CacheContants.CARBILLID, "");
-        CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId);
 
         if (!TextUtils.isEmpty(mCarBillId)) {
             mCarBill = DBDelegator.getInstance().queryCarBill(mCarBillId);
         } else if (statusIsSave()) {
             mCarBill = DBDelegator.getInstance().queryLocalCarbill(mImageId);
         }
+        CarLog.d(TAG, "initCarBill carBillId=" + mCarBillId + "; mCarBill=" + mCarBill);
     }
 
     private void initOther() {

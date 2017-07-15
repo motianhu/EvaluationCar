@@ -176,7 +176,13 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ActivityUtils.jumpReportWebActivity(getContext(), CacheContants.TYPE_TAKEPHOTO, "5");
                 break;
             case R.id.rules:
-                ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_RULES, mUser.userBean.isGuanghui() ? 3 : 4);
+                int pageId = -1;
+                if(mUser.userBean.isGuanghui()) {
+                    pageId = 4;
+                } else if(mUser.userBean.isXianfeng()) {
+                    pageId = 3;
+                }
+                ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_RULES, pageId);
                 break;
         }
     }

@@ -126,6 +126,12 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
         mLoadmoreDist = DIST * density;
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        initView();
+    }
+
     public void refreshFinish(int refreshResult) {
         changeState(DONE);
         post(mUpdateRunnable);
@@ -302,6 +308,9 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
     }
 
     protected void initView() {
+        mRefreshView = getChildAt(0);
+        mPullableView = getChildAt(1);
+        mLoadmoreView = getChildAt(2);
         mLoadStateTextView = (TextView) mLoadmoreView
                 .findViewById(R.id.loadstate_tv);
         mLoadingView = mLoadmoreView.findViewById(R.id.loading_icon);
@@ -311,11 +320,7 @@ public abstract class PullToRefreshLayout extends BaseRefreshLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         if (!mIsLayout) {
-            mRefreshView = getChildAt(0);
-            mPullableView = getChildAt(1);
-            mLoadmoreView = getChildAt(2);
             mIsLayout = true;
-            initView();
             mRefreshDist = getmRefreshDist();
             mLoadmoreDist = getmLoadmoreDist();
         }

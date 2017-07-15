@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.ui.status.auditing.AuditingLayer;
 import com.smona.app.evaluationcar.ui.status.local.LocalLayer;
 import com.smona.app.evaluationcar.ui.status.notpass.NotPassLayer;
 import com.smona.app.evaluationcar.ui.status.pass.PassLayer;
+import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ public class StatusFragment extends ContentFragment {
         mViewPager = (ViewPager) root.findViewById(R.id.viewpager);
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabs);
 
-        LocalLayer view1 = (LocalLayer) ViewUtil.inflater(getContext(), R.layout.status_local_layer);
+        final LocalLayer view1 = (LocalLayer) ViewUtil.inflater(getContext(), R.layout.status_local_layer);
 
-        AuditingLayer view2 = (AuditingLayer) ViewUtil.inflater(getContext(), R.layout.status_auditing_layer);
+        final AuditingLayer view2 = (AuditingLayer) ViewUtil.inflater(getContext(), R.layout.status_auditing_layer);
 
-        NotPassLayer view3 = (NotPassLayer) ViewUtil.inflater(getContext(), R.layout.status_notpass_layer);
+        final NotPassLayer view3 = (NotPassLayer) ViewUtil.inflater(getContext(), R.layout.status_notpass_layer);
 
-        PassLayer view4 = (PassLayer) ViewUtil.inflater(getContext(), R.layout.status_pass_layer);
+        final PassLayer view4 = (PassLayer) ViewUtil.inflater(getContext(), R.layout.status_pass_layer);
 
 
         List<View> viewList = new ArrayList<View>();
@@ -66,6 +67,27 @@ public class StatusFragment extends ContentFragment {
         tabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
 
         mViewPager.setAdapter(pagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                // This space for rent
+                CarLog.d("StatusFragment", "position: " + position);
+                switch (position) {
+                    case 0:
+                        view1.request1Page();
+                        break;
+                    case 1:
+                        view2.request1Page();
+                        break;
+                    case 2:
+                        view3.request1Page();
+                        break;
+                    case 3:
+                        view4.request1Page();
+                        break;
+                }
+            }
+        });
     }
 
     public void changeFragment(int position) {

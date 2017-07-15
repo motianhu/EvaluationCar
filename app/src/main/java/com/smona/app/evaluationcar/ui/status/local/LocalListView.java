@@ -163,5 +163,6 @@ public class LocalListView extends PullableListView implements
 
     public void clear() {
         mListAdapter.clear();
+        mListAdapter.notifyDataSetChanged();
     }
 }

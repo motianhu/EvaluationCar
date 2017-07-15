@@ -162,5 +162,6 @@ public class NotPassListView extends PullableListView implements
 
     public void clear() {
         mListAdapter.clear();
+        mListAdapter.notifyDataSetChanged();
     }
 }

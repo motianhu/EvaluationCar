@@ -13,6 +13,7 @@ import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
 import com.smona.app.evaluationcar.ui.evaluation.EvaluationActivity;
+import com.smona.app.evaluationcar.ui.status.Request1Page;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -23,7 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class LocalLayer extends PullToRefreshLayout implements RequestFace {
+public class LocalLayer extends PullToRefreshLayout implements RequestFace, Request1Page {
     private static final String TAG = LocalLayer.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
     private LocalListView mLocalListView = null;
@@ -34,6 +35,9 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     private boolean mPullRequest = false;
     private int mCurPage = 1;
     private int mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+
+    private boolean mComplementInit = false;
+
     private View.OnClickListener mReloadClickListener = new View.OnClickListener() {
 
         @Override
@@ -63,7 +67,10 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void addObserver() {
         EventProxy.register(this);
-        post();
+        if(!mComplementInit) {
+            mComplementInit = true;
+            request1Page();
+        }
     }
 
     private void post() {
@@ -170,4 +177,13 @@ public class LocalLayer extends PullToRefreshLayout implements RequestFace {
         }
     }
 
+    @Override
+    public void request1Page() {
+        mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+        mCurPage = 1;
+        mLocalListView.clear();
+        changeState(INIT);
+        mPullRequest = false;
+        post();
+    }
 }

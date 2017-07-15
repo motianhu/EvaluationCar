@@ -95,9 +95,9 @@ public class ReportWebActivity extends HeaderActivity {
     private void requestData() {
         String url = null;
         if(isReport()) {
-            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_QUICKPREEVALUATION_REPORT, "?carBillId=" + mCarBillId + "&userName=" + mUserItem.mId);
+            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.QUERY_QUICKPREEVALUATION_REPORT, "?carBillId=" + mCarBillId + "&userName=" + mUserItem.mId + "&clientName=android");
         }else if(isTakePhotos()) {
-            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.GET_TAKE_PHOTOS, "?id=" + mCarBillId);
+            url = HttpDelegator.getInstance().getCacheKey(UrlConstants.GET_TAKE_PHOTOS, "?id=" + mCarBillId + "&userName=" + mUserItem.mId + "&clientName=android");
         }
         if(TextUtils.isEmpty(url)) {
             return;

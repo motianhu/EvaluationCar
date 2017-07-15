@@ -17,6 +17,7 @@ import com.smona.app.evaluationcar.framework.json.JsonParse;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.refresh.NetworkTipUtil;
 import com.smona.app.evaluationcar.ui.common.refresh.PullToRefreshLayout;
+import com.smona.app.evaluationcar.ui.status.Request1Page;
 import com.smona.app.evaluationcar.ui.status.RequestFace;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -26,7 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class PassLayer extends PullToRefreshLayout implements RequestFace {
+public class PassLayer extends PullToRefreshLayout implements RequestFace , Request1Page {
     private static final String TAG = PassLayer.class.getSimpleName();
     private static final int PAGE_SIZE = 10;
 
@@ -54,9 +55,9 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
         public void onSuccess(String content) {
             ResCarBillPage pages = JsonParse.parseJson(content, ResCarBillPage.class);
             int total = mRequestParams.curPage * mRequestParams.pageSize;
+            saveToDB(pages.data);
             if (pages.total <= total) {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_LAST;
-                saveToDB(pages.data);
                 notifyUpdateUI(pages.data);
             } else {
                 mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
@@ -107,8 +108,6 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
     @Override
     public void addObserver() {
         EventProxy.register(this);
-        initRequestParams();
-        post();
     }
 
     private void post() {
@@ -210,5 +209,15 @@ public class PassLayer extends PullToRefreshLayout implements RequestFace {
             mRequestParams.curPage += 1;
             DataDelegator.getInstance().queryCarbillList(mRequestParams, mResonponseCallBack);
         }
+    }
+
+    @Override
+    public void request1Page() {
+        initRequestParams();
+        mTag = StatusUtils.MESSAGE_REQUEST_PAGE_MORE;
+        mPassListView.clear();
+        changeState(INIT);
+        mPullRequest = false;
+        post();
     }
 }
