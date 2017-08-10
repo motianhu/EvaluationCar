@@ -173,14 +173,14 @@ public class EvaluationLayer extends BaseRelativeLayout implements View.OnClickL
                 ToastUtils.show(getContext(), R.string.coming_soon);
                 break;
             case R.id.photos:
-                ActivityUtils.jumpReportWebActivity(getContext(), CacheContants.TYPE_TAKEPHOTO, "5");
+                ActivityUtils.jumpReportWebActivity(getContext(), CacheContants.TYPE_TAKEPHOTO, "3");
                 break;
             case R.id.rules:
                 int pageId = -1;
                 if(mUser.userBean.isGuanghui()) {
-                    pageId = 4;
+                    pageId = 5;
                 } else if(mUser.userBean.isXianfeng()) {
-                    pageId = 3;
+                    pageId = 4;
                 }
                 ActivityUtils.jumpWebActivity(getContext(), CacheContants.TYPE_RULES, pageId);
                 break;
