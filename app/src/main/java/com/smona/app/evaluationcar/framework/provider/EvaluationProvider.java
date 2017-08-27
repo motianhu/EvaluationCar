@@ -17,6 +17,7 @@ import com.smona.app.evaluationcar.framework.provider.table.ImageMetaTable;
 import com.smona.app.evaluationcar.framework.provider.table.QuickPreCarBillTable;
 import com.smona.app.evaluationcar.framework.provider.table.QuickPreCarImageTable;
 import com.smona.app.evaluationcar.util.CarLog;
+import com.smona.app.evaluationcar.framework.EvaluationApp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class EvaluationProvider extends ContentProvider {
     public boolean onCreate() {
         CarLog.d(TAG, "onCreate");
         mDataHelper = new DatabaseHelper(getContext());
+        ((EvaluationApp)getContext().getApplicationContext()).setProvider(this);
         return true;
     }
 
@@ -140,6 +142,14 @@ public class EvaluationProvider extends ContentProvider {
         return count;
     }
 
+    public void clearAllTableData() {
+        SQLiteDatabase db = mDataHelper.getWritableDatabase();
+        ArrayList<String> sqlList = mDataHelper.getDeleteTableSqlList();
+        for(String sql: sqlList) {
+            db.execSQL(sql);
+        }
+    }
+
     class DatabaseHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "evaluation.db";
         private static final int DATABASE_VERSION = 3;
@@ -182,6 +192,22 @@ public class EvaluationProvider extends ContentProvider {
             String imagemeta = ImageMetaTable.getInstance().createTableSql();
             String quickprecarbills = QuickPreCarBillTable.getInstance().createTableSql();
             String quickprecarimage = QuickPreCarImageTable.getInstance().createTableSql();
+
+            sqlList.add(carbills);
+            sqlList.add(carimage);
+            sqlList.add(imagemeta);
+            sqlList.add(quickprecarbills);
+            sqlList.add(quickprecarimage);
+            return sqlList;
+        }
+
+        public ArrayList<String> getDeleteTableSqlList() {
+            ArrayList<String> sqlList = new ArrayList<String>();
+            String carbills = CarBillTable.getInstance().deleteTableSql();
+            String carimage = CarImageTable.getInstance().deleteTableSql();
+            String imagemeta = ImageMetaTable.getInstance().deleteTableSql();
+            String quickprecarbills = QuickPreCarBillTable.getInstance().deleteTableSql();
+            String quickprecarimage = QuickPreCarImageTable.getInstance().deleteTableSql();
 
             sqlList.add(carbills);
             sqlList.add(carimage);

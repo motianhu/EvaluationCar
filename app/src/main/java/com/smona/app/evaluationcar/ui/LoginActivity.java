@@ -1,7 +1,9 @@
 package com.smona.app.evaluationcar.ui;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,7 +29,9 @@ import com.smona.app.evaluationcar.data.model.ResUserModel;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
+import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
+import com.smona.app.evaluationcar.util.AccountManager;
 import com.smona.app.evaluationcar.util.CarLog;
 import com.smona.app.evaluationcar.util.ToastUtils;
 
@@ -187,28 +191,13 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     if (mUser != null) {
                         gotoStartup();
                     } else {
-                        showLoginingDlg(); // 显示"正在登录"对话框
-                        final UserParam param = new UserParam();
-                        param.userName = mIdString;
-                        param.password = mPwdString;
-
-                        DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
-                            @Override
-                            public void onSuccess(String result) {
-                                ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
-                                CarLog.d(TAG, "onSuccess normal: " + normal);
-                                if (normal.success) {
-                                    registerThirdFunc();
-                                }
-                                runUI(normal);
-                            }
-
-                            @Override
-                            public void onFailed(String error) {
-                                CarLog.d(TAG, "onError ex: " + error);
-                                runUI(null);
-                            }
-                        });
+                        //如果上一次账号和此次账号不同，需要用户确认是否删除本地所有数据。
+                        String[] lastAccount = AccountManager.readLastAccount(this);
+                        if(lastAccount != null && mIdString.equals(lastAccount[0]))  {
+                            showHintForClearData();
+                            return;
+                        }
+                        requestLogin();
                     }
                 }
                 break;
@@ -221,6 +210,49 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     }
 
+    private void showHintForClearData() {
+        AlertDialog.Builder builer = new AlertDialog.Builder(this);
+        builer.setTitle(R.string.quit_title);
+        builer.setPositiveButton(R.string.upgrade_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                ((EvaluationApp)getApplicationContext()).clearAllTableData();
+                requestLogin();
+            }
+        }).setNegativeButton(R.string.upgrade_cancle, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                requestLogin();
+            }
+        });
+
+        AlertDialog clearDataDialog  = builer.create();
+        clearDataDialog.show();
+    }
+
+    private void requestLogin() {
+        showLoginingDlg(); // 显示"正在登录"对话框
+        final UserParam param = new UserParam();
+        param.userName = mIdString;
+        param.password = mPwdString;
+
+        DataDelegator.getInstance().checkUser(param, new ResponseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ResUserModel normal = JsonParse.parseJson(result, ResUserModel.class);
+                CarLog.d(TAG, "onSuccess normal: " + normal);
+                if (normal.success) {
+                    registerThirdFunc();
+                }
+                runUI(normal);
+            }
+
+            @Override
+            public void onFailed(String error) {
+                CarLog.d(TAG, "onError ex: " + error);
+                runUI(null);
+            }
+        });
+    }
+
     private void runUI(final ResUserModel model) {
         runOnUiThread(new Runnable() {
             @Override
@@ -230,6 +262,7 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                     mUser = new UserItem();
                     mUser.saveSelf(LoginActivity.this, mIdString, mPwdString);
                     mUser.saveUserProp(LoginActivity.this, model.object);
+                    AccountManager.saveLastAccount(LoginActivity.this, mIdString, mPwdString);
                     gotoStartup();
                 } else {
                     ToastUtils.show(LoginActivity.this, R.string.login_error);

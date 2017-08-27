@@ -9,6 +9,10 @@ public class CacheContants {
     public static final String LOGIN_USERNAME = "login_userName";
     public static final String LOGIN_PASSWORD = "login_password";
 
+    //last login
+    public static final String LOGIN_LAST_USERNAME = "login_last_userName";
+    public static final String LOGIN_LAST_PASSWORD = "login_last_password";
+
     public static final String LOGIN_USERID = "login_userId";
     public static final String LOGIN_USERCOMPANY = "login_userCompany";
     public static final String LOGIN_USERSUPERCOMPONAY = "login_userSuperCompany";

@@ -10,6 +10,7 @@ import com.smona.app.evaluationcar.framework.crashreport.CrashReportProxy;
 import com.smona.app.evaluationcar.framework.event.EventProxy;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.framework.provider.DBDelegator;
+import com.smona.app.evaluationcar.framework.provider.EvaluationProvider;
 import com.smona.app.evaluationcar.framework.provider.GenerateMaxId;
 import com.smona.app.evaluationcar.framework.push.PushProxy;
 import com.smona.app.evaluationcar.framework.storage.DeviceStorageManager;
@@ -46,6 +47,18 @@ public class EvaluationApp extends Application {
         DeviceStorageManager.getInstance().initPath();
         ChatClientProxy.getInstance().init(this);
         EventProxy.register(this);
+    }
+
+    private WeakReference<EvaluationProvider> mProviderRefs = null;
+    public void setProvider(EvaluationProvider provider) {
+        mProviderRefs = new WeakReference<EvaluationProvider>(provider);
+    }
+
+    public void clearAllTableData() {
+        EvaluationProvider provider = mProviderRefs.get();
+        if(provider != null) {
+            provider.clearAllTableData();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

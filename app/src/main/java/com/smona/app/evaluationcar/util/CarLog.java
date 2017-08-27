@@ -14,7 +14,7 @@ public class CarLog {
     }
 
     public static void i(Object clazz, Object msg) {
-        Log.i(TAG, clazz + ": " + msg);
+        Log.e(TAG, clazz + ": " + msg);
     }
 
     public static void e(Object clazz, Object msg) {
