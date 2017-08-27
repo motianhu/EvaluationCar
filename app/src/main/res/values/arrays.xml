@@ -3,7 +3,7 @@
 
     <array name="image_class_detail">
         <item>"登记证首页","登记证-车辆信息记录"</item>
-        <item>"行驶证-正本/副本同照"</item>
+        <item>"行驶证-正本/副本同照[选拍]"</item>
         <item>"车辆铭牌"</item>
         <item>"车左前45度","前挡风玻璃","车右后45度","后挡风玻璃"</item>
         <item>

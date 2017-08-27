@@ -152,11 +152,17 @@ public class ImageModelAdapter extends BaseAdapter {
 
     public CarImageBean checkPhoto() {
         for (int i = 0; i < mDatas.size() - 1; i++) {
-            if (TextUtils.isEmpty(mDatas.get(i).imageLocalUrl) && TextUtils.isEmpty(mDatas.get(i).imagePath)) {
+            if (isEmpty(mDatas.get(i))) {
                 return mDatas.get(i);
             }
         }
         return null;
+    }
+
+    private boolean isEmpty(CarImageBean bean) {
+        boolean isEmpty =  TextUtils.isEmpty(bean.imageLocalUrl) && TextUtils.isEmpty(bean.imagePath);
+        boolean ignoreDrivingLicence = !ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_DrivingLicense).equals(bean.imageClass);
+        return isEmpty && ignoreDrivingLicence;
     }
 
     private final class ViewHolder {
