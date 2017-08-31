@@ -161,8 +161,25 @@ public class ImageModelAdapter extends BaseAdapter {
 
     private boolean isEmpty(CarImageBean bean) {
         boolean isEmpty =  TextUtils.isEmpty(bean.imageLocalUrl) && TextUtils.isEmpty(bean.imagePath);
-        boolean ignoreDrivingLicence = !ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_DrivingLicense).equals(bean.imageClass);
-        return isEmpty && ignoreDrivingLicence;
+        //行驶证全部可选
+
+        //车身外观的前后挡风玻璃+添加 是可选；其余必选
+        boolean isCarBody = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarBody).equals(bean.imageClass)
+                && (bean.imageSeqNum ==0 || bean.imageSeqNum == 2);
+        //车骨架的左右前门绞链以及左右后门+添加 是可选；其余必选
+        boolean isCarFrame = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_CarFrame).equals(bean.imageClass)
+                && (bean.imageSeqNum ==0 || bean.imageSeqNum == 1
+                || bean.imageSeqNum ==2 || bean.imageSeqNum == 3
+                ||bean.imageSeqNum ==4 || bean.imageSeqNum == 5
+                ||bean.imageSeqNum ==8 || bean.imageSeqNum == 9
+                ||bean.imageSeqNum ==10 || bean.imageSeqNum == 11
+                ||bean.imageSeqNum ==13
+        );
+        //车辆内饰的中央控制面板+添加 是可选；其余必选
+        boolean isVehicleInterior = ImageModelDelegator.getInstance().getImageClassForType(ImageModelDelegator.IMAGE_VehicleInterior).equals(bean.imageClass)
+                && (bean.imageSeqNum ==0 || bean.imageSeqNum == 2 || bean.imageSeqNum == 3);
+
+        return isEmpty && (isCarBody || isCarFrame || isVehicleInterior);
     }
 
     private final class ViewHolder {
