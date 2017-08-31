@@ -26,10 +26,10 @@ import com.smona.app.evaluationcar.business.ResponseCallback;
 import com.smona.app.evaluationcar.business.param.UserParam;
 import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.data.model.ResUserModel;
+import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.framework.cache.DataDelegator;
 import com.smona.app.evaluationcar.framework.chatclient.ChatClientProxy;
 import com.smona.app.evaluationcar.framework.json.JsonParse;
-import com.smona.app.evaluationcar.framework.EvaluationApp;
 import com.smona.app.evaluationcar.ui.common.activity.PermissionActivity;
 import com.smona.app.evaluationcar.util.AccountManager;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -188,17 +188,18 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
                 } else if (mPwdString == null || mPwdString.equals("")) {// 密码为空时
                     ToastUtils.show(LoginActivity.this, R.string.login_input_password_error);
                 } else {// 账号和密码都不为空时
-                    if (mUser != null) {
-                        gotoStartup();
-                    } else {
-                        //如果上一次账号和此次账号不同，需要用户确认是否删除本地所有数据。
-                        String[] lastAccount = AccountManager.readLastAccount(this);
-                        if(lastAccount != null && mIdString.equals(lastAccount[0]))  {
+
+                    //如果上一次账号和此次账号不同，需要用户确认是否删除本地所有数据。
+                    String[] lastAccount = AccountManager.readLastAccount(this);
+                    CarLog.d(TAG, "lastAccount  " + lastAccount);
+                    if (lastAccount != null) {
+                        CarLog.d(TAG, "lastAccount[0]  " + lastAccount[0]);
+                        if (!mIdString.equals(lastAccount[0])) {
                             showHintForClearData();
                             return;
                         }
-                        requestLogin();
                     }
+                    requestLogin();
                 }
                 break;
             case R.id.register:
@@ -212,7 +213,8 @@ public class LoginActivity extends PermissionActivity implements OnClickListener
 
     private void showHintForClearData() {
         AlertDialog.Builder builer = new AlertDialog.Builder(this);
-        builer.setTitle(R.string.quit_title);
+        builer.setTitle(R.string.waring_title);
+        builer.setMessage(R.string.waring_content);
         builer.setPositiveButton(R.string.upgrade_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 ((EvaluationApp)getApplicationContext()).clearAllTableData();

@@ -32,7 +32,7 @@ public abstract class BaseTable implements BaseColumns {
     }
 
     public String deleteTableSql() {
-        return "DELETE TABLE " + mTableName;
+        return "DELETE FROM " + mTableName;
     }
 
 

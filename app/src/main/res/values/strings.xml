@@ -207,4 +207,8 @@
     <string name="uploading_status">正在上传</string>
     <string name="waiting_status">排队中</string>
     <string name="saving_status">已保存</string>
+
+
+    <string name="waring_title">警告</string>
+    <string name="waring_content">切换账号将清除原账号的所有本地数据(包括正在上传，但还没上传完的图片)，线上的不受影响</string>
 </resources>
