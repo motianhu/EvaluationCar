@@ -51,7 +51,7 @@ public class QuickImageModelDelegator {
     public void init(Context context) {
         Resources res = context.getResources();
         mImageClass = res.getStringArray(R.array.image_class);
-        String[] array = res.getStringArray(R.array.image_class_detail);
+        String[] array = res.getStringArray(R.array.quick_image_class_detail);
         mImageClassItems = getTwoDimensionalArray(array);
 
         mImageClassMap.put(mImageClass[IMAGE_Registration], IMAGE_Registration);

@@ -107,6 +107,9 @@ public class ImageModelAdapter extends BaseAdapter {
 
         boolean hasPic = processImage(bean, viewHolder.image);
         String diplayName = TextUtils.isEmpty(bean.displayName) ? mContext.getString(R.string.add_picture) : bean.displayName;
+        if(diplayName.contains("选拍")) {
+            viewHolder.centerText.setTextColor(mContext.getResources().getColor(R.color.green));
+        }
         viewHolder.centerText.setText(diplayName);
         ViewUtil.setViewVisible(viewHolder.centerImage, true);
         ViewUtil.setViewVisible(viewHolder.centerText, true);

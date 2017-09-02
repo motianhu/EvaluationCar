@@ -237,6 +237,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         mDesLayer = findViewById(R.id.desLayer);
         mDescription = (TextView) findViewById(R.id.description);
         mDescription.setText(mCurCarImage.displayName);
+        if(mCurCarImage.displayName.contains("选拍")) {
+            mDescription.setTextColor(getResources().getColor(R.color.green));
+        }
         mNote = (TextView) findViewById(R.id.note);
         mNumPhoto = (TextView) findViewById(R.id.numPhoto);
         refreshNext();
@@ -393,6 +396,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             mCurCarImage = mCarImageList.get(mCurCarImage.imageSeqNum + 1);
             initDisplayName();
             mDescription.setText(mCurCarImage.displayName);
+            if(mCurCarImage.displayName.contains("选拍")) {
+                mDescription.setTextColor(getResources().getColor(R.color.green));
+            }
         }
     }
 

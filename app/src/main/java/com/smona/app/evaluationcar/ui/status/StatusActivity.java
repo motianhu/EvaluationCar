@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.StatusUtils;
@@ -48,8 +49,9 @@ public class StatusActivity extends HeaderActivity {
         textValue.setTextColor(getResources().getColor(R.color.red));
 
         if ("评估完成".equals(status) || "高评通过".equals(status)) {
+            boolean notVisible = mUserItem.userBean.isRichanJinrong();
             parent = findViewById(R.id.billprice);
-            ViewUtil.setViewVisible(parent, true);
+            ViewUtil.setViewVisible(parent, !notVisible);
             textKey = (TextView) parent.findViewById(R.id.key);
             textValue = (TextView) parent.findViewById(R.id.value);
             textKey.setText(R.string.list_item_price);

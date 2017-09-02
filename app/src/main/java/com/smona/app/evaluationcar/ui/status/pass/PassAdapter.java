@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.smona.app.evaluationcar.R;
 import com.smona.app.evaluationcar.data.bean.CarBillBean;
+import com.smona.app.evaluationcar.data.item.UserItem;
 import com.smona.app.evaluationcar.framework.imageloader.ImageLoaderProxy;
 import com.smona.app.evaluationcar.ui.status.StatusActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
@@ -30,9 +31,12 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
     private Context mContext;
     private List<CarBillBean> mDataList = new ArrayList<CarBillBean>();
+    private UserItem mUserItem;
 
     public PassAdapter(Context context) {
         mContext = context;
+        mUserItem = new UserItem();
+        mUserItem.readUserProp(context);
     }
 
     public void update(List deltaList) {
@@ -77,7 +81,9 @@ public class PassAdapter extends BaseAdapter implements View.OnClickListener {
         textNum.setText(mContext.getString(R.string.list_item_number) + " " + carTitle);
 
         TextView textPrice = (TextView) convertView.findViewById(R.id.carPrice);
+        boolean notVisible = mUserItem.userBean.isRichanJinrong();
         textPrice.setText(mContext.getString(R.string.list_item_price) + " " + carbill.evaluatePrice);
+        ViewUtil.setViewVisible(textPrice, !notVisible);
 
         TextView textTime = (TextView) convertView.findViewById(R.id.carTime);
         textTime.setText(mContext.getString(R.string.list_item_time) + " " + carbill.createTime);
