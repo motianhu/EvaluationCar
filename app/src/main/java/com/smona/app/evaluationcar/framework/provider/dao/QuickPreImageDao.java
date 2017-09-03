@@ -102,6 +102,8 @@ public class QuickPreImageDao extends BaseDao<QuickPreCarImageBean> {
         item.imageUpdate = getInt(cursor, QuickPreCarImageTable.IMAGEUPDATE);
         item.createTime = getString(cursor, QuickPreCarImageTable.CREATETIME);
         item.updateTime = getString(cursor, QuickPreCarImageTable.UPDATETIEM);
+        item.id = getString(cursor, QuickPreCarImageTable.SERVER_ID);
+        item.normalCarBillId = getString(cursor, QuickPreCarImageTable.NORMAL_CARBILLID);
         return item;
     }
 
@@ -118,6 +120,8 @@ public class QuickPreImageDao extends BaseDao<QuickPreCarImageBean> {
         values.put(QuickPreCarImageTable.IMAGEUPDATE, item.imageUpdate);
         values.put(QuickPreCarImageTable.CREATETIME, item.createTime);
         values.put(QuickPreCarImageTable.UPDATETIEM, item.updateTime);
+        values.put(QuickPreCarImageTable.SERVER_ID, item.id);
+        values.put(QuickPreCarImageTable.NORMAL_CARBILLID, item.normalCarBillId);
         return values;
     }
 }

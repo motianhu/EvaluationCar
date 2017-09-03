@@ -152,7 +152,7 @@ public class EvaluationProvider extends ContentProvider {
 
     class DatabaseHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "evaluation.db";
-        private static final int DATABASE_VERSION = 3;
+        private static final int DATABASE_VERSION = 4;
 
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -181,6 +181,13 @@ public class EvaluationProvider extends ContentProvider {
                 db.execSQL(quickprecarbills);
                 String quickprecarimage = QuickPreCarImageTable.getInstance().createTableSql();
                 db.execSQL(quickprecarimage);
+            }
+
+            if(newVersion == 4) {
+                String dropPreImage = QuickPreCarImageTable.getInstance().dropTableSql();
+                db.execSQL(dropPreImage);
+                String createPreImage = QuickPreCarImageTable.getInstance().createTableSql();
+                db.execSQL(createPreImage);
             }
         }
 
