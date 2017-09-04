@@ -93,7 +93,7 @@ public class UrlConstants {
         //驳回重新提交图片，图片id为空就是新增，有id就是替换
         INTEFACES.put(RESUBMIT_QUICKPREEVALUATION_IMAGE, "/external/app/editPreCarBill.html");
         //获取评估驳回的附件，status用,分割
-        INTEFACES.put(QUERY_EVALUATION_NOTPASS_ATTACH, "/external/app/getAttachFiles.html ");
+        INTEFACES.put(QUERY_EVALUATION_NOTPASS_ATTACH, "/external/app/getAttachFiles.html");
 
         INTEFACES.put(QUERY_CARBILL, "/external/app/getAppDetailCarBill.html");
 

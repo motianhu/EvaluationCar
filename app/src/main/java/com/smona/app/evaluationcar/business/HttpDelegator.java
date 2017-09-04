@@ -159,12 +159,14 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
-    public void getEvaluationNotPassAttach(String userName, String carBillId,String status, ResponseCallback callback) {
+    public void getEvaluationNotPassAttach(String userName, String carBillId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_EVALUATION_NOTPASS_ATTACH);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
-        params.addParameter("status", status);
+        params.addParameter("status", "23,33,43,53");
         params.addParameter("clientName", "android");
+        params.addParameter("curPage", "1");
+        params.addParameter("pageSize", "50");
         x.http().get(params, callback);
     }
 

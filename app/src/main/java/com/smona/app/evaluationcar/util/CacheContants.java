@@ -50,4 +50,9 @@ public class CacheContants {
     public static final String DIRECT_WEB_TYPE = "direct_web_type";
     public static final int TYPE_REPORT = 1;
     public static final int TYPE_TAKEPHOTO = 2;
+
+
+    //attach carbillid
+    public static final String ATTACH_CARBILLID = "carbillid_attach";
+    public static final String ATTACH_FILE_URL = "attach_file_url";
 }

@@ -28,6 +28,7 @@ import com.smona.app.evaluationcar.framework.provider.DBDelegator;
 import com.smona.app.evaluationcar.ui.common.activity.HeaderActivity;
 import com.smona.app.evaluationcar.ui.common.base.BaseScrollView;
 import com.smona.app.evaluationcar.ui.common.base.LimitGridView;
+import com.smona.app.evaluationcar.ui.evaluation.attach.AttachmentActivity;
 import com.smona.app.evaluationcar.util.ActivityUtils;
 import com.smona.app.evaluationcar.util.CacheContants;
 import com.smona.app.evaluationcar.util.CarLog;
@@ -705,6 +706,9 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
     }
 
     private void gotoAttach() {
-
+        Intent intent = new Intent();
+        intent.setClass(this, AttachmentActivity.class);
+        intent.putExtra(CacheContants.ATTACH_CARBILLID, mCarBillId);
+        startActivity(intent);
     }
 }
