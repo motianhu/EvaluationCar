@@ -159,6 +159,15 @@ public class HttpDelegator implements IProxy {
         x.http().get(params, callback);
     }
 
+    public void getEvaluationNotPassAttach(String userName, String carBillId,String status, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.QUERY_EVALUATION_NOTPASS_ATTACH);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        params.addParameter("status", status);
+        params.addParameter("clientName", "android");
+        x.http().get(params, callback);
+    }
+
     public void queryCarBillForId(String userName, String carBillId, ResponseCallback callback) {
         ReqParams params = createParams(UrlConstants.QUERY_CARBILL);
         params.addParameter("userName", userName);
@@ -335,6 +344,15 @@ public class HttpDelegator implements IProxy {
         ReqParams params = createParams(UrlConstants.QUERY_QUICKPREEVALUATION_IMAGE);
         params.addParameter("userName", userName);
         params.addParameter("carBillId", carBillId);
+        params.addParameter("clientName", "android");
+        x.http().get(params, callback);
+    }
+
+    public void reUploadQuickPreImage(String userName, String carBillId,String id, ResponseCallback callback) {
+        ReqParams params = createParams(UrlConstants.RESUBMIT_QUICKPREEVALUATION_IMAGE);
+        params.addParameter("userName", userName);
+        params.addParameter("carBillId", carBillId);
+        params.addParameter("id", id);
         params.addParameter("clientName", "android");
         x.http().get(params, callback);
     }

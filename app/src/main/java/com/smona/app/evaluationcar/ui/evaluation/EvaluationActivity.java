@@ -236,8 +236,11 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
         mReasonContainer = findViewById(R.id.reason);
         mReasonWebView = (WebView) findViewById(R.id.reason_webview);
         if (statusIsReturn()) {
+            ViewUtil.setViewVisible(findViewById(R.id.reason_attach), true);
             ViewUtil.setViewVisible(mReasonContainer, true);
             ViewUtil.setViewVisible(mReasonWebView, true);
+            findViewById(R.id.reason_attach).setOnClickListener(this);
+
             String bodyHTML = mCarBill.applyAllOpinion;
             mReasonWebView.setWebViewClient(new WebViewClient());
             mReasonWebView.getSettings().setDefaultTextEncodingName("utf-8");
@@ -695,6 +698,13 @@ public class EvaluationActivity extends HeaderActivity implements View.OnClickLi
             case R.id.btn_submit:
                 onSubmit();
                 break;
+            case R.id.reason_attach:
+                gotoAttach();
+                break;
         }
+    }
+
+    private void gotoAttach() {
+
     }
 }

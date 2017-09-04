@@ -43,6 +43,9 @@ public class UrlConstants {
     public static final int QUERY_QUICKPREEVALUATION_POST = 27;
     public static final int QUERY_CARBILL = 28;
 
+    public static final int RESUBMIT_QUICKPREEVALUATION_IMAGE = 29;
+    public static final int QUERY_EVALUATION_NOTPASS_ATTACH = 30;
+
     public static final int REGISTRE = 100;
 
     public static final int GET_AUTO_LOGOS = 200;
@@ -86,6 +89,11 @@ public class UrlConstants {
         INTEFACES.put(QUERY_QUICKPREEVALUATION_REPORT, "/external/app/getPreCarBillReport.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_POST, "/external/app/postPreCarBill2Normal.html");
         INTEFACES.put(QUERY_QUICKPREEVALUATION_IMAGE, "/external/app/getAppPreBillImageList.html");
+
+        //驳回重新提交图片，图片id为空就是新增，有id就是替换
+        INTEFACES.put(RESUBMIT_QUICKPREEVALUATION_IMAGE, "/external/app/editPreCarBill.html");
+        //获取评估驳回的附件，status用,分割
+        INTEFACES.put(QUERY_EVALUATION_NOTPASS_ATTACH, "/external/app/getAttachFiles.html ");
 
         INTEFACES.put(QUERY_CARBILL, "/external/app/getAppDetailCarBill.html");
 

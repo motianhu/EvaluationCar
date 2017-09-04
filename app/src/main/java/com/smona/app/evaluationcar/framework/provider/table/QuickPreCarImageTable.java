@@ -18,6 +18,10 @@ public class QuickPreCarImageTable extends BaseTable {
     public static final String CREATETIME = "createTime"; //
     public static final String UPDATETIEM = "updateTime"; //图片分类
 
+
+    public static final String SERVER_ID = "server_id"; //服务器图片ID
+    public static final String NORMAL_CARBILLID = "normalCarBillId";//转正式单的单号
+
     private static volatile QuickPreCarImageTable mInstance = null;
 
     private QuickPreCarImageTable() {
@@ -49,7 +53,9 @@ public class QuickPreCarImageTable extends BaseTable {
                 + IMAGEUPDATE + " INTEGER default 0, "
                 + IMAGELOCALURL + " TEXT,"
                 + CREATETIME + " TIMESTAMP default (datetime('now', 'localtime')),"
-                + UPDATETIEM + " TIMESTAMP default (datetime('now', 'localtime')) "
+                + UPDATETIEM + " TIMESTAMP default (datetime('now', 'localtime')), "
+                + SERVER_ID + " TEXT, "
+                + NORMAL_CARBILLID + " TEXT "
                 + ")";
     }
 
