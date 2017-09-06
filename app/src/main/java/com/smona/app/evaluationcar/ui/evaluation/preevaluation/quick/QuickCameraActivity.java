@@ -221,7 +221,7 @@ public class QuickCameraActivity extends Activity implements SurfaceHolder.Callb
     }
 
     private void loadWaterAndDes() {
-        ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mCurCarImage.imageClass, mCurCarImage.imageSeqNum - 1);
+        ImageMetaBean imageMeta = DataDelegator.getInstance().requestImageMeta(mCurCarImage.imageClass, mCurCarImage.imageSeqNum);
         if (imageMeta != null) {
             CarLog.d(TAG, "refreshNext imageMeta: " + imageMeta);
             ImageLoaderProxy.loadImageDesc(UrlConstants.getProjectInterface() + imageMeta.imageDesc, mImageDesc);
