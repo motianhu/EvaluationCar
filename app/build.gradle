@@ -53,4 +53,6 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:2.6.6.1' //报错上报
 
     compile 'com.hyphenate:kefu-easeui-android:1.0.6' //环信sdk
+
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 }
